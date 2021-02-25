@@ -1,0 +1,34 @@
+<div>
+    <mat-toolbar class="toolbar1">
+        <p class="add_criteria">Add Attachment</p>
+        <img (click)="close()" src="assets/images/cancel1.png">
+    </mat-toolbar>
+</div>
+<mat-dialog-content [formGroup]="DialogueFormGroup">
+    <div style="padding: 2rem;">
+        <div fxLayout="column" fxFlex="100">
+
+            <mat-form-field fxFlex=100 style="font-size: 14px;">
+                <mat-label>Document title</mat-label>
+                <input matInput maxlength="40" size="40" formControlName="Documenttitle" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('Documenttitle').touched && DialogueFormGroup.get('Documenttitle').hasError('required')">
+                    Document Title is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex=100 style="font-size: 14px;">
+                <mat-label>Remarks</mat-label>
+                <textarea matInput fxFlex formControlName="Remarks"></textarea>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('Remarks').touched && DialogueFormGroup.get('Remarks').hasError('required')">
+                    Remarks is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center">
+    <button mat-button class="cl_button1" (click)="AddtoODAttachTable()"><span class="add"> Add</span>
+    </button>
+</mat-dialog-actions>

@@ -1,0 +1,43 @@
+<div style="margin-left: -23px;
+            margin-top: -20px;
+            margin-right: -22px;">
+    <mat-toolbar class="toolbar1">
+        <p mat-dialog-title class="add_criteria" style="flex:auto" fxLayoutAlign="center end">Add Rating</p>
+        <img class="image" fxLayoutAlign="end" (click)="close()" src="assets/images/cancel1.png">
+    </mat-toolbar>
+</div>
+<mat-dialog-content [formGroup]="DialogueFormGroup">
+    <div fxLayout fxFlex>
+        <div fxLayout="column" fxFlex="100" style="position: sticky;">
+            <div fxFlex="100">
+                <p class="Criteria">Item</p>
+                <input class="input rect p1" formControlName="Item" type="text" maxlength="4" size="4">
+                <mat-error class="mat_error_item"
+                *ngIf="DialogueFormGroup.get('Item').touched && DialogueFormGroup.get('Item').hasError('required')">
+                Item is required
+            </mat-error>
+            </div>
+            <div fxFlex="100">
+                <p class="Criteria">Criteria</p>
+                <input class="input rect p1" formControlName="Criteria" type="text" maxlength="2" size="2">
+                <mat-error class="mat_error_item"
+                *ngIf="DialogueFormGroup.get('Criteria').touched && DialogueFormGroup.get('Criteria').hasError('required')">
+                Criteria is required
+            </mat-error>
+            </div>
+            <div fxFlex="100">
+                <p class="Description">Description</p>
+                <textarea formControlName="Description" type="text" maxlength="20" size="20" class="input rect1 p2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+            </textarea>
+            <mat-error class="mat_error_description"
+            *ngIf="DialogueFormGroup.get('Description').touched && DialogueFormGroup.get('Description').hasError('required')">
+            Description is required
+        </mat-error>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center">
+    <button class="input cl_button1" (click)="AddtoRatingTable()"><span class="add"> Add</span>
+    </button>
+</mat-dialog-actions>

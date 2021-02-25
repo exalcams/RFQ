@@ -1,0 +1,37 @@
+<div>
+    <mat-toolbar class="toolbar1">
+        <p class="add_criteria">Add Question</p>
+        <img (click)="close()" src="assets/images/cancel1.png" >
+    </mat-toolbar>
+</div>
+<mat-dialog-content [formGroup]="DialogueFormGroup">
+    <div style="padding: 2rem;">
+        <div fxLayout="column" fxFlex="100">
+
+            <mat-form-field fxFlex=100 style="font-size: 14px;">
+                <mat-label>Question</mat-label>
+                <input matInput maxlength="40" size="40" formControlName="Question" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('Question').touched && DialogueFormGroup.get('Question').hasError('required')">
+                    Question is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex=100 style="font-size: 14px;">
+                <mat-label>Answer type</mat-label>
+                <mat-select formControlName="Answer" fxFlex>
+                    <mat-option value="Y">Yes</mat-option>
+                    <mat-option value="N">No</mat-option>
+                </mat-select>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('Answer').touched && DialogueFormGroup.get('Answer').hasError('required')">
+                    Answer Type is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center">
+    <button mat-button class="cl_button1" (click)="AddtoODTable()"><span class="add"> Add</span>
+    </button>
+</mat-dialog-actions>

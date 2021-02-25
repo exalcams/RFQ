@@ -1,0 +1,296 @@
+.toolbar1{
+    /* width: 449px; */
+    height: 46px;
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%);
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.add_criteria{
+    /* width: 1px; */ 
+    /* height: 23px; */
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.56;
+    letter-spacing: normal;
+    text-align: center;
+    color: #595d6e;
+    /* margin-top: 7px; */
+    /* margin-left: 146px; */
+}
+.image{
+    width: 14px;
+    height: 11px;
+    margin-top: -12px;
+    /* margin-left: 140px;
+    margin-top: -9px; */
+}
+.Vendor{
+    /* width: -11px; */
+    /* height: 17px; */
+    font-size: 15px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #999999;
+    margin-top: 15px;
+}
+.GST{
+    /* width: -11px; */
+    /* height: 17px; */
+    font-size: 15px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #999999;
+    margin-top: 15px;
+}
+.rect{
+    width: 94.2%;
+  height: 35px;
+  border-radius: 3px;
+  border: solid 0.5px #cccccc;
+  background-color: #ffffff;
+}
+.p1{
+    font-size: 15px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 2.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #999999;
+    margin-top: -5px;
+}
+.rect1{
+  width: 94.2%;
+  height: 35px;
+  border-radius: 3px;
+  border: solid 0.5px #cccccc;
+  background-color: #ffffff;
+}
+.p2{
+    font-size: 15px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 2.5;
+    letter-spacing: normal;
+    text-align: left;
+    color:var(--gunmetal);
+    margin-top: -5px;
+}
+.div1{
+    width: 78px;
+    height: 15px;
+    margin-top: 12px;
+    margin-left: 1px;
+    padding: 8px;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+}
+.div2{
+    width: 90px;
+    height: 15px;
+    margin-top: 12px;
+    margin-left: 1px;
+    padding: 8px;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+    margin-left: 10px;
+    margin-right:10px;
+}
+.div3{
+    width: 153px;
+    height: 15px;
+    margin-top: 12px;
+    margin-left: 1px;
+    padding: 8px;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+}
+.selvan{
+    width: 112px;
+  height: 17px;
+  margin: 0 8px 0 0;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  color: var(--gunmetal);
+  margin-top: -22px;
+}
+.matha{
+    width: 150px;
+  height: 17px;
+  margin: 0 8px 0 0;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  color: var(--gunmetal);
+  margin-top: -22px;
+}
+.Type{
+    /* width: -11px; */
+    /* height: 17px; */
+    font-size: 15px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #999999;
+    margin-top: 15px;
+}
+.City{
+    /* width: -11px; */
+    /* height: 17px; */
+    font-size: 15px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #999999;
+    margin-top: 15px;
+}
+.cl_button1.mat-button {
+    color: white !important;
+    background: #068dd0 !important;
+  }
+  .cl_button1{
+      width: 85px;
+      height: 29px;
+      border-radius: 2px;
+      background-color: #068dd0;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* margin-left: 161px;
+      margin-top: 42px; */
+    }
+  
+  .add{
+    width: 51px;
+    height: -8px;
+    font-size: 12px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: start;
+    color: #ffffff;
+    /* position: absolute;
+    margin-left: -10px; */
+    line-height: 0.2;
+  }
+  .v_name{
+    /* width: -11px; */
+    /* height: 17px; */
+    font-size: 15px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #999999;
+    margin-top: 29px;
+}
+.rect2{
+    width: 93%;
+    height: 35px;
+    border-radius: 3px;
+    border: solid 0.5px #cccccc;
+    background-color: #ffffff;
+}
+.p3{
+      font-size: 15px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      text-align: left;
+      color:var(--gunmetal);
+      margin-top: -5px;
+}
+.rect3{
+    width: 93%;
+    height: 35px;
+    border-radius: 3px;
+    border: solid 0.5px #cccccc;
+    background-color: #ffffff;
+}
+.p4{
+      font-size: 15px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      text-align: left;
+      color:var(--gunmetal);
+      margin-top: -5px;
+}
+.rect4{
+    width: 94.2%;
+    height: 35px;
+    border-radius: 3px;
+    border: solid 0.5px #cccccc;
+    background-color: #ffffff;
+}
+.p5{
+      font-size: 15px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 2.5;
+      letter-spacing: normal;
+      text-align: left;
+      color:var(--gunmetal);
+      margin-top: -5px;
+}
+.input:focus {
+    outline: none !important;
+  }
+  .mat_error_vendor.mat-error {
+    color: #f44336;
+    padding-top: 31px !important;
+    position: absolute;
+    padding-left: -9px !important;
+    margin-left: -94.5%;
+    font-size: 12px;
+  }
+  .mat_error.mat-error {
+    color: #f44336;
+    padding-top: 31px !important;
+    position: absolute;
+    padding-left: -9px !important;
+    margin-left: -94.5%;
+    font-size: 12px;
+  }
+  .mat-dialog-content {
+    margin: 0;
+    padding: 0;
+}

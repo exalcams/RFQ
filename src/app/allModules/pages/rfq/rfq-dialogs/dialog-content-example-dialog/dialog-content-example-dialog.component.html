@@ -1,0 +1,33 @@
+<div>
+    <mat-toolbar class="toolbar1">
+        <p class="add_criteria">Add Criteria</p>    
+        <img (click)="close()"  fxLayoutAlign="end" src="assets/images/cancel1.png">
+    </mat-toolbar>
+</div>
+<form autocomplete="off" [formGroup]="DialogueFormGroup">
+    <div  style="padding: 2rem;">
+        <div fxLayout="column" fxFlex="100">
+
+            <mat-form-field fxFlex=100 style="font-size: 14px;">
+                <mat-label>Criteria</mat-label>
+                <input matInput formControlName="Criteria" fxFlex>
+                <mat-error 
+            *ngIf="DialogueFormGroup.get('Criteria').touched && DialogueFormGroup.get('Criteria').hasError('required')">
+            Criteria is required
+          </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex=100 style="font-size: 14px;">
+                <mat-label>Description</mat-label>
+                <input matInput formControlName="Description" fxFlex>
+                <mat-error 
+            *ngIf="DialogueFormGroup.get('Description').touched && DialogueFormGroup.get('Description').hasError('required')">
+            Description is required
+          </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayoutAlign="center">
+        <button mat-button class="cl_button1" (click)="AddtoEvaluationTable()"><span class="add"> Add</span>
+        </button>
+    </div>
+    </form>

@@ -1,0 +1,18 @@
+<div id="dashboard" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+
+    <mat-card class="p-8 pt-4 pb-0 m-0">
+      <div fxLayout>
+        <div fxFlex fxLayoutAlign="start center" class="h2">
+          <b>Dashboard</b>
+        </div>
+      </div>
+    </mat-card>
+    <div class="sidenav-content mt-4">
+     
+    </div>
+  </div>
+  <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+  </mat-progress-spinner>
+  <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+</div>
