@@ -4,7 +4,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 // import { _MatChipListMixinBase } from '@angular/material';
 // import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView } from '../models/RFx';
+import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor } from '../models/RFx';
 import { environment } from '../../environments/environment';
 
 
@@ -50,6 +50,14 @@ export class RFxService {
         return this._httpClient.get<RFxHeader[]>(`${this.baseAddress}rfxapi/RFx/GetAllRFxs`)
             .pipe(catchError(this.errorHandler));
     }
+    GetAllRFxMaterialM(): Observable<MMaterial[] | string> {
+        return this._httpClient.get<MMaterial[]>(`${this.baseAddress}rfxapi/RFx/GetAllRFxMaterialM`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetAllRFxVendorM(): Observable<MVendor[] | string> {
+        return this._httpClient.get<MVendor[]>(`${this.baseAddress}rfxapi/RFx/GetAllRFxVendorM`)
+            .pipe(catchError(this.errorHandler));
+    }
 
     GetRFxByRFxID(RFxID: string): Observable<RFxHeader | string> {
         return this._httpClient.get<RFxHeader>(`${this.baseAddress}rfxapi/RFx/GetRFxByRFxID?RFxID=${RFxID}`)
@@ -76,12 +84,12 @@ export class RFxService {
             .pipe(catchError(this.errorHandler));
     }
     
-    GetRFxVendorsByRFxID(RFxID: string): Observable<MVendor[] | string> {
-        return this._httpClient.get<MVendor[]>(`${this.baseAddress}rfxapi/RFx/GetRFxVendorsByRFxID?RFxID=${RFxID}`)
+    GetRFxVendorsByRFxID(RFxID: string): Observable<RFxVendor[] | string> {
+        return this._httpClient.get<RFxVendor[]>(`${this.baseAddress}rfxapi/RFx/GetRFxVendorsByRFxID?RFxID=${RFxID}`)
             .pipe(catchError(this.errorHandler));
     }
-    GetRFxVendorViewsByRFxID(RFxID: string): Observable<RFxVendorView[] | string> {
-        return this._httpClient.get<RFxVendorView[]>(`${this.baseAddress}rfxapi/RFx/GetRFxVendorViewsByRFxID?RFxID=${RFxID}`)
+    GetRFxVendorViewsByRFxID(RFxID: string,PatnerID:string): Observable<RFxVendorView | string> {
+        return this._httpClient.get<RFxVendorView>(`${this.baseAddress}rfxapi/RFx/GetRFxVendorViewsByRFxID?RFxID=${RFxID}&PatnerID=${PatnerID}`)
             .pipe(catchError(this.errorHandler));
     }
     GetRFxODsByRFxID(RFxID: string): Observable<RFxOD[] | string> {
