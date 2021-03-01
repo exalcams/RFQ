@@ -1,6 +1,6 @@
 <div>
     <mat-toolbar class="toolbar1">
-        <p class="add_criteria">Add Partner</p>
+        <p class="add_criteria">Add Item</p>
         <img (click)="close()" src="assets/images/cancel1.png">
     </mat-toolbar>
 </div>
@@ -8,19 +8,19 @@
     <div  style="padding: 2rem;" fxLayout="column">
         <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="3%">
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Item</mat-label>
-                <input matInput formControlName="Item" fxFlex>
+                <input matInput formControlName="Item" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('Item').touched && DialogueFormGroup.get('Item').hasError('required')">
                 Item is required
             </mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Material</mat-label>
-                <mat-select formControlName="material" fxFlex>
-                    <mat-option value="956586">956586</mat-option>
+                <mat-select formControlName="material" fxFlex (selectionChange)="MaterialSelected($event.value)">
+                    <mat-option *ngFor="let item of MaterialMaster" [value]="item.Material">{{item.Material}}</mat-option>
                 </mat-select>
                 <mat-error
                 *ngIf="DialogueFormGroup.get('material').touched && DialogueFormGroup.get('material').hasError('required')">
@@ -28,27 +28,27 @@
             </mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Material text</mat-label>
-                <input matInput formControlName="material_text" fxFlex>
+                <input matInput formControlName="material_text" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('material_text').touched && DialogueFormGroup.get('material_text').hasError('required')">
                 Material Text is required
             </mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>UOM</mat-label>
-                <input matInput maxlength="3" size="3" formControlName="Uom" fxFlex>
+                <input matInput maxlength="3" size="3" formControlName="Uom" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('Uom').touched && DialogueFormGroup.get('Uom').hasError('required')">
                 UOM is required
             </mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Total qty</mat-label>
-                <input matInput type="number" formControlName="TotalQty" fxFlex>
+                <input matInput type="number" formControlName="TotalQty" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('TotalQty').touched && DialogueFormGroup.get('TotalQty').hasError('required')">
                 UOM is required
@@ -57,9 +57,9 @@
                 only 3 decimal digits</mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Per Schedule Qty</mat-label>
-                <input matInput type="number" formControlName="per_schedule_qty" fxFlex>
+                <input matInput type="number" formControlName="per_schedule_qty" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('required')">
                 UOM is required
@@ -68,41 +68,41 @@
                 only 3 decimal digits</mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Bidding price low</mat-label>
-                <input matInput formControlName="LowPrice" fxFlex>
+                <input matInput formControlName="LowPrice" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('LowPrice').touched && DialogueFormGroup.get('LowPrice').hasError('required')">
                 Bidding price low is required
             </mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Bidding Price High</mat-label>
-                <input matInput formControlName="HighPrice" fxFlex>
+                <input matInput formControlName="HighPrice" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('HighPrice').touched && DialogueFormGroup.get('HighPrice').hasError('required')">
                 Bidding Price Low is required
             </mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Interval</mat-label>
-                <input matInput formControlName="Interval" fxFlex>
+                <input matInput formControlName="Interval" fxFlex autocomplete="off">
             </mat-form-field>
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Incoterm</mat-label>
-                <input matInput formControlName="incoterm" max="2" size="2" fxFlex>
+                <input matInput formControlName="incoterm" max="2" size="2" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('incoterm').touched && DialogueFormGroup.get('incoterm').hasError('required')">
                 Incoterm is required
             </mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;" class="top-padding">
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Notes</mat-label>
-                <input matInput formControlName="Notes" max="2" size="2" fxFlex/>
+                <input matInput formControlName="Notes" max="2" size="2" fxFlex autocomplete="off"/>
                 <mat-error
                 *ngIf="DialogueFormGroup.get('Notes').touched && DialogueFormGroup.get('Notes').hasError('required')">
                 Notes is required

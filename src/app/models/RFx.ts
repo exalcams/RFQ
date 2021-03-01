@@ -138,9 +138,10 @@ export class RFxVendorView extends CommonClass {
     Client: string;
     Company: string;
     RFxID: string;
+    PattnerID:string;
     Type: string;
-    VendorName: Date | string;
-    GSTNumber: boolean;
+    VendorName:string;
+    GSTNumber: string;
     City: string;
 }
 export class RFxPartner extends CommonClass {

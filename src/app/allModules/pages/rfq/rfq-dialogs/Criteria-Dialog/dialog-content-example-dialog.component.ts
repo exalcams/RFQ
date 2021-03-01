@@ -1,8 +1,7 @@
 import { Component, OnInit, Optional, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { RFxHC } from 'app/models/RFx';
-import { EventEmitterService } from 'app/services/event-emitter.service';
+import { RFxHC, RFxHeader } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 
 @Component({
@@ -13,17 +12,14 @@ import { RFxService } from 'app/services/rfx.service';
 export class DialogContentExampleDialogComponent implements OnInit {
   DialogueFormGroup: FormGroup;
   rfxHC = new RFxHC;
-  fromPage: string;
+  rfxHeader: RFxHeader;
   constructor(
-    private _formBuilder: FormBuilder, private eventEmitterService: EventEmitterService,
+    private _formBuilder: FormBuilder,
     private _RFxService: RFxService, public dialogRef: MatDialogRef<DialogContentExampleDialogComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: RFxHeader
   ) {
-    this.fromPage = data.pageValue;
-  }
-  RFQComponentFunction(){    
-    this.eventEmitterService.onRFQComponentGetRFXHCsByRFXIDs(String);    
-  }    
+    this.rfxHeader = data;
+  }   
   ngOnInit(): void {
     this.InitializeDialogueFormGroup();
   }
@@ -35,20 +31,17 @@ export class DialogContentExampleDialogComponent implements OnInit {
   }
   AddtoEvaluationTable(): void {
     console.log(this.DialogueFormGroup.value);
-    this.rfxHC.RFxID =this.fromPage;
-    this.rfxHC.Client = "1";
-    this.rfxHC.Company = "Exa";
+    this.rfxHC.RFxID =this.rfxHeader.RFxID;
+    this.rfxHC.Client = this.rfxHeader.Client;
+    this.rfxHC.Company = this.rfxHeader.Company;
     this.rfxHC.CriteriaID = this.DialogueFormGroup.get("Criteria").value;
     this.rfxHC.Text =this.DialogueFormGroup.get("Description").value;
     this._RFxService.AddtoEvaluationTable(this.rfxHC)
       .subscribe(
-        response =>{ console.log('success!', response),
-        this.RFQComponentFunction(),
+        response =>{ console.log('success!', response);
         this.dialogRef.close()},
         error => console.log(error));
         console.log("Heloo");
-        
-    // window.location.reload()
   }
   close() {
     this.dialogRef.close();

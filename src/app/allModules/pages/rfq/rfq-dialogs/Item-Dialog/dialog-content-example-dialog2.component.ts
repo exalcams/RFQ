@@ -1,8 +1,7 @@
 import { Component, OnInit, Optional, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { RFxItem } from 'app/models/RFx';
-import { EventEmitterService } from 'app/services/event-emitter.service';
+import { MMaterial, RFxHeader, RFxItem } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 
 
@@ -14,7 +13,7 @@ import { RFxService } from 'app/services/rfx.service';
 export class DialogContentExampleDialog2Component implements OnInit {
   DialogueFormGroup: FormGroup;
   rfxitem = new RFxItem;
-  fromPage: string;
+  rfxHeader: RFxHeader;
   files: File[] = [];
   attachments: any;
   myDecimal:any;
@@ -25,15 +24,16 @@ export class DialogContentExampleDialog2Component implements OnInit {
   _TotalQty:number;
   _perscheduleQty:number;
   _Interval:number;
-  constructor(  private eventEmitterService: EventEmitterService  ,private _formBuilder: FormBuilder, private _RFxService: RFxService,public dialogRef: MatDialogRef<DialogContentExampleDialog2Component>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.fromPage = data.pageValue;
-     }
-    RFQComponentFunction(){    
-      this.eventEmitterService.onRFQComponentGetRFXIsByRFXIDs(String);    
-    }     
+  MaterialMaster:MMaterial[]=[];
+  constructor(private _formBuilder: FormBuilder, private _RFxService: RFxService,public dialogRef: MatDialogRef<DialogContentExampleDialog2Component>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: RFxHeader) {
+      this.rfxHeader = data;
+     }    
   ngOnInit(): void {
     this.InitializeDialogueFormGroup();
+    this._RFxService.GetAllRFxMaterialM().subscribe(master=>{
+      this.MaterialMaster=master as MMaterial[];
+    });
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
@@ -53,9 +53,9 @@ export class DialogContentExampleDialog2Component implements OnInit {
   }
   AddtoItemTable():void{
     console.log(this.DialogueFormGroup.value);
-    this.rfxitem.RFxID=this.fromPage;
-    this.rfxitem.Client="1";
-    this.rfxitem.Company="Exa";
+    this.rfxitem.RFxID =this.rfxHeader.RFxID;
+    this.rfxitem.Client = this.rfxHeader.Client;
+    this.rfxitem.Company = this.rfxHeader.Company;
     this.rfxitem.Item=this.DialogueFormGroup.get("Item").value;
     this.rfxitem.UOM=this.DialogueFormGroup.get("Uom").value;
     this.rfxitem.BiddingPriceLow=this.DialogueFormGroup.get("LowPrice").value;
@@ -72,11 +72,8 @@ export class DialogContentExampleDialog2Component implements OnInit {
     this._RFxService.AddtoItemTable(this.rfxitem)
     .subscribe(
       response => {console.log('success!', response),
-      this.RFQComponentFunction(),
         this.dialogRef.close()},
       error => console.log(error));
-      // window.location.reload()
-      // this.AddAttachment();
   }
   CalculateInterval(){
   this._TotalQty=this.DialogueFormGroup.get("TotalQty").value;
@@ -101,5 +98,14 @@ AddAttachment() {
     this.attachments.push(this.files[i]);
   }
   this.files = [];
+}
+MaterialSelected(material:string){
+  for (let index = 0; index < this.MaterialMaster.length; index++) {
+    if(this.MaterialMaster[index].Material==material){
+      this.DialogueFormGroup.get('material_text').setValue(this.MaterialMaster[index].MaterialText);
+      this.DialogueFormGroup.get('Uom').setValue(this.MaterialMaster[index].UOM);
+      break;
+    }
+  }
 }
 }
