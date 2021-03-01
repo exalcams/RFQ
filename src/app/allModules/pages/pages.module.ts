@@ -57,13 +57,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DecimalPipe } from '@angular/common';
 import { RfqComponent } from './rfq/rfq.component';
 import { EventEmitterService } from 'app/services/event-emitter.service';
-import { DialogContentExampleDialogComponent } from './rfq/rfq-dialogs/dialog-content-example-dialog/dialog-content-example-dialog.component';
-import { DialogContentExampleDialog1Component } from './rfq/rfq-dialogs/dialog-content-example-dialog1/dialog-content-example-dialog1.component';
-import { DialogContentExampleDialog2Component } from './rfq/rfq-dialogs/dialog-content-example-dialog2/dialog-content-example-dialog2.component';
-import { DialogContentExampleDialog3Component } from './rfq/rfq-dialogs/dialog-content-example-dialog3/dialog-content-example-dialog3.component';
-import { DialogContentExampleDialog4Component } from './rfq/rfq-dialogs/dialog-content-example-dialog4/dialog-content-example-dialog4.component';
-import { DialogContentExampleDialog5Component } from './rfq/rfq-dialogs/dialog-content-example-dialog5/dialog-content-example-dialog5.component';
-import { DialogContentExampleDialog7Component } from './rfq/rfq-dialogs/dialog-content-example-dialog7/dialog-content-example-dialog7.component';
+import { DialogContentExampleDialogComponent } from './rfq/rfq-dialogs/Criteria-Dialog/dialog-content-example-dialog.component';
+import { DialogContentExampleDialog1Component } from './rfq/rfq-dialogs/Rateing-Dialog/dialog-content-example-dialog1.component';
+import { DialogContentExampleDialog2Component } from './rfq/rfq-dialogs/Item-Dialog/dialog-content-example-dialog2.component';
+import { DialogContentExampleDialog3Component } from './rfq/rfq-dialogs/Partner-Dialo/dialog-content-example-dialog3.component';
+import { DialogContentExampleDialog4Component } from './rfq/rfq-dialogs/Vendor-Dialog/dialog-content-example-dialog4.component';
+import { DialogContentExampleDialog5Component } from './rfq/rfq-dialogs/Question-Dialog/dialog-content-example-dialog5.component';
+import { DialogContentExampleDialog7Component } from './rfq/rfq-dialogs/Attachment-Dialog/dialog-content-example-dialog7.component';
 
 const routes = [
     {

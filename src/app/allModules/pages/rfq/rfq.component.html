@@ -35,7 +35,7 @@
                         </div>
                         <div fxLayout="row wrap" fxLayoutAlign="space-between center"
                             style="padding: 2.5rem 2rem 0 2rem;">
-                            <mat-form-field fxFlex=20 style="font-size: 14px;">
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ type</mat-label>
                                 <mat-select formControlName="RfqType" fxFlex>
                                     <mat-option value="PSS"> PSS </mat-option>
@@ -46,7 +46,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;">
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ group</mat-label>
                                 <mat-select formControlName="RfqGroup" fxFlex>
                                     <mat-option value=" A"> A </mat-option>
@@ -59,7 +59,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;">
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ title</mat-label>
                                 <input matInput type="text" formControlName="RfqTitle" fxFlex>
                                 <mat-error
@@ -68,7 +68,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;">
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Currency</mat-label>
                                 <mat-select formControlName="Currency" fxFlex>
                                     <mat-option value="INR">INR</mat-option>
@@ -82,7 +82,7 @@
                             </mat-form-field>
                         </div>
                         <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem;">
-                            <mat-form-field fxFlex=20 style="font-size: 14px;">
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity start date</mat-label>
                                 <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="DD/MM/YYYY"
                                     formControlName="ValidityStartDate" fxFlex>
@@ -96,7 +96,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;">
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity end date</mat-label>
                                 <input matInput [min]="minDate" [matDatepicker]="picker1" placeholder="DD/MM/YYYY"
                                     formControlName="ValidityEndDate" fxFlex>
@@ -110,7 +110,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;">
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response start date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
                                     [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker2"
@@ -125,7 +125,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;">
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response end date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
                                     [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker3"
@@ -150,7 +150,7 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <p>Evaluation</p>
-                <mat-icon *ngIf="Rfxheader.Status=='2'" style="margin-left: 1rem;"
+                <mat-icon *ngIf="EvaluationDetails.length!=0" style="margin-left: 1rem;"
                     [ngStyle]="{'color':index==1?'white':'#18a421'}">check_circle</mat-icon>
             </ng-template>
             <div>
@@ -191,7 +191,7 @@
                                       text-align: left;
                                       color: #595d6e;width: 5%;" class="Rectangle-4510" *matHeaderCellDef> Criteria
                             </th>
-                            <td mat-cell style="font-size: 12px;" *matCellDef="let element"> {{element.criteriaID}}
+                            <td mat-cell style="font-size: 12px;" *matCellDef="let element"> {{element.CriteriaID}}
                             </td>
                         </ng-container>
 
@@ -206,7 +206,7 @@
                                       text-align: center;
                                       color: #595d6e;width: 80%;" class="Rectangle-4510" *matHeaderCellDef>
                                 Description </th>
-                            <td mat-cell style="font-size: 12px;text-align: center;" *matCellDef="let element"> {{element.text}} </td>
+                            <td mat-cell style="font-size: 12px;text-align: center;" *matCellDef="let element"> {{element.Text}} </td>
                         </ng-container>
 
                         <!-- Action Column -->
@@ -235,7 +235,7 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <p>Item</p>
-                <mat-icon *ngIf="Rfxheader.Status=='3'" style="margin-left: 1rem;"
+                <mat-icon *ngIf="ItemDetails.length!=0" style="margin-left: 1rem;"
                     [ngStyle]="{'color':index==2?'white':'#18a421'}">check_circle</mat-icon>
             </ng-template>
             <div>
@@ -276,7 +276,7 @@
                                   text-align: left;
                                   color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Item </th>
                             <td mat-cell style="color: #1f009e;font-size: 12px;text-decoration: underline;"
-                                *matCellDef="let element"> {{element.item}} </td>
+                                *matCellDef="let element"> {{element.Item}} </td>
                         </ng-container>
 
                         <!-- Material Column -->
@@ -290,7 +290,7 @@
                                   text-align: left;
                                   color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Material </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.material}} </td>
+                                {{element.Material}} </td>
                         </ng-container>
 
                         <!-- TotalQty Column -->
@@ -304,7 +304,7 @@
                                     text-align: left;
                                     color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Total qty </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.totalQty}} </td>
+                                {{element.TotalQty}} </td>
                         </ng-container>
 
                         <!-- PerScheduleQty Column -->
@@ -318,7 +318,7 @@
                                     text-align: left;
                                     color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Per schedule qty </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.perScheduleQty}} </td>
+                                {{element.PerScheduleQty}} </td>
                         </ng-container>
 
                         <!-- Noofschedules Column -->
@@ -332,7 +332,7 @@
                                     text-align: left;
                                     color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> No. of schedules </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.totalSchedules}} </td>
+                                {{element.TotalSchedules}} </td>
                         </ng-container>
 
                         <!--Uom Column -->
@@ -346,7 +346,7 @@
                                     text-align: left;
                                     color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> UOM </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.uom}} </td>
+                                {{element.UOM}} </td>
                         </ng-container>
 
                         <!-- Incoterm Column -->
@@ -360,7 +360,7 @@
                                     text-align: left;
                                     color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Incoterm </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.incoTerm}} </td>
+                                {{element.IncoTerm}} </td>
                         </ng-container>
 
                         <!-- Action Column -->
@@ -472,7 +472,7 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <p>Partners</p>
-                <mat-icon *ngIf="Rfxheader.Status=='4'" style="margin-left: 1rem;"
+            <mat-icon *ngIf="PartnerDetails.length!=0" style="margin-left: 1rem;"
                     [ngStyle]="{'color':index==3?'white':'#18a421'}">check_circle</mat-icon>
             </ng-template>
             <div>
@@ -514,7 +514,7 @@
                                       color: #595d6e;width: 5%;" class="Rectangle-4510" *matHeaderCellDef> Type
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.type}} </td>
+                                {{element.Type}} </td>
                         </ng-container>
 
                         <!-- Usertables Column -->
@@ -529,7 +529,7 @@
                                       color: #595d6e;width: 80%;" class="Rectangle-4510" *matHeaderCellDef> User tables
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;text-align: center;" *matCellDef="let element">
-                                {{element.user}} </td>
+                                {{element.User}} </td>
                         </ng-container>
 
                         <!-- Action Column -->
@@ -557,7 +557,7 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <p>Vendors</p>
-                <mat-icon *ngIf="Rfxheader.Status=='5'" style="margin-left: 1rem;"
+                <mat-icon *ngIf="VendorDetails.length!=0" style="margin-left: 1rem;"
                     [ngStyle]="{'color':index==4?'white':'#18a421'}">check_circle</mat-icon>
             </ng-template>
             <div>
@@ -599,7 +599,7 @@
                                       color: #595d6e;width: 15%;" class="Rectangle-4510" *matHeaderCellDef> Vendor
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.vendorName}} </td>
+                                {{element.PartnerID}} </td>
                         </ng-container>
 
                         <!-- Type Column -->
@@ -614,7 +614,7 @@
                                       color: #595d6e;width: 15%;" class="Rectangle-4510" *matHeaderCellDef> Type
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.type}} </td>
+                                {{element.Type}} </td>
                         </ng-container>
 
                         <!-- Vendor name Column -->
@@ -629,7 +629,7 @@
                                         color: #595d6e;width: 15%;" class="Rectangle-4510" *matHeaderCellDef> Vendor
                                 name </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.vendorName}} </td>
+                                {{element.VendorName}} </td>
                         </ng-container>
 
                         <!-- GST number Column -->
@@ -644,7 +644,7 @@
                                         color: #595d6e;width: 17%;" class="Rectangle-4510" *matHeaderCellDef> GST
                                 number </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.gst}} </td>
+                                {{element.GSTNumber}} </td>
                         </ng-container>
 
                         <!-- City Column -->
@@ -659,7 +659,7 @@
                                         color: #595d6e;width: 12%;" class="Rectangle-4510" *matHeaderCellDef> City
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.city}} </td>
+                                {{element.City}} </td>
                         </ng-container>
 
 
@@ -731,7 +731,7 @@
                                       color: #595d6e;width: 641px;" class="Rectangle-4510" *matHeaderCellDef> Question
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.qusetion}} </td>
+                                {{element.Qusetion}} </td>
                         </ng-container>
 
                         <!-- Answer type Column -->
@@ -746,7 +746,7 @@
                                       color: #595d6e;width: 35%;" class="Rectangle-4510" *matHeaderCellDef> Answer type
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.answerType}} </td>
+                                {{element.AnswerType}} </td>
                         </ng-container>
 
 
@@ -808,7 +808,7 @@
                                       color: #595d6e;width: 21%;" class="Rectangle-4510" *matHeaderCellDef> Document
                                 title </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.documentTitle}} </td>
+                                {{element.DocumentTitle}} </td>
                         </ng-container>
 
                         <!-- Remark Column -->
@@ -823,7 +823,7 @@
                                       color: #595d6e;width: 67%;" class="Rectangle-4510" *matHeaderCellDef> Remark
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;text-align: center;" *matCellDef="let element">
-                                {{element.remark}} </td>
+                                {{element.Remark}} </td>
                         </ng-container>
 
 
