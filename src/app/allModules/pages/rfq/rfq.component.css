@@ -731,3 +731,7 @@ table {
     margin-left: 7px;
     margin-top: 7px;
   }
+
+  .clickable{
+    cursor: pointer;
+  }

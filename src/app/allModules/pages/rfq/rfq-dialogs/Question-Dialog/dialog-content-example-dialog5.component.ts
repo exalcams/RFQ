@@ -13,38 +13,36 @@ import { RFxService } from 'app/services/rfx.service';
 export class DialogContentExampleDialog5Component implements OnInit {
   DialogueFormGroup: FormGroup;
   rfx = new RFxOD;
-  rfxHeader: RFxHeader;
-  AnswerType: any;
   constructor(  
-    private _formBuilder: FormBuilder,
-    private _RFxService: RFxService,public dialogRef: MatDialogRef<DialogContentExampleDialog5Component>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: RFxHeader) {  this.rfxHeader = data;}
+    private _formBuilder: FormBuilder,public dialogRef: MatDialogRef<DialogContentExampleDialog5Component>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {  this.rfx = data.data;}
   ngOnInit(): void {
     this.InitializeDialogueFormGroup();
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Question: ['', Validators.required],
-      Answer: ['', Validators.required]
+      Question: [this.rfx.Qusetion, Validators.required],
+      AnswerType: [this.rfx.AnswerType, Validators.required],
+      Answer: [this.rfx.Answer, Validators.required]
     });
   }
-  AddtoODTable():void{
-    console.log(this.DialogueFormGroup.value);
-    this.rfx.RFxID =this.rfxHeader.RFxID;
-    this.rfx.Client = this.rfxHeader.Client;
-    this.rfx.Company = this.rfxHeader.Company;
-    this.rfx.Qusetion=this.DialogueFormGroup.get("Question").value;
-    this.rfx.AnswerType=this.DialogueFormGroup.get("Answer").value;
-    
-    this.rfx.SlNo="1";
-    this._RFxService.AddtoODTable(this.rfx)
-    .subscribe(
-      response => {console.log('success!', response),
-      this.dialogRef.close()},
-      error => console.log(error));
-      // window.location.reload()
+  
+  Save(){
+    if(this.DialogueFormGroup.valid){
+      this.rfx.Qusetion=this.DialogueFormGroup.get("Question").value;
+      this.rfx.AnswerType=this.DialogueFormGroup.get("AnswerType").value;
+      this.rfx.Answer=this.DialogueFormGroup.get("Answer").value;
+      var Result={data:this.rfx,isCreate:this.data.isCreate};
+      this.dialogRef.close(Result);
+    }
+    else{
+      this.ShowValidationErrors(this.DialogueFormGroup);
+    }
   }
-  close() {
-    this.dialogRef.close();
-}
+  ShowValidationErrors(formGroup:FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      formGroup.get(key).markAsTouched();
+      formGroup.get(key).markAsDirty();
+    });
+  }
 }

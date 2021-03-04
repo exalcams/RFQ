@@ -1,7 +1,7 @@
 <div>
     <mat-toolbar class="toolbar1">
         <p class="add_criteria">Add Criteria</p>    
-        <img (click)="close()"  fxLayoutAlign="end" src="assets/images/cancel1.png">
+        <img (click)="dialogRef.close()"  fxLayoutAlign="end" src="assets/images/cancel1.png">
     </mat-toolbar>
 </div>
 <form autocomplete="off" [formGroup]="DialogueFormGroup">
@@ -27,7 +27,7 @@
         </div>
     </div>
     <div fxLayoutAlign="center">
-        <button mat-button class="cl_button1" (click)="AddtoEvaluationTable()"><span class="add"> Add</span>
+        <button mat-button class="cl_button1" (click)="Save()"><span class="add">{{data.isCreate?'Add':'Save'}}</span>
         </button>
     </div>
     </form>

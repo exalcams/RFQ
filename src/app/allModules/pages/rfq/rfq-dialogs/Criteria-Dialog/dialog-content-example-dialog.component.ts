@@ -11,39 +11,38 @@ import { RFxService } from 'app/services/rfx.service';
 })
 export class DialogContentExampleDialogComponent implements OnInit {
   DialogueFormGroup: FormGroup;
-  rfxHC = new RFxHC;
-  rfxHeader: RFxHeader;
+  rfxHC:RFxHC;
   constructor(
-    private _formBuilder: FormBuilder,
-    private _RFxService: RFxService, public dialogRef: MatDialogRef<DialogContentExampleDialogComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: RFxHeader
+    private _formBuilder: FormBuilder, public dialogRef: MatDialogRef<DialogContentExampleDialogComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.rfxHeader = data;
+    this.rfxHC = data.data;
   }   
   ngOnInit(): void {
     this.InitializeDialogueFormGroup();
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Criteria: ['', Validators.required],
-      Description: ['', Validators.required]
+      Criteria: [this.rfxHC.CriteriaID, Validators.required],
+      Description: [this.rfxHC.Text, Validators.required]
     });
   }
-  AddtoEvaluationTable(): void {
-    console.log(this.DialogueFormGroup.value);
-    this.rfxHC.RFxID =this.rfxHeader.RFxID;
-    this.rfxHC.Client = this.rfxHeader.Client;
-    this.rfxHC.Company = this.rfxHeader.Company;
+
+Save(){
+  if(this.DialogueFormGroup.valid){
     this.rfxHC.CriteriaID = this.DialogueFormGroup.get("Criteria").value;
     this.rfxHC.Text =this.DialogueFormGroup.get("Description").value;
-    this._RFxService.AddtoEvaluationTable(this.rfxHC)
-      .subscribe(
-        response =>{ console.log('success!', response);
-        this.dialogRef.close()},
-        error => console.log(error));
-        console.log("Heloo");
+    var Result={data:this.rfxHC,isCreate:this.data.isCreate};
+    this.dialogRef.close(Result);
   }
-  close() {
-    this.dialogRef.close();
+  else{
+    this.ShowValidationErrors(this.DialogueFormGroup);
+  }
+}
+ShowValidationErrors(formGroup:FormGroup): void {
+  Object.keys(formGroup.controls).forEach(key => {
+    formGroup.get(key).markAsTouched();
+    formGroup.get(key).markAsDirty();
+  });
 }
 }

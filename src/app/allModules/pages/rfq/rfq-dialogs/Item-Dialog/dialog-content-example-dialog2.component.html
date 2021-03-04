@@ -1,7 +1,7 @@
 <div>
     <mat-toolbar class="toolbar1">
         <p class="add_criteria">Add Item</p>
-        <img (click)="close()" src="assets/images/cancel1.png">
+        <img (click)="dialogRef.close()" src="assets/images/cancel1.png">
     </mat-toolbar>
 </div>
 <mat-dialog-content [formGroup]="DialogueFormGroup">
@@ -29,7 +29,7 @@
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
-                <mat-label>Material text</mat-label>
+                <mat-label>Material Text</mat-label>
                 <input matInput formControlName="material_text" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('material_text').touched && DialogueFormGroup.get('material_text').hasError('required')">
@@ -47,11 +47,11 @@
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
-                <mat-label>Total qty</mat-label>
+                <mat-label>Total Qty</mat-label>
                 <input matInput type="number" formControlName="TotalQty" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('TotalQty').touched && DialogueFormGroup.get('TotalQty').hasError('required')">
-                UOM is required
+                Total Quantity is required
             </mat-error>
             <mat-error *ngIf="DialogueFormGroup.get('TotalQty').hasError('pattern')">Enter
                 only 3 decimal digits</mat-error>
@@ -59,17 +59,22 @@
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Per Schedule Qty</mat-label>
-                <input matInput type="number" formControlName="per_schedule_qty" fxFlex autocomplete="off">
+                <input matInput type="number" formControlName="per_schedule_qty" fxFlex autocomplete="off"  (keyup)="CalculateTotalSchedules()">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('required')">
-                UOM is required
+                Per Schedule Quantity is required
             </mat-error>
-            <mat-error *ngIf="DialogueFormGroup.get('per_schedule_qty').hasError('per_schedule_qty')">Enter
+            <mat-error *ngIf="DialogueFormGroup.get('per_schedule_qty').hasError('pattern')">Enter
                 only 3 decimal digits</mat-error>
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
-                <mat-label>Bidding price low</mat-label>
+                <mat-label>Total Schedules</mat-label>
+                <input matInput type="number" formControlName="totalSchedules" fxFlex autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                <mat-label>Bidding Price Low</mat-label>
                 <input matInput formControlName="LowPrice" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('LowPrice').touched && DialogueFormGroup.get('LowPrice').hasError('required')">
@@ -82,13 +87,17 @@
                 <input matInput formControlName="HighPrice" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('HighPrice').touched && DialogueFormGroup.get('HighPrice').hasError('required')">
-                Bidding Price Low is required
+                Bidding Price High is required
             </mat-error>
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Interval</mat-label>
                 <input matInput formControlName="Interval" fxFlex autocomplete="off">
+                <mat-error
+                *ngIf="DialogueFormGroup.get('Interval').touched && DialogueFormGroup.get('Interval').hasError('required')">
+                Interval is required
+            </mat-error>
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
@@ -114,19 +123,20 @@
             <p class="attachment">Attachment</p>
             <div>
                 <ngx-dropzone (change)="onSelect($event)" class="cl_div">
-                    <div *ngIf="files.length == 0?true:false">
+                    <div *ngIf="!SelectedFileName">
                         <span style="color: #068dd0;font-size: 12px;">Drop here to upload or <a style="text-decoration: underline;">choose file</a></span>
                     </div>
-                    <div *ngIf="files.length >= 1?true:false">
-                        <span *ngFor="let file of files">{{file.name}}</span>
+                    <div *ngIf="SelectedFileName" fxLayout="row wrap" fxLayoutAlign="center center">
+                        <span>{{SelectedFileName}}</span>
                     </div>
                 </ngx-dropzone>
             </div>
+            <p style="color: #f44336;font-size: 12px;" *ngIf="FileError">Attachement is required</p>
         </div>
     </div>
 
 </mat-dialog-content>
 <mat-dialog-actions fxLayoutAlign="center">
-    <button mat-button class="cl_button1" (click)="AddtoItemTable()"><span class="add"> Add</span>
+    <button mat-button class="cl_button1" (click)="Save()"><span class="add">{{data.isCreate?'Add':'Save'}}</span>
     </button>
 </mat-dialog-actions>

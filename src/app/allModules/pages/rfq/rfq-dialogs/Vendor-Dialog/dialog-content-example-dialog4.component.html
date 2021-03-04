@@ -1,7 +1,7 @@
 <div>
     <mat-toolbar class="toolbar1">
         <p class="add_criteria">Add Vendor</p>
-        <img (click)="close()" src="assets/images/cancel1.png">
+        <img (click)="dialogRef.close()" src="assets/images/cancel1.png">
     </mat-toolbar>
 </div>
 <mat-dialog-content [formGroup]="DialogueFormGroup">
@@ -25,7 +25,7 @@
                 </mat-select>
                 <mat-error
                     *ngIf="DialogueFormGroup.get('Type').touched && DialogueFormGroup.get('Type').hasError('required')">
-                    Vendor is required
+                    Vendor type is required
                 </mat-error>
             </mat-form-field>
 
@@ -34,7 +34,7 @@
                 <input matInput maxlength="40" size="40" formControlName="v_name" fxFlex>
                 <mat-error
                     *ngIf="DialogueFormGroup.get('v_name').touched && DialogueFormGroup.get('v_name').hasError('required')">
-                    User is required
+                    Vendor name is required
                 </mat-error>
             </mat-form-field>
 
@@ -43,7 +43,7 @@
                 <input matInput maxlength="15" size="15" formControlName="GST" fxFlex>
                 <mat-error
                     *ngIf="DialogueFormGroup.get('GST').touched && DialogueFormGroup.get('GST').hasError('required')">
-                    User is required
+                    GST number is required
                 </mat-error>
             </mat-form-field>
 
@@ -54,13 +54,13 @@
                 </mat-select>
                 <mat-error
                     *ngIf="DialogueFormGroup.get('City').touched && DialogueFormGroup.get('City').hasError('required')">
-                    User is required
+                    City is required
                 </mat-error>
             </mat-form-field>
         </div>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions fxLayoutAlign="center">
-    <button mat-button class="cl_button1" (click)="AddtoVendorTable()"><span class="add"> Add</span>
+    <button mat-button class="cl_button1" (click)="Save()"><span class="add">{{data.isCreate?'Add':'Save'}}</span>
     </button>
 </mat-dialog-actions>

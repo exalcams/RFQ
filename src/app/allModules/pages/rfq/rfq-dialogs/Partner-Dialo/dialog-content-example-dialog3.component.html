@@ -1,7 +1,7 @@
 <div>
     <mat-toolbar class="toolbar1">
         <p class="add_criteria">Add Partner</p>
-        <img (click)="close()" src="assets/images/cancel1.png">
+        <img (click)="dialogRef.close()" src="assets/images/cancel1.png">
     </mat-toolbar>
 </div>
 <mat-dialog-content [formGroup]="DialogueFormGroup">
@@ -23,13 +23,13 @@
                 <input matInput formControlName="User" fxFlex>
                 <mat-error
                 *ngIf="DialogueFormGroup.get('User').touched && DialogueFormGroup.get('User').hasError('required')">
-                User is required
+                User table is required
             </mat-error>
             </mat-form-field>
         </div>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions fxLayoutAlign="center">
-    <button mat-button class="cl_button1" (click)="AddtoPartnerTable()"><span class="add"> Add</span>
+    <button mat-button class="cl_button1" (click)="Save()"><span class="add">{{data.isCreate?'Add':'Save'}}</span>
     </button>
 </mat-dialog-actions>

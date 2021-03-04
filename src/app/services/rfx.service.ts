@@ -4,7 +4,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 // import { _MatChipListMixinBase } from '@angular/material';
 // import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor } from '../models/RFx';
+import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup } from '../models/RFx';
 import { environment } from '../../environments/environment';
 
 
@@ -59,6 +59,15 @@ export class RFxService {
             .pipe(catchError(this.errorHandler));
     }
 
+    GetAllRFxTypeM(): Observable<MRFxType[] | string> {
+        return this._httpClient.get<MRFxType[]>(`${this.baseAddress}rfxapi/RFx/GetAllRFxTypeM`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetAllRFxGroupM(): Observable<MRFxGroup[] | string> {
+        return this._httpClient.get<MRFxGroup[]>(`${this.baseAddress}rfxapi/RFx/GetAllRFxGroupM`)
+            .pipe(catchError(this.errorHandler));
+    }
+
     GetRFxByRFxID(RFxID: string): Observable<RFxHeader | string> {
         return this._httpClient.get<RFxHeader>(`${this.baseAddress}rfxapi/RFx/GetRFxByRFxID?RFxID=${RFxID}`)
             .pipe(catchError(this.errorHandler));
@@ -98,6 +107,10 @@ export class RFxService {
     }
     GetRFxODAttachmentsByRFxID(RFxID: string): Observable<RFxODAttachment[] | string> {
         return this._httpClient.get<RFxODAttachment[]>(`${this.baseAddress}rfxapi/RFx/GetRFxODAttachmentsByRFxId?RFxID=${RFxID}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetRFxRemarkByRFxID(RFxID: string): Observable<RFxRemark | string> {
+        return this._httpClient.get<RFxRemark>(`${this.baseAddress}rfxapi/RFx/GetRFxRemarksByRFxID?RFxID=${RFxID}`)
             .pipe(catchError(this.errorHandler));
     }
     CreateRFx(RFx: RFxView): Observable<any> {
@@ -250,5 +263,25 @@ export class RFxService {
                   'Content-Type':'application/json'
                 })
               })
+      }
+      UploadAttachment(RFxID: string, selectedFiles: File[],perviousFileName=null): Observable<any> {
+        const formData: FormData = new FormData();
+        if (selectedFiles && selectedFiles.length) {
+            selectedFiles.forEach(x => {
+                formData.append(x.name, x, x.name);
+            });
+        }
+        formData.append('RFxID', RFxID);
+        formData.append('PerviousFileName', perviousFileName);
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/UploadAttachment`,
+          formData,
+        ).pipe(catchError(this.errorHandler));
+      }
+      DowloandAttachment(RFxID: string,DocumentName:string): Observable<Blob | string> {
+        return this._httpClient.get(`${this.baseAddress}rfxapi/RFx/DowloandAttachment?RFxID=${RFxID}&DocumentName=${DocumentName}`, {
+          responseType: 'blob',
+          headers: new HttpHeaders().append('Content-Type', 'application/json')
+        })
+          .pipe(catchError(this.errorHandler));
       }
 }

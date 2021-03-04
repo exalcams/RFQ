@@ -1,9 +1,16 @@
+<div fxFlex fxLayout="column">
+<mat-toolbar class="cl_toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <h1>Dashboard</h1>
+    <div>
+        <img src="/assets/images/exalca_100.png">
+    </div>
+</mat-toolbar>
 <div fxFlex style="margin: 20px;">
     <div fxLayout="row" fxLayoutAlign="space-between center">
         <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
             <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                 <img class="cl_initiated" src="/assets/images/quote.png">
-                <label class="cl_8">8</label>
+                <label class="cl_8">{{HeaderDetails.length}}</label>
             </div>
             <div class="cl_blue" fxLayout="row" fxLayoutAlign="space-between center">
                 <label class="cl_rfq">Initiated RFQ’s</label>
@@ -60,30 +67,30 @@
             </ng-container>
 
             <!-- RFQ ID Column -->
-            <ng-container matColumnDef="RfqId">
+            <ng-container matColumnDef="RFxID">
                 <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> RFQ ID </th>
-                <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;"
-                    *matCellDef="let element"> {{element.RFxID}} </td>
+                <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
+                    *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.RFxID}} </td>
             </ng-container>
 
             <!-- Type Column -->
-            <ng-container matColumnDef="Type">
+            <ng-container matColumnDef="RFxType">
                 <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Type </th>
                 <td mat-cell class="td-cell" *matCellDef="let element"> {{element.RFxType}}
                 </td>
             </ng-container>
 
             <!-- Date Column -->
-            <ng-container matColumnDef="Date">
+            <ng-container matColumnDef="ValidityStartDate">
                 <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Date </th>
-                <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityStartDate}}
+                <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityStartDate | date :'dd/MM/yyyy'}}
                 </td>
             </ng-container>
 
             <!-- Expiry Column -->
-            <ng-container matColumnDef="Exp">
+            <ng-container matColumnDef="ValidityEndDate">
                 <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Expiry </th>
-                <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityEndDate}}
+                <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityEndDate | date :'dd/MM/yyyy'}}
                 </td>
             </ng-container>
 
@@ -128,9 +135,8 @@
                 <th mat-header-cell class="header-cell" *matHeaderCellDef> Action </th>
                 <td mat-cell *matCellDef="let element">
                     <button class="cl_action">
-                        <span style="padding-left:7px;">Actions</span>
-                        <mat-select  class="mat_arrow">
-                            <mat-option>Process</mat-option>
+                        <mat-select placeholder="Actions" style="width: 90%;" class="Action-select">
+                            <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RFxID)>Process</mat-option>
                         </mat-select>
                     </button>
                 </td>
@@ -145,4 +151,5 @@
         </div>
     </mat-card>
    
+</div>
 </div>

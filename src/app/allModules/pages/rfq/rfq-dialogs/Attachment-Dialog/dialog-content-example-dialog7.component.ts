@@ -10,36 +10,44 @@ import { RFxService } from 'app/services/rfx.service';
   styleUrls: ['./dialog-content-example-dialog7.component.css']
 })
 export class DialogContentExampleDialog7Component implements OnInit {
+  SelectedFileName:string;
   DialogueFormGroup: FormGroup;
-  rfx = new RFxODAttachment;
-  rfxHeader: RFxHeader;
-  constructor(
-    private _formBuilder: FormBuilder,
-    private _RFxService: RFxService, public dialogRef: MatDialogRef<DialogContentExampleDialog7Component>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: RFxHeader) { this.rfxHeader = data; }
+  rfxAttachment = new RFxODAttachment;
+  files: File[] = [];
+  FileError:boolean=false;
+  constructor(private _RFxService:RFxService,
+    private _formBuilder: FormBuilder, public dialogRef: MatDialogRef<DialogContentExampleDialog7Component>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) { this.rfxAttachment = data.data; }
   ngOnInit(): void {
     this.InitializeDialogueFormGroup();
+    this.SelectedFileName=this.rfxAttachment.DocumentName;
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Documenttitle: ['', Validators.required],
-      Remarks: ['', Validators.required]
+      Documenttitle: [this.rfxAttachment.DocumentTitle, Validators.required]
     });
   }
-  AddtoODAttachTable(): void {
-    console.log(this.DialogueFormGroup.value);
-    this.rfx.RFxID =this.rfxHeader.RFxID;
-    this.rfx.Client = this.rfxHeader.Client;
-    this.rfx.Company = this.rfxHeader.Company;
-    this.rfx.DocumentTitle =this.DialogueFormGroup.get("Documenttitle").value;
-    this.rfx.Remark = this.DialogueFormGroup.get("Remarks").value;
-    this._RFxService.AddtoODAttachTable(this.rfx)
-      .subscribe(
-        response => {console.log('success!', response),
-        this.dialogRef.close()},
-        error => console.log(error));
+  Save(){
+    if(this.DialogueFormGroup.valid && this.SelectedFileName){
+      this.rfxAttachment.DocumentTitle=this.DialogueFormGroup.get('Documenttitle').value;
+      this.rfxAttachment.DocumentName=this.SelectedFileName;
+      var Result={data:this.rfxAttachment,isCreate:this.data.isCreate,Attachments:this.files[0]};
+      this.dialogRef.close(Result);
+    }
+    else{
+      this.ShowValidationErrors(this.DialogueFormGroup);
+      this.FileError=true;
+    }
   }
-  close() {
-    this.dialogRef.close();
-}
+  onSelect(event) {
+    this.files[0]=event.addedFiles[0];
+    this.SelectedFileName=this.files[0].name;
+    this.FileError=false;
+  }
+  ShowValidationErrors(formGroup:FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      formGroup.get(key).markAsTouched();
+      formGroup.get(key).markAsDirty();
+    });
+  }
 }

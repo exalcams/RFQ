@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { RFxHeader } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
@@ -10,9 +10,11 @@ import { RFxService } from 'app/services/rfx.service';
   styleUrls: ['./rfq-home.component.css']
 })
 export class RfqHomeComponent implements OnInit {
+  @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
+  @ViewChild(MatSort) RFQSort: MatSort;
   HeaderDetails: RFxHeader[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'RfqId', 'Type', 'Date', 'Exp', 'Fulfilment', 'Attachment', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   imgArray: any[] = [
     {
@@ -38,8 +40,8 @@ export class RfqHomeComponent implements OnInit {
   ngOnInit(): void {
     this.GetRFxs();
   }
-  Gotoheader() {
-    this.route.navigate(['pages/rfq']);
+  Gotoheader(rfqid) {
+    this.route.navigate(['pages/rfq'], { queryParams: { id: rfqid } });
   }
   GetRFxs(): void {
     // window.location.reload()
@@ -47,12 +49,12 @@ export class RfqHomeComponent implements OnInit {
       (data) => {
         if (data) {
           this.HeaderDetails = <RFxHeader[]>data;
-          this.HeaderDetailsDataSource = new MatTableDataSource(
-            this.HeaderDetails
-          );
+          this.HeaderDetailsDataSource = new MatTableDataSource(this.HeaderDetails);
+          this.HeaderDetailsDataSource.paginator=this.RFQPaginator;
+          this.HeaderDetailsDataSource.sort=this.RFQSort;
         }
       }
-    )
+    );
   }
 
 }
