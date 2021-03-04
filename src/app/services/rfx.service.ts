@@ -67,6 +67,10 @@ export class RFxService {
         return this._httpClient.get<MRFxGroup[]>(`${this.baseAddress}rfxapi/RFx/GetAllRFxGroupM`)
             .pipe(catchError(this.errorHandler));
     }
+    GetAllRFxHDocumets():Observable<any>{
+        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetAllRFxHDocumets`)
+            .pipe(catchError(this.errorHandler));
+    }
 
     GetRFxByRFxID(RFxID: string): Observable<RFxHeader | string> {
         return this._httpClient.get<RFxHeader>(`${this.baseAddress}rfxapi/RFx/GetRFxByRFxID?RFxID=${RFxID}`)

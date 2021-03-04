@@ -186,8 +186,8 @@ export class RfqComponent implements OnInit {
         },
         error => console.log(error));
   }
-  tabClick(tab) {
-    this.index=tab.index;
+  tabClick(tab:any) {
+    this.index=parseInt(tab.index);
   }
   
 
@@ -451,8 +451,16 @@ export class RfqComponent implements OnInit {
     if(index==0 && !this.RFxFormGroup.valid && this.Rfxheader.RFxID==null){
       this.ShowValidationErrors(this.RFxFormGroup);
     }
-    else{
-      this.Rfxheader.Status="1"
+    else if(index==0){
+      this.Rfxheader.Status="1";
+      this.selectedIndex=index+1;
+    }
+    if(index==1 && this.EvaluationDetails.length==0){}
+    else if(index==2 && this.ItemDetails.length==0){}
+    else if(index==3 && this.PartnerDetails.length==0){}
+    else if(index==4 && this.VendorDetails.length==0){}
+    else if(index==5 && this.ODDetails.length==0 && this.ODAttachDetails.length==0){}
+    else if(index!=0){
       this.selectedIndex=index+1;
     }
   }
@@ -460,12 +468,16 @@ export class RfqComponent implements OnInit {
     this.selectedIndex=index-1;
   }
   SaveRFxClicked(){
-    console.log(this.FilesToUpload);
-    if(!this.RFxID){
-      this.CreateRfX();
+    if(this.Rfxheader.Status=="1" && this.EvaluationDetails.length>0 && this.ItemDetails.length>0 && this.PartnerDetails.length>0 && this.VendorDetails.length>0 && this.ODDetails.length>0 && this.ODAttachDetails.length>0){
+      if(!this.RFxID){
+        this.CreateRfX();
+      }
+      else{
+        this.UpdateRFx();
+      }
     }
     else{
-      this.UpdateRFx();
+      this.notificationSnackBarComponent.openSnackBar('Please complete all steps', SnackBarStatus.danger);
     }
   }
   DeleteCriteria(index){

@@ -121,11 +121,11 @@
             <ng-container matColumnDef="Attachment">
                 <th mat-header-cell class="header-cell header-center-align" mat-sort-header *matHeaderCellDef>
                     Attachements </th>
-                <td mat-cell *matCellDef="let element" class="td-cell">
+                <td mat-cell *matCellDef="let element;index as i" class="td-cell">
                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
-                        <img src="/assets/images/pdf.png">
-                        <img src="/assets/images/xls.png">
-                        <label class="cl_more">+2 more</label>
+                        <img *ngIf="element.Attachment.length>0" src="/assets/images/pdf.png">
+                        <img *ngIf="element.Attachment.length>1" src="/assets/images/xls.png">
+                        <label class="cl_more" *ngIf="element.Attachment.length>2">+{{element.Attachment.length-2}} more</label>
                     </div>
                 </td>
             </ng-container>

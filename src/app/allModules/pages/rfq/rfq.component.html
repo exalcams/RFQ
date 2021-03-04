@@ -20,7 +20,7 @@
     <mat-tab-group style="padding: 2rem 1rem 4rem 1rem; overflow-y: scroll;" [selectedIndex]="selectedIndex" (selectedTabChange)="tabClick($event)"
         fxFlex>
         <!-- First Tab -->
-        <mat-tab>
+        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
             <ng-template mat-tab-label>
                 <p>Header</p>
                 <mat-icon *ngIf="Rfxheader.Status=='1'" style="margin-left: 1rem;"
@@ -82,7 +82,7 @@
                         <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem;">
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity start date</mat-label>
-                                <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="DD/MM/YYYY"
+                                <input matInput [matDatepicker]="picker"
                                     formControlName="ValidityStartDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
@@ -96,7 +96,7 @@
 
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity end date</mat-label>
-                                <input matInput [min]="minDate" [matDatepicker]="picker1" placeholder="DD/MM/YYYY"
+                                <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value" [matDatepicker]="picker1"
                                     formControlName="ValidityEndDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker1">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
@@ -111,8 +111,7 @@
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response start date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
-                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker2"
-                                    placeholder="DD/MM/YYYY" formControlName="ResponseStartDate" fxFlex>
+                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker2" formControlName="ResponseStartDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker2">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
@@ -126,8 +125,7 @@
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response end date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
-                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker3"
-                                    placeholder="DD/MM/YYYY" formControlName="ResponseEndDate" fxFlex>
+                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker3" formControlName="ResponseEndDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker3">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
@@ -145,7 +143,7 @@
             </form>
         </mat-tab>
         <!-- Second Tab -->
-        <mat-tab>
+        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
             <ng-template mat-tab-label>
                 <p>Evaluation</p>
                 <mat-icon *ngIf="EvaluationDetails.length!=0" style="margin-left: 1rem;"
@@ -232,7 +230,7 @@
 
         </mat-tab>
         <!-- Third Tab -->
-        <mat-tab>
+        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
             <ng-template mat-tab-label>
                 <p>Item</p>
                 <mat-icon *ngIf="ItemDetails.length!=0" style="margin-left: 1rem;"
@@ -469,7 +467,7 @@
 
         </mat-tab> -->
         <!-- Fifth Tab -->
-        <mat-tab>
+        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
             <ng-template mat-tab-label>
                 <p>Partners</p>
             <mat-icon *ngIf="PartnerDetails.length!=0" style="margin-left: 1rem;"
@@ -554,7 +552,7 @@
 
         </mat-tab>
         <!-- Sixth Tab -->
-        <mat-tab>
+        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
             <ng-template mat-tab-label>
                 <p>Vendors</p>
                 <mat-icon *ngIf="VendorDetails.length!=0" style="margin-left: 1rem;"
@@ -685,7 +683,7 @@
             </div>
         </mat-tab>
         <!-- Seven Tab -->
-        <mat-tab>
+        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
             <ng-template mat-tab-label>
                 <p>Others</p>
                 <mat-icon *ngIf="ODDetails.length!=0 && ODAttachDetails.length!=0" style="margin-left: 1rem;"

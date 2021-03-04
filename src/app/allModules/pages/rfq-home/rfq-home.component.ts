@@ -12,7 +12,8 @@ import { RFxService } from 'app/services/rfx.service';
 export class RfqHomeComponent implements OnInit {
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
   @ViewChild(MatSort) RFQSort: MatSort;
-  HeaderDetails: RFxHeader[] = [];
+  RFxTableAttachments:string[]=[];
+  HeaderDetails: any[] = [];
   HeaderStatus: any[];
   HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
@@ -45,13 +46,14 @@ export class RfqHomeComponent implements OnInit {
   }
   GetRFxs(): void {
     // window.location.reload()
-    this._RFxService.GetAllRFxs().subscribe(
+    this._RFxService.GetAllRFxHDocumets().subscribe(
       (data) => {
         if (data) {
-          this.HeaderDetails = <RFxHeader[]>data;
+          this.HeaderDetails =data;
           this.HeaderDetailsDataSource = new MatTableDataSource(this.HeaderDetails);
           this.HeaderDetailsDataSource.paginator=this.RFQPaginator;
           this.HeaderDetailsDataSource.sort=this.RFQSort;
+          console.log("RFxTable",this.HeaderDetails);
         }
       }
     );
