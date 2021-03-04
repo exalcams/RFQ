@@ -307,7 +307,7 @@ export class RfqComponent implements OnInit {
     this._RFxService.GetRFxRemarkByRFxID(RFxID).subscribe((data)=>{
       if(data){
         this.RFxRemark=<RFxRemark>data;
-        console.log(this.RFxRemark);
+        //console.log(this.RFxRemark);
       }
     })
   }

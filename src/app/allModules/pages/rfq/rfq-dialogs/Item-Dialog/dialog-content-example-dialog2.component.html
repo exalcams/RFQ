@@ -75,7 +75,7 @@
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Bidding Price Low</mat-label>
-                <input matInput formControlName="LowPrice" fxFlex autocomplete="off">
+                <input matInput formControlName="LowPrice" type="number" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('LowPrice').touched && DialogueFormGroup.get('LowPrice').hasError('required')">
                 Bidding price low is required
@@ -84,7 +84,7 @@
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Bidding Price High</mat-label>
-                <input matInput formControlName="HighPrice" fxFlex autocomplete="off">
+                <input matInput formControlName="HighPrice" type="number" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('HighPrice').touched && DialogueFormGroup.get('HighPrice').hasError('required')">
                 Bidding Price High is required
@@ -93,7 +93,7 @@
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Interval</mat-label>
-                <input matInput formControlName="Interval" fxFlex autocomplete="off">
+                <input matInput formControlName="Interval" type="number" fxFlex autocomplete="off">
                 <mat-error
                 *ngIf="DialogueFormGroup.get('Interval').touched && DialogueFormGroup.get('Interval').hasError('required')">
                 Interval is required

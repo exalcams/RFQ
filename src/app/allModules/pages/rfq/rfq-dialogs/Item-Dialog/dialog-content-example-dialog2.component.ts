@@ -36,7 +36,11 @@ export class DialogContentExampleDialog2Component implements OnInit {
     this._RFxService.GetAllRFxMaterialM().subscribe(master=>{
       this.MaterialMaster=master as MMaterial[];
     });
-    this.SelectedFileName=this.rfxitem.Attachment;
+    if(this.rfxitem.Attachment){
+      this.SelectedFileName=this.rfxitem.Attachment;
+      this.FileError=false;
+    }
+
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
@@ -44,7 +48,7 @@ export class DialogContentExampleDialog2Component implements OnInit {
       Uom: [this.rfxitem.UOM, Validators.required],
       LowPrice: [this.rfxitem.BiddingPriceLow, Validators.required],
       HighPrice: [this.rfxitem.BiddingPriceHigh, Validators.required],
-      rating: [this.rfxitem.Rating, Validators.required],
+      //rating: [this.rfxitem.Rating, Validators.required],
       material: [this.rfxitem.Material, Validators.required],
       TotalQty: [this.rfxitem.TotalQty, [Validators.required,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]],
       Interval: [this.rfxitem.Interval, Validators.required],
@@ -85,7 +89,8 @@ CalculateTotalSchedules(){
   this.DialogueFormGroup.get('totalSchedules').setValue(round(totalSchedule).toString());
 }
 Save(){
-  if(this.DialogueFormGroup.valid && this.SelectedFileName){
+  console.log(this.DialogueFormGroup);
+  if(this.DialogueFormGroup.valid){
     this.rfxitem.Item=this.DialogueFormGroup.get("Item").value;
     this.rfxitem.UOM=this.DialogueFormGroup.get("Uom").value;
     this.rfxitem.BiddingPriceLow=this.DialogueFormGroup.get("LowPrice").value;
@@ -96,7 +101,7 @@ Save(){
     this.rfxitem.Interval=this.DialogueFormGroup.get("Interval").value;
     this.rfxitem.PerScheduleQty=this.DialogueFormGroup.get("per_schedule_qty").value;
     this.rfxitem.IncoTerm=this.DialogueFormGroup.get("incoterm").value;
-    this.rfxitem.Rating=this.DialogueFormGroup.get("rating").value;
+    //this.rfxitem.Rating=this.DialogueFormGroup.get("rating").value;
     this.rfxitem.Notes=this.DialogueFormGroup.get("Notes").value;
     this.rfxitem.TotalSchedules=this.DialogueFormGroup.get("totalSchedules").value;
     this.rfxitem.Attachment=this.SelectedFileName;
@@ -105,6 +110,8 @@ Save(){
   }
   else{
     this.ShowValidationErrors(this.DialogueFormGroup);
+  }
+  if(!this.SelectedFileName){
     this.FileError=true;
   }
 }
