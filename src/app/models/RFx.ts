@@ -45,6 +45,20 @@ export class MMaterial extends CommonClass {
     UOM: string;
 }
 
+export class MRFxType extends CommonClass {
+    Client: string;
+    Company: string;
+    RFQType:string;
+    Text:string;
+}
+
+export class MRFxGroup extends CommonClass {
+    Client: string;
+    Company: string;
+    RFQGroup:string;
+    Text:string;
+}
+
 export class RFxHeader extends CommonClass {
     Client: string;
     Company: string;
@@ -110,18 +124,19 @@ export class RFxOD extends CommonClass {
     Client: string;
     Company: string;
     RFxID: string;
-    SlNo: string;
+    QuestionID: number;
     Qusetion: string;
     AnswerType: string;
+    Answer:string;
 }
 
 export class RFxODAttachment extends CommonClass{
     Client: string;
     Company: string;
     RFxID: string;
-    SlNo: string;
+    DocumentID: number;
     DocumentTitle: string;
-    Remark: string;
+    DocumentName: string;
 }
 
 export class RFxVendor extends CommonClass {
@@ -138,7 +153,7 @@ export class RFxVendorView extends CommonClass {
     Client: string;
     Company: string;
     RFxID: string;
-    PattnerID:string;
+    PatnerID:string;
     Type: string;
     VendorName:string;
     GSTNumber: string;
@@ -270,10 +285,10 @@ export class RFxView {
     RFxHCs: RFxHC[];
     RFxICs: RFxIC[];
     RFxPartners: RFxPartner[];
-    MVendors: MVendor[];
+    RFxVendors: RFxVendor[];
     RFxODs: RFxOD[];
-    RFxODAttachment:RFxODAttachment[];
-    RFxRemark:RFxRemark[];
+    RFxODAttachments:RFxODAttachment[];
+    RFxRemark:RFxRemark;
 }
 
 

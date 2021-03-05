@@ -1,7 +1,7 @@
 import { Component, OnInit ,Optional, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MVendor, RFxHeader, RFxVendor, RFxVendorView } from 'app/models/RFx';
+import { MVendor, RFxVendor, RFxVendorView } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 
 
@@ -13,17 +13,17 @@ import { RFxService } from 'app/services/rfx.service';
 export class DialogContentExampleDialog4Component implements OnInit {
   DialogueFormGroup: FormGroup;
   rfx = new RFxVendor;
+  VendorView=new RFxVendorView;
   visible = true;
   selectable = true;
   removable = true;
-  rfxHeader: RFxHeader;
   VendorMaster:MVendor[]=[];
   constructor
   (
     private _formBuilder: FormBuilder,
     private _RFxService: RFxService, public dialogRef: MatDialogRef<DialogContentExampleDialog4Component>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: RFxHeader
-  ) { this.rfxHeader = data; }
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) { this.VendorView = data.data; }
   ngOnInit(): void {
     this.InitializeDialogueFormGroup();
     this._RFxService.GetAllRFxVendorM().subscribe(master=>{
@@ -32,29 +32,28 @@ export class DialogContentExampleDialog4Component implements OnInit {
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Vendor: ['', Validators.required],
-      Type: ['', Validators.required],
-      v_name: ['', Validators.required],
-      GST: ['', Validators.required],
-      City: ['', Validators.required]
+      Vendor: [this.VendorView.PatnerID, Validators.required],
+      Type: [this.VendorView.Type, Validators.required],
+      v_name: [this.VendorView.VendorName, Validators.required],
+      GST: [this.VendorView.GSTNumber, Validators.required],
+      City: [this.VendorView.City, Validators.required]
     });
   }
-  AddtoVendorTable():void{
-    console.log(this.DialogueFormGroup.value);
-    this.rfx.RFxID =this.rfxHeader.RFxID;
-    this.rfx.Client = this.rfxHeader.Client;
-    this.rfx.Company = this.rfxHeader.Company;
-    this.rfx.PatnerID=this.DialogueFormGroup.get('Vendor').value;
-    this._RFxService.AddtoVendorTable(this.rfx)
-    .subscribe(
-      response => {console.log('success!', response),
-      this.dialogRef.close()},
-      error => console.log(error));
-      // window.location.reload()
+  Save(){
+    if(this.DialogueFormGroup.valid){
+      this.rfx.PatnerID=this.DialogueFormGroup.get('Vendor').value;
+      this.VendorView.PatnerID=this.DialogueFormGroup.get('Vendor').value;
+      this.VendorView.Type=this.DialogueFormGroup.get('Type').value;
+      this.VendorView.VendorName=this.DialogueFormGroup.get('v_name').value;
+      this.VendorView.GSTNumber=this.DialogueFormGroup.get('GST').value;
+      this.VendorView.City=this.DialogueFormGroup.get('City').value;
+      var Result={data:this.VendorView,isCreate:this.data.isCreate};
+      this.dialogRef.close(Result);
+    }
+    else{
+      this.ShowValidationErrors(this.DialogueFormGroup);
+    }
   }
-  close() {
-    this.dialogRef.close();
-}
 
 VendorSelected(patnerid:string){
   for (let i = 0; i < this.VendorMaster.length; i++) {
@@ -65,5 +64,11 @@ VendorSelected(patnerid:string){
       this.DialogueFormGroup.get('City').setValue(this.VendorMaster[i].City);
     }
   }
+}
+ShowValidationErrors(formGroup:FormGroup): void {
+  Object.keys(formGroup.controls).forEach(key => {
+    formGroup.get(key).markAsTouched();
+    formGroup.get(key).markAsDirty();
+  });
 }
 }

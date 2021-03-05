@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { RFxHeader, RFxHC, RFxItem, RFxIC, RFxPartner, MVendor, RFxOD, RFxODAttachment, RFxVendor, RFxVendorView } from 'app/models/RFx';
+import { RFxHeader, RFxHC, RFxItem, RFxIC, RFxPartner, MVendor, RFxOD, RFxODAttachment, RFxVendor, RFxVendorView, RFxView, RFxRemark, MRFxType, MRFxGroup } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 import { DialogContentExampleDialogComponent } from './rfq-dialogs/Criteria-Dialog/dialog-content-example-dialog.component';
 import { DialogContentExampleDialog1Component } from './rfq-dialogs/Rateing-Dialog/dialog-content-example-dialog1.component';
@@ -12,7 +12,9 @@ import { DialogContentExampleDialog3Component } from './rfq-dialogs/Partner-Dial
 import { DialogContentExampleDialog4Component } from './rfq-dialogs/Vendor-Dialog/dialog-content-example-dialog4.component';
 import { DialogContentExampleDialog5Component } from './rfq-dialogs/Question-Dialog/dialog-content-example-dialog5.component';
 import { DialogContentExampleDialog7Component } from './rfq-dialogs/Attachment-Dialog/dialog-content-example-dialog7.component';
-import { BehaviorSubject } from 'rxjs';
+import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
+import { MatSnackBar } from '@angular/material';
+import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 
 
 @Component({
@@ -21,6 +23,7 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./rfq.component.css']
 })
 export class RfqComponent implements OnInit {
+  RFxView:RFxView=new RFxView();
   RFxFormGroup: FormGroup;
   IsProgressBarVisibile: boolean;
   Rfxheader:RFxHeader=new RFxHeader();
@@ -33,6 +36,7 @@ export class RfqComponent implements OnInit {
   VendorDetails: RFxVendorView[] = [];
   ODDetails: RFxOD[] = [];
   ODAttachDetails: RFxODAttachment[] = [];
+  RFxRemark:RFxRemark=new RFxRemark();
   EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description', 'Action'];
   ItemsDetailsDisplayedColumns: string[] = ['position', 'Item', 'Material', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm', 'Action'];
   RatingDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description', 'Action'];
@@ -40,42 +44,45 @@ export class RfqComponent implements OnInit {
   VendorDetailsDisplayedColumns: string[] = ['position', 'Vendor', 'Type', 'VendorName', 'GSTNo', 'City', 'Action'];
   ODDetailsDisplayedColumns: string[] = ['position', 'Question', 'Answertype', 'Action'];
   ODAttachDetailsDisplayedColumns: string[] = ['position', 'Documenttitle', 'Remark', 'Action'];
-  EvaluationDetailsDataSource=new BehaviorSubject<RFxHC[]>([]);
-  ItemDetailsDataSource=new BehaviorSubject<RFxItem[]>([]);
+  EvaluationDetailsDataSource:MatTableDataSource<RFxHC>;
+  ItemDetailsDataSource:MatTableDataSource<RFxItem>;
   // RatingDetailsDataSource=new BehaviorSubject<RFxVendorView[]>([]);
-  PartnerDetailsDataSource=new BehaviorSubject<RFxPartner[]>([]);
-  VendorDetailsDataSource= new BehaviorSubject<RFxVendorView[]>([]);
-  ODDetailsDataSource= new BehaviorSubject<RFxOD[]>([]);
-  ODAttachDetailsDataSource= new BehaviorSubject<RFxODAttachment[]>([]);
+  PartnerDetailsDataSource:MatTableDataSource<RFxPartner>;
+  VendorDetailsDataSource:MatTableDataSource<RFxVendorView>;
+  ODDetailsDataSource:MatTableDataSource<RFxOD>;
+  ODAttachDetailsDataSource:MatTableDataSource<RFxODAttachment>;
+  notificationSnackBarComponent: NotificationSnackBarComponent;
   RFxID: string=null;
   index: number;
   minDate = new Date();
   selectedIndex:number=0;
   Vendors:RFxVendor[]=[];
+  FilesToUpload:File[]=[];
+  RFxTypeMasters:MRFxType[]=[];
+  RFxGroupMasters:MRFxGroup[]=[];
 
   constructor(
     public dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _RFxService: RFxService,
     private _route: ActivatedRoute,
-    ) { }
+    public snackBar: MatSnackBar
+    ) { 
+      this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+    }
 
     ngOnInit(): void {
+      this.Rfxheader.Client="01";
+      this.Rfxheader.Company="Exa";
       this.index=0;
       this.InitializeRFxFormGroup();
       this._route.queryParams.subscribe(params => {
         this.RFxID = params['id'];
       });
-      console.log(this.RFxID);
       if(this.RFxID){
         this.GetRFxs();   
       }
-      else{
-        if(localStorage.getItem("rfxid")){
-          this.RFxID=localStorage.getItem("rfxid");
-          this.GetRFxs();
-        }
-      }
+      this.GetRFQMasters();
     }
 
   InitializeRFxFormGroup(): void {
@@ -90,37 +97,97 @@ export class RfqComponent implements OnInit {
       Currency: ['', [Validators.required]],
     });
   }
-  CreateRfX() {
-    if(this.RFxFormGroup.valid){
-      this.Rfxheader.Client = "2";
-      this.Rfxheader.Company = "FAQ";
-      //this.Rfxheader.RFxID="3000";
-      this.Rfxheader.RFxType = this.RFxFormGroup.get("RfqType").value;
-      this.Rfxheader.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
-      this.Rfxheader.Title = this.RFxFormGroup.get("RfqTitle").value;
-      this.Rfxheader.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
-      this.Rfxheader.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
-      this.Rfxheader.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
-      this.Rfxheader.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
-      this.Rfxheader.Currency = this.RFxFormGroup.get("Currency").value;
-      this._RFxService.CreateRFxByRFxID(this.Rfxheader)
-        .subscribe(
-          response => {
-            //console.log('success!', response);
-            this.Rfxheader=response as RFxHeader;
-            console.log("response",this.Rfxheader);
-            this.selectedIndex=1;
-            localStorage.setItem("rfxid",this.Rfxheader.RFxID);
-            this.GetRFxs();
-          },
-          error => console.log(error));
-    }
-    else{
-      this.ShowValidationErrors(this.RFxFormGroup);
-    }
+
+  GetRFQMasters(){
+    this.GetRFQTypeMaster();
+    this.GetRFQGroupMaster();
   }
-  tabClick(tab) {
-    this.index=tab.index;
+
+  GetRFQTypeMaster(){
+    this._RFxService.GetAllRFxTypeM().subscribe(res=>{
+      this.RFxTypeMasters=res as MRFxType[];
+    });
+  }
+
+  GetRFQGroupMaster(){
+    this._RFxService.GetAllRFxGroupM().subscribe(res=>{
+      this.RFxGroupMasters=res as MRFxGroup[];
+    })
+  }
+
+  CreateRfX() {
+    this.RFxView.Client =this.Rfxheader.Client;
+    this.RFxView.Company =this.Rfxheader.Company;
+    this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
+    this.RFxView.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
+    this.RFxView.Title = this.RFxFormGroup.get("RfqTitle").value;
+    this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
+    this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
+    this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
+    this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
+    this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
+    this.RFxView.Status="1";
+    this.RFxView.RFxItems=this.ItemDetails;
+    this.RFxView.RFxHCs=this.EvaluationDetails;
+    this.RFxView.RFxICs=this.RatingDetails;
+    this.RFxView.RFxPartners=this.PartnerDetails;
+    this.RFxView.RFxVendors=this.Vendors;
+    this.RFxView.RFxODs=this.ODDetails;
+    this.RFxView.RFxODAttachments=this.ODAttachDetails;
+    this.RFxRemark.Client=this.RFxView.Client;
+    this.RFxRemark.Company=this.RFxView.Company;
+    this.RFxView.RFxRemark=this.RFxRemark;
+    console.log("rfxview",this.RFxView);
+    this._RFxService.CreateRFx(this.RFxView)
+      .subscribe(
+        response => {
+          console.log("response",response);
+          this._RFxService.UploadAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
+          this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
+        },
+        error => console.log(error));
+  }
+  UpdateRFx(){
+      this.RFxView.Client =this.Rfxheader.Client;
+      this.RFxView.Company =this.Rfxheader.Company;
+      this.RFxView.RFxID=this.RFxID;
+      this.RFxView.Plant=this.Rfxheader.Plant;
+      this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
+      this.RFxView.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
+      this.RFxView.Status=this.Rfxheader.Status;
+      this.RFxView.Title = this.RFxFormGroup.get("RfqTitle").value;
+      this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
+      this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
+      this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
+      this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
+      this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
+      this.RFxView.Invited=this.Rfxheader.Invited;
+      this.RFxView.Responded=this.Rfxheader.Responded;
+      this.RFxView.Evaluated=this.Rfxheader.Evaluated;
+      this.RFxView.ReleasedOn=this.Rfxheader.ReleasedOn;
+      this.RFxView.ReleasedBy=this.Rfxheader.ReleasedBy;
+      this.RFxView.RFxItems=this.ItemDetails;
+      this.RFxView.RFxHCs=this.EvaluationDetails;
+      this.RFxView.RFxICs=this.RatingDetails;
+      this.RFxView.RFxPartners=this.PartnerDetails;
+      this.RFxView.RFxVendors=this.Vendors;
+      this.RFxView.RFxODs=this.ODDetails;
+      this.RFxView.RFxODAttachments=this.ODAttachDetails;
+      this.RFxRemark.Client=this.RFxView.Client;
+      this.RFxRemark.Company=this.RFxView.Company;
+      this.RFxView.RFxRemark=this.RFxRemark;
+      console.log("rfxview",this.RFxView);
+      this._RFxService.UpdateRFx(this.RFxView)
+      .subscribe(
+        response => {
+          console.log("response",response);
+          this._RFxService.UploadAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
+          this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
+        },
+        error => console.log(error));
+  }
+  tabClick(tab:any) {
+    this.index=parseInt(tab.index);
   }
   
 
@@ -133,6 +200,7 @@ export class RfqComponent implements OnInit {
     this.GetRFxVendorsByRFxID(this.RFxID);
     this.GetRFxODsByRFxID(this.RFxID);
     this.GetRFxODAttachmentsByRFxID(this.RFxID);
+    this.GetRFxRemarkByRFxID(this.RFxID);
   }
 
   GetRFxHsByRFxID(RFxID:string): void {
@@ -157,7 +225,7 @@ export class RfqComponent implements OnInit {
       (data) => {
         if (data) {
           this.EvaluationDetails = <RFxHC[]>data;
-          this.EvaluationDetailsDataSource.next(this.EvaluationDetails);
+          this.EvaluationDetailsDataSource=new MatTableDataSource(this.EvaluationDetails);
         }
       }
     );
@@ -167,7 +235,7 @@ export class RfqComponent implements OnInit {
       (data) => {
         if (data) {
           this.ItemDetails = <RFxItem[]>data;
-          this.ItemDetailsDataSource.next(this.ItemDetails);
+          this.ItemDetailsDataSource=new MatTableDataSource(this.ItemDetails);
         }
       }
     );
@@ -189,7 +257,7 @@ export class RfqComponent implements OnInit {
       (data) => {
         if (data) {
           this.PartnerDetails = <RFxPartner[]>data;
-          this.PartnerDetailsDataSource.next(this.PartnerDetails);
+          this.PartnerDetailsDataSource=new MatTableDataSource(this.PartnerDetails);
         }
       }
     );
@@ -212,7 +280,7 @@ export class RfqComponent implements OnInit {
     this._RFxService.GetRFxVendorViewsByRFxID(this.RFxID,parnerId).subscribe(result=>{
       var data=result as RFxVendorView;
       this.VendorDetails.push(data);
-      this.VendorDetailsDataSource.next(this.VendorDetails);
+      this.VendorDetailsDataSource=new MatTableDataSource(this.VendorDetails);
     });
   }
   GetRFxODsByRFxID(RFxID:string): void {
@@ -220,7 +288,7 @@ export class RfqComponent implements OnInit {
       (data) => {
         if (data) {
           this.ODDetails = <RFxOD[]>data;
-          this.ODDetailsDataSource.next(this.ODDetails);
+          this.ODDetailsDataSource=new MatTableDataSource(this.ODDetails);
         }
       }
     );
@@ -230,79 +298,145 @@ export class RfqComponent implements OnInit {
       (data) => {
         if (data) {
           this.ODAttachDetails = <RFxODAttachment[]>data;
-          this.ODAttachDetailsDataSource.next(this.ODAttachDetails);
+          this.ODAttachDetailsDataSource=new MatTableDataSource(this.ODAttachDetails);
         }
       }
     );
   }
-  openDialogComponent1() {
+  GetRFxRemarkByRFxID(RFxID:string){
+    this._RFxService.GetRFxRemarkByRFxID(RFxID).subscribe((data)=>{
+      if(data){
+        this.RFxRemark=<RFxRemark>data;
+        //console.log(this.RFxRemark);
+      }
+    })
+  }
+
+  CreateCriteria(){
+    var Criteria=new RFxHC();
+    Criteria.Client=this.Rfxheader.Client;
+    Criteria.Company=this.Rfxheader.Company;
+    this.OpenCriteriaDialog(Criteria,true);
+  }
+  CreateItem(){
+    var Item=new RFxItem();
+    Item.RFxID=this.Rfxheader.RFxID;
+    Item.Client=this.Rfxheader.Client;
+    Item.Company=this.Rfxheader.Company;
+    this.OpenItemDialog(Item,true);
+  }
+  CreatePartner(){
+    var Partner=new RFxPartner();
+    Partner.Client=this.Rfxheader.Client;
+    Partner.Company=this.Rfxheader.Company;
+    this.OpenPartnerDialog(Partner,true);
+  }
+  CreateVendor(){
+    var Vendor=new RFxVendorView();
+    Vendor.Client=this.Rfxheader.Client;
+    Vendor.Company=this.Rfxheader.Company;
+    this.OpenVendorDialog(Vendor,true);
+  }
+  CreateQuestion(){
+    var Question=new RFxOD();
+    Question.Client=this.Rfxheader.Client;
+    Question.Company=this.Rfxheader.Company;
+    this.OpenQuestionDialog(Question,true);
+  }
+  CreateDocument(){
+    var Document=new RFxODAttachment();
+    Document.RFxID=this.Rfxheader.RFxID;
+    Document.Client=this.Rfxheader.Client;
+    Document.Company=this.Rfxheader.Company;
+    this.OpenDocumentDialog(Document,true);
+  }
+
+  OpenCriteriaDialog(Criteria:RFxHC,bool:boolean) {
     const dialogRef = this.dialog.open(DialogContentExampleDialogComponent, {
-      data: this.Rfxheader, height: '40%',
+      data: {data:Criteria,isCreate:bool}, height: '40%',
       width: '50%'
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
-      this.GetRFxs();
+      if(res && res.isCreate){
+        this.EvaluationDetails.push(res.data);
+        this.EvaluationDetailsDataSource=new MatTableDataSource(this.EvaluationDetails);
+      }
     });
   }
-  openDialogComponent2() {
+  OpenItemDialog(Item:RFxItem,bool:boolean) {
     const dialogRef = this.dialog.open(DialogContentExampleDialog2Component, {
-      data: this.Rfxheader, height: '82%',
+      data: {data:Item,isCreate:bool}, height: '82%',
       width: '82%'
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
-      this.GetRFxs();
+      if(res && res.isCreate){
+        this.ItemDetails.push(res.data);
+        this.ItemDetailsDataSource=new MatTableDataSource(this.ItemDetails);
+      }
+      this.FilesToUpload.push(res.Attachments);
     });
   }
-  // openDialogComponent3() {
-  //   const dialogRef = this.dialog.open(DialogContentExampleDialog1Component, {
-  //     data: this.Rfxheader, height: '82%',
-  //     width: '50%'
-  //   });
-  //   dialogRef.disableClose = true;
-  //   dialogRef.afterClosed().subscribe(res=>{
-  //     this.GetRFxs();
-  //   });
-  // }
-  openDialogComponent4() {
+  OpenPartnerDialog(Partner:RFxPartner,bool:boolean) {
     const dialogRef = this.dialog.open(DialogContentExampleDialog3Component, {
-      data: this.Rfxheader, height: '43%',
+      data: {data:Partner,isCreate:bool}, height: '43%',
       width: '50%'
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
-      this.GetRFxs();
+      if(res && res.isCreate){
+        this.PartnerDetails.push(res.data);
+        this.PartnerDetailsDataSource=new MatTableDataSource(this.PartnerDetails);
+      }
     });
   }
-  openDialogComponent5() {
+  OpenVendorDialog(Vendor:RFxVendorView,bool:boolean) {
     const dialogRef = this.dialog.open(DialogContentExampleDialog4Component, {
-      data: this.Rfxheader, height: '72%',
+      data: {data:Vendor,isCreate:bool}, height: '72%',
       width: '50%'
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
-      this.GetRFxs();
+      console.log(res);
+      if(res && res.isCreate){
+        this.VendorDetails.push(res.data);
+        this.VendorDetails.forEach(element => {
+          var rfxVendor=new RFxVendor();
+          rfxVendor.Client=element.Client;
+          rfxVendor.Company=element.Company;
+          rfxVendor.PatnerID=element.PatnerID;
+          this.Vendors.push(rfxVendor);
+        });
+        this.VendorDetailsDataSource=new MatTableDataSource(this.VendorDetails);
+      }
     });
   }
-  openDialogComponent6() {
+  OpenQuestionDialog(Question:RFxOD,bool:boolean) {
     const dialogRef = this.dialog.open(DialogContentExampleDialog5Component, {
-      data: this.Rfxheader, height: '42%',
+      data: {data:Question,isCreate:bool}, height: '52%',
       width: '50%'
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
-      this.GetRFxs();
+      if(res && res.isCreate){
+        this.ODDetails.push(res.data);
+        this.ODDetailsDataSource=new MatTableDataSource(this.ODDetails);
+      }
     });
   }
-  openDialogComponent7() {
+  OpenDocumentDialog(Document:RFxODAttachment,bool:boolean) {
     const dialogRef = this.dialog.open(DialogContentExampleDialog7Component, {
-      data: this.Rfxheader, height: '44%',
+      data: {data:Document,isCreate:bool}, height: '52%',
       width: '50%'
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
-      this.GetRFxs();
+      if(res && res.isCreate){
+        this.ODAttachDetails.push(res.data);
+        this.ODAttachDetailsDataSource=new MatTableDataSource(this.ODAttachDetails);
+      }
+      this.FilesToUpload.push(res.Attachments);
     });
   }
   ShowValidationErrors(formGroup:FormGroup): void {
@@ -314,14 +448,60 @@ export class RfqComponent implements OnInit {
   }
 
   NextClicked(index: number): void {
-    if(index==0){
-      this.CreateRfX();
+    if(index==0 && !this.RFxFormGroup.valid && this.Rfxheader.RFxID==null){
+      this.ShowValidationErrors(this.RFxFormGroup);
     }
-    else{
-      this.selectedIndex = index+1;
+    else if(index==0){
+      this.Rfxheader.Status="1";
+      this.selectedIndex=index+1;
+    }
+    if(index==1 && this.EvaluationDetails.length==0){}
+    else if(index==2 && this.ItemDetails.length==0){}
+    else if(index==3 && this.PartnerDetails.length==0){}
+    else if(index==4 && this.VendorDetails.length==0){}
+    else if(index==5 && this.ODDetails.length==0 && this.ODAttachDetails.length==0){}
+    else if(index!=0){
+      this.selectedIndex=index+1;
     }
   }
   PreviousClicked(index: number): void {
     this.selectedIndex=index-1;
+  }
+  SaveRFxClicked(){
+    if(this.Rfxheader.Status=="1" && this.EvaluationDetails.length>0 && this.ItemDetails.length>0 && this.PartnerDetails.length>0 && this.VendorDetails.length>0 && this.ODDetails.length>0 && this.ODAttachDetails.length>0){
+      if(!this.RFxID){
+        this.CreateRfX();
+      }
+      else{
+        this.UpdateRFx();
+      }
+    }
+    else{
+      this.notificationSnackBarComponent.openSnackBar('Please complete all steps', SnackBarStatus.danger);
+    }
+  }
+  DeleteCriteria(index){
+    this.EvaluationDetails.splice(index,1);
+    this.EvaluationDetailsDataSource=new MatTableDataSource(this.EvaluationDetails);
+  }
+  DeleteItem(index){
+    this.ItemDetails.splice(index,1);
+    this.ItemDetailsDataSource=new MatTableDataSource(this.ItemDetails);
+  }
+  DeletePartner(index){
+    this.PartnerDetails.splice(index,1);
+    this.PartnerDetailsDataSource=new MatTableDataSource(this.PartnerDetails);
+  }
+  DeleteVendor(index){
+    this.VendorDetails.splice(index,1);
+    this.VendorDetailsDataSource=new MatTableDataSource(this.VendorDetails);
+  }
+  DeleteQuetion(index){
+    this.ODDetails.splice(index,1);
+    this.ODDetailsDataSource=new MatTableDataSource(this.ODDetails);
+  }
+  DeleteAttachment(index){
+    this.ODAttachDetails.splice(index,1);
+    this.ODAttachDetailsDataSource=new MatTableDataSource(this.ODAttachDetails);
   }
 }

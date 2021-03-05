@@ -439,7 +439,7 @@
 .cl_div{
     height: 70px;
     border-radius: 3px;
-    border: solid 0.5px #cccccc;
+    border: dashed 0.5px #cccccc;
     background-color: #fdfdfd;
     display: flex;
     align-items: center;

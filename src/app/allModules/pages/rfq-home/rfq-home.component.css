@@ -1,8 +1,8 @@
 .cl_toolbar{
-    width: 1364px;
-    height: 55px;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
+  width: 100%;
+  height: 55px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff !important;
 }
 .cl_logo{
   width: 120px;
@@ -457,3 +457,11 @@ table {
     /* margin-left: 161px;
     margin-top: 42px; */
   }
+  ::ng-deep .Action-select .mat-select-placeholder {
+    font-size: 12px;
+    font-weight: 500;
+    color: #068dd0 !important;
+    }
+    ::ng-deep .Action-select .mat-select-arrow {
+      color:#068dd0 !important;
+    }

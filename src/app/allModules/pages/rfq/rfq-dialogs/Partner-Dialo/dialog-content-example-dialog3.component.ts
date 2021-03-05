@@ -1,8 +1,7 @@
 import { Component, OnInit, Optional, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { RFxHeader, RFxPartner } from 'app/models/RFx';
-import { RFxService } from 'app/services/rfx.service';
+import {  RFxPartner } from 'app/models/RFx';
 
 @Component({
   selector: 'app-dialog-content-example-dialog3',
@@ -12,34 +11,34 @@ import { RFxService } from 'app/services/rfx.service';
 export class DialogContentExampleDialog3Component implements OnInit {
   DialogueFormGroup: FormGroup;
   rfx = new RFxPartner;
-  rfxHeader: RFxHeader;
-  constructor(private _formBuilder: FormBuilder, private _RFxService: RFxService, public dialogRef: MatDialogRef<DialogContentExampleDialog3Component>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: RFxHeader) { this.rfxHeader = data; }
+  constructor(private _formBuilder: FormBuilder, public dialogRef: MatDialogRef<DialogContentExampleDialog3Component>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) { this.rfx = data.data; }
 
   ngOnInit(): void {
     this.InitializeDialogueFormGroup(); 
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Partner: ['', Validators.required],
-      User: ['', Validators.required]
+      Partner: [this.rfx.Type, Validators.required],
+      User: [this.rfx.User, Validators.required]
     });
   }
-  AddtoPartnerTable(): void {
-    // console.log(this.DialogueFormGroup.value);
-    this.rfx.RFxID =this.rfxHeader.RFxID;
-    this.rfx.Client = this.rfxHeader.Client;
-    this.rfx.Company = this.rfxHeader.Company;
-    this.rfx.Type = this.DialogueFormGroup.get("Partner").value;
-    this.rfx.User = this.DialogueFormGroup.get("User").value;
-    console.log(this.rfx);
-    this._RFxService.AddtoPartnerTable(this.rfx)
-      .subscribe(
-        response => {console.log('success!', response),
-        this.dialogRef.close()},
-        error => console.log(error));
+  
+  Save(){
+    if(this.DialogueFormGroup.valid){
+      this.rfx.Type = this.DialogueFormGroup.get("Partner").value;
+      this.rfx.User = this.DialogueFormGroup.get("User").value;
+      var Result={data:this.rfx,isCreate:this.data.isCreate};
+      this.dialogRef.close(Result);
+    }
+    else{
+      this.ShowValidationErrors(this.DialogueFormGroup);
+    }
   }
-  close() {
-    this.dialogRef.close();
-}
+  ShowValidationErrors(formGroup:FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      formGroup.get(key).markAsTouched();
+      formGroup.get(key).markAsDirty();
+    });
+  }
 }

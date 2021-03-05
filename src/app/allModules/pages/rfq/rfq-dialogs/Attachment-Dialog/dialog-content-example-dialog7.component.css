@@ -144,3 +144,22 @@
     margin: 0;
     padding: 0;
 }
+.cl_div{
+  height: 70px;
+  border-radius: 3px;
+  border: dashed 0.5px #cccccc;
+  background-color: #fdfdfd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.attachment{
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  color: #999999;
+}
