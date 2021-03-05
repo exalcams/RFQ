@@ -83,14 +83,20 @@
             <!-- Date Column -->
             <ng-container matColumnDef="ValidityStartDate">
                 <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Date </th>
+
                 <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityStartDate | date :'dd/MM/yyyy'}}
+
+
+
                 </td>
             </ng-container>
 
             <!-- Expiry Column -->
             <ng-container matColumnDef="ValidityEndDate">
                 <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Expiry </th>
+
                 <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityEndDate | date :'dd/MM/yyyy'}}
+
                 </td>
             </ng-container>
 
@@ -152,4 +158,8 @@
     </mat-card>
    
 </div>
+<<<<<<< HEAD
 </div>
+=======
+</div>
+>>>>>>> 386915b (home changes)
