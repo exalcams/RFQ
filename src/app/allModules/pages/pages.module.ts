@@ -64,6 +64,8 @@ import { DialogContentExampleDialog3Component } from './rfq/rfq-dialogs/Partner-
 import { DialogContentExampleDialog4Component } from './rfq/rfq-dialogs/Vendor-Dialog/dialog-content-example-dialog4.component';
 import { DialogContentExampleDialog5Component } from './rfq/rfq-dialogs/Question-Dialog/dialog-content-example-dialog5.component';
 import { DialogContentExampleDialog7Component } from './rfq/rfq-dialogs/Attachment-Dialog/dialog-content-example-dialog7.component';
+import { ResponseHomeComponent } from './response-home/response-home.component';
+import { ResponseComponent } from './response/response.component';
 
 const routes = [
     {
@@ -77,6 +79,14 @@ const routes = [
     {
         path: 'rfq',
         component: RfqComponent
+    },
+    {
+        path: 'responsehome',
+        component: ResponseHomeComponent
+    },
+    {
+        path: 'response',
+        component: ResponseComponent
     },
     {
         path: '**',
@@ -148,7 +158,9 @@ const routes = [
         DialogContentExampleDialog3Component,
         DialogContentExampleDialog4Component,
         DialogContentExampleDialog5Component,
-        DialogContentExampleDialog7Component
+        DialogContentExampleDialog7Component,
+        ResponseHomeComponent,
+        ResponseComponent
     ],
     providers: [
         DecimalPipe,
