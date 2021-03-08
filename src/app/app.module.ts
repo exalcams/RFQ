@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatButtonModule, MatIconModule, MatSnackBar, MatSnackBarModule, MatDialogModule, MatToolbarModule, MAT_DATE_LOCALE } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatSnackBar, MatSnackBarModule, MatDialogModule, MatToolbarModule, MAT_DATE_LOCALE, MatProgressSpinnerModule } from '@angular/material';
 import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
 
@@ -21,6 +21,8 @@ import { DatePipe } from '@angular/common';
 import { NotificationDialogComponent } from './notifications/notification-dialog/notification-dialog.component';
 import { WINDOW_PROVIDERS } from './window.providers';
 import { ExcelService } from './services/excel.service';
+import { AttachmentViewDialogComponent } from './notifications/attachment-view-dialog/attachment-view-dialog.component';
+import { AttachmentDialogComponent } from './notifications/attachment-dialog/attachment-dialog.component';
 
 
 
@@ -52,6 +54,8 @@ const appRoutes: Routes = [
         AppComponent,
         NotificationSnackBarComponent,
         NotificationDialogComponent,
+        AttachmentViewDialogComponent,
+        AttachmentDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -70,7 +74,7 @@ const appRoutes: Routes = [
         MatSnackBarModule,
         MatDialogModule,
         MatToolbarModule,
-
+        MatProgressSpinnerModule,
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
         FuseProgressBarModule,
@@ -91,7 +95,9 @@ const appRoutes: Routes = [
         AppComponent
     ],
     entryComponents: [
-        NotificationDialogComponent
+        NotificationDialogComponent,
+        AttachmentViewDialogComponent,
+        AttachmentDialogComponent
     ]
 })
 export class AppModule {

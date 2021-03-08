@@ -23,7 +23,7 @@
         <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
             <ng-template mat-tab-label>
                 <p>Header</p>
-                <mat-icon *ngIf="Rfxheader.Status=='1'" style="margin-left: 1rem;"
+                <mat-icon *ngIf="Rfxheader.Status=='1' ||Rfxheader.Status=='2'" style="margin-left: 1rem;"
                     [ngStyle]="{'color':index==0?'white':'#18a421'}">check_circle</mat-icon>
             </ng-template>
             <form autocomplete="off" [formGroup]="RFxFormGroup">
@@ -154,7 +154,7 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                         <label class="cl_header1">Criterias</label>
                         <div class="cl_divider_header" fxFlex=85></div>
-                        <button mat-button class="cl_button1" (click)="CreateCriteria()">
+                        <button mat-button class="cl_button1" (click)="CreateCriteria()" *ngIf="Rfxheader.Status=='1'">
                             <img src="assets/images/ic_add.png">
                             <span class="add"> Add</span>
                         </button>
@@ -207,7 +207,7 @@
 
                         <!-- Action Column -->
                         <ng-container matColumnDef="Action">
-                            <th mat-header-cell style=" font-size: 13px;
+                            <th  mat-header-cell style=" font-size: 13px;
                                       font-weight: 500;
                                       font-stretch: normal;
                                       font-style: normal;
@@ -241,7 +241,7 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                         <label class="cl_header1">Item</label>
                         <div class="cl_divider_header" fxFlex=89></div>
-                        <button mat-button class="cl_button1" (click)="CreateItem()">
+                        <button mat-button class="cl_button1" (click)="CreateItem()" *ngIf="Rfxheader.Status=='1'">
                             <img src="assets/images/ic_add.png">
                             <span class="add"> Add</span>
                         </button>
@@ -478,7 +478,7 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                         <label class="cl_header1">Partners</label>
                         <div class="cl_divider_header" fxFlex=87></div>
-                        <button mat-button class="cl_button1" (click)="CreatePartner()">
+                        <button mat-button class="cl_button1" (click)="CreatePartner()" *ngIf="Rfxheader.Status=='1'">
                             <img src="assets/images/ic_add.png">
                             <span class="add"> Partner</span>
                         </button>
@@ -563,7 +563,7 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                         <label class="cl_header1">Vendors</label>
                         <div class="cl_divider_header" fxFlex=87></div>
-                        <button mat-button class="cl_button1" (click)="CreateVendor()">
+                        <button mat-button class="cl_button1" (click)="CreateVendor()" *ngIf="Rfxheader.Status=='1'">
                             <img src="assets/images/ic_add.png">
                             <span class="add"> Vendor</span>
                         </button>
@@ -694,7 +694,7 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                         <label class="cl_header1">Question</label>
                         <div class="cl_divider_header" fxFlex=87></div>
-                        <button mat-button class="cl_button1" (click)="CreateQuestion()">
+                        <button mat-button class="cl_button1" (click)="CreateQuestion()" *ngIf="Rfxheader.Status=='1'">
                             <img src="assets/images/ic_add.png">
                             <span class="add"> Add</span>
                         </button>
@@ -741,10 +741,10 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: left;
-                                      color: #595d6e;width: 35%;" class="Rectangle-4510" *matHeaderCellDef> Answer
+                                      color: #595d6e;width: 35%;" class="Rectangle-4510" *matHeaderCellDef> Answer Type
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.Answer}} </td>
+                                {{GetAnswerType(element.AnswerType)}} </td>
                         </ng-container>
 
 
@@ -771,7 +771,7 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                         <label class="cl_header1">Attachement</label>
                         <div class="cl_divider_header" fxFlex=85></div>
-                        <button mat-button class="cl_button1" (click)="CreateDocument()">
+                        <button mat-button class="cl_button1" (click)="CreateDocument()" *ngIf="Rfxheader.Status=='1'">
                             <img src="assets/images/ic_add.png">
                             <span class="add"> Add</span>
                         </button>
@@ -865,8 +865,8 @@
                 Next
                 <img src="assets/images/next_arrow.png"></button>
             <div *ngIf="index==5" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-                <button mat-button class="cl_button2">Release</button>
-                <button mat-button class="cl_button4" (click)="SaveRFxClicked()">Save</button>
+                <button *ngIf="Rfxheader.Status=='1'" mat-button class="cl_button2" (click)="SaveRFxClicked(true)">Release</button>
+                <button *ngIf="Rfxheader.Status=='1'" mat-button class="cl_button4" (click)="SaveRFxClicked(false)">Save</button>
             </div>
 
         </mat-toolbar>

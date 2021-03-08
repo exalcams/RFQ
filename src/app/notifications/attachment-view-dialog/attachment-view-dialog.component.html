@@ -1,0 +1,35 @@
+<div class="dialog-content-wrapper">
+  <div>
+    <mat-toolbar class="toolbar1">
+        <p class="add_criteria">Attachments</p>
+        <img (click)="matDialogRef.close()" src="assets/images/cancel1.png">
+    </mat-toolbar>
+</div>
+
+  <div mat-dialog-content>
+
+    <div fxLayout fxLayoutAlign="start" class="p-8">
+      <div fxFlex *ngIf="ofAttachments?.length === 0" class="no-results-message">
+        <span class="pl-12 pt-4"> No attachments..</span>
+      </div>
+      <div *ngIf="ofAttachments?.length">
+        <ul *ngFor="let attachment of ofAttachments">
+          <li style="cursor: pointer; color: #1e8bed;" (click)="attachmentClicked(attachment)">
+            {{attachment}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <mat-dialog-actions class="m-0 p-8">
+    <div fxLayout fxLayoutAlign="space-between center" style="width: 100%;">
+      <div fxFlex fxLayoutAlign="end">
+        <button mat-button type="button" (click)="matDialogRef.close()" class="cl_button1">Close</button>
+      </div>
+    </div>
+  </mat-dialog-actions>
+  <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+  </mat-progress-spinner>
+  <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+
+</div>

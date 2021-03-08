@@ -29,7 +29,7 @@
                     Answer Type is required
                 </mat-error>
             </mat-form-field>
-            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline" *ngIf="DialogueFormGroup.get('AnswerType').value">
+            <!-- <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline" *ngIf="DialogueFormGroup.get('AnswerType').value">
                 <mat-label>Answer</mat-label>
                 <mat-select formControlName="Answer" fxFlex *ngIf="DialogueFormGroup.get('AnswerType').value==2">
                     <mat-option value="Yes">Yes</mat-option>
@@ -41,7 +41,7 @@
                     *ngIf="DialogueFormGroup.get('Answer').touched && DialogueFormGroup.get('Answer').hasError('required')">
                     Answer is required
                 </mat-error>
-            </mat-form-field>
+            </mat-form-field> -->
         </div>
     </div>
 </mat-dialog-content>

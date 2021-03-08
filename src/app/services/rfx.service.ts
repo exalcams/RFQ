@@ -245,7 +245,7 @@ export class RFxService {
               })
       }
       AddtoVendorTable(RFx){
-            return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/AddToTableVendor`,RFx,
+            return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/AddToMVendor`,RFx,
               {
                 headers:new HttpHeaders({
                   'Content-Type':'application/json'

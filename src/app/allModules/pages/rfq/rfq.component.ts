@@ -115,7 +115,7 @@ export class RfqComponent implements OnInit {
     })
   }
 
-  CreateRfX() {
+  CreateRfX(isRelease:boolean) {
     this.RFxView.Client =this.Rfxheader.Client;
     this.RFxView.Company =this.Rfxheader.Company;
     this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
@@ -126,7 +126,12 @@ export class RfqComponent implements OnInit {
     this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
     this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
     this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
-    this.RFxView.Status="1";
+    if(isRelease){
+      this.RFxView.Status="2";
+    }
+    else{
+      this.RFxView.Status="1";
+    }
     this.RFxView.RFxItems=this.ItemDetails;
     this.RFxView.RFxHCs=this.EvaluationDetails;
     this.RFxView.RFxICs=this.RatingDetails;
@@ -147,14 +152,19 @@ export class RfqComponent implements OnInit {
         },
         error => console.log(error));
   }
-  UpdateRFx(){
+  UpdateRFx(isRelease:boolean){
       this.RFxView.Client =this.Rfxheader.Client;
       this.RFxView.Company =this.Rfxheader.Company;
       this.RFxView.RFxID=this.RFxID;
       this.RFxView.Plant=this.Rfxheader.Plant;
       this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
       this.RFxView.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
-      this.RFxView.Status=this.Rfxheader.Status;
+      if(isRelease){
+        this.RFxView.Status="2";
+      }
+      else{
+        this.RFxView.Status="1";
+      }
       this.RFxView.Title = this.RFxFormGroup.get("RfqTitle").value;
       this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
       this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
@@ -216,6 +226,9 @@ export class RfqComponent implements OnInit {
           this.RFxFormGroup.get("ResponseStartDate").setValue(this.Rfxheader.ResponseStartDate);
           this.RFxFormGroup.get("ResponseEndDate").setValue(this.Rfxheader.ResponseEndDate);
           this.RFxFormGroup.get("Currency").setValue(this.Rfxheader.Currency);
+          if(this.Rfxheader.Status=="2"){
+            this.RFxFormGroup.disable();
+          }
         }
       }
     );
@@ -414,7 +427,7 @@ export class RfqComponent implements OnInit {
   }
   OpenQuestionDialog(Question:RFxOD,bool:boolean) {
     const dialogRef = this.dialog.open(DialogContentExampleDialog5Component, {
-      data: {data:Question,isCreate:bool}, height: '52%',
+      data: {data:Question,isCreate:bool}, height: '44%',
       width: '50%'
     });
     dialogRef.disableClose = true;
@@ -467,13 +480,13 @@ export class RfqComponent implements OnInit {
   PreviousClicked(index: number): void {
     this.selectedIndex=index-1;
   }
-  SaveRFxClicked(){
+  SaveRFxClicked(isRelease:boolean){
     if(this.Rfxheader.Status=="1" && this.EvaluationDetails.length>0 && this.ItemDetails.length>0 && this.PartnerDetails.length>0 && this.VendorDetails.length>0 && this.ODDetails.length>0 && this.ODAttachDetails.length>0){
       if(!this.RFxID){
-        this.CreateRfX();
+        this.CreateRfX(isRelease);
       }
       else{
-        this.UpdateRFx();
+        this.UpdateRFx(isRelease);
       }
     }
     else{
@@ -503,5 +516,16 @@ export class RfqComponent implements OnInit {
   DeleteAttachment(index){
     this.ODAttachDetails.splice(index,1);
     this.ODAttachDetailsDataSource=new MatTableDataSource(this.ODAttachDetails);
+  }
+  GetAnswerType(type){
+    if(type==1){
+      return "Text box";
+    }
+    else if(type==2){
+      return "Yes/No";
+    }
+    else if(type==3){
+      return "Long text"
+    }
   }
 }

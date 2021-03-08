@@ -23,7 +23,7 @@ export class DialogContentExampleDialog5Component implements OnInit {
     this.DialogueFormGroup = this._formBuilder.group({
       Question: [this.rfx.Qusetion, Validators.required],
       AnswerType: [this.rfx.AnswerType, Validators.required],
-      Answer: [this.rfx.Answer, Validators.required]
+      //Answer: [this.rfx.Answer, Validators.required]
     });
   }
   
@@ -31,7 +31,7 @@ export class DialogContentExampleDialog5Component implements OnInit {
     if(this.DialogueFormGroup.valid){
       this.rfx.Qusetion=this.DialogueFormGroup.get("Question").value;
       this.rfx.AnswerType=this.DialogueFormGroup.get("AnswerType").value;
-      this.rfx.Answer=this.DialogueFormGroup.get("Answer").value;
+      //this.rfx.Answer=this.DialogueFormGroup.get("Answer").value;
       var Result={data:this.rfx,isCreate:this.data.isCreate};
       this.dialogRef.close(Result);
     }

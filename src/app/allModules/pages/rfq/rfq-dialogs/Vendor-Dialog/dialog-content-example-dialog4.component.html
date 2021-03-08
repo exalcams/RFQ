@@ -1,7 +1,15 @@
 <div>
     <mat-toolbar class="toolbar1">
         <p class="add_criteria">Add Vendor</p>
-        <img (click)="dialogRef.close()" src="assets/images/cancel1.png">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+            <button mat-icon-button>
+                <mat-icon style="color: #595d6e;" (click)="NewClicked()">add</mat-icon>
+            </button>
+            <button mat-icon-button (click)="dialogRef.close()">
+                <img (click)="dialogRef.close()" src="assets/images/cancel1.png">
+            </button>
+            <!-- <img (click)="dialogRef.close()" src="assets/images/cancel1.png"> -->
+        </div>
     </mat-toolbar>
 </div>
 <mat-dialog-content [formGroup]="DialogueFormGroup">
@@ -9,9 +17,10 @@
         <div fxLayout="column" fxFlex="100">
             <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
                 <mat-label>Vendor</mat-label>
-                <mat-select formControlName="Vendor" fxFlex (selectionChange)="VendorSelected($event.value)">
+                <mat-select *ngIf="!isNewVendor" formControlName="Vendor" fxFlex (selectionChange)="VendorSelected($event.value)">
                     <mat-option *ngFor="let item of VendorMaster" [value]="item.PatnerID">{{item.PatnerID}}</mat-option>
                 </mat-select>
+                <input *ngIf="isNewVendor" matInput formControlName="Vendor" fxFlex>
                 <mat-error
                     *ngIf="DialogueFormGroup.get('Vendor').touched && DialogueFormGroup.get('Vendor').hasError('required')">
                     Vendor is required
@@ -20,9 +29,7 @@
 
             <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
                 <mat-label>Type</mat-label>
-                <mat-select formControlName="Type" fxFlex>
-                    <mat-option value="Industrial">Industrial</mat-option>
-                </mat-select>
+                <input matInput formControlName="Type" fxFlex>
                 <mat-error
                     *ngIf="DialogueFormGroup.get('Type').touched && DialogueFormGroup.get('Type').hasError('required')">
                     Vendor type is required
@@ -49,9 +56,7 @@
 
             <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
                 <mat-label>City</mat-label>
-                <mat-select formControlName="City" fxFlex>
-                    <mat-option value="Bangalore">Bangalore</mat-option>
-                </mat-select>
+                <input matInput formControlName="City" fxFlex>
                 <mat-error
                     *ngIf="DialogueFormGroup.get('City').touched && DialogueFormGroup.get('City').hasError('required')">
                     City is required

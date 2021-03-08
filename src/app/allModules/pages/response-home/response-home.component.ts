@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { RFxHeader } from 'app/models/RFx';
+import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { RFxService } from 'app/services/rfx.service';
 
 @Component({
@@ -33,7 +34,8 @@ export class ResponseHomeComponent implements OnInit {
   ] 
 
   constructor(private route: Router,
-    private _RFxService: RFxService) { }
+    private _RFxService: RFxService,
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     this.GetRFxs();
@@ -55,4 +57,17 @@ export class ResponseHomeComponent implements OnInit {
       }
     )
   }
+  DocsClicked(){
+    this.openAttachmentViewDialog();
+  }
+  openAttachmentViewDialog(): void {
+    const dialogConfig: MatDialogConfig = {
+        data: {Documents:["Discount (1).png"],RFxID:"0000000010"},
+        panelClass: "attachment-view-dialog",
+    };
+    const dialogRef = this.dialog.open(
+        AttachmentViewDialogComponent,
+        dialogConfig
+    );
+}
 }

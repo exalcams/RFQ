@@ -127,7 +127,7 @@ export class RFxOD extends CommonClass {
     QuestionID: number;
     Qusetion: string;
     AnswerType: string;
-    Answer:string;
+    //Answer:string;
 }
 
 export class RFxODAttachment extends CommonClass{
