@@ -465,3 +465,48 @@ table {
     ::ng-deep .Action-select .mat-select-arrow {
       color:#068dd0 !important;
     }
+    /* .hor-timeline {
+      height: 8px;
+      margin-top: 5px;
+     
+    } */
+
+   .green-timeline {
+      background-color: #34ad65;
+      height: 4px;
+      margin-top: 8px;
+    }
+    .timelineItem {
+      text-align: right;
+      font-size: 10px;
+      padding-left: 4px;
+
+    }
+    .mat_lable_1{
+      /* background-color: #e2f3e3; */
+    width: 53px;
+    text-align: center;
+    border-radius: 8px;
+    }
+    .mat_lable_2{
+      /* background-color: #e2f3e3; */
+    width: 35px;
+    text-align: center;
+    border-radius: 8px;
+    }
+    .white-timeline {
+      background-color: white;
+      border-top: 2px solid rgba(0, 0, 0, 0.2);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+      height: 8px;
+      margin-top: 5px;
+    }
+    .round {
+      height: 20px;
+      width: 20px;
+      border-radius: 20px;
+      border-width: 3px;
+      border-style: solid;
+      background-color: white;
+      border-color: gray;
+    }
