@@ -58,5 +58,5 @@ export class RfqHomeComponent implements OnInit {
       }
     );
   }
-
+ 
 }
