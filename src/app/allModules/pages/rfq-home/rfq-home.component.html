@@ -1,54 +1,54 @@
 <div fxFlex fxLayout="column">
-<mat-toolbar class="cl_toolbar" fxLayout="row" fxLayoutAlign="space-between center">
-    <h1>Dashboard</h1>
-    <div>
-        <img src="/assets/images/exalca_100.png">
-    </div>
-</mat-toolbar>
-<div fxFlex style="margin: 20px;">
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-        <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
-            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
-                <img class="cl_initiated" src="/assets/images/quote.png">
-                <label class="cl_8">{{HeaderDetails.length}}</label>
+    <mat-toolbar class="cl_toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+        <h1>Dashboard</h1>
+        <div>
+            <img src="/assets/images/exalca_100.png">
+        </div>
+    </mat-toolbar>
+    <div fxFlex style="margin: 20px;">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
+                    <img class="cl_initiated" src="/assets/images/quote.png">
+                    <label class="cl_8">{{HeaderDetails.length}}</label>
+                </div>
+                <div class="cl_blue" fxLayout="row" fxLayoutAlign="space-between center">
+                    <label class="cl_rfq">Initiated RFQ’s</label>
+                    <!-- <img class="cl_info1" src="assets/images/info.png"> -->
+                </div>
             </div>
-            <div class="cl_blue" fxLayout="row" fxLayoutAlign="space-between center">
-                <label class="cl_rfq">Initiated RFQ’s</label>
-                <!-- <img class="cl_info1" src="assets/images/info.png"> -->
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
+                    <img class="cl_initiated" src="/assets/images/truck.png">
+                    <label class="cl_8">6</label>
+                </div>
+                <div class="cl_green" fxLayout="row" fxLayoutAlign="space-between center">
+                    <label class="cl_rfq">Shipped</label>
+                    <!-- <img class="cl_info1" src="assets/images/info.png"> -->
+                </div>
+            </div>
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
+                    <img class="cl_initiated" src="/assets/images/invoice1.png">
+                    <label class="cl_8">4</label>
+                </div>
+                <div class="cl_brown" fxLayout="row" fxLayoutAlign="space-between center">
+                    <label class="cl_rfq">Invoiced</label>
+                    <!-- <img class="cl_info1" src="assets/images/info.png"> -->
+                </div>
+            </div>
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
+                    <img class="cl_initiated" src="/assets/images/money.png">
+                    <label class="cl_8">23</label>
+                </div>
+                <div class="cl_gray" fxLayout="row" fxLayoutAlign="space-between center">
+                    <label class="cl_rfq">Paid</label>
+                    <!-- <img class="cl_info1" src="assets/images/info.png"> -->
+                </div>
             </div>
         </div>
-        <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
-            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
-                <img class="cl_initiated" src="/assets/images/truck.png">
-                <label class="cl_8">6</label>
-            </div>
-            <div class="cl_green" fxLayout="row" fxLayoutAlign="space-between center">
-                <label class="cl_rfq">Shipped</label>
-                <!-- <img class="cl_info1" src="assets/images/info.png"> -->
-            </div>
-        </div>
-        <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
-            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
-                <img class="cl_initiated" src="/assets/images/invoice1.png">
-                <label class="cl_8">4</label>
-            </div>
-            <div class="cl_brown" fxLayout="row" fxLayoutAlign="space-between center">
-                <label class="cl_rfq">Invoiced</label>
-                <!-- <img class="cl_info1" src="assets/images/info.png"> -->
-            </div>
-        </div>
-        <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
-            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
-                <img class="cl_initiated" src="/assets/images/money.png">
-                <label class="cl_8">23</label>
-            </div>
-            <div class="cl_gray" fxLayout="row" fxLayoutAlign="space-between center">
-                <label class="cl_rfq">Paid</label>
-                <!-- <img class="cl_info1" src="assets/images/info.png"> -->
-            </div>
-        </div>
-    </div>
-    <mat-card class="cl_card">
+         <mat-card class="cl_card">
         <div fxLayout="column">
             <mat-toolbar style="background-color: white;height: 31px;" fxLayoutAlign="space-between center">
                 <!-- <img src="assets/image/add.png"> -->
@@ -156,6 +156,7 @@
             <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]"></mat-paginator>
         </div>
     </mat-card>
-   
-</div>
-</div>
+
+    </div>
+
+
