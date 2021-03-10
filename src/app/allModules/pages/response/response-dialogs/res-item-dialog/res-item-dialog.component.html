@@ -1,0 +1,62 @@
+<div>
+  <mat-toolbar class="toolbar1">
+    <p class="add_criteria">Add Item</p>
+    <img (click)="dialogRef.close()" src="assets/images/cancel1.png">
+  </mat-toolbar>
+</div>
+<mat-dialog-content [formGroup]="DialogueFormGroup">
+  <div style="padding: 2rem;" fxLayout="column">
+    <div  fxLayout="column" fxFlex="100">
+
+      <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+        <mat-label>Price</mat-label>
+        <input matInput formControlName="Price" fxFlex autocomplete="off" type="number">
+        <mat-error
+          *ngIf="DialogueFormGroup.get('Price').touched && DialogueFormGroup.get('Price').hasError('required')">
+          price is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+        <mat-label>Lead Time</mat-label>
+        <input matInput formControlName="LeadTime" fxFlex autocomplete="off" type="number">
+        <mat-error
+          *ngIf="DialogueFormGroup.get('LeadTime').touched && DialogueFormGroup.get('LeadTime').hasError('required')">
+          Lead time is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+        <mat-label>USP Remark</mat-label>
+        <input matInput formControlName="USPRemark" fxFlex autocomplete="off">
+        <mat-error
+          *ngIf="DialogueFormGroup.get('USPRemark').touched && DialogueFormGroup.get('USPRemark').hasError('required')">
+          USP Remark is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+        <mat-label>Price Rating</mat-label>
+        <input matInput maxlength="1" max="5" min="1" formControlName="PriceRating" fxFlex autocomplete="off" type="number">
+        <mat-error
+          *ngIf="DialogueFormGroup.get('PriceRating').touched && DialogueFormGroup.get('PriceRating').hasError('required')">
+          Price Rating is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+        <mat-label>Lead Time Rating</mat-label>
+        <input matInput type="number" formControlName="LeadTimeRating" fxFlex autocomplete="off">
+        <mat-error
+          *ngIf="DialogueFormGroup.get('LeadTimeRating').touched && DialogueFormGroup.get('LeadTimeRating').hasError('required')">
+          Lead Time Rating is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center">
+  <button mat-button class="cl_button1" (click)="SaveClicked()"><span class="add">Save</span>
+  </button>
+</mat-dialog-actions>

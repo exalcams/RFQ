@@ -152,36 +152,39 @@ export class RFxService {
 
 
     GetAllResponses(): Observable<ResHeader[] | string> {
-        return this._httpClient.get<ResHeader[]>(`${this.baseAddress}Responseapi/Response/GetAllResponses`)
+        return this._httpClient.get<ResHeader[]>(`${this.baseAddress}rfxapi/RFx/GetAllResponses`)
             .pipe(catchError(this.errorHandler));
     }
 
     GetResponseByResponseID(ResponseID: string): Observable<ResHeader | string> {
-        return this._httpClient.get<ResHeader>(`${this.baseAddress}Responseapi/Response/GetResponseByResponseID?ResponseID=${ResponseID}`)
+        return this._httpClient.get<ResHeader>(`${this.baseAddress}rfxapi/RFx/GetResponseByResponseID?ResponseID=${ResponseID}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetResponseByPartnerID(RFxID:string,PartnerID: string): Observable<ResHeader | string> {
+        return this._httpClient.get<ResHeader>(`${this.baseAddress}rfxapi/RFx/GetResponseByPartnerID?RFxID=${RFxID}&PartnerID=${PartnerID}`)
             .pipe(catchError(this.errorHandler));
     }
 
-
-    GetResItemsByResponseID(ResponseID: string): Observable<ResItem | string> {
-        return this._httpClient.get<ResItem>(`${this.baseAddress}Responseapi/Response/GetResItemsByResponseID?ResponseID=${ResponseID}`)
+    GetResponseItemsByResponseID(ResponseID: string): Observable<ResItem[] | string> {
+        return this._httpClient.get<ResItem[]>(`${this.baseAddress}rfxapi/RFx/GetResponseItemsByResponseID?ResponseID=${ResponseID}`)
             .pipe(catchError(this.errorHandler));
     }
 
-    GetResHCsByResponseID(ResponseID: string): Observable<ResHC[] | string> {
-        return this._httpClient.get<ResHC[]>(`${this.baseAddress}Responseapi/Response/GetResHCsByResponseID?ResponseID=${ResponseID}`)
+    GetResponseHCsByResponseID(ResponseID: string): Observable<ResHC[] | string> {
+        return this._httpClient.get<ResHC[]>(`${this.baseAddress}rfxapi/RFx/GetResponseHCsByResponseID?ResponseID=${ResponseID}`)
             .pipe(catchError(this.errorHandler));
     }
-    GetResICsByResponseID(ResponseID: string): Observable<ResIC[] | string> {
-        return this._httpClient.get<ResIC[]>(`${this.baseAddress}Responseapi/Response/GetResICsByResponseID?ResponseID=${ResponseID}`)
+    GetResponseICsByResponseID(ResponseID: string): Observable<ResIC[] | string> {
+        return this._httpClient.get<ResIC[]>(`${this.baseAddress}rfxapi/RFx/GetResponseICsByResponseID?ResponseID=${ResponseID}`)
             .pipe(catchError(this.errorHandler));
     }
 
-    GetResODsByResponseID(ResponseID: string): Observable<ResOD[] | string> {
-        return this._httpClient.get<ResOD[]>(`${this.baseAddress}Responseapi/Response/GetResODsByResponseID?ResponseID=${ResponseID}`)
+    GetResponseODsByResponseID(ResponseID: string): Observable<ResOD[] | string> {
+        return this._httpClient.get<ResOD[]>(`${this.baseAddress}rfxapi/RFx/GetResponseODsByResponseID?ResponseID=${ResponseID}`)
             .pipe(catchError(this.errorHandler));
     }
     CreateResponse(Response: ResponseView): Observable<any> {
-        return this._httpClient.post<any>(`${this.baseAddress}Responseapi/Response/CreateResponse`,
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateResponse`,
             Response,
             {
                 headers: new HttpHeaders({
@@ -192,7 +195,7 @@ export class RFxService {
     }
 
     UpdateResponse(Response: ResponseView): Observable<any> {
-        return this._httpClient.post<any>(`${this.baseAddress}Responseapi/Response/UpdateResponse`,
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/UpdateResponse`,
             Response,
             {
                 headers: new HttpHeaders({
@@ -203,7 +206,7 @@ export class RFxService {
     }
 
     DeleteResponse(Response: ResHeader): Observable<any> {
-        return this._httpClient.post<any>(`${this.baseAddress}Responseapi/Response/DeleteResponse`,
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/DeleteResponse`,
             Response,
             {
                 headers: new HttpHeaders({

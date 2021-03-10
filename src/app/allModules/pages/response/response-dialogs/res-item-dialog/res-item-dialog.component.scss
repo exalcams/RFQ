@@ -1,0 +1,58 @@
+.toolbar1{
+    /* width: 449px; */
+    height: 46px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.add_criteria{
+    /* width: 1px; */ 
+    /* height: 23px; */
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.56;
+    letter-spacing: normal;
+    text-align: center;
+    color: #595d6e;
+    /* margin-top: 7px; */
+    /* margin-left: 146px; */
+}
+.cl_button1.mat-button {
+    color: white !important;
+    background: #068dd0 !important;
+  }
+  .cl_button1{
+      width: 85px;
+      height: 29px;
+      border-radius: 2px;
+      background-color: #068dd0;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* margin-left: 161px;
+      margin-top: 42px; */
+    }
+  
+  .add{
+    width: 51px;
+    height: -8px;
+    font-size: 12px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: start;
+    color: #ffffff;
+    /* position: absolute;
+    margin-left: -10px; */
+    line-height: 0.2;
+  }
+  .mat-dialog-content {
+    margin: 0;
+    padding: 0;
+}

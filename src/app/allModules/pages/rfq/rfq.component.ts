@@ -60,13 +60,15 @@ export class RfqComponent implements OnInit {
   FilesToUpload:File[]=[];
   RFxTypeMasters:MRFxType[]=[];
   RFxGroupMasters:MRFxGroup[]=[];
+  isProgressBarVisibile:boolean;
 
   constructor(
     public dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _RFxService: RFxService,
     private _route: ActivatedRoute,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    private _router:Router
     ) { 
       this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     }
@@ -116,6 +118,7 @@ export class RfqComponent implements OnInit {
   }
 
   CreateRfX(isRelease:boolean) {
+    this.isProgressBarVisibile=true;
     this.RFxView.Client =this.Rfxheader.Client;
     this.RFxView.Company =this.Rfxheader.Company;
     this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
@@ -148,11 +151,24 @@ export class RfqComponent implements OnInit {
         response => {
           console.log("response",response);
           this._RFxService.UploadAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
-          this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
+          if(isRelease){
+            this.isProgressBarVisibile=false;
+            this.notificationSnackBarComponent.openSnackBar('RFQ released successfully', SnackBarStatus.success);
+            this._router.navigate(['pages/home']);
+          }
+          else{ 
+            this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
+            this.isProgressBarVisibile=false;
+            this._router.navigate(['pages/home']);
+          }
         },
-        error => console.log(error));
+        error => {
+          this.isProgressBarVisibile=false;
+          this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
+        });
   }
   UpdateRFx(isRelease:boolean){
+    this.isProgressBarVisibile=true;
       this.RFxView.Client =this.Rfxheader.Client;
       this.RFxView.Company =this.Rfxheader.Company;
       this.RFxView.RFxID=this.RFxID;
@@ -192,9 +208,21 @@ export class RfqComponent implements OnInit {
         response => {
           console.log("response",response);
           this._RFxService.UploadAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
-          this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
+          if(isRelease){
+            this.isProgressBarVisibile=false;
+            this.notificationSnackBarComponent.openSnackBar('RFQ released successfully', SnackBarStatus.success);
+            this._router.navigate(['pages/home']);
+          }
+          else{
+            this.isProgressBarVisibile=false;
+            this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
+            this._router.navigate(['pages/home']);
+          }
         },
-        error => console.log(error));
+        error => {
+          this.isProgressBarVisibile=false;
+          this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
+        });
   }
   tabClick(tab:any) {
     this.index=parseInt(tab.index);
@@ -214,6 +242,7 @@ export class RfqComponent implements OnInit {
   }
 
   GetRFxHsByRFxID(RFxID:string): void {
+    this.isProgressBarVisibile=true;
     this._RFxService.GetRFxByRFxID(RFxID).subscribe(
       (data) => {
         if (data) {
@@ -230,6 +259,7 @@ export class RfqComponent implements OnInit {
             this.RFxFormGroup.disable();
           }
         }
+        this.isProgressBarVisibile=false;
       }
     );
   }
@@ -414,6 +444,7 @@ export class RfqComponent implements OnInit {
       console.log(res);
       if(res && res.isCreate){
         this.VendorDetails.push(res.data);
+        this.Vendors=[];
         this.VendorDetails.forEach(element => {
           var rfxVendor=new RFxVendor();
           rfxVendor.Client=element.Client;

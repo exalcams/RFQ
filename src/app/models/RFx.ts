@@ -203,7 +203,7 @@ export class ResOD extends CommonClass {
     Client: string;
     Company: string;
     RESID: string;
-    SlNo: string;
+    QuestionID: number;
     RFxID: string;
     Answer: string;
     Attachment: string;
@@ -305,4 +305,12 @@ export class ResponseView {
     ResHCs: ResHC[];
     ResICs: ResIC[];
     ResODs: ResOD[];
+}
+export class RespondedItems{
+    isResponded:boolean;
+    Item:ResItem;
+}
+export class RespondedODs{
+    isResponded:boolean;
+    OD:ResOD;
 }

@@ -41,7 +41,11 @@ export class DialogContentExampleDialog4Component implements OnInit {
       Type: [this.VendorView.Type, Validators.required],
       v_name: [this.VendorView.VendorName, Validators.required],
       GST: [this.VendorView.GSTNumber, Validators.required],
-      City: [this.VendorView.City, Validators.required]
+      City: [this.VendorView.City, Validators.required],
+      mailid1:[],
+      mailid2:[],
+      contactPerson:[],
+      mobile:[]
     });
   }
   Save(){
@@ -61,6 +65,10 @@ export class DialogContentExampleDialog4Component implements OnInit {
         vendor.VendorName=this.VendorView.VendorName;
         vendor.GST=this.VendorView.GSTNumber;
         vendor.City=this.VendorView.City;
+        vendor.EmailID1=this.DialogueFormGroup.get('mailid1').value;
+        vendor.EmailID2=this.DialogueFormGroup.get('mailid2').value;
+        vendor.ContactPerson=this.DialogueFormGroup.get('contactPerson').value;
+        vendor.ContactPersonMobile=this.DialogueFormGroup.get('mobile').value;
         this._RFxService.AddtoVendorTable(vendor).subscribe(res=>{
           var Result={data:this.VendorView,isCreate:this.data.isCreate};
           this.dialogRef.close(Result);
@@ -94,5 +102,6 @@ ShowValidationErrors(formGroup:FormGroup): void {
 NewClicked(){
   this.isNewVendor=true;
   this.DialogueFormGroup.enable();
+  this.DialogueFormGroup.get('mailid1').setValidators(Validators.required);
 }
 }

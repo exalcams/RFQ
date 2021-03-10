@@ -20,7 +20,7 @@
             <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/truck.png">
-                    <label class="cl_8">6</label>
+                    <label class="cl_8">0</label>
                 </div>
                 <div class="cl_green" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Shipped</label>
@@ -30,7 +30,7 @@
             <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/invoice1.png">
-                    <label class="cl_8">4</label>
+                    <label class="cl_8">0</label>
                 </div>
                 <div class="cl_brown" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Invoiced</label>
@@ -40,7 +40,7 @@
             <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/money.png">
-                    <label class="cl_8">23</label>
+                    <label class="cl_8">0</label>
                 </div>
                 <div class="cl_gray" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Paid</label>
@@ -48,115 +48,144 @@
                 </div>
             </div>
         </div>
-         <mat-card class="cl_card">
-        <div fxLayout="column">
-            <mat-toolbar style="background-color: white;height: 31px;" fxLayoutAlign="space-between center">
-                <!-- <img src="assets/image/add.png"> -->
-                <label class="cl_header1">RFQ List</label>
-                <button mat-button (click)="Gotoheader()" class="cl_button1"><img
-                        src="/assets/images/new1.png"></button>
-            </mat-toolbar>
-        </div>
-        <table mat-table [dataSource]="HeaderDetailsDataSource" class="mat-elevation-z8" matSort>
+        <mat-card class="cl_card">
+            <div fxLayout="column">
+                <mat-toolbar style="background-color: white;height: 31px;" fxLayoutAlign="space-between center">
+                    <!-- <img src="assets/image/add.png"> -->
+                    <label class="cl_header1">RFQ List</label>
+                    <button mat-button (click)="Gotoheader()" class="cl_button1"><img
+                            src="/assets/images/new1.png"></button>
+                </mat-toolbar>
+            </div>
+            <table mat-table [dataSource]="HeaderDetailsDataSource" class="mat-elevation-z8" matSort>
 
-            <!-- Position Column -->
-            <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef class="header-cell"> S.No </th>
-                <td mat-cell class="td-cell" *matCellDef="let element;let i = index;"> {{i+1}}
-                </td>
-            </ng-container>
+                <!-- Position Column -->
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef class="header-cell"> S.No </th>
+                    <td mat-cell class="td-cell" *matCellDef="let element;let i = index;"> {{i+1}}
+                    </td>
+                </ng-container>
 
-            <!-- RFQ ID Column -->
-            <ng-container matColumnDef="RFxID">
-                <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> RFQ ID </th>
-                <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
-                    *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.RFxID}} </td>
-            </ng-container>
+                <!-- RFQ ID Column -->
+                <ng-container matColumnDef="RFxID">
+                    <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> RFQ ID </th>
+                    <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
+                        *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.RFxID}} </td>
+                </ng-container>
 
-            <!-- Type Column -->
-            <ng-container matColumnDef="RFxType">
-                <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Type </th>
-                <td mat-cell class="td-cell" *matCellDef="let element"> {{element.RFxType}}
-                </td>
-            </ng-container>
+                <!-- Type Column -->
+                <ng-container matColumnDef="RFxType">
+                    <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Type </th>
+                    <td mat-cell class="td-cell" *matCellDef="let element"> {{element.RFxType}}
+                    </td>
+                </ng-container>
 
-            <!-- Date Column -->
-            <ng-container matColumnDef="ValidityStartDate">
-                <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Date </th>
+                <!-- Date Column -->
+                <ng-container matColumnDef="ValidityStartDate">
+                    <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Date </th>
 
-                <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityStartDate | date :'dd/MM/yyyy'}}
+                    <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityStartDate | date
+                        :'dd/MM/yyyy'}}
 
 
 
-                </td>
-            </ng-container>
+                    </td>
+                </ng-container>
 
-            <!-- Expiry Column -->
-            <ng-container matColumnDef="ValidityEndDate">
-                <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Expiry </th>
+                <!-- Expiry Column -->
+                <ng-container matColumnDef="ValidityEndDate">
+                    <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Expiry </th>
 
-                <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityEndDate | date :'dd/MM/yyyy'}}
+                    <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityEndDate | date
+                        :'dd/MM/yyyy'}}
 
-                </td>
-            </ng-container>
+                    </td>
+                </ng-container>
 
-            <!-- Fulfilment Column -->
-            <ng-container matColumnDef="Fulfilment">
-                <th mat-header-cell style="text-align: center;" class="header-cell" *matHeaderCellDef> Fulfilment </th>
-                <td mat-cell style="text-align: center;"  *matCellDef="let element">
-                    <!-- {{element.Status}} -->
-                    <ng-container *ngIf="element.Status == 1">
-                       <img [src]='imgArray[0].url'/>
-                    </ng-container>
-                    <ng-container *ngIf="element.Status == 2">
-                        <img [src]='imgArray[1].url'/>
-                     </ng-container>
-                     <ng-container *ngIf="element.Status == 3">
-                        <img [src]='imgArray[2].url'/>
-                     </ng-container>
-                     <ng-container *ngIf="element.Status == 4">
-                        <img [src]='imgArray[3].url'/>
-                     </ng-container>
-                     <ng-container *ngIf="element.Status == 5">
-                        <img [src]='imgArray[4].url'/>
-                     </ng-container>
-                </td>
-            </ng-container>
+                <!-- Fulfilment Column -->
+                <ng-container matColumnDef="Fulfilment">
+                    <th mat-header-cell style="text-align: center;" class="header-cell" *matHeaderCellDef> Fulfilment
+                    </th>
+                    <td mat-cell style="text-align: center;" *matCellDef="let element">
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                            <div fxLayout fxLayoutAlign="center center" class="mx-8" style="width: 300px;">
+                                <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
+                                    <label
+                                        [ngStyle]="{'background-color':element.Status === '2'  ? '#e2f3e3' : 'transparent' }"
+                                        class="mat_lable_1"> Initiated </label>
+                                </div>
+                                <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
+                                    <label
+                                        [ngStyle]="{'background-color':element.Status === '1' && element.Status === '2'  ? '#e2f3e3' : 'transparent' }"
+                                        class="mat_lable_1"> Shipped </label>
+                                </div>
+                                <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
+                                    <label
+                                        [ngStyle]="{'background-color':element.Status === '1'&& element.Status === '2'&& element.Status === '3' ? '#e2f3e3' : 'transparent' }"
+                                        class="mat_lable_1"> Invoiced </label>
+                                </div>
+                                <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
+                                    <label
+                                        [ngStyle]="{'background-color': element.Status === '1' && element.Status === '3' && element.Status === '4' ? '#e2f3e3' : 'transparent' }"
+                                        class="mat_lable_2"> Paid </label>
+                                </div>
+                            </div>
 
-            <!-- Attachements Column -->
-            <ng-container matColumnDef="Attachment">
-                <th mat-header-cell class="header-cell header-center-align" mat-sort-header *matHeaderCellDef>
-                    Attachements </th>
-                <td mat-cell *matCellDef="let element;index as i" class="td-cell">
-                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
-                        <img *ngIf="element.Attachment.length>0" src="/assets/images/pdf.png">
-                        <img *ngIf="element.Attachment.length>1" src="/assets/images/xls.png">
-                        <label class="cl_more" *ngIf="element.Attachment.length>2">+{{element.Attachment.length-2}} more</label>
-                    </div>
-                </td>
-            </ng-container>
+                            <ng-container *ngIf="element.Status == 1">
+                                <img [src]='imgArray[0].url' />
+                            </ng-container>
+                            <ng-container *ngIf="element.Status == 2">
+                                <img [src]='imgArray[1].url' />
+                            </ng-container>
+                            <ng-container *ngIf="element.Status == 3">
+                                <img [src]='imgArray[2].url' />
+                            </ng-container>
+                            <ng-container *ngIf="element.Status == 4">
+                                <img [src]='imgArray[3].url' />
+                            </ng-container>
+                            <ng-container *ngIf="element.Status == 5">
+                                <img [src]='imgArray[4].url' />
+                            </ng-container>
+                        </div>
+                    </td>
+                </ng-container>
 
-            <!-- Action Column -->
-            <ng-container matColumnDef="Action">
-                <th mat-header-cell class="header-cell" *matHeaderCellDef> Action </th>
-                <td mat-cell *matCellDef="let element">
-                    <button class="cl_action">
-                        <mat-select placeholder="Actions" style="width: 90%;" class="Action-select">
-                            <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RFxID)>Process</mat-option>
-                        </mat-select>
-                    </button>
-                </td>
-            </ng-container>
+                <!-- Attachements Column -->
+                <ng-container matColumnDef="Attachment">
+                    <th mat-header-cell class="header-cell header-center-align" mat-sort-header *matHeaderCellDef>
+                        Attachements </th>
+                    <td mat-cell *matCellDef="let element;index as i" class="td-cell"
+                        (click)="openAttachmentViewDialog(element.RFxID,element.Attachment)" style="cursor: pointer;">
+                        <div style="margin-top: 3px; margin-left: 15px;">
+                            <span [matBadge]="element.Attachment.length" matBadgeSize="small" matBadgeColor="accent"
+                                matBadgeOverlap="false"></span>
+                        </div>
+                        <img style="width: 20px;" src="assets/images/attachment.png">
+                    </td>
+                </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
-        </table>
-        <div>
-            <!-- <p class="display">Displaying 10 of 54 records</p> -->
-            <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]"></mat-paginator>
-        </div>
-    </mat-card>
+                <!-- Action Column -->
+                <ng-container matColumnDef="Action">
+                    <th mat-header-cell class="header-cell" *matHeaderCellDef> Action </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button class="cl_action">
+                            <mat-select placeholder="Actions" style="width: 90%;" class="Action-select">
+                                <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RFxID)>Process
+                                </mat-option>
+                            </mat-select>
+                        </button>
+                    </td>
+                </ng-container>
 
+                <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
+            </table>
+            <div>
+                <!-- <p class="display">Displaying 10 of 54 records</p> -->
+                <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]"></mat-paginator>
+            </div>
+        </mat-card>
+        <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+        </mat-progress-spinner>
+        <div id="overlay" *ngIf="isProgressBarVisibile"></div>
     </div>
-
-

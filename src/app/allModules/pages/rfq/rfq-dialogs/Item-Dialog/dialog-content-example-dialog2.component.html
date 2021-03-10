@@ -107,6 +107,10 @@
                 *ngIf="DialogueFormGroup.get('incoterm').touched && DialogueFormGroup.get('incoterm').hasError('required')">
                 Incoterm is required
             </mat-error>
+            <mat-error
+                *ngIf="DialogueFormGroup.get('incoterm').touched && DialogueFormGroup.get('incoterm').hasError('pattern')">
+                Incoterm should be less than 2 characters
+            </mat-error>
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">

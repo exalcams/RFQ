@@ -56,7 +56,7 @@ export class DialogContentExampleDialog2Component implements OnInit {
       material_text: [this.rfxitem.MaterialText, Validators.required],
       per_schedule_qty: [this.rfxitem.PerScheduleQty, [Validators.required,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]],
       totalSchedules: [this.rfxitem.TotalSchedules],
-      incoterm: [this.rfxitem.IncoTerm, Validators.required],
+      incoterm: [this.rfxitem.IncoTerm, [Validators.required,Validators.pattern('^([a-zA-Z]){1,2}?$')]],
     });
   }
 

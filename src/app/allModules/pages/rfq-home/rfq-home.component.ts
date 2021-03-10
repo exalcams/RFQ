@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { RFxHeader } from 'app/models/RFx';
+import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { RFxService } from 'app/services/rfx.service';
 
 @Component({
@@ -17,6 +18,7 @@ export class RfqHomeComponent implements OnInit {
   HeaderStatus: any[];
   HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
+  isProgressBarVisibile:boolean;
   imgArray: any[] = [
     {
       url: '../assets/images/1.png'
@@ -36,7 +38,8 @@ export class RfqHomeComponent implements OnInit {
   ] 
 
   constructor(private route: Router,
-    private _RFxService: RFxService) { }
+    private _RFxService: RFxService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.GetRFxs();
@@ -45,6 +48,7 @@ export class RfqHomeComponent implements OnInit {
     this.route.navigate(['pages/rfq'], { queryParams: { id: rfqid } });
   }
   GetRFxs(): void {
+    this.isProgressBarVisibile=true;
     // window.location.reload()
     this._RFxService.GetAllRFxHDocumets().subscribe(
       (data) => {
@@ -53,10 +57,20 @@ export class RfqHomeComponent implements OnInit {
           this.HeaderDetailsDataSource = new MatTableDataSource(this.HeaderDetails);
           this.HeaderDetailsDataSource.paginator=this.RFQPaginator;
           this.HeaderDetailsDataSource.sort=this.RFQSort;
-          console.log("RFxTable",this.HeaderDetails);
+          this.isProgressBarVisibile=false;
+          //console.log("RFxTable",this.HeaderDetails);
         }
       }
     );
   }
- 
+  openAttachmentViewDialog(RFxID:string,Ataachments:string[]): void {
+    const dialogConfig: MatDialogConfig = {
+        data: {Documents:Ataachments,RFxID:RFxID},
+        panelClass: "attachment-view-dialog",
+    };
+    const dialogRef = this.dialog.open(
+        AttachmentViewDialogComponent,
+        dialogConfig
+    );
+}
 }

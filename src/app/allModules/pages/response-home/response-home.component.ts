@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatTableDataSource } from '@angular/material';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RFxHeader } from 'app/models/RFx';
 import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { RFxService } from 'app/services/rfx.service';
@@ -11,9 +11,13 @@ import { RFxService } from 'app/services/rfx.service';
   styleUrls: ['./response-home.component.scss']
 })
 export class ResponseHomeComponent implements OnInit {
-  HeaderDetails: RFxHeader[] = [];
+  isProgressBarVisibile:boolean;
+  @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
+  @ViewChild(MatSort) RFQSort: MatSort;
+  RFxTableAttachments:string[]=[];
+  HeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'RfqId', 'Type', 'Date', 'Exp', 'Fulfilment', 'Attachment', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   imgArray: any[] = [
     {
@@ -35,34 +39,34 @@ export class ResponseHomeComponent implements OnInit {
 
   constructor(private route: Router,
     private _RFxService: RFxService,
+    private _route: ActivatedRoute,
     private dialog: MatDialog) { }
 
   ngOnInit() {
     this.GetRFxs();
   }
 
-  Gotoheader() {
-    this.route.navigate(['pages/response']);
+  Gotoheader(rfqid) {
+    this.route.navigate(['pages/response'], { queryParams: { id: rfqid } });
   }
   GetRFxs(): void {
     // window.location.reload()
-    this._RFxService.GetAllRFxs().subscribe(
+    this._RFxService.GetAllRFxHDocumets().subscribe(
       (data) => {
         if (data) {
-          this.HeaderDetails = <RFxHeader[]>data;
+          this.HeaderDetails =data;
           this.HeaderDetailsDataSource = new MatTableDataSource(
             this.HeaderDetails
           );
+          this.HeaderDetailsDataSource.paginator=this.RFQPaginator;
+          this.HeaderDetailsDataSource.sort=this.RFQSort;
         }
       }
     )
   }
-  DocsClicked(){
-    this.openAttachmentViewDialog();
-  }
-  openAttachmentViewDialog(): void {
+  openAttachmentViewDialog(RFxID:string,Ataachments:string[]): void {
     const dialogConfig: MatDialogConfig = {
-        data: {Documents:["Discount (1).png"],RFxID:"0000000010"},
+        data: {Documents:Ataachments,RFxID:RFxID},
         panelClass: "attachment-view-dialog",
     };
     const dialogRef = this.dialog.open(
