@@ -2,7 +2,7 @@
     <mat-toolbar class="toolbar1">
         <p class="add_criteria">Add Vendor</p>
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
-            <button mat-icon-button>
+            <button mat-icon-button *ngIf="data.isCreate">
                 <mat-icon style="color: #595d6e;" (click)="NewClicked()">add</mat-icon>
             </button>
             <button mat-icon-button (click)="dialogRef.close()">
@@ -61,6 +61,26 @@
                     *ngIf="DialogueFormGroup.get('City').touched && DialogueFormGroup.get('City').hasError('required')">
                     City is required
                 </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline" *ngIf="isNewVendor">
+                <mat-label>Email ID 1</mat-label>
+                <input matInput formControlName="mailid1" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('mailid1').touched && DialogueFormGroup.get('mailid1').hasError('required')">
+                    Mail ID is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline" *ngIf="isNewVendor">
+                <mat-label>Email ID 2</mat-label>
+                <input matInput formControlName="mailid2" fxFlex>
+            </mat-form-field>
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline" *ngIf="isNewVendor">
+                <mat-label>Contact Person</mat-label>
+                <input matInput formControlName="contactPerson" fxFlex>
+            </mat-form-field>
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline" *ngIf="isNewVendor">
+                <mat-label>contact Person Mobile</mat-label>
+                <input matInput formControlName="mobile" fxFlex>
             </mat-form-field>
         </div>
     </div>

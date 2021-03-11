@@ -1,5 +1,5 @@
 <div fxFlex fxLayout="column">
-    <mat-toolbar class="cl_toolbar2" fxLayout="row">
+    <!-- <mat-toolbar class="cl_toolbar2" fxLayout="row">
         <div fxLayout="column" fxFlex=20>
             <label class="Create-RFQ">Create RFQ</label>
             <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
@@ -16,15 +16,21 @@
             <img src="/assets/images/cancel.png" class="cl_can">
             <label class="cl_cancel">Cancel</label>
         </div>
+    </mat-toolbar> -->
+    <mat-toolbar class="cl_toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+        <h1>Response</h1>
+        <div>
+            <img src="/assets/images/exalca_100.png">
+        </div>
     </mat-toolbar>
-    <mat-tab-group style="padding: 2rem 1rem 4rem 1rem; overflow-y: scroll;"  [selectedIndex]="selectedIndex" (selectedTabChange)="tabClick($event)"
+    <mat-tab-group style="padding: 2rem 1rem 4rem 1rem; overflow-y: scroll;" [selectedIndex]="selectedIndex" (selectedTabChange)="tabClick($event)"
         fxFlex>
         <!-- First Tab -->
         <mat-tab>
             <ng-template mat-tab-label>
                 <p>Header</p>
-                <mat-icon *ngIf="Rfxheader.Status=='1'" style="margin-left: 1rem;"
-                    [ngStyle]="{'color':index==0?'white':'#18a421'}">check_circle</mat-icon>
+                <!-- <mat-icon *ngIf="Rfxheader.Status=='1' ||Rfxheader.Status=='2'" style="margin-left: 1rem;"
+                    [ngStyle]="{'color':index==0?'white':'#18a421'}">check_circle</mat-icon> -->
             </ng-template>
             <form autocomplete="off" [formGroup]="RFxFormGroup">
                 <div>
@@ -38,7 +44,7 @@
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ type</mat-label>
                                 <mat-select formControlName="RfqType" fxFlex>
-                                    <mat-option value="PSS"> PSS </mat-option>
+                                    <mat-option *ngFor="let type of RFxTypeMasters" [value]="type.RFQType">{{type.Text}}</mat-option>
                                 </mat-select>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('RfqType').touched && RFxFormGroup.get('RfqType').hasError('required')">
@@ -49,9 +55,7 @@
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ group</mat-label>
                                 <mat-select formControlName="RfqGroup" fxFlex>
-                                    <mat-option value=" A"> A </mat-option>
-                                    <mat-option value=" B"> B </mat-option>
-                                    <mat-option value=" C"> C </mat-option>
+                                    <mat-option *ngFor="let group of RFxGroupMasters" [value]="group.RFQGroup"> {{group.Text}}</mat-option>
                                 </mat-select>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('RfqGroup').touched && RFxFormGroup.get('RfqGroup').hasError('required')">
@@ -84,7 +88,7 @@
                         <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem;">
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity start date</mat-label>
-                                <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="DD/MM/YYYY"
+                                <input matInput [matDatepicker]="picker"
                                     formControlName="ValidityStartDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
@@ -98,7 +102,7 @@
 
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity end date</mat-label>
-                                <input matInput [min]="minDate" [matDatepicker]="picker1" placeholder="DD/MM/YYYY"
+                                <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value" [matDatepicker]="picker1"
                                     formControlName="ValidityEndDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker1">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
@@ -113,8 +117,7 @@
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response start date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
-                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker2"
-                                    placeholder="DD/MM/YYYY" formControlName="ResponseStartDate" fxFlex>
+                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker2" formControlName="ResponseStartDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker2">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
@@ -127,9 +130,8 @@
 
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response end date</mat-label>
-                                <input matInput  [min]="RFxFormGroup.get('ResponseStartDate').value"
-                                    [max]="RFxFormGroup.get('ValidityEndDate').value"  [matDatepicker]="picker3"
-                                    placeholder="DD/MM/YYYY" formControlName="ResponseEndDate" fxFlex>
+                                <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
+                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker3" formControlName="ResponseEndDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker3">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
@@ -150,18 +152,18 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <p>Evaluation</p>
-                <mat-icon *ngIf="EvaluationDetails.length!=0" style="margin-left: 1rem;"
-                    [ngStyle]="{'color':index==1?'white':'#18a421'}">check_circle</mat-icon>
+                <!-- <mat-icon *ngIf="EvaluationDetails.length!=0" style="margin-left: 1rem;"
+                    [ngStyle]="{'color':index==1?'white':'#18a421'}">check_circle</mat-icon> -->
             </ng-template>
             <div>
                 <mat-card class="cl_card">
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                         <label class="cl_header1">Criterias</label>
                         <div class="cl_divider_header" fxFlex=85></div>
-                        <button mat-button class="cl_button1" (click)="openDialogComponent1()">
+                        <!-- <button mat-button class="cl_button1" (click)="CreateCriteria()" *ngIf="Rfxheader.Status=='1'">
                             <img src="assets/images/ic_add.png">
                             <span class="add"> Add</span>
-                        </button>
+                        </button> -->
                     </div>
 
                     <table mat-table [dataSource]="EvaluationDetailsDataSource" class="mat-elevation-z8" matSort>
@@ -209,20 +211,6 @@
                             <td mat-cell style="font-size: 12px;text-align: center;" *matCellDef="let element"> {{element.Text}} </td>
                         </ng-container>
 
-                        <!-- Action Column -->
-                        <ng-container matColumnDef="Action">
-                            <th mat-header-cell style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: right;
-                                      color: #595d6e;
-                                      width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element"> <img src="assets/images/edit_blue.png"> <img
-                                    style="margin-left: 9px;" src="assets/images/delete1.png"> </td>
-                        </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="EvaluationDetailsDisplayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: EvaluationDetailsDisplayedColumns;"></tr>
@@ -235,18 +223,18 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <p>Item</p>
-                <mat-icon *ngIf="ItemDetails.length!=0" style="margin-left: 1rem;"
-                    [ngStyle]="{'color':index==2?'white':'#18a421'}">check_circle</mat-icon>
+                <!-- <mat-icon *ngIf="ItemDetails.length!=0" style="margin-left: 1rem;"
+                    [ngStyle]="{'color':index==2?'white':'#18a421'}">check_circle</mat-icon> -->
             </ng-template>
             <div>
                 <mat-card class="cl_card">
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                         <label class="cl_header1">Item</label>
                         <div class="cl_divider_header" fxFlex=89></div>
-                        <button mat-button class="cl_button1" (click)="openDialogComponent2()">
+                        <!-- <button mat-button class="cl_button1" (click)="CreateItem()" *ngIf="Rfxheader.Status=='1'">
                             <img src="assets/images/ic_add.png">
                             <span class="add"> Add</span>
-                        </button>
+                        </button> -->
                     </div>
 
                     <table mat-table [dataSource]="ItemDetailsDataSource" class="mat-elevation-z8" matSort>
@@ -363,18 +351,19 @@
                                 {{element.IncoTerm}} </td>
                         </ng-container>
 
-                        <!-- Action Column -->
                         <ng-container matColumnDef="Action">
                             <th mat-header-cell style=" font-size: 13px;
-                                    font-weight: 500;
-                                    font-stretch: normal;
-                                    font-style: normal;
-                                    line-height: 1.5;
-                                    letter-spacing: normal;
-                                    text-align: right;
-                                    color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element"> <img src="assets/images/edit_blue.png"> <img
-                                    style="margin-left: 9px;" src="assets/images/delete1.png"> </td>
+                                      font-weight: 500;
+                                      font-stretch: normal;
+                                      font-style: normal;
+                                      line-height: 1.5;
+                                      letter-spacing: normal;
+                                      text-align: center;
+                                      color: #595d6e;width:4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
+                            <td mat-cell *matCellDef="let element;index as i;"> 
+                                <button *ngIf="!RespondedI[i].isResponded" mat-button (click)="OpenResItemDialog(i)">Respond</button> 
+                                <img *ngIf="RespondedI[i].isResponded" src="assets/images/edit_blue.png"  (click)="OpenResItemDialog(i)" class="clickable">   
+                            </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="ItemsDetailsDisplayedColumns"></tr>
@@ -384,316 +373,22 @@
             </div>
 
         </mat-tab>
-        <!-- Fourth Tab -->
-        <!-- <mat-tab>
-            <ng-template mat-tab-label>
-                <p>5Q rating</p>
-                <mat-icon *ngIf="tick3" class="cl_tick1">check_circle</mat-icon>
-            </ng-template>
-            <div>
-                <mat-card class="cl_card">
-                    <div fxLayout="row" fxLayoutAlign="space-between center">
-                        <label class="cl_header1">5Q rating</label>
-                        <div class="cl_divider_header" fxFlex=87></div>
-                        <button class="cl_button1" (click)="openDialogComponent3()">
-                            <img src="assets/images/ic_add.png">
-                            <span class="add"> Rating</span>
-                        </button>
-                    </div>
-                    <table mat-table [dataSource]="RatingDetailsDataSource" class="mat-elevation-z8" matSort>
-
-                        
-                        <ng-container matColumnDef="position">
-                            <th mat-header-cell *matHeaderCellDef style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 6%;" class="Rectangle-4510"> S.No </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;"
-                                *matCellDef="let element;let i = index;"> {{i+1}}</td>
-                        </ng-container>
-
-                        
-                        <ng-container matColumnDef="Criteria">
-                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 5%;" class="Rectangle-4510" *matHeaderCellDef> Criteria
-                            </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.criteria}} </td>
-                        </ng-container>
-
-                        
-                        <ng-container matColumnDef="Description">
-                            <th mat-header-cell style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: center;
-                                      color: #595d6e;width: 80%;" class="Rectangle-4510" *matHeaderCellDef> Description
-                            </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.text}} </td>
-                        </ng-container>
-
-                        
-                        <ng-container matColumnDef="Action">
-                            <th mat-header-cell style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: right;
-                                      color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action
-                            </th>
-                            <td mat-cell *matCellDef="let element"> <img src="assets/images/edit_blue.png"> <img
-                                    style="margin-left: 9px;" src="assets/images/delete1.png"> </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="RatingDetailsDisplayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: RatingDetailsDisplayedColumns;"></tr>
-                    </table>
-                </mat-card>
-            </div>
-
-        </mat-tab> -->
-        <!-- Fifth Tab -->
-        <!-- <mat-tab>
-            <ng-template mat-tab-label>
-                <p>Partners</p>
-            <mat-icon *ngIf="PartnerDetails.length!=0" style="margin-left: 1rem;"
-                    [ngStyle]="{'color':index==3?'white':'#18a421'}">check_circle</mat-icon>
-            </ng-template>
-            <div>
-                <mat-card class="cl_card">
-                    <div fxLayout="row" fxLayoutAlign="space-between center">
-                        <label class="cl_header1">Partners</label>
-                        <div class="cl_divider_header" fxFlex=87></div>
-                        <button mat-button class="cl_button1" (click)="openDialogComponent4()">
-                            <img src="assets/images/ic_add.png">
-                            <span class="add"> Partner</span>
-                        </button>
-                    </div>
-
-                    <table mat-table [dataSource]="PartnerDetailsDataSource" class="mat-elevation-z8" matSort>
-
-                        <ng-container matColumnDef="position">
-                            <th mat-header-cell *matHeaderCellDef style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 6%;" class="Rectangle-4510"> S.No </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;"
-                                *matCellDef="let element;let i = index;">{{i+1}} </td>
-                        </ng-container>
-
-  
-                        <ng-container matColumnDef="Type">
-                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 5%;" class="Rectangle-4510" *matHeaderCellDef> Type
-                            </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.Type}} </td>
-                        </ng-container>
-
-                  <ng-container matColumnDef="Usertables">
-                            <th mat-header-cell style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: center;
-                                      color: #595d6e;width: 80%;" class="Rectangle-4510" *matHeaderCellDef> User tables
-                            </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;text-align: center;" *matCellDef="let element">
-                                {{element.User}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Action">
-                            <th mat-header-cell style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: right;
-                                      color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element"> <img src="assets/images/edit_blue.png"> <img
-                                    style="margin-left: 9px;" src="assets/images/delete1.png"> </td>
-                        </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="PartnerDetailsDisplayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: PartnerDetailsDisplayedColumns;"></tr>
-                    </table>
-                </mat-card>
-            </div>
-        </mat-tab> -->
-        <!-- Sixth Tab -->
-        <!-- <mat-tab>
-            <ng-template mat-tab-label>
-                <p>Vendors</p>
-                <mat-icon *ngIf="VendorDetails.length!=0" style="margin-left: 1rem;"
-                    [ngStyle]="{'color':index==4?'white':'#18a421'}">check_circle</mat-icon>
-            </ng-template>
-            <div>
-                <mat-card class="cl_card">
-                    <div fxLayout="row" fxLayoutAlign="space-between center">
-                        <label class="cl_header1">Vendors</label>
-                        <div class="cl_divider_header" fxFlex=87></div>
-                        <button mat-button class="cl_button1" (click)="openDialogComponent5()">
-                            <img src="assets/images/ic_add.png">
-                            <span class="add"> Vendor</span>
-                        </button>
-                    </div>
-
-                    <table mat-table [dataSource]="VendorDetailsDataSource" class="mat-elevation-z8" matSort>
-
-                  
-                        <ng-container matColumnDef="position">
-                            <th mat-header-cell *matHeaderCellDef style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 5%;" class="Rectangle-4510"> S.No </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;"
-                                *matCellDef="let element;let i = index;"> {{i+1}} </td>
-                        </ng-container>
-
-                     
-                        <ng-container matColumnDef="Vendor">
-                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 15%;" class="Rectangle-4510" *matHeaderCellDef> Vendor
-                            </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.PartnerID}} </td>
-                        </ng-container>
-
-                      
-                        <ng-container matColumnDef="Type">
-                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 15%;" class="Rectangle-4510" *matHeaderCellDef> Type
-                            </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.Type}} </td>
-                        </ng-container>
-
-                      
-                        <ng-container matColumnDef="VendorName">
-                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
-                                        font-weight: 500;
-                                        font-stretch: normal;
-                                        font-style: normal;
-                                        line-height: 1.5;
-                                        letter-spacing: normal;
-                                        text-align: left;
-                                        color: #595d6e;width: 15%;" class="Rectangle-4510" *matHeaderCellDef> Vendor
-                                name </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.VendorName}} </td>
-                        </ng-container>
-
-                     
-                        <ng-container matColumnDef="GSTNo">
-                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
-                                        font-weight: 500;
-                                        font-stretch: normal;
-                                        font-style: normal;
-                                        line-height: 1.5;
-                                        letter-spacing: normal;
-                                        text-align: left;
-                                        color: #595d6e;width: 17%;" class="Rectangle-4510" *matHeaderCellDef> GST
-                                number </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.GSTNumber}} </td>
-                        </ng-container>
- 
-                        <ng-container matColumnDef="City">
-                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
-                                        font-weight: 500;
-                                        font-stretch: normal;
-                                        font-style: normal;
-                                        line-height: 1.5;
-                                        letter-spacing: normal;
-                                        text-align: left;
-                                        color: #595d6e;width: 12%;" class="Rectangle-4510" *matHeaderCellDef> City
-                            </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.City}} </td>
-                        </ng-container>
-
-
-                     
-                        <ng-container matColumnDef="Action">
-                            <th mat-header-cell style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action
-                            </th>
-                            <td mat-cell *matCellDef="let element"> <img src="assets/images/edit_blue.png"> <img
-                                    style="margin-left: 9px;" src="assets/images/delete1.png"> </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="VendorDetailsDisplayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: VendorDetailsDisplayedColumns;"></tr>
-                    </table>
-                </mat-card>
-            </div>
-        </mat-tab> -->
-        <!-- Seven Tab -->
+        
         <mat-tab>
             <ng-template mat-tab-label>
                 <p>Others</p>
-                <mat-icon *ngIf="Rfxheader.Status=='6'" style="margin-left: 1rem;"
-                    [ngStyle]="{'color':index==5?'white':'#18a421'}">check_circle</mat-icon>
+                <!-- <mat-icon *ngIf="ODDetails.length!=0 && ODAttachDetails.length!=0" style="margin-left: 1rem;"
+                    [ngStyle]="{'color':index==3?'white':'#18a421'}">check_circle</mat-icon> -->
             </ng-template>
             <div>
                 <mat-card class="cl_card1">
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                         <label class="cl_header1">Question</label>
                         <div class="cl_divider_header" fxFlex=87></div>
-                        <button mat-button class="cl_button1" (click)="openDialogComponent6()">
+                        <!-- <button mat-button class="cl_button1" (click)="CreateQuestion()" *ngIf="Rfxheader.Status=='1'">
                             <img src="assets/images/ic_add.png">
                             <span class="add"> Add</span>
-                        </button>
+                        </button> -->
                     </div>
 
                     <table mat-table [dataSource]="ODDetailsDataSource" class="mat-elevation-z8" matSort>
@@ -737,14 +432,13 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: left;
-                                      color: #595d6e;width: 35%;" class="Rectangle-4510" *matHeaderCellDef> Answer type
+                                      color: #595d6e;width: 35%;" class="Rectangle-4510" *matHeaderCellDef> Answer Type
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                                {{element.AnswerType}} </td>
+                                {{GetAnswerType(element.AnswerType)}} </td>
                         </ng-container>
 
 
-                        <!-- Action Column -->
                         <ng-container matColumnDef="Action">
                             <th mat-header-cell style=" font-size: 13px;
                                       font-weight: 500;
@@ -752,10 +446,12 @@
                                       font-style: normal;
                                       line-height: 1.5;
                                       letter-spacing: normal;
-                                      text-align:right;
-                                      color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element"> <img src="assets/images/edit_blue.png"> <img
-                                    style="margin-left: 9px;" src="assets/images/delete1.png"> </td>
+                                      text-align: center;
+                                      color: #595d6e;width:4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
+                            <td mat-cell *matCellDef="let element;index as i;"> 
+                                <button *ngIf="!RespondedOD[i].isResponded" mat-button (click)="OpenResAnsDialog(element,i)">Answer</button> 
+                                <img *ngIf="RespondedOD[i].isResponded" src="assets/images/edit_blue.png"  (click)="OpenResAnsDialog(element,i)" class="clickable">   
+                            </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="ODDetailsDisplayedColumns"></tr>
@@ -767,10 +463,10 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                         <label class="cl_header1">Attachement</label>
                         <div class="cl_divider_header" fxFlex=85></div>
-                        <button mat-button class="cl_button1" (click)="openDialogComponent7()">
+                        <!-- <button mat-button class="cl_button1" (click)="CreateDocument()" *ngIf="Rfxheader.Status=='1'">
                             <img src="assets/images/ic_add.png">
                             <span class="add"> Add</span>
-                        </button>
+                        </button> -->
                     </div>
 
                     <table mat-table [dataSource]="ODAttachDetailsDataSource" class="mat-elevation-z8" matSort>
@@ -814,26 +510,12 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: center;
-                                      color: #595d6e;width: 67%;" class="Rectangle-4510" *matHeaderCellDef> Remark
+                                      color: #595d6e;width: 67%;" class="Rectangle-4510" *matHeaderCellDef> Document
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;text-align: center;" *matCellDef="let element">
-                                {{element.Remark}} </td>
+                                {{element.DocumentName}} </td>
                         </ng-container>
-
-
-                        <!-- Action Column -->
-                        <ng-container matColumnDef="Action">
-                            <th mat-header-cell style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: right;
-                                      color: #595d6e;width:4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element"> <img src="assets/images/edit_blue.png"> <img
-                                    style="margin-left: 9px;" src="assets/images/delete1.png"> </td>
-                        </ng-container>
+                       
 
                         <tr mat-header-row *matHeaderRowDef="ODAttachDetailsDisplayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: ODAttachDetailsDisplayedColumns;"></tr>
@@ -846,7 +528,7 @@
                         <div class="cl_divider_header" fxFlex=94.5></div>
                     </div>
                     <textarea matInput fxFlex style="margin: 1rem;
-                    border: 1px solid #48465b4a;"></textarea>
+                    border: 1px solid #48465b4a;" [(ngModel)]="ResH.ResRemarks"></textarea>
                 </mat-card>
             </div>
         </mat-tab>
@@ -861,10 +543,12 @@
                 Next
                 <img src="assets/images/next_arrow.png"></button>
             <div *ngIf="index==3" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-                <button mat-button class="cl_button2">Release</button>
-                <button mat-button class="cl_button4">Save</button>
+                <button mat-button class="cl_button4" (click)="SaveResClicked()">Respond</button>
             </div>
 
         </mat-toolbar>
     </footer>
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile"></div>
 </div>

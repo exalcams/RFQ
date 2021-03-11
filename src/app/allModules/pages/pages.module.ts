@@ -66,6 +66,8 @@ import { DialogContentExampleDialog5Component } from './rfq/rfq-dialogs/Question
 import { DialogContentExampleDialog7Component } from './rfq/rfq-dialogs/Attachment-Dialog/dialog-content-example-dialog7.component';
 import { ResponseHomeComponent } from './response-home/response-home.component';
 import { ResponseComponent } from './response/response.component';
+import { ResItemDialogComponent } from './response/response-dialogs/res-item-dialog/res-item-dialog.component';
+import { ResAnsDialogComponent } from './response/response-dialogs/res-ans-dialog/res-ans-dialog.component';
 
 const routes = [
     {
@@ -160,7 +162,9 @@ const routes = [
         DialogContentExampleDialog5Component,
         DialogContentExampleDialog7Component,
         ResponseHomeComponent,
-        ResponseComponent
+        ResponseComponent,
+        ResItemDialogComponent,
+        ResAnsDialogComponent
     ],
     providers: [
         DecimalPipe,
@@ -173,7 +177,9 @@ const routes = [
         DialogContentExampleDialog3Component,
         DialogContentExampleDialog4Component,
         DialogContentExampleDialog5Component,
-        DialogContentExampleDialog7Component
+        DialogContentExampleDialog7Component,
+        ResItemDialogComponent,
+        ResAnsDialogComponent
     ]
 })
 export class PagesModule { }

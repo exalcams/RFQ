@@ -25,7 +25,6 @@ import { AttachmentViewDialogComponent } from './notifications/attachment-view-d
 import { AttachmentDialogComponent } from './notifications/attachment-dialog/attachment-dialog.component';
 
 
-
 const appRoutes: Routes = [
     {
         path: 'auth',
@@ -62,7 +61,6 @@ const appRoutes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes, { preloadingStrategy: PreloadAllModules, useHash: true }),
-
         TranslateModule.forRoot(),
 
         // Material moment date module
