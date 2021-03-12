@@ -13,7 +13,7 @@
                     <label class="cl_8">{{HeaderDetails.length}}</label>
                 </div>
                 <div class="cl_blue" fxLayout="row" fxLayoutAlign="space-between center">
-                    <label class="cl_rfq">Initiated RFQ’s</label>
+                    <label class="cl_rfq">Initiated</label>
                     <!-- <img class="cl_info1" src="assets/images/info.png"> -->
                 </div>
             </div>
@@ -23,7 +23,7 @@
                     <label class="cl_8">0</label>
                 </div>
                 <div class="cl_green" fxLayout="row" fxLayoutAlign="space-between center">
-                    <label class="cl_rfq">Shipped</label>
+                    <label class="cl_rfq">Responded</label>
                     <!-- <img class="cl_info1" src="assets/images/info.png"> -->
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     <label class="cl_8">0</label>
                 </div>
                 <div class="cl_brown" fxLayout="row" fxLayoutAlign="space-between center">
-                    <label class="cl_rfq">Invoiced</label>
+                    <label class="cl_rfq">Evaluated</label>
                     <!-- <img class="cl_info1" src="assets/images/info.png"> -->
                 </div>
             </div>
@@ -43,7 +43,7 @@
                     <label class="cl_8">0</label>
                 </div>
                 <div class="cl_gray" fxLayout="row" fxLayoutAlign="space-between center">
-                    <label class="cl_rfq">Paid</label>
+                    <label class="cl_rfq">Closed</label>
                     <!-- <img class="cl_info1" src="assets/images/info.png"> -->
                 </div>
             </div>
@@ -110,13 +110,13 @@
                               <label  [ngStyle]="{'background-color':element.Status === '2'  ? '#e2f3e3' : 'transparent' }" class="mat_lable_1"> Initiated </label>
                             </div>
                             <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
-                                <label [ngStyle]="{'background-color':element.Status === '1' && element.Status === '2'  ? '#e2f3e3' : 'transparent' }" class="mat_lable_1"> Shipped </label>
+                                <label [ngStyle]="{'background-color':element.Status === '1' && element.Status === '2'  ? '#e2f3e3' : 'transparent' }" class="mat_lable_1"> Responded </label>
                             </div>
                             <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
-                                <label [ngStyle]="{'background-color':element.Status === '1'&& element.Status === '2'&& element.Status === '3' ? '#e2f3e3' : 'transparent' }" class="mat_lable_1"> Invoiced </label>
+                                <label [ngStyle]="{'background-color':element.Status === '1'&& element.Status === '2'&& element.Status === '3' ? '#e2f3e3' : 'transparent' }" class="mat_lable_1"> Evaluated </label>
                             </div>
                             <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
-                                <label [ngStyle]="{'background-color': element.Status === '1' && element.Status === '3' && element.Status === '4' ? '#e2f3e3' : 'transparent' }"class="mat_lable_2"> Paid </label>
+                                <label [ngStyle]="{'background-color': element.Status === '1' && element.Status === '3' && element.Status === '4' ? '#e2f3e3' : 'transparent' }"class="mat_lable_2">Closed</label>
                             </div>
                         </div>
 

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { RFxHeader, RFxHC, RFxItem, RFxPartner, RFxOD, RFxVendorView, MRFxGroup, MRFxType, ResponseView, RespondedItems, ResItem, RespondedODs, ResOD, ResHC, ResHeader } from 'app/models/RFx';
+import { RFxHeader, RFxHC, RFxItem, RFxPartner, RFxOD, RFxVendorView, MRFxGroup, MRFxType, ResponseView, RespondedItems, ResItem, RespondedODs, ResOD, ResHC, ResHeader, ResODAttachment, RespondedODAttachments } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { MatSnackBar } from '@angular/material';
@@ -12,6 +12,8 @@ import { ResItemDialogComponent } from './response-dialogs/res-item-dialog/res-i
 import { ResAnsDialogComponent } from './response-dialogs/res-ans-dialog/res-ans-dialog.component';
 import { AuthenticationDetails } from 'app/models/master';
 import { Guid } from 'guid-typescript';
+import { ResAttachDialogComponent } from './response-dialogs/res-attach-dialog/res-attach-dialog.component';
+import { element } from '@angular/core/src/render3/instructions';
 @Component({
   selector: 'app-response',
   templateUrl: './response.component.html',
@@ -41,18 +43,21 @@ export class ResponseComponent implements OnInit {
   ResI:ResItem[]=[];
   ResHC:ResHC[]=[];
   ResOD:ResOD[]=[];
+  ResAttachment:ResODAttachment[]=[];
   ResRemarks:string;
   RespondedI:RespondedItems[]=[];
   RespondedOD:RespondedODs[]=[];
+  RespondedAttachment:RespondedODAttachments[]=[];
   EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description'];
   ItemsDetailsDisplayedColumns: string[] = ['position', 'Item', 'Material', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm','Action'];
   ODDetailsDisplayedColumns: string[] = ['position', 'Question', 'Answertype','Action'];
-  ODAttachDetailsDisplayedColumns: string[] = ['position', 'Documenttitle', 'Remark'];
+  ODAttachDetailsDisplayedColumns: string[] = ['position', 'Documenttitle', 'Remark','Action'];
   EvaluationDetailsDataSource:MatTableDataSource<RFxHC>;
   ItemDetailsDataSource:MatTableDataSource<RFxItem>;
   PartnerDetailsDataSource:MatTableDataSource<RFxPartner>;
   VendorDetailsDataSource:MatTableDataSource<RFxVendorView>;
   ODDetailsDataSource:MatTableDataSource<RFxOD>;
+  ODAttachDetailsDataSource:MatTableDataSource<ResODAttachment>;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   RFxID: string=null;
   index: number=0;
@@ -113,33 +118,45 @@ export class ResponseComponent implements OnInit {
           this.GetResI(this.ResH.RESID);
           this.GetResOD(this.ResH.RESID);
           this.GetRFxODsByRFxID(this.RFxID);
+          this.GetResODAttach(this.ResH.RESID);
         }
       });
     }
     GetResI(ResID:string){
       this._RFxService.GetResponseItemsByResponseID(ResID).subscribe(data=>{
         this.ResI=<ResItem[]>data;
-        this.RespondedI=[];
-        this.ResI.forEach(element => {
-          var resItem=new RespondedItems();
-          resItem.Item=element;
-          resItem.isResponded=true;
-          this.RespondedI.push(resItem);
-        });
+        if(this.ResI.length!=0){
+          this.RespondedI=[];
+          this.ResI.forEach(element => {
+            var resItem=new RespondedItems();
+            resItem.Item=element;
+            resItem.isResponded=true;
+            this.RespondedI.push(resItem);
+          });
+        }
+        console.log("getresi",this.RespondedI);
       });
     }
     GetResOD(ResID:string){
       this._RFxService.GetResponseODsByResponseID(ResID).subscribe(data=>{
         this.ResOD=<ResOD[]>data;
-        this.RespondedOD=[];
-        this.ResOD.forEach(element => {
-          var resItem=new RespondedODs();
-          resItem.OD=element;
-          resItem.OD.QuestionID=undefined;
-          resItem.isResponded=true;
-          this.RespondedOD.push(resItem);
-        });
+        if(this.ResOD.length!=0){
+          this.RespondedOD=[];
+          this.ResOD.forEach(element => {
+            var resItem=new RespondedODs();
+            resItem.OD=element;
+            resItem.OD.QuestionID=undefined;
+            resItem.isResponded=true;
+            this.RespondedOD.push(resItem);
+          });
+        }
       });
+    }
+    GetResODAttach(ResID:string){
+      this._RFxService.GetResponseODAttachmentsByResponseID(ResID).subscribe(data=>{
+        this.ResAttachment=<ResODAttachment[]>data;
+        this.ODAttachDetailsDataSource=new MatTableDataSource(this.ResAttachment);
+      })
     }
 
   InitializeRFxFormGroup(): void {
@@ -172,6 +189,14 @@ export class ResponseComponent implements OnInit {
     })
   }
 
+  CreateDocument(){
+    var Document=new ResODAttachment();
+    Document.RFxID=this.RFxID;
+    Document.Client=this.Rfxheader.Client;
+    Document.Company=this.Rfxheader.Company;
+    this.OpenResDocumentDialog(Document,true);
+  }
+
   CreateRes() {
     this.isProgressBarVisibile=true;
     // Header & Item
@@ -201,6 +226,7 @@ export class ResponseComponent implements OnInit {
     this.ResView.ResItems=this.ResI;
     this.ResView.ResHCs=this.ResHC;
     this.ResView.ResODs=this.ResOD;
+    this.ResView.ResODAttach=this.ResAttachment;
     console.log("resview",this.ResView);
     this._RFxService.CreateResponse(this.ResView)
       .subscribe(
@@ -209,7 +235,7 @@ export class ResponseComponent implements OnInit {
           this.isProgressBarVisibile=false;
           this._router.navigate(['pages/responsehome']);
           this.notificationSnackBarComponent.openSnackBar('Res saved successfully', SnackBarStatus.success);
-          //this._RFxService.UploadAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
+          this._RFxService.UploadAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
         },
         error => {console.log(error);
         this.isProgressBarVisibile=false});
@@ -244,13 +270,14 @@ export class ResponseComponent implements OnInit {
     this.ResView.ResItems=this.ResI;
     this.ResView.ResHCs=this.ResHC;
     this.ResView.ResODs=this.ResOD;
+    this.ResView.ResODAttach=this.ResAttachment;
     console.log("resview",this.ResView);
     this._RFxService.UpdateResponse(this.ResView)
     .subscribe(
       response => {
         console.log("response",response);
         this.isProgressBarVisibile=false;
-        //this._RFxService.UploadAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
+        this._RFxService.UploadAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
         this.notificationSnackBarComponent.openSnackBar('Res saved successfully', SnackBarStatus.success);
         this._router.navigate(['pages/responsehome']);
       },
@@ -302,6 +329,7 @@ export class ResponseComponent implements OnInit {
             res.CriteriaID=element.CriteriaID;
             this.ResHC.push(res);
           });
+          console.log("getrfxhc",this.RespondedI);
           this.EvaluationDetailsDataSource=new MatTableDataSource(this.EvaluationDetails);
         }
       }
@@ -396,6 +424,7 @@ export class ResponseComponent implements OnInit {
     }
   }
   OpenResItemDialog(index) {
+    console.log(this.RespondedI);
     const dialogRef = this.dialog.open(ResItemDialogComponent, {
       data: {data:this.RespondedI[index]}, height: '72%',
       width: '44%'
@@ -422,5 +451,24 @@ export class ResponseComponent implements OnInit {
         console.log("respondedOD",this.RespondedOD);
       }
     });
+  }
+
+  OpenResDocumentDialog(Document:ResODAttachment,bool:boolean) {
+    const dialogRef = this.dialog.open(ResAttachDialogComponent, {
+      data: {data:Document,isCreate:bool}, height: '52%',
+      width: '50%'
+    });
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(res=>{
+      if(res && res.isCreate){
+        this.ResAttachment.push(res.data);
+        this.ODAttachDetailsDataSource=new MatTableDataSource(this.ResAttachment);
+      }
+      this.FilesToUpload.push(res.Attachments);
+    });
+  }
+  DeleteAttachment(index){
+    this.ResAttachment.splice(index,1);
+    this.ODAttachDetailsDataSource=new MatTableDataSource(this.ResAttachment);
   }
 }

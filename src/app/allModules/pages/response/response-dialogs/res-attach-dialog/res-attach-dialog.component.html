@@ -1,0 +1,41 @@
+<div>
+  <mat-toolbar class="toolbar1">
+      <p class="add_criteria">Add Attachment</p>
+      <img (click)="dialogRef.close()" src="assets/images/cancel1.png">
+  </mat-toolbar>
+</div>
+<mat-dialog-content [formGroup]="DialogueFormGroup">
+  <div style="padding: 2rem;">
+      <div fxLayout="column" fxFlex="100">
+
+          <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+              <mat-label>Document title</mat-label>
+              <input matInput maxlength="40" size="40" formControlName="Documenttitle" fxFlex>
+              <mat-error
+                  *ngIf="DialogueFormGroup.get('Documenttitle').touched && DialogueFormGroup.get('Documenttitle').hasError('required')">
+                  Document Title is required
+              </mat-error>
+          </mat-form-field>
+
+          <div fxFlex>
+              <p class="attachment">Document</p>
+              <div>
+                  <ngx-dropzone (change)="onSelect($event)" class="cl_div">
+                      <div *ngIf="!SelectedFileName">
+                          <span style="color: #068dd0;font-size: 12px;">Drop here to upload or <a
+                                  style="text-decoration: underline;">choose file</a></span>
+                      </div>
+                      <div *ngIf="SelectedFileName">
+                          <span>{{SelectedFileName}}</span>
+                      </div>
+                  </ngx-dropzone>
+              </div>
+              <p style="color: #f44336;font-size: 12px;" *ngIf="FileError">Attachement is required</p>
+          </div>
+      </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center">
+  <button mat-button class="cl_button1" (click)="Save()"><span class="add">{{data.isCreate?'Add':'Save'}}</span>
+  </button>
+</mat-dialog-actions>

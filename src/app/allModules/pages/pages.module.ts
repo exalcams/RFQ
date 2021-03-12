@@ -68,6 +68,7 @@ import { ResponseHomeComponent } from './response-home/response-home.component';
 import { ResponseComponent } from './response/response.component';
 import { ResItemDialogComponent } from './response/response-dialogs/res-item-dialog/res-item-dialog.component';
 import { ResAnsDialogComponent } from './response/response-dialogs/res-ans-dialog/res-ans-dialog.component';
+import { ResAttachDialogComponent } from './response/response-dialogs/res-attach-dialog/res-attach-dialog.component';
 
 const routes = [
     {
@@ -164,7 +165,8 @@ const routes = [
         ResponseHomeComponent,
         ResponseComponent,
         ResItemDialogComponent,
-        ResAnsDialogComponent
+        ResAnsDialogComponent,
+        ResAttachDialogComponent
     ],
     providers: [
         DecimalPipe,
@@ -179,7 +181,8 @@ const routes = [
         DialogContentExampleDialog5Component,
         DialogContentExampleDialog7Component,
         ResItemDialogComponent,
-        ResAnsDialogComponent
+        ResAnsDialogComponent,
+        ResAttachDialogComponent
     ]
 })
 export class PagesModule { }
