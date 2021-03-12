@@ -4,7 +4,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 // import { _MatChipListMixinBase } from '@angular/material';
 // import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup } from '../models/RFx';
+import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment } from '../models/RFx';
 import { environment } from '../../environments/environment';
 
 
@@ -182,6 +182,10 @@ export class RFxService {
     GetResponseODsByResponseID(ResponseID: string): Observable<ResOD[] | string> {
         return this._httpClient.get<ResOD[]>(`${this.baseAddress}rfxapi/RFx/GetResponseODsByResponseID?ResponseID=${ResponseID}`)
             .pipe(catchError(this.errorHandler));
+    }
+
+    GetResponseODAttachmentsByResponseID(ResponseID : string): Observable<RFxODAttachment[] | string>{
+        return this._httpClient.get<ResODAttachment[]>(`${this.baseAddress}rfxapi/RFx/GetResponseODAttachmentsByResponseID?ResponseID=${ResponseID}`)
     }
     CreateResponse(Response: ResponseView): Observable<any> {
         return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateResponse`,

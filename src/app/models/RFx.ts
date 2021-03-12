@@ -209,6 +209,15 @@ export class ResOD extends CommonClass {
     Attachment: string;
     Date: Date | string;
 }
+export class ResODAttachment extends CommonClass{
+    Client: string;
+    Company: string;
+    RFxID: string;
+    RESID:string;
+    DocumentID: number;
+    DocumentTitle: string;
+    DocumentName: string;
+}
 
 export class ResHC extends CommonClass {
     Client: string;
@@ -305,6 +314,7 @@ export class ResponseView {
     ResHCs: ResHC[];
     ResICs: ResIC[];
     ResODs: ResOD[];
+    ResODAttach : ResODAttachment[];
 }
 export class RespondedItems{
     isResponded:boolean;
@@ -313,4 +323,8 @@ export class RespondedItems{
 export class RespondedODs{
     isResponded:boolean;
     OD:ResOD;
+}
+export class RespondedODAttachments{
+    isResponded:boolean;
+    Attachment:ResODAttachment;
 }
