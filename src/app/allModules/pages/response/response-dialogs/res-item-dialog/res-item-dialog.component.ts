@@ -30,9 +30,9 @@ export class ResItemDialogComponent implements OnInit {
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
       Price:[this.ResItem.Price,Validators.required],
-      LeadTime:[this.ResItem.LeadTime,Validators.required],
+      LeadTime:[this.ResItem.LeadTime,[Validators.required,Validators.pattern('^([0-9]{1,3})?$')]],
       USPRemark:[this.ResItem.USPRemark,Validators.required],
-      PriceRating:[this.ResItem.PriceRating,Validators.required],
+      PriceRating:[this.ResItem.PriceRating,[Validators.required,Validators.pattern('^([0-9]{1})?$')]],
       LeadTimeRating:[this.ResItem.LeadTimeRating,Validators.required]
     });
   }

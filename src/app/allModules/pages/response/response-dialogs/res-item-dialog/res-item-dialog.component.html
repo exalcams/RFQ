@@ -24,6 +24,8 @@
           *ngIf="DialogueFormGroup.get('LeadTime').touched && DialogueFormGroup.get('LeadTime').hasError('required')">
           Lead time is required
         </mat-error>
+        <mat-error *ngIf="DialogueFormGroup.get('LeadTime').hasError('pattern')">Enter
+          only 3 digits</mat-error>
       </mat-form-field>
 
       <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
@@ -42,6 +44,8 @@
           *ngIf="DialogueFormGroup.get('PriceRating').touched && DialogueFormGroup.get('PriceRating').hasError('required')">
           Price Rating is required
         </mat-error>
+        <mat-error *ngIf="DialogueFormGroup.get('PriceRating').hasError('pattern')">Enter
+          only 1 digits</mat-error>
       </mat-form-field>
 
       <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
