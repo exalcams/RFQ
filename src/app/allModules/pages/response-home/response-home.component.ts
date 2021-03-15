@@ -74,4 +74,118 @@ export class ResponseHomeComponent implements OnInit {
         dialogConfig
     );
 }
+//fulfilment Status
+getStatusColor(element: RFxHeader, StatusFor: string): string {
+  switch (StatusFor) {
+      case "Responded":
+          return element.Status === "1"
+              ? "gray"
+              : element.Status === "2"
+                  ? "gray"
+                  : element.Status === "3"
+                      ? "#efb577" : "#34ad65";
+      case "Evaluated":
+          return element.Status === "1"
+              ? "gray"
+              : element.Status === "2"
+                  ? "gray"
+                  : element.Status === "3"
+                      ? "gray"
+                      : element.Status === "4"
+                          ? "gray"
+                          : "#34ad65";
+      case "Closed":
+          return element.Status === "1"
+              ? "gray"
+              : element.Status === "2"
+                  ? "gray"
+                  : element.Status === "3"
+                      ? "gray"
+                      : element.Status === "4"
+                          ? "gray"
+                          : element.Status === "5"
+                              ? "gray"
+                              : "#34ad65";
+      default:
+          return "";
+  }
+}
+
+getTimeline(element: RFxHeader, StatusFor: string): string {
+  switch (StatusFor) {
+      case "Responded":
+          return element.Status === "1"
+              ? "white-timeline"
+              : element.Status === "2"
+                  ? "white-timeline"
+                  : element.Status === "3"
+                      ? "orange-timeline" : "green-timeline";
+      case "Evaluated":
+          return element.Status === "1"
+              ? "white-timeline"
+              : element.Status === "2"
+                  ? "white-timeline"
+                  : element.Status === "3"
+                      ? "white-timeline"
+                      : element.Status === "4"
+                          ? "white-timeline"
+                          : "green-timeline";
+      case "Closed":
+          return element.Status === "1"
+              ? "white-timeline"
+              : element.Status === "2"
+                  ? "white-timeline"
+                  : element.Status === "3"
+                      ? "white-timeline"
+                      : element.Status === "4"
+                          ? "white-timeline"
+                          : element.Status === "5"
+                              ? "white-timeline"
+                              : "green-timeline";
+      default:
+          return "";
+  }
+}
+
+getRestTimeline(element: RFxHeader, StatusFor: string): string {
+  switch (StatusFor) {
+      case "Responded":
+          return element.Status === "1"
+              ? "white-timeline"
+              : element.Status === "2"
+                  ? "white-timeline"
+                  : element.Status === "3"
+                      ? "white-timeline"
+                      : element.Status === "4"
+                          ? "white-timeline"
+                          : "green-timeline";
+      case "Evaluated":
+          return element.Status === "1"
+              ? "white-timeline"
+              : element.Status === "2"
+                  ? "white-timeline"
+                  : element.Status === "3"
+                      ? "white-timeline"
+                      : element.Status === "4"
+                          ? "white-timeline"
+                          : element.Status === "5"
+                              ? "white-timeline"
+                              : "green-timeline";
+      case "Closed":
+          return element.Status === "1"
+              ? "white-timeline"
+              : element.Status === "2"
+                  ? "white-timeline"
+                  : element.Status === "3"
+                      ? "white-timeline"
+                      : element.Status === "4"
+                          ? "white-timeline"
+                          : element.Status === "5"
+                              ? "white-timeline"
+                              : "green-timeline";
+      default:
+          return "";
+  }
+}
+
 }

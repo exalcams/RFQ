@@ -104,46 +104,53 @@
             <ng-container matColumnDef="Fulfilment">
                 <th mat-header-cell style="text-align: center;" class="header-cell" *matHeaderCellDef> Fulfilment </th>
                 <td mat-cell style="text-align: center;"  *matCellDef="let element">
-                    <div fxLayout="column" fxLayoutAlign="center center">
-                        <div fxLayout fxLayoutAlign="center center" class="mx-8" style="width: 300px;">
-                            <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
-                              <label  [ngStyle]="{'background-color':element.Status === '2'  ? '#e2f3e3' : 'transparent' }" class="mat_lable_1"> Initiated </label>
-                            </div>
-                            <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
-                                <label [ngStyle]="{'background-color':element.Status === '1' && element.Status === '2'  ? '#e2f3e3' : 'transparent' }" class="mat_lable_1"> Responded </label>
-                            </div>
-                            <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
-                                <label [ngStyle]="{'background-color':element.Status === '1'&& element.Status === '2'&& element.Status === '3' ? '#e2f3e3' : 'transparent' }" class="mat_lable_1"> Evaluated </label>
-                            </div>
-                            <div fxFlex="25" fxLayoutAlign="center center" class="timelineItem">
-                                <label [ngStyle]="{'background-color': element.Status === '1' && element.Status === '3' && element.Status === '4' ? '#e2f3e3' : 'transparent' }"class="mat_lable_2">Closed</label>
-                            </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="mt-4 mx-8">
+                        <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
+                          <div class="round"
+                            [style.border-color]="element.Status==='1'?'gray':'#34ad65'"></div>
+                          <div style="width: 10px;"
+                            [class]="element.Status==='1'?'white-timeline':'green-timeline'"></div>
+                          <div [class]="element.Status==='1'?'white-timeline':element.Status==='2'?'white-timeline':'green-timeline'" fxFlex></div>
                         </div>
-
-                        <ng-container *ngIf="element.Status == 1">
-                            <img [src]='imgArray[0].url' />
-                        </ng-container>
-                        <ng-container *ngIf="element.Status == 2">
-                            <img [src]='imgArray[1].url' />
-                        </ng-container>
-                        <ng-container *ngIf="element.Status == 3">
-                            <img [src]='imgArray[2].url' />
-                        </ng-container>
-                        <ng-container *ngIf="element.Status == 4">
-                            <img [src]='imgArray[3].url' />
-                        </ng-container>
-                        <ng-container *ngIf="element.Status == 5">
-                            <img [src]='imgArray[4].url' />
-                        </ng-container>
-                    </div>
+                        <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
+                          <div style="width: 10px;" [class]="getTimeline(element,'Responded')">
+                          </div>
+                          <div class="round"
+                            [style.border-color]="getStatusColor(element,'Responded')"></div>
+                          <div style="width: 10px;" [class]="getTimeline(element,'Responded')">
+                          </div>
+                          <div [class]="getRestTimeline(element,'Responded')" fxFlex></div>
+                        </div>
+                        <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
+                          <div style="width: 10px;" [class]="getTimeline(element,'Evaluated')">
+                          </div>
+                          <div class="round"
+                            [style.border-color]="getStatusColor(element,'Evaluated')"></div>
+                          <div style="width: 10px;" [class]="getTimeline(element,'Evaluated')">
+                          </div>
+                          <div [class]="getRestTimeline(element,'Evaluated')" fxFlex></div>
+                        </div>
+                        <div fxFlex="10" fxLayout="row" fxLayoutAlign="start center">
+                          <div style="width: 10px;" [class]="getTimeline(element,'Closed')">
+                          </div>
+                          <div class="round"
+                            [style.border-color]="getStatusColor(element,'Closed')"></div>
+                        </div>
+                      </div>
+                      <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxFlex="30" class="timelineItem">Initiated</div>
+                        <div fxFlex="30" class="timelineItem">Responded</div>
+                        <div fxFlex="30" class="timelineItem">Evaluated</div>
+                        <div fxFlex="10" class="timelineItem">Closed</div>
+                      </div>
                 </td>
             </ng-container>
 
             <!-- Attachements Column -->
             <ng-container matColumnDef="Attachment">
-                <th mat-header-cell class="header-cell header-center-align" mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell class="header-cell"  style="text-align: center;" *matHeaderCellDef>
                     Attachements </th>
-                <td mat-cell *matCellDef="let element;index as i" class="td-cell" (click)="openAttachmentViewDialog(element.RFxID,element.Attachment)" style="cursor: pointer;">
+                <td mat-cell *matCellDef="let element;index as i" class="td-cell" (click)="openAttachmentViewDialog(element.RFxID,element.Attachment)" style="cursor: pointer;text-align: center;">
                     <div style="margin-top: 3px; margin-left: 15px;">
                         <span [matBadge]="element.Attachment.length" matBadgeSize="small" matBadgeColor="accent"
                             matBadgeOverlap="false"></span>

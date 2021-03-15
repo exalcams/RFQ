@@ -471,16 +471,16 @@ table {
      
     } */
 
+    /*fulfilment status*/
+
    .green-timeline {
-      background-color: #34ad65;
-      height: 4px;
-      margin-top: 8px;
+    background-color: #34ad65;
+    height: 5px;
+    margin-left: -1px;
     }
     .timelineItem {
-      text-align: right;
+      text-align: left;
       font-size: 10px;
-      padding-left: 4px;
-
     }
     .mat_lable_1{
       /* background-color: #e2f3e3; */
@@ -496,14 +496,13 @@ table {
     }
     .white-timeline {
       background-color: white;
-      border-top: 2px solid rgba(0, 0, 0, 0.2);
-      border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-      height: 8px;
-      margin-top: 5px;
+      border-top: 1px solid rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      height: 5px;
     }
     .round {
-      height: 20px;
-      width: 20px;
+      height: 16px;
+      width: 16px;
       border-radius: 20px;
       border-width: 3px;
       border-style: solid;
