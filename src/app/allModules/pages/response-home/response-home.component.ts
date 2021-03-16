@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationDetails } from 'app/models/master';
 import { RFxHeader } from 'app/models/RFx';
 import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { RFxService } from 'app/services/rfx.service';
@@ -36,6 +37,9 @@ export class ResponseHomeComponent implements OnInit {
       url: '../assets/images/5.png'
     }
   ] 
+  authenticationDetails: any;
+  currentUserID: any;
+  currentUserName: any;
 
   constructor(private route: Router,
     private _RFxService: RFxService,
@@ -43,7 +47,17 @@ export class ResponseHomeComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.GetRFxs();
+ 
+    const retrievedObject = localStorage.getItem("authorizationData");
+    if (retrievedObject) {
+      this.authenticationDetails = JSON.parse(
+        retrievedObject
+      ) as AuthenticationDetails;
+      this.currentUserID = this.authenticationDetails.UserID;
+      this.currentUserName = this.authenticationDetails.UserName;
+     
+      }
+      this.GetRFxsByVendorname(this.currentUserName);
   }
 
   Gotoheader(rfqid) {
@@ -52,6 +66,20 @@ export class ResponseHomeComponent implements OnInit {
   GetRFxs(): void {
     // window.location.reload()
     this._RFxService.GetAllRFxHDocumets().subscribe(
+      (data) => {
+        if (data) {
+          this.HeaderDetails =data;
+          this.HeaderDetailsDataSource = new MatTableDataSource(
+            this.HeaderDetails
+          );
+          this.HeaderDetailsDataSource.paginator=this.RFQPaginator;
+          this.HeaderDetailsDataSource.sort=this.RFQSort;
+        }
+      }
+    )
+  }
+  GetRFxsByVendorname(UserName:string): void {
+    this._RFxService.GetAllRFxHDocumetsByVendorName(UserName).subscribe(
       (data) => {
         if (data) {
           this.HeaderDetails =data;
