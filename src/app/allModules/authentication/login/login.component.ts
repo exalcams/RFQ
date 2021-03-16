@@ -116,12 +116,15 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('authorizationData', JSON.stringify(data));
     this.UpdateMenu();
     this.notificationSnackBarComponent.openSnackBar('Logged in successfully', SnackBarStatus.success);
-    // if (data.userRole === 'Administrator') {
-    //   this._router.navigate(['master/user']);
-    // } else {
-    //   this._router.navigate(['pages/dashboard']);
-    // }
-    this._router.navigate(['pages/home']);
+    if (data.UserRole === 'Buyer') {
+      this._router.navigate(['pages/home']);
+    } else if (data.UserRole === 'Vendor') {
+      this._router.navigate(['pages/responsehome']);
+    }
+    else{
+      this._router.navigate(['master/role']);
+    }
+    // this._router.navigate(['pages/home']);
   }
 
   OpenChangePasswordDialog(data: AuthenticationDetails): void {
@@ -232,7 +235,34 @@ export class LoginComponent implements OnInit {
         }
       );
     }
-    
+    if (this.MenuItems.indexOf('RFQ_ResponseHome') >= 0) {
+      this.children.push(
+        {
+          id: 'dashboard',
+          title: 'Dashboard',
+          translate: 'NAV.SAMPLE.TITLE',
+          type: 'item',
+          icon: 'dashboard',
+          isSvgIcon: false,
+          // icon: 'dashboard',
+          url: '/pages/responsehome',
+        }
+      );
+    }
+    if (this.MenuItems.indexOf('RFQ_Response') >= 0) {
+      this.children.push(
+        {
+          id: 'rfq',
+          title: 'Response',
+          translate: 'NAV.SAMPLE.TITLE',
+          type: 'item',
+          icon: 'payment',
+          isSvgIcon: false,
+          // icon: 'dashboard',
+          url: '/pages/response',
+        }
+      );
+    }
     // if (this.MenuItems.indexOf('InvoiceDetails') >= 0) {
     //   this.children.push(
     //     {
