@@ -7,6 +7,7 @@ import { Guid } from 'guid-typescript';
 import { AuthenticationDetails, UserWithRole } from 'app/models/master';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { RFxService } from 'app/services/rfx.service';
+import { saveAs } from 'file-saver';
 
 
 @Component({
@@ -55,7 +56,12 @@ export class AttachmentViewDialogComponent implements OnInit {
                 fileName.toLowerCase().includes('.gif') ? 'image/gif' :
                   fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
           const blob = new Blob([data], { type: fileType });
-          this.openAttachmentDialog(fileName, blob);
+          if(fileType=='image/jpg' || fileType=='image/jpeg' || fileType=='image/png' || fileType=='image/gif' || fileType=='application/pdf'){
+            this.openAttachmentDialog(fileName, blob);
+          }
+          else{
+            saveAs(blob,fileName);
+          }
         }
         this.isProgressBarVisibile = false;
       },

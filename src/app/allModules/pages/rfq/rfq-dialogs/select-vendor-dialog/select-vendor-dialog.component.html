@@ -1,8 +1,8 @@
 <div>
   <mat-toolbar class="toolbar1">
-    <p class="add_criteria">Select vendors</p>
-    <div fxLayout="row" fxLayoutAlign="center center"><span class="selected-vendors">{{SelectedVendors.length}} vendors selected</span></div>
-    <img (click)="dialogRef.close()" style="cursor: pointer;" src="assets/images/cancel1.png">
+    <div fxFlex=33 fxLayoutAlign="start center"><p class="add_criteria">Select vendors</p></div>
+    <div fxFlex=33 fxLayout="row" fxLayoutAlign="center center"><span class="selected-vendors">{{SelectedVendors.length}} vendors selected</span></div>
+    <div fxFlex=33 fxLayout="row" fxLayoutAlign="end center"><img (click)="dialogRef.close()" style="cursor: pointer;" src="assets/images/cancel1.png"></div>
   </mat-toolbar>
 </div>
 <mat-dialog-content>
@@ -22,7 +22,7 @@
     </div>
     <div class="selection-list">
       <mat-selection-list #list>
-        <mat-list-option class="cards" checkboxPosition="before" *ngFor="let vendor of FilteredVendors;index as i;" [selected]="vendor.Checked" (click)="Toggle(vendor,i)" [value]="vendor">
+        <mat-list-option class="cards" checkboxPosition="before" *ngFor="let vendor of FilteredVendors;" [selected]="vendor.Checked" (click)="Toggle(vendor)" [value]="vendor">
           <div class="vendor-list" fxLayout="column" fxLayoutAlign="space-evenly center" style="background: inherit;">
             <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
               <label class="vendor-detail">{{vendor.VendorName}}</label>

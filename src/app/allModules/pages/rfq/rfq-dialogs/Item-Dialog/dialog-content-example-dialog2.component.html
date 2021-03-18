@@ -114,6 +114,15 @@
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                <mat-label>Lead time</mat-label>
+                <input matInput formControlName="LeadTime" type="number" fxFlex autocomplete="off">
+                <mat-error
+                *ngIf="DialogueFormGroup.get('LeadTime').touched && DialogueFormGroup.get('LeadTime').hasError('required')">
+                Lead time is required
+            </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Notes</mat-label>
                 <input matInput formControlName="Notes" max="2" size="2" fxFlex autocomplete="off"/>
                 <mat-error

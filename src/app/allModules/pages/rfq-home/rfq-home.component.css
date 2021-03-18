@@ -312,7 +312,6 @@
   font-style: normal;
   line-height: 1.5;
   letter-spacing: normal;
-  display: flex;
   align-items: center;
   justify-content: center;
   color:#1694d2;
@@ -478,6 +477,11 @@ table {
     height: 5px;
     margin-left: -1px;
     }
+    .orange-timeline {
+      background-color: #efb577;
+      height: 5px;
+      margin-left: -1px;
+      }
     .timelineItem {
       text-align: left;
       font-size: 10px;
