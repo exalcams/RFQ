@@ -1,0 +1,44 @@
+<div>
+  <mat-toolbar class="toolbar1">
+    <p class="add_criteria">Select vendors</p>
+    <div fxLayout="row" fxLayoutAlign="center center"><span class="selected-vendors">{{SelectedVendors.length}} vendors selected</span></div>
+    <img (click)="dialogRef.close()" style="cursor: pointer;" src="assets/images/cancel1.png">
+  </mat-toolbar>
+</div>
+<mat-dialog-content>
+  <div style="padding: 2rem 2rem 0rem;" fxLayout=column>
+    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+      <mat-form-field fxFlex=48 style="font-size: 14px;" appearance="outline">
+        <mat-icon style="color:#068dd0;" matSuffix>search</mat-icon>
+        <input matInput fxFlex [(ngModel)]="Searchkey" (keyup)="FilterVendor()" placeholder="Search">
+      </mat-form-field>
+      <mat-form-field fxFlex=48 style="font-size: 14px;" appearance="outline">
+        <mat-select fxFlex placeholder="Type" [(ngModel)]="VendorType">
+          <mat-option value="Domestic Supply">Domestic Supply</mat-option>
+          <mat-option value="Domestic Service"> Domestic Service </mat-option>
+          <mat-option value="Import Vendor"> Import Vendor</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="selection-list">
+      <mat-selection-list #list>
+        <mat-list-option class="cards" checkboxPosition="before" *ngFor="let vendor of FilteredVendors;index as i;" [selected]="vendor.Checked" (click)="Toggle(vendor,i)" [value]="vendor">
+          <div class="vendor-list" fxLayout="column" fxLayoutAlign="space-evenly center" style="background: inherit;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+              <label class="vendor-detail">{{vendor.VendorName}}</label>
+              <label class="vendor-detail">{{vendor.Type}}</label>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+              <label class="vendor-detail">{{vendor.City}}</label>
+              <label class="vendor-detail">{{vendor.GST}}</label>
+            </div>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center">
+  <button mat-button class="cl_button1" (click)="TransferClicked()"><span class="add">Transfer</span>
+  </button>
+</mat-dialog-actions>

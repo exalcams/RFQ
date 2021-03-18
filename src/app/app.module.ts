@@ -24,7 +24,6 @@ import { ExcelService } from './services/excel.service';
 import { AttachmentViewDialogComponent } from './notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentDialogComponent } from './notifications/attachment-dialog/attachment-dialog.component';
 
-
 const appRoutes: Routes = [
     {
         path: 'auth',

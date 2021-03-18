@@ -7,40 +7,40 @@
     </mat-toolbar>
     <div fxFlex style="margin: 20px;">
         <div fxLayout="row" fxLayoutAlign="space-between center">
-            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start" (click)="LoadTableSource(InitiatedHeaderDetails)" style="cursor: pointer;">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/quote.png">
-                    <label class="cl_8">{{HeaderDetails.length}}</label>
+                    <label class="cl_8">{{InitiatedHeaderDetails.length}}</label>
                 </div>
                 <div class="cl_blue" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Initiated</label>
                     <!-- <img class="cl_info1" src="assets/images/info.png"> -->
                 </div>
             </div>
-            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start" (click)="LoadTableSource(RespondedHeaderDetails)" style="cursor: pointer;">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/truck.png">
-                    <label class="cl_8">0</label>
+                    <label class="cl_8">{{RespondedHeaderDetails.length}}</label>
                 </div>
                 <div class="cl_green" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Responded</label>
                     <!-- <img class="cl_info1" src="assets/images/info.png"> -->
                 </div>
             </div>
-            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start" (click)="LoadTableSource(EvaluatedHeaderDetails)" style="cursor: pointer;">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/invoice1.png">
-                    <label class="cl_8">0</label>
+                    <label class="cl_8">{{EvaluatedHeaderDetails.length}}</label>
                 </div>
                 <div class="cl_brown" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Evaluated</label>
                     <!-- <img class="cl_info1" src="assets/images/info.png"> -->
                 </div>
             </div>
-            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start" (click)="LoadTableSource(ClosedHeaderDetails)" style="cursor: pointer;">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/money.png">
-                    <label class="cl_8">0</label>
+                    <label class="cl_8">{{ClosedHeaderDetails.length}}</label>
                 </div>
                 <div class="cl_gray" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Closed</label>

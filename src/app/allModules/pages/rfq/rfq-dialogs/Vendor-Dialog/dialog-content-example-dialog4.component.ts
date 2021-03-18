@@ -12,13 +12,8 @@ import { RFxService } from 'app/services/rfx.service';
 })
 export class DialogContentExampleDialog4Component implements OnInit {
   DialogueFormGroup: FormGroup;
-  rfx = new RFxVendor;
   VendorView=new RFxVendorView;
-  visible = true;
-  selectable = true;
-  removable = true;
   VendorMaster:MVendor[]=[];
-  isNewVendor:boolean=false;
   constructor
   (
     private _formBuilder: FormBuilder,
@@ -27,56 +22,44 @@ export class DialogContentExampleDialog4Component implements OnInit {
   ) { this.VendorView = data.data; }
   ngOnInit(): void {
     this.InitializeDialogueFormGroup();
-    this.DialogueFormGroup.get('Type').disable();
-    this.DialogueFormGroup.get('v_name').disable();
-    this.DialogueFormGroup.get('GST').disable();
-    this.DialogueFormGroup.get('City').disable();
     this._RFxService.GetAllRFxVendorM().subscribe(master=>{
       this.VendorMaster=master as MVendor[];
     });
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Vendor: [this.VendorView.PatnerID, Validators.required],
-      Type: [this.VendorView.Type, Validators.required],
-      v_name: [this.VendorView.VendorName, Validators.required],
-      GST: [this.VendorView.GSTNumber, Validators.required],
-      City: [this.VendorView.City, Validators.required],
-      mailid1:[],
-      mailid2:[],
-      contactPerson:[],
-      mobile:[]
+      Vendor: ['', Validators.required],
+      Type: ['', Validators.required],
+      v_name: ['', Validators.required],
+      GST: ['', Validators.required],
+      City: ['', Validators.required],
+      mailid1:['',[Validators.required,Validators.email]],
+      mailid2:['',Validators.email],
+      contactPerson:['',Validators.required],
+      mobile:['',[Validators.required,Validators.pattern('[0-9]{10}')]]
     });
   }
   Save(){
     if(this.DialogueFormGroup.valid){
-      this.rfx.PatnerID=this.DialogueFormGroup.get('Vendor').value;
       this.VendorView.PatnerID=this.DialogueFormGroup.get('Vendor').value;
       this.VendorView.Type=this.DialogueFormGroup.get('Type').value;
       this.VendorView.VendorName=this.DialogueFormGroup.get('v_name').value;
       this.VendorView.GSTNumber=this.DialogueFormGroup.get('GST').value;
       this.VendorView.City=this.DialogueFormGroup.get('City').value;
-      if(this.isNewVendor==true){
-        var vendor=new MVendor();
-        vendor.Client=this.VendorView.Client;
-        vendor.Company=this.VendorView.Company;
-        vendor.PatnerID=this.VendorView.PatnerID;
-        vendor.Type=this.VendorView.Type;
-        vendor.VendorName=this.VendorView.VendorName;
-        vendor.GST=this.VendorView.GSTNumber;
-        vendor.City=this.VendorView.City;
-        vendor.EmailID1=this.DialogueFormGroup.get('mailid1').value;
-        vendor.EmailID2=this.DialogueFormGroup.get('mailid2').value;
-        vendor.ContactPerson=this.DialogueFormGroup.get('contactPerson').value;
-        vendor.ContactPersonMobile=this.DialogueFormGroup.get('mobile').value;
-        this._RFxService.AddtoVendorTable(vendor).subscribe(res=>{
-          var Result={data:this.VendorView,isCreate:this.data.isCreate};
-          this.dialogRef.close(Result);
-        },err=>{console.log("vendor master not created!;")});
-      }else{
-        var Result={data:this.VendorView,isCreate:this.data.isCreate};
-        this.dialogRef.close(Result);
-      }
+      var vendor=new MVendor();
+      vendor.Client=this.VendorView.Client;
+      vendor.Company=this.VendorView.Company;
+      vendor.PatnerID=this.VendorView.PatnerID;
+      vendor.Type=this.VendorView.Type;
+      vendor.VendorName=this.VendorView.VendorName;
+      vendor.GST=this.VendorView.GSTNumber;
+      vendor.City=this.VendorView.City;
+      vendor.EmailID1=this.DialogueFormGroup.get('mailid1').value;
+      vendor.EmailID2=this.DialogueFormGroup.get('mailid2').value;
+      vendor.ContactPerson=this.DialogueFormGroup.get('contactPerson').value;
+      vendor.ContactPersonMobile=this.DialogueFormGroup.get('mobile').value;
+      var Result={data:this.VendorView,vendor:vendor};
+      this.dialogRef.close(Result);
     }
     else{
       this.ShowValidationErrors(this.DialogueFormGroup);
@@ -98,10 +81,5 @@ ShowValidationErrors(formGroup:FormGroup): void {
     formGroup.get(key).markAsTouched();
     formGroup.get(key).markAsDirty();
   });
-}
-NewClicked(){
-  this.isNewVendor=true;
-  this.DialogueFormGroup.enable();
-  this.DialogueFormGroup.get('mailid1').setValidators(Validators.required);
 }
 }

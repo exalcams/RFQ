@@ -36,6 +36,20 @@ export class MVendor extends CommonClass {
     Type:string;
     City:string;
 }
+export class MVendorView extends CommonClass {
+    Client: string;
+    Company: string;
+    PatnerID: string;
+    VendorName: string;
+    GST: string;
+    EmailID1: string;
+    EmailID2: string;
+    ContactPerson: string;
+    ContactPersonMobile: string;
+    Type:string;
+    City:string;
+    Checked:boolean;
+}
 
 export class MMaterial extends CommonClass {
     Client: string;
