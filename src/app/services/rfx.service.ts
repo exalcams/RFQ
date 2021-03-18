@@ -67,8 +67,8 @@ export class RFxService {
         return this._httpClient.get<MRFxGroup[]>(`${this.baseAddress}rfxapi/RFx/GetAllRFxGroupM`)
             .pipe(catchError(this.errorHandler));
     }
-    GetAllRFxHDocumets():Observable<any>{
-        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetAllRFxHDocumets`)
+    GetAllRFxHDocumets(status?:string):Observable<any>{
+        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetAllRFxHDocumets?status=${status}`)
             .pipe(catchError(this.errorHandler));
     }
     GetAllRFxHDocumetsByVendorName(UserName:string):Observable<any>{

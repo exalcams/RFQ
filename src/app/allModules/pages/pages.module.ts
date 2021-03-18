@@ -69,6 +69,8 @@ import { ResponseComponent } from './response/response.component';
 import { ResItemDialogComponent } from './response/response-dialogs/res-item-dialog/res-item-dialog.component';
 import { ResAnsDialogComponent } from './response/response-dialogs/res-ans-dialog/res-ans-dialog.component';
 import { ResAttachDialogComponent } from './response/response-dialogs/res-attach-dialog/res-attach-dialog.component';
+import { SelectVendorDialogComponent } from './rfq/rfq-dialogs/select-vendor-dialog/select-vendor-dialog.component';
+
 
 const routes = [
     {
@@ -166,7 +168,8 @@ const routes = [
         ResponseComponent,
         ResItemDialogComponent,
         ResAnsDialogComponent,
-        ResAttachDialogComponent
+        ResAttachDialogComponent,
+        SelectVendorDialogComponent
     ],
     providers: [
         DecimalPipe,
@@ -182,7 +185,8 @@ const routes = [
         DialogContentExampleDialog7Component,
         ResItemDialogComponent,
         ResAnsDialogComponent,
-        ResAttachDialogComponent
+        ResAttachDialogComponent,
+        SelectVendorDialogComponent
     ]
 })
 export class PagesModule { }

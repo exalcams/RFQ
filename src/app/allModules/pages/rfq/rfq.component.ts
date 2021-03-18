@@ -15,6 +15,7 @@ import { DialogContentExampleDialog7Component } from './rfq-dialogs/Attachment-D
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { MatSnackBar } from '@angular/material';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
+import { SelectVendorDialogComponent } from './rfq-dialogs/select-vendor-dialog/select-vendor-dialog.component';
 
 
 @Component({
@@ -61,6 +62,7 @@ export class RfqComponent implements OnInit {
   RFxTypeMasters:MRFxType[]=[];
   RFxGroupMasters:MRFxGroup[]=[];
   isProgressBarVisibile:boolean;
+  NewVendorMaser:MVendor;
 
   constructor(
     public dialog: MatDialog,
@@ -378,7 +380,7 @@ export class RfqComponent implements OnInit {
     var Vendor=new RFxVendorView();
     Vendor.Client=this.Rfxheader.Client;
     Vendor.Company=this.Rfxheader.Company;
-    this.OpenVendorDialog(Vendor,true);
+    this.OpenVendorDialog(Vendor);
   }
   CreateQuestion(){
     var Question=new RFxOD();
@@ -434,16 +436,44 @@ export class RfqComponent implements OnInit {
       }
     });
   }
-  OpenVendorDialog(Vendor:RFxVendorView,bool:boolean) {
+  OpenVendorDialog(Vendor:RFxVendorView) {
     const dialogRef = this.dialog.open(DialogContentExampleDialog4Component, {
-      data: {data:Vendor,isCreate:bool}, height: '72%',
-      width: '50%'
+      data: {data:Vendor}, height: '90%',
+      width: '40%'
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
       console.log(res);
-      if(res && res.isCreate){
+      if(res){
         this.VendorDetails.push(res.data);
+        this.Vendors=[];
+        this.VendorDetails.forEach(element => {
+          var rfxVendor=new RFxVendor();
+          rfxVendor.Client=element.Client;
+          rfxVendor.Company=element.Company;
+          rfxVendor.PatnerID=element.PatnerID;
+          this.Vendors.push(rfxVendor);
+        });
+        this.NewVendorMaser=res.vendor;
+        this.VendorDetailsDataSource=new MatTableDataSource(this.VendorDetails);
+      }
+    });
+  }
+  OpenSelectVendorDialog(vendors:RFxVendorView[]) {
+    const dialogRef = this.dialog.open(SelectVendorDialogComponent, {
+      data: {data:vendors}, height: '80%',
+      width: '40%'
+    });
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(res=>{
+      console.log(res);
+      if(res){
+        res.data.forEach((vendor: RFxVendorView) => {
+          var FVD=this.VendorDetails.filter(t=>t.PatnerID==vendor.PatnerID);
+          if(FVD.length==0){
+            this.VendorDetails.push(vendor);
+          }
+        });
         this.Vendors=[];
         this.VendorDetails.forEach(element => {
           var rfxVendor=new RFxVendor();
@@ -513,6 +543,9 @@ export class RfqComponent implements OnInit {
   }
   SaveRFxClicked(isRelease:boolean){
     if(this.Rfxheader.Status=="1" && this.EvaluationDetails.length>0 && this.ItemDetails.length>0 && this.PartnerDetails.length>0 && this.VendorDetails.length>0 && this.ODDetails.length>0 && this.ODAttachDetails.length>0){
+      this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res=>{
+        console.log("vendor created");
+      },err=>{console.log("vendor master not created!;")});
       if(!this.RFxID){
         this.CreateRfX(isRelease);
       }
