@@ -211,6 +211,8 @@ export class ResItem extends CommonClass {
     USPRemark: string;
     PriceRating: string;
     LeadTimeRating: string;
+    LeadTimeAccept:string;
+    LeadTimeRemark:string;
 }
 
 export class ResOD extends CommonClass {
