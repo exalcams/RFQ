@@ -62,7 +62,7 @@ export class RfqComponent implements OnInit {
   RFxTypeMasters:MRFxType[]=[];
   RFxGroupMasters:MRFxGroup[]=[];
   isProgressBarVisibile:boolean;
-  NewVendorMaser:MVendor;
+  NewVendorMaser:MVendor[]=[];
 
   constructor(
     public dialog: MatDialog,
@@ -449,12 +449,12 @@ export class RfqComponent implements OnInit {
         this.Vendors=[];
         this.VendorDetails.forEach(element => {
           var rfxVendor=new RFxVendor();
-          rfxVendor.Client=element.Client;
-          rfxVendor.Company=element.Company;
+          rfxVendor.Client=this.Rfxheader.Client;
+          rfxVendor.Company=this.Rfxheader.Company;
           rfxVendor.PatnerID=element.PatnerID;
           this.Vendors.push(rfxVendor);
         });
-        this.NewVendorMaser=res.vendor;
+        this.NewVendorMaser.push(res.vendor);
         this.VendorDetailsDataSource=new MatTableDataSource(this.VendorDetails);
       }
     });
@@ -468,17 +468,12 @@ export class RfqComponent implements OnInit {
     dialogRef.afterClosed().subscribe(res=>{
       console.log(res);
       if(res){
-        res.data.forEach((vendor: RFxVendorView) => {
-          var FVD=this.VendorDetails.filter(t=>t.PatnerID==vendor.PatnerID);
-          if(FVD.length==0){
-            this.VendorDetails.push(vendor);
-          }
-        });
+        this.VendorDetails=res.data;
         this.Vendors=[];
         this.VendorDetails.forEach(element => {
           var rfxVendor=new RFxVendor();
-          rfxVendor.Client=element.Client;
-          rfxVendor.Company=element.Company;
+          rfxVendor.Client=this.Rfxheader.Client;
+          rfxVendor.Company=this.Rfxheader.Company;
           rfxVendor.PatnerID=element.PatnerID;
           this.Vendors.push(rfxVendor);
         });
@@ -543,9 +538,11 @@ export class RfqComponent implements OnInit {
   }
   SaveRFxClicked(isRelease:boolean){
     if(this.Rfxheader.Status=="1" && this.EvaluationDetails.length>0 && this.ItemDetails.length>0 && this.PartnerDetails.length>0 && this.VendorDetails.length>0 && this.ODDetails.length>0 && this.ODAttachDetails.length>0){
-      this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res=>{
-        console.log("vendor created");
-      },err=>{console.log("vendor master not created!;")});
+      if(this.NewVendorMaser.length>0){
+        this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res=>{
+          console.log("vendor created");
+        },err=>{console.log("vendor master not created!;")});
+      }
       if(!this.RFxID){
         this.CreateRfX(isRelease);
       }

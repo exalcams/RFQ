@@ -31,6 +31,7 @@ export class SelectVendorDialogComponent implements OnInit {
         vendor.Checked=false;
         this.MVendorViews.push(vendor)
       });
+      console.log("total",this.MVendorViews);
       this.MVendorViews.forEach(element => {
         var MVendor=this.RFxVendorsViews.filter(t=>t.PatnerID==element.PatnerID);
         if(MVendor.length>0){
@@ -38,6 +39,7 @@ export class SelectVendorDialogComponent implements OnInit {
           this.SelectedVendors.push(element);
         }
       });
+      console.log("selected",this.SelectedVendors);
     });
     
   }
@@ -55,14 +57,19 @@ export class SelectVendorDialogComponent implements OnInit {
     }
   }
 
-  Toggle(vendor:MVendorView,index){
+  Toggle(vendor:MVendorView){
     console.log(vendor);
     vendor.Checked=!vendor.Checked;
     if(vendor.Checked){
       this.SelectedVendors.push(vendor);
     }
     else{
-      this.SelectedVendors.splice(index,1);
+      for (let index = 0; index < this.SelectedVendors.length; index++) {
+        if(this.SelectedVendors[index].PatnerID==vendor.PatnerID){
+          this.SelectedVendors.splice(index,1);
+          break;
+        }
+      }
     }
   }
 

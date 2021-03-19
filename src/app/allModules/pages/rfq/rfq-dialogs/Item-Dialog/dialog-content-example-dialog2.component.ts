@@ -57,6 +57,7 @@ export class DialogContentExampleDialog2Component implements OnInit {
       per_schedule_qty: [this.rfxitem.PerScheduleQty, [Validators.required,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]],
       totalSchedules: [this.rfxitem.TotalSchedules],
       incoterm: [this.rfxitem.IncoTerm, [Validators.required,Validators.pattern('^([a-zA-Z]){1,2}?$')]],
+      LeadTime:[this.rfxitem.LeadTime,Validators.required]
     });
   }
 
@@ -104,6 +105,7 @@ Save(){
     //this.rfxitem.Rating=this.DialogueFormGroup.get("rating").value;
     this.rfxitem.Notes=this.DialogueFormGroup.get("Notes").value;
     this.rfxitem.TotalSchedules=this.DialogueFormGroup.get("totalSchedules").value;
+    this.rfxitem.LeadTime=this.DialogueFormGroup.get("LeadTime").value;
     this.rfxitem.Attachment=this.SelectedFileName;
     var Result={data:this.rfxitem,isCreate:this.data.isCreate,Attachments:this.files[0]};
     this.dialogRef.close(Result);
