@@ -75,7 +75,7 @@
 
       <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
         <mat-label>Bidding Price Low</mat-label>
-        <input matInput  formControlName="LowPrice" type="number" fxFlex autocomplete="off">
+        <input matInput formControlName="LowPrice" type="number" fxFlex autocomplete="off">
         <mat-error
           *ngIf="DialogueFormGroup.get('LowPrice').touched && DialogueFormGroup.get('LowPrice').hasError('required')">
           Bidding price low is required
@@ -141,6 +141,14 @@
           *ngIf="DialogueFormGroup.get('Price').touched && DialogueFormGroup.get('Price').hasError('required')">
           price is required
         </mat-error>
+        <mat-error
+          *ngIf="DialogueFormGroup.get('Price').touched && DialogueFormGroup.get('Price').hasError('min')">
+          price do not exceed minimum bidding
+        </mat-error>
+        <mat-error
+          *ngIf="DialogueFormGroup.get('Price').touched && DialogueFormGroup.get('Price').hasError('max')">
+          price do not exceed maximum bidding
+        </mat-error>
       </mat-form-field>
 
 
@@ -181,7 +189,7 @@
       <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
         <mat-label>Lead Time is acceptable</mat-label>
         <mat-select formControlName="LeadTimeAccept" fxFlex (selectionChange)="ValueSelected($event.value)">
-          <mat-option  *ngFor="let type of types" [value]="type">{{type}}</mat-option>
+          <mat-option *ngFor="let type of types" [value]="type">{{type}}</mat-option>
         </mat-select>
         <!-- <input matInput formControlName="LeadTime" fxFlex autocomplete="off" type="number"> -->
         <mat-error
@@ -190,8 +198,9 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field *ngIf="DialogueFormGroup.get('LeadTimeAccept').value=='No'" fxFlex=30 style="font-size: 14px;" appearance="outline">
-        <mat-label >Remark</mat-label>
+      <mat-form-field *ngIf="DialogueFormGroup.get('LeadTimeAccept').value=='No'" fxFlex=30 style="font-size: 14px;"
+        appearance="outline">
+        <mat-label>Remark</mat-label>
         <input matInput formControlName="LeadTimeRemark" fxFlex autocomplete="off">
         <mat-error
           *ngIf="DialogueFormGroup.get('LeadTimeRemark').touched && DialogueFormGroup.get('LeadTimeRemark').hasError('required')">
@@ -201,18 +210,24 @@
 
     </div>
     <div fxFlex="30">
-      <p class="attachment">Attachment <span  *ngIf="SelectedFileName.length>0" [matBadge]="SelectedFileName.length" matBadgeSize="small" matBadgeColor="accent"
-        matBadgeOverlap="false" (click)="openAttachmentViewDialog(RFxID,SelectedFileName)">
-      <img style="width: 20px;"  src="assets/images/attachment.png"></span></p>
+      <p class="attachment">Attachment <span *ngIf="SelectedFileName.length>0" [matBadge]="SelectedFileName.length"
+          matBadgeSize="small" matBadgeColor="accent" matBadgeOverlap="false"
+          (click)="openAttachmentViewDialog(RFxID,SelectedFileName)">
+          <img style="width: 20px;cursor: pointer;" src="assets/images/attachment.png"></span></p>
       <div>
         <ngx-dropzone (change)="onSelect($event)" class="cl_div">
-          <div *ngIf="files.length==0">
+          <ngx-dropzone-label><span style="color: #068dd0;font-size: 12px;">Drop here to upload or <a
+            style="text-decoration: underline;">choose file</a></span></ngx-dropzone-label>
+          <ngx-dropzone-preview class="preview" *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+            <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+          </ngx-dropzone-preview>
+          <!-- <div *ngIf="files.length==0">
             <span style="color: #068dd0;font-size: 12px;">Drop here to upload or <a
                 style="text-decoration: underline;">choose file</a></span>
           </div>
           <div *ngIf="files.length>=1" fxLayout="row wrap" fxLayoutAlign="center center">
             <span *ngFor="let file of files">{{file.name}}<span *ngIf="files.length>1">, &nbsp;</span></span>
-          </div>
+          </div> -->
         </ngx-dropzone>
       </div>
       <!-- <p style="color: #f44336;font-size: 12px;" *ngIf="FileError">Maximum 3 attachments</p> -->
@@ -220,7 +235,7 @@
   </div>
 
 </mat-dialog-content>
-<mat-dialog-actions fxLayoutAlign="center">
+<mat-dialog-actions fxLayoutAlign="center" style="box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);">
   <button mat-button class="cl_button1" (click)="Save()"><span class="add">{{data.isCreate?'Add':'Save'}}</span>
   </button>
 </mat-dialog-actions>

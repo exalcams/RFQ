@@ -12,11 +12,15 @@ import { RFxService } from 'app/services/rfx.service';
   styleUrls: ['./response-home.component.scss']
 })
 export class ResponseHomeComponent implements OnInit {
-  isProgressBarVisibile:boolean;
+  isProgressBarVisibile: boolean;
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
   @ViewChild(MatSort) RFQSort: MatSort;
-  RFxTableAttachments:string[]=[];
-  HeaderDetails: any[] = [];
+  RFxTableAttachments: string[] = [];
+  AllHeaderDetails: any[] = [];
+  InitiatedHeaderDetails: any[] = [];
+  RespondedHeaderDetails: any[] = [];
+  EvaluatedHeaderDetails: any[] = [];
+  ClosedHeaderDetails: any[] = [];
   HeaderStatus: any[];
   HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
@@ -36,7 +40,7 @@ export class ResponseHomeComponent implements OnInit {
     {
       url: '../assets/images/5.png'
     }
-  ] 
+  ]
   authenticationDetails: any;
   currentUserID: any;
   currentUserName: any;
@@ -47,7 +51,6 @@ export class ResponseHomeComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit() {
- 
     const retrievedObject = localStorage.getItem("authorizationData");
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(
@@ -55,165 +58,185 @@ export class ResponseHomeComponent implements OnInit {
       ) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
       this.currentUserName = this.authenticationDetails.UserName;
-     
-      }
-      this.GetRFxsByVendorname(this.currentUserName);
+    }
+    this.GetAllRFxs();
   }
 
   Gotoheader(rfqid) {
     this.route.navigate(['pages/response'], { queryParams: { id: rfqid } });
   }
-  GetRFxs(): void {
-    // window.location.reload()
-    this._RFxService.GetAllRFxHDocumets().subscribe(
+  GetAllRFxs(): void {
+    this.isProgressBarVisibile = true;
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName).subscribe(
       (data) => {
         if (data) {
-          this.HeaderDetails =data;
-          this.HeaderDetailsDataSource = new MatTableDataSource(
-            this.HeaderDetails
-          );
-          this.HeaderDetailsDataSource.paginator=this.RFQPaginator;
-          this.HeaderDetailsDataSource.sort=this.RFQSort;
+          this.AllHeaderDetails = data;
+          this.isProgressBarVisibile = false;
+          this.LoadTableSource(this.AllHeaderDetails);
         }
       }
-    )
-  }
-  GetRFxsByVendorname(UserName:string): void {
-    this._RFxService.GetAllRFxHDocumetsByVendorName(UserName).subscribe(
+    );
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName,'2').subscribe(
       (data) => {
         if (data) {
-          this.HeaderDetails =data;
-          this.HeaderDetailsDataSource = new MatTableDataSource(
-            this.HeaderDetails
-          );
-          this.HeaderDetailsDataSource.paginator=this.RFQPaginator;
-          this.HeaderDetailsDataSource.sort=this.RFQSort;
+          this.InitiatedHeaderDetails = data;
+          this.isProgressBarVisibile = false;
         }
       }
-    )
+    );
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName,'3').subscribe(
+      (data) => {
+        if (data) {
+          this.RespondedHeaderDetails = data;
+          this.isProgressBarVisibile = false;
+        }
+      }
+    );
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName,'5').subscribe(
+      (data) => {
+        if (data) {
+          this.EvaluatedHeaderDetails = data;
+          this.isProgressBarVisibile = false;
+        }
+      }
+    );
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName,'6').subscribe(
+      (data) => {
+        if (data) {
+          this.ClosedHeaderDetails = data;
+          this.isProgressBarVisibile = false;
+        }
+      }
+    );
   }
-  openAttachmentViewDialog(RFxID:string,Ataachments:string[]): void {
+  LoadTableSource(DataArray: any[]) {
+    this.HeaderDetailsDataSource = new MatTableDataSource(DataArray);
+    this.HeaderDetailsDataSource.paginator = this.RFQPaginator;
+    this.HeaderDetailsDataSource.sort = this.RFQSort;
+  }
+
+  openAttachmentViewDialog(RFxID: string, Ataachments: string[]): void {
     const dialogConfig: MatDialogConfig = {
-        data: {Documents:Ataachments,RFxID:RFxID},
-        panelClass: "attachment-view-dialog",
+      data: { Documents: Ataachments, RFxID: RFxID },
+      panelClass: "attachment-view-dialog",
     };
     const dialogRef = this.dialog.open(
-        AttachmentViewDialogComponent,
-        dialogConfig
+      AttachmentViewDialogComponent,
+      dialogConfig
     );
-}
-//fulfilment Status
-getStatusColor(element: RFxHeader, StatusFor: string): string {
-  switch (StatusFor) {
-      case "Responded":
-          return element.Status === "1"
-              ? "gray"
-              : element.Status === "2"
-                  ? "gray"
-                  : element.Status === "3"
-                      ? "#efb577" : "#34ad65";
-      case "Evaluated":
-          return element.Status === "1"
-              ? "gray"
-              : element.Status === "2"
-                  ? "gray"
-                  : element.Status === "3"
-                      ? "gray"
-                      : element.Status === "4"
-                          ? "gray"
-                          : "#34ad65";
-      case "Closed":
-          return element.Status === "1"
-              ? "gray"
-              : element.Status === "2"
-                  ? "gray"
-                  : element.Status === "3"
-                      ? "gray"
-                      : element.Status === "4"
-                          ? "gray"
-                          : element.Status === "5"
-                              ? "gray"
-                              : "#34ad65";
-      default:
-          return "";
   }
-}
+  //fulfilment Status
+  getStatusColor(element: RFxHeader, StatusFor: string): string {
+    switch (StatusFor) {
+      case "Responded":
+        return element.Status === "1"
+          ? "gray"
+          : element.Status === "2"
+            ? "gray"
+            : element.Status === "3"
+              ? "#efb577" : "#34ad65";
+      case "Evaluated":
+        return element.Status === "1"
+          ? "gray"
+          : element.Status === "2"
+            ? "gray"
+            : element.Status === "3"
+              ? "gray"
+              : element.Status === "4"
+                ? "gray"
+                : "#34ad65";
+      case "Closed":
+        return element.Status === "1"
+          ? "gray"
+          : element.Status === "2"
+            ? "gray"
+            : element.Status === "3"
+              ? "gray"
+              : element.Status === "4"
+                ? "gray"
+                : element.Status === "5"
+                  ? "gray"
+                  : "#34ad65";
+      default:
+        return "";
+    }
+  }
 
-getTimeline(element: RFxHeader, StatusFor: string): string {
-  switch (StatusFor) {
+  getTimeline(element: RFxHeader, StatusFor: string): string {
+    switch (StatusFor) {
       case "Responded":
-          return element.Status === "1"
-              ? "white-timeline"
-              : element.Status === "2"
-                  ? "white-timeline"
-                  : element.Status === "3"
-                      ? "orange-timeline" : "green-timeline";
+        return element.Status === "1"
+          ? "white-timeline"
+          : element.Status === "2"
+            ? "white-timeline"
+            : element.Status === "3"
+              ? "orange-timeline" : "green-timeline";
       case "Evaluated":
-          return element.Status === "1"
+        return element.Status === "1"
+          ? "white-timeline"
+          : element.Status === "2"
+            ? "white-timeline"
+            : element.Status === "3"
               ? "white-timeline"
-              : element.Status === "2"
-                  ? "white-timeline"
-                  : element.Status === "3"
-                      ? "white-timeline"
-                      : element.Status === "4"
-                          ? "white-timeline"
-                          : "green-timeline";
+              : element.Status === "4"
+                ? "white-timeline"
+                : "green-timeline";
       case "Closed":
-          return element.Status === "1"
+        return element.Status === "1"
+          ? "white-timeline"
+          : element.Status === "2"
+            ? "white-timeline"
+            : element.Status === "3"
               ? "white-timeline"
-              : element.Status === "2"
+              : element.Status === "4"
+                ? "white-timeline"
+                : element.Status === "5"
                   ? "white-timeline"
-                  : element.Status === "3"
-                      ? "white-timeline"
-                      : element.Status === "4"
-                          ? "white-timeline"
-                          : element.Status === "5"
-                              ? "white-timeline"
-                              : "green-timeline";
+                  : "green-timeline";
       default:
-          return "";
+        return "";
+    }
   }
-}
 
-getRestTimeline(element: RFxHeader, StatusFor: string): string {
-  switch (StatusFor) {
+  getRestTimeline(element: RFxHeader, StatusFor: string): string {
+    switch (StatusFor) {
       case "Responded":
-          return element.Status === "1"
+        return element.Status === "1"
+          ? "white-timeline"
+          : element.Status === "2"
+            ? "white-timeline"
+            : element.Status === "3"
               ? "white-timeline"
-              : element.Status === "2"
-                  ? "white-timeline"
-                  : element.Status === "3"
-                      ? "white-timeline"
-                      : element.Status === "4"
-                          ? "white-timeline"
-                          : "green-timeline";
+              : element.Status === "4"
+                ? "white-timeline"
+                : "green-timeline";
       case "Evaluated":
-          return element.Status === "1"
+        return element.Status === "1"
+          ? "white-timeline"
+          : element.Status === "2"
+            ? "white-timeline"
+            : element.Status === "3"
               ? "white-timeline"
-              : element.Status === "2"
+              : element.Status === "4"
+                ? "white-timeline"
+                : element.Status === "5"
                   ? "white-timeline"
-                  : element.Status === "3"
-                      ? "white-timeline"
-                      : element.Status === "4"
-                          ? "white-timeline"
-                          : element.Status === "5"
-                              ? "white-timeline"
-                              : "green-timeline";
+                  : "green-timeline";
       case "Closed":
-          return element.Status === "1"
+        return element.Status === "1"
+          ? "white-timeline"
+          : element.Status === "2"
+            ? "white-timeline"
+            : element.Status === "3"
               ? "white-timeline"
-              : element.Status === "2"
+              : element.Status === "4"
+                ? "white-timeline"
+                : element.Status === "5"
                   ? "white-timeline"
-                  : element.Status === "3"
-                      ? "white-timeline"
-                      : element.Status === "4"
-                          ? "white-timeline"
-                          : element.Status === "5"
-                              ? "white-timeline"
-                              : "green-timeline";
+                  : "green-timeline";
       default:
-          return "";
+        return "";
+    }
   }
-}
 
 }

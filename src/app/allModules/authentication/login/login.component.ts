@@ -249,20 +249,20 @@ export class LoginComponent implements OnInit {
         }
       );
     }
-    if (this.MenuItems.indexOf('RFQ_Response') >= 0) {
-      this.children.push(
-        {
-          id: 'rfq',
-          title: 'Response',
-          translate: 'NAV.SAMPLE.TITLE',
-          type: 'item',
-          icon: 'payment',
-          isSvgIcon: false,
-          // icon: 'dashboard',
-          url: '/pages/response',
-        }
-      );
-    }
+    // if (this.MenuItems.indexOf('RFQ_Response') >= 0) {
+    //   this.children.push(
+    //     {
+    //       id: 'rfq',
+    //       title: 'Response',
+    //       translate: 'NAV.SAMPLE.TITLE',
+    //       type: 'item',
+    //       icon: 'payment',
+    //       isSvgIcon: false,
+    //       // icon: 'dashboard',
+    //       url: '/pages/response',
+    //     }
+    //   );
+    // }
     // if (this.MenuItems.indexOf('InvoiceDetails') >= 0) {
     //   this.children.push(
     //     {

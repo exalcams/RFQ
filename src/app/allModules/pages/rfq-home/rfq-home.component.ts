@@ -53,7 +53,6 @@ export class RfqHomeComponent implements OnInit {
   }
   GetAllRFxs(): void {
     this.isProgressBarVisibile=true;
-    // window.location.reload()
     this._RFxService.GetAllRFxHDocumets().subscribe(
       (data) => {
         if (data) {

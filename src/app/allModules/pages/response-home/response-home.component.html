@@ -7,40 +7,40 @@
     </mat-toolbar>
     <div fxFlex style="margin: 20px;">
         <div fxLayout="row" fxLayoutAlign="space-between center">
-            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start" (click)="LoadTableSource(InitiatedHeaderDetails)" style="cursor: pointer;">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/quote.png">
-                    <label class="cl_8">{{HeaderDetails.length}}</label>
+                    <label class="cl_8">{{InitiatedHeaderDetails.length}}</label>
                 </div>
                 <div class="cl_blue" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Initiated</label>
                     <!-- <img class="cl_info1" src="assets/images/info.png"> -->
                 </div>
             </div>
-            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start" (click)="LoadTableSource(RespondedHeaderDetails)" style="cursor: pointer;">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/truck.png">
-                    <label class="cl_8">0</label>
+                    <label class="cl_8">{{RespondedHeaderDetails.length}}</label>
                 </div>
                 <div class="cl_green" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Responded</label>
                     <!-- <img class="cl_info1" src="assets/images/info.png"> -->
                 </div>
             </div>
-            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start" (click)="LoadTableSource(EvaluatedHeaderDetails)" style="cursor: pointer;">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/invoice1.png">
-                    <label class="cl_8">0</label>
+                    <label class="cl_8">{{EvaluatedHeaderDetails.length}}</label>
                 </div>
                 <div class="cl_brown" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Evaluated</label>
                     <!-- <img class="cl_info1" src="assets/images/info.png"> -->
                 </div>
             </div>
-            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start">
+            <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start" (click)="LoadTableSource(ClosedHeaderDetails)" style="cursor: pointer;">
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;" fxFlex>
                     <img class="cl_initiated" src="/assets/images/money.png">
-                    <label class="cl_8">0</label>
+                    <label class="cl_8">{{ClosedHeaderDetails.length}}</label>
                 </div>
                 <div class="cl_gray" fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="cl_rfq">Closed</label>
@@ -52,7 +52,7 @@
         <div fxLayout="column">
             <mat-toolbar style="background-color: white;height: 31px;" fxLayoutAlign="space-between center">
                 <!-- <img src="assets/image/add.png"> -->
-                <label class="cl_header1">RFQ List</label>
+                <span style="cursor: pointer;" class="cl_header1" (click)="LoadTableSource(AllHeaderDetails)">RFQ List</span>
                 <!-- <button mat-button (click)="Gotoheader()" class="cl_button1"><img
                         src="/assets/images/new1.png"></button> -->
             </mat-toolbar>
@@ -70,7 +70,7 @@
             <ng-container matColumnDef="RFxID">
                 <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> RFQ ID </th>
                 <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
-                    *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.RFxID}} </td>
+                    *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.RFxID | removeLeadingZero}} </td>
             </ng-container>
 
             <!-- Type Column -->
@@ -161,11 +161,11 @@
 
             <!-- Action Column -->
             <ng-container matColumnDef="Action">
-                <th mat-header-cell class="header-cell" *matHeaderCellDef> Action </th>
-                <td mat-cell *matCellDef="let element">
+                <th mat-header-cell class="header-cell" *matHeaderCellDef style="text-align: center;"> Action </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;">
                     <button class="cl_action">
                         <mat-select placeholder="Actions" style="width: 90%;" class="Action-select">
-                            <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RFxID)>Process</mat-option>
+                            <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RFxID)>Response</mat-option>
                         </mat-select>
                     </button>
                 </td>

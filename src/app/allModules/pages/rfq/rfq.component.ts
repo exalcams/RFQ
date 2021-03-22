@@ -152,7 +152,7 @@ export class RfqComponent implements OnInit {
       .subscribe(
         response => {
           console.log("response",response);
-          this._RFxService.UploadAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
+          this._RFxService.UploadRFxAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
           if(isRelease){
             this.isProgressBarVisibile=false;
             this.notificationSnackBarComponent.openSnackBar('RFQ released successfully', SnackBarStatus.success);
@@ -209,7 +209,7 @@ export class RfqComponent implements OnInit {
       .subscribe(
         response => {
           console.log("response",response);
-          this._RFxService.UploadAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
+          this._RFxService.UploadRFxAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
           if(isRelease){
             this.isProgressBarVisibile=false;
             this.notificationSnackBarComponent.openSnackBar('RFQ released successfully', SnackBarStatus.success);
@@ -505,7 +505,9 @@ export class RfqComponent implements OnInit {
         this.ODAttachDetails.push(res.data);
         this.ODAttachDetailsDataSource=new MatTableDataSource(this.ODAttachDetails);
       }
-      this.FilesToUpload.push(res.Attachments);
+      if(this.FilesToUpload.indexOf(res.Attachments)>=0){
+        this.FilesToUpload[this.FilesToUpload.indexOf(res.Attachments)]=res.Attachments;
+      }
     });
   }
   ShowValidationErrors(formGroup:FormGroup): void {

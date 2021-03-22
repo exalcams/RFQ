@@ -12,8 +12,6 @@ import { ResItemDialogComponent } from './response-dialogs/res-item-dialog/res-i
 import { ResAnsDialogComponent } from './response-dialogs/res-ans-dialog/res-ans-dialog.component';
 import { AuthenticationDetails } from 'app/models/master';
 import { Guid } from 'guid-typescript';
-import { ResAttachDialogComponent } from './response-dialogs/res-attach-dialog/res-attach-dialog.component';
-import { element } from '@angular/core/src/render3/instructions';
 @Component({
   selector: 'app-response',
   templateUrl: './response.component.html',
@@ -43,7 +41,8 @@ export class ResponseComponent implements OnInit {
   ResI: ResItem[] = [];
   ResHC: ResHC[] = [];
   ResOD: ResOD[] = [];
-  ResAttachment: ResODAttachment[] = [];
+  ResODAttachment: ResODAttachment[] = [];
+  // ResAttachment: ResODAttachment[] = [];
   RFxRemark: RFxRemark = new RFxRemark();
   ResRemarks: string;
   RespondedI: RespondedItems[] = [];
@@ -111,8 +110,16 @@ export class ResponseComponent implements OnInit {
     this.GetRFxs();
     this.GetResH(this.RFxID, this.currentUserName);
     this.GetRFQMasters();
-    this.GetRFxRemarkByRFxID(this.RFxID);
     this.RFxFormGroup.disable();
+  }
+
+  GetRFxs(): void {
+    this.GetRFxHsByRFxID(this.RFxID);
+    this.GetRFxHCsByRFxID(this.RFxID);
+    this.GetRFxItemsByRFxID(this.RFxID);
+    this.GetRFxODsByRFxID(this.RFxID);
+    this.GetRFxODAttachmentsByRFxID(this.RFxID);
+    this.GetRFxRemarkByRFxID(this.RFxID);
   }
 
   GetResH(RFxID: string, Vendor: string) {
@@ -121,8 +128,7 @@ export class ResponseComponent implements OnInit {
         this.ResH = data as ResHeader;
         this.GetResI(this.ResH.RESID);
         this.GetResOD(this.ResH.RESID);
-        this.GetRFxODsByRFxID(this.RFxID);
-        this.GetResODAttach(this.ResH.RESID);
+        this.GetResODAttachments(this.ResH.RESID);
       }
     });
   }
@@ -138,7 +144,6 @@ export class ResponseComponent implements OnInit {
           this.RespondedI.push(resItem);
         });
       }
-      console.log("getresi", this.RespondedI);
     });
   }
   GetResOD(ResID: string) {
@@ -156,31 +161,13 @@ export class ResponseComponent implements OnInit {
       }
     });
   }
-  GetResODAttach(ResID: string) {
+  GetResODAttachments(ResID: string) {
     this._RFxService.GetResponseODAttachmentsByResponseID(ResID).subscribe(data => {
-      this.ResAttachment = <ResODAttachment[]>data;
-      this.ODAttachDetailsDataSource = new MatTableDataSource(this.ResAttachment);
-    })
+      this.ResODAttachment = <ResODAttachment[]>data;
+      
+    });
   }
-  GetRFxRemarkByRFxID(RFxID: string) {
-    this._RFxService.GetRFxRemarkByRFxID(RFxID).subscribe((data) => {
-      if (data) {
-        this.RFxRemark = <RFxRemark>data;
-        //console.log(this.RFxRemark);
-      }
-    })
-  }
-  
-  GetRFxODAttachmentsByRFxID(RFxID: string): void {
-    this._RFxService.GetRFxODAttachmentsByRFxID(RFxID).subscribe(
-      (data) => {
-        if (data) {
-          this.ODAttachDetails = <RFxODAttachment[]>data;
-          this.ODAttachDetailsDataSource = new MatTableDataSource(this.ODAttachDetails);
-        }
-      }
-    );
-  }
+
 
   InitializeRFxFormGroup(): void {
     this.RFxFormGroup = this._formBuilder.group({
@@ -212,13 +199,13 @@ export class ResponseComponent implements OnInit {
     })
   }
 
-  CreateDocument() {
-    var Document = new ResODAttachment();
-    Document.RFxID = this.RFxID;
-    Document.Client = this.Rfxheader.Client;
-    Document.Company = this.Rfxheader.Company;
-    this.OpenResDocumentDialog(Document, true);
-  }
+  // CreateDocument() {
+  //   var Document = new ResODAttachment();
+  //   Document.RFxID = this.RFxID;
+  //   Document.Client = this.Rfxheader.Client;
+  //   Document.Company = this.Rfxheader.Company;
+  //   this.OpenResDocumentDialog(Document, true);
+  // }
 
   CreateRes() {
     this.isProgressBarVisibile = true;
@@ -249,7 +236,7 @@ export class ResponseComponent implements OnInit {
     this.ResView.ResItems = this.ResI;
     this.ResView.ResHCs = this.ResHC;
     this.ResView.ResODs = this.ResOD;
-    this.ResView.ResODAttach = this.ResAttachment;
+    this.ResView.ResODAttach = this.ResODAttachment;
     console.log("resview", this.ResView);
     this._RFxService.CreateResponse(this.ResView)
       .subscribe(
@@ -258,7 +245,7 @@ export class ResponseComponent implements OnInit {
           this.isProgressBarVisibile = false;
           this._router.navigate(['pages/responsehome']);
           this.notificationSnackBarComponent.openSnackBar('Res saved successfully', SnackBarStatus.success);
-          this._RFxService.UploadAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
+          this._RFxService.UploadResAttachment(response.RESID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
         },
         error => {
           console.log(error);
@@ -295,14 +282,14 @@ export class ResponseComponent implements OnInit {
     this.ResView.ResItems = this.ResI;
     this.ResView.ResHCs = this.ResHC;
     this.ResView.ResODs = this.ResOD;
-    this.ResView.ResODAttach = this.ResAttachment;
+    this.ResView.ResODAttach = this.ResODAttachment;
     console.log("resview", this.ResView);
     this._RFxService.UpdateResponse(this.ResView)
       .subscribe(
         response => {
-          console.log("response", response);
+          // console.log("response", response);
           this.isProgressBarVisibile = false;
-          this._RFxService.UploadAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
+          this._RFxService.UploadResAttachment(response.RESID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
           this.notificationSnackBarComponent.openSnackBar('Res saved successfully', SnackBarStatus.success);
           this._router.navigate(['pages/responsehome']);
         },
@@ -313,14 +300,6 @@ export class ResponseComponent implements OnInit {
   }
   tabClick(tab: any) {
     this.index = parseInt(tab.index);
-  }
-
-  GetRFxs(): void {
-    this.GetRFxHsByRFxID(this.RFxID);
-    this.GetRFxHCsByRFxID(this.RFxID);
-    this.GetRFxItemsByRFxID(this.RFxID);
-    this.GetRFxODsByRFxID(this.RFxID);
-    this.GetRFxODAttachmentsByRFxID(this.RFxID);
   }
 
   GetRFxHsByRFxID(RFxID: string): void {
@@ -402,6 +381,27 @@ export class ResponseComponent implements OnInit {
       }
     );
   }
+  
+  GetRFxRemarkByRFxID(RFxID: string) {
+    this._RFxService.GetRFxRemarkByRFxID(RFxID).subscribe((data) => {
+      if (data) {
+        this.RFxRemark = <RFxRemark>data;
+        //console.log(this.RFxRemark);
+      }
+    })
+  }
+  
+  GetRFxODAttachmentsByRFxID(RFxID: string): void {
+    this._RFxService.GetRFxODAttachmentsByRFxID(RFxID).subscribe(
+      (data) => {
+        if (data) {
+          this.ODAttachDetails = <RFxODAttachment[]>data;
+          // console.log("attachs",this.ODAttachDetails);
+          this.ODAttachDetailsDataSource = new MatTableDataSource(this.ODAttachDetails);
+        }
+      }
+    );
+  }
 
   ShowValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
@@ -452,7 +452,7 @@ export class ResponseComponent implements OnInit {
   }
   OpenResItemDialog(index, RFxItem) {
     const dialogRef = this.dialog.open(ResItemDialogComponent, {
-      data: { data: RFxItem,Res:this.RespondedI[index].Item }, height: '82%',
+      data: { data: RFxItem,Res:this.RespondedI[index].Item,Docs:this.ResODAttachment }, height: '90%',
       width: '82%'
     });
     dialogRef.disableClose = true;
@@ -460,8 +460,15 @@ export class ResponseComponent implements OnInit {
       if (res) {
         this.RespondedI[index].isResponded = true;
         this.RespondedI[index].Item = res.data;
+        this.ResODAttachment=[];
+        this.FilesToUpload=[];
+        res.Attachments.forEach(element => {
+          this.FilesToUpload.push(element);
+        });
+        res.Docs.forEach(element => {
+          this.ResODAttachment.push(element);
+        });
       }
-      this.FilesToUpload.push(res.Attachments);
     });
   }
   OpenResAnsDialog(item, index) {
@@ -479,22 +486,22 @@ export class ResponseComponent implements OnInit {
     });
   }
 
-  OpenResDocumentDialog(Document: ResODAttachment, bool: boolean) {
-    const dialogRef = this.dialog.open(ResAttachDialogComponent, {
-      data: { data: Document, isCreate: bool }, height: '52%',
-      width: '50%'
-    });
-    dialogRef.disableClose = true;
-    dialogRef.afterClosed().subscribe(res => {
-      if (res && res.isCreate) {
-        this.ResAttachment.push(res.data);
-        this.ODAttachDetailsDataSource = new MatTableDataSource(this.ResAttachment);
-      }
-      this.FilesToUpload.push(res.Attachments);
-    });
-  }
-  DeleteAttachment(index) {
-    this.ResAttachment.splice(index, 1);
-    this.ODAttachDetailsDataSource = new MatTableDataSource(this.ResAttachment);
-  }
+  // OpenResDocumentDialog(Document: ResODAttachment, bool: boolean) {
+  //   const dialogRef = this.dialog.open(ResAttachDialogComponent, {
+  //     data: { data: Document, isCreate: bool }, height: '52%',
+  //     width: '50%'
+  //   });
+  //   dialogRef.disableClose = true;
+  //   dialogRef.afterClosed().subscribe(res => {
+  //     if (res && res.isCreate) {
+  //       this.ResAttachment.push(res.data);
+  //       this.ODAttachDetailsDataSource = new MatTableDataSource(this.ResAttachment);
+  //     }
+  //     this.FilesToUpload.push(res.Attachments);
+  //   });
+  // }
+  // DeleteAttachment(index) {
+  //   this.ResAttachment.splice(index, 1);
+  //   this.ODAttachDetailsDataSource = new MatTableDataSource(this.ResAttachment);
+  // }
 }
