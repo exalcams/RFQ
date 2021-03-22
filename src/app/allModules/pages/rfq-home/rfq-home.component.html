@@ -70,7 +70,7 @@
                 <ng-container matColumnDef="RFxID">
                     <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> RFQ ID </th>
                     <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
-                        *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.RFxID}} </td>
+                        *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.RFxID | removeLeadingZero}} </td>
                 </ng-container>
 
                 <!-- Type Column -->

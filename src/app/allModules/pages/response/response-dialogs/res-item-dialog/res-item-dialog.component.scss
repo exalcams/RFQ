@@ -525,7 +525,14 @@ background-color: #ffffff;
 .mat-dialog-content {
   margin: 0;
   padding: 0;
+  max-height: 74vh;
 }
 .top-padding{
   margin-top: 1rem;
+}
+.preview{
+  height: 50px !important;
+  width: auto !important;
+  min-height: 50px !important;
+  margin: 0px 10px !important;
 }

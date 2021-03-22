@@ -71,8 +71,8 @@ export class RFxService {
         return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetAllRFxHDocumets?status=${status}`)
             .pipe(catchError(this.errorHandler));
     }
-    GetAllRFxHDocumetsByVendorName(UserName:string):Observable<any>{
-        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetAllRFxHDocumetsByVendorName?UserName=${UserName}`)
+    GetAllRFxHDocumetsByVendorName(UserName:string,status?:string):Observable<any>{
+        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetAllRFxHDocumetsByVendorName?UserName=${UserName}&status=${status}`)
             .pipe(catchError(this.errorHandler));
     }
 
@@ -280,7 +280,7 @@ export class RFxService {
                 })
               })
       }
-      UploadAttachment(RFxID: string, selectedFiles: File[],perviousFileName=null): Observable<any> {
+      UploadRFxAttachment(RFxID: string, selectedFiles: File[],perviousFileName=null): Observable<any> {
         const formData: FormData = new FormData();
         if (selectedFiles && selectedFiles.length) {
             selectedFiles.forEach(x => {
@@ -289,8 +289,21 @@ export class RFxService {
         }
         formData.append('RFxID', RFxID);
         formData.append('PerviousFileName', perviousFileName);
-        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/UploadAttachment`,
-          formData,
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/UploadRFxAttachment`,
+          formData
+        ).pipe(catchError(this.errorHandler));
+      }
+      UploadResAttachment(RFxID: string, selectedFiles: File[],perviousFileName=null): Observable<any> {
+        const formData: FormData = new FormData();
+        if (selectedFiles && selectedFiles.length) {
+            selectedFiles.forEach(x => {
+                formData.append(x.name, x, x.name);
+            });
+        }
+        formData.append('RESID', RFxID);
+        formData.append('PerviousFileName', perviousFileName);
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/UploadResAttachment`,
+          formData
         ).pipe(catchError(this.errorHandler));
       }
       DowloandAttachment(RFxID: string,DocumentName:string): Observable<Blob | string> {

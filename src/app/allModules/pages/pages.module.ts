@@ -70,6 +70,8 @@ import { ResItemDialogComponent } from './response/response-dialogs/res-item-dia
 import { ResAnsDialogComponent } from './response/response-dialogs/res-ans-dialog/res-ans-dialog.component';
 import { ResAttachDialogComponent } from './response/response-dialogs/res-attach-dialog/res-attach-dialog.component';
 import { SelectVendorDialogComponent } from './rfq/rfq-dialogs/select-vendor-dialog/select-vendor-dialog.component';
+import { SharedModule } from 'app/shared/shared-module';
+import { RemoveLeadingZeroPipe } from 'app/shared/remove-leading-zero';
 
 
 const routes = [
@@ -169,11 +171,12 @@ const routes = [
         ResItemDialogComponent,
         ResAnsDialogComponent,
         ResAttachDialogComponent,
-        SelectVendorDialogComponent
+        SelectVendorDialogComponent,
+        RemoveLeadingZeroPipe
     ],
     providers: [
         DecimalPipe,
-        EventEmitterService
+        EventEmitterService,
     ],
     entryComponents: [
         DialogContentExampleDialogComponent,
