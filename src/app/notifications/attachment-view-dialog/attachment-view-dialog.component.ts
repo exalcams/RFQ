@@ -21,6 +21,7 @@ export class AttachmentViewDialogComponent implements OnInit {
   isProgressBarVisibile: boolean;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   ofAttachments: string[] = [];
+  isResponse:boolean;
 
   constructor(
     private dialog: MatDialog,
@@ -33,18 +34,24 @@ export class AttachmentViewDialogComponent implements OnInit {
     this.isProgressBarVisibile = false;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.ofAttachments = this.ofAttachmentData.Documents;
+    this.isResponse=this.ofAttachmentData.isResponse;
   }
 
   ngOnInit(): void {
-    console.log(this.ofAttachments);
+    console.log(this.ofAttachmentData);
   }
 
   attachmentClicked(attachment: string): void {
       console.log(attachment);
-      this.DownloadOfAttachment(this.ofAttachmentData.RFxID, attachment);
+      if(this.isResponse){
+        this.DownloadResAttachment(attachment);
+      }
+      else{
+        this.DownloadRFxAttachment(this.ofAttachmentData.RFxID, attachment);
+      }
   }
 
-  DownloadOfAttachment(RFxID: string,fileName: string): void {
+  DownloadRFxAttachment(RFxID: string,fileName: string): void {
     this.isProgressBarVisibile = true;
     this._RFxService.DowloandAttachment(RFxID, fileName).subscribe(
       data => {
@@ -71,7 +78,33 @@ export class AttachmentViewDialogComponent implements OnInit {
       }
     );
   }
-
+  DownloadResAttachment(fileName: string): void {
+    this.isProgressBarVisibile = true;
+    this._RFxService.DowloandResAttachment(fileName).subscribe(
+      data => {
+        if (data) {
+          let fileType = 'image/jpg';
+          fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+            fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+              fileName.toLowerCase().includes('.png') ? 'image/png' :
+                fileName.toLowerCase().includes('.gif') ? 'image/gif' :
+                  fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
+          const blob = new Blob([data], { type: fileType });
+          if(fileType=='image/jpg' || fileType=='image/jpeg' || fileType=='image/png' || fileType=='image/gif' || fileType=='application/pdf'){
+            this.openAttachmentDialog(fileName, blob);
+          }
+          else{
+            saveAs(blob,fileName);
+          }
+        }
+        this.isProgressBarVisibile = false;
+      },
+      error => {
+        console.error(error);
+        this.isProgressBarVisibile = false;
+      }
+    );
+  }
   openAttachmentDialog(FileName: string, blob: Blob): void {
     const attachmentDetails: any = {
       FileName: FileName,
