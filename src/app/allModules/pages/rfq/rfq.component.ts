@@ -80,9 +80,10 @@ export class RfqComponent implements OnInit {
       this.Rfxheader.Company="Exa";
       this.index=0;
       this.InitializeRFxFormGroup();
-      this._route.queryParams.subscribe(params => {
-        this.RFxID = params['id'];
-      });
+      // this._route.queryParams.subscribe(params => {
+      //   this.RFxID = params['id'];
+      // });
+      this.RFxID=localStorage.getItem('RFXID');
       if(this.RFxID){
         this.GetRFxs();   
       }
