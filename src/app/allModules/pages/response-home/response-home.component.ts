@@ -117,7 +117,7 @@ export class ResponseHomeComponent implements OnInit {
 
   openAttachmentViewDialog(RFxID: string, Ataachments: string[]): void {
     const dialogConfig: MatDialogConfig = {
-      data: { Documents: Ataachments, RFxID: RFxID },
+      data: { Documents: Ataachments, RFxID: RFxID ,isResponse:true},
       panelClass: "attachment-view-dialog",
     };
     const dialogRef = this.dialog.open(

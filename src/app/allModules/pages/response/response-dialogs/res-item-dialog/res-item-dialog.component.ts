@@ -45,8 +45,17 @@ export class ResItemDialogComponent implements OnInit {
     if(this.rfxitem.Attachment){
       this.SelectedFileName.push(this.rfxitem.Attachment);
     }
+    // this.ResODAttachments.forEach(oda => {
+    //   this._RFxService.DowloandAttachment(this.rfxitem.RFxID,oda.DocumentName).subscribe(data=>{
+    //     const blob = new Blob([data])
+    //     let blobArr=new Array<Blob>();
+    //     blobArr.push(blob);
+    //     var file=new File(blobArr,oda.DocumentName);
+    //     this.files.push(file);
+    //   });
+    // });
     this.ResODAttachments.forEach(oda => {
-      this._RFxService.DowloandAttachment(this.rfxitem.RFxID,oda.DocumentName).subscribe(data=>{
+      this._RFxService.DowloandResAttachment(oda.DocumentName).subscribe(data=>{
         const blob = new Blob([data])
         let blobArr=new Array<Blob>();
         blobArr.push(blob);
@@ -100,7 +109,7 @@ export class ResItemDialogComponent implements OnInit {
   
   openAttachmentViewDialog(RFxID:string,Ataachments:string[]): void {
     const dialogConfig: MatDialogConfig = {
-        data: {Documents:Ataachments,RFxID:RFxID},
+        data: {Documents:Ataachments,RFxID:RFxID,isResponse:false},
         panelClass: "attachment-view-dialog",
     };
     const dialogRef = this.dialog.open(
@@ -145,6 +154,7 @@ Save(){
     this.ResItem.LeadTimeRating=this.DialogueFormGroup.get('LeadTimeRating').value;
     this.ResItem.LeadTimeRemark=this.DialogueFormGroup.get('LeadTimeRemark').value;
     var Result={data:this.ResItem,Attachments:this.files,Docs:this.ResODAttachments};
+    console.log(Result);
     this.dialogRef.close(Result);
   }
   else{

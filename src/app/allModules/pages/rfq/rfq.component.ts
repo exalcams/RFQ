@@ -501,6 +501,7 @@ export class RfqComponent implements OnInit {
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
+      console.log(res);
       if(res && res.isCreate){
         this.ODAttachDetails.push(res.data);
         this.ODAttachDetailsDataSource=new MatTableDataSource(this.ODAttachDetails);
@@ -508,6 +509,10 @@ export class RfqComponent implements OnInit {
       if(this.FilesToUpload.indexOf(res.Attachments)>=0){
         this.FilesToUpload[this.FilesToUpload.indexOf(res.Attachments)]=res.Attachments;
       }
+      else{
+        this.FilesToUpload.push(res.Attachments);
+      }
+      console.log(this.FilesToUpload);
     });
   }
   ShowValidationErrors(formGroup:FormGroup): void {

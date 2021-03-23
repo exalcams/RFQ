@@ -102,7 +102,7 @@ export class RfqHomeComponent implements OnInit {
   }
   openAttachmentViewDialog(RFxID:string,Ataachments:string[]): void {
     const dialogConfig: MatDialogConfig = {
-        data: {Documents:Ataachments,RFxID:RFxID},
+        data: {Documents:Ataachments,RFxID:RFxID,isResponse:false},
         panelClass: "attachment-view-dialog",
     };
     const dialogRef = this.dialog.open(

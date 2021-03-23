@@ -307,7 +307,14 @@ export class RFxService {
         ).pipe(catchError(this.errorHandler));
       }
       DowloandAttachment(RFxID: string,DocumentName:string): Observable<Blob | string> {
-        return this._httpClient.get(`${this.baseAddress}rfxapi/RFx/DowloandAttachment?RFxID=${RFxID}&DocumentName=${DocumentName}`, {
+        return this._httpClient.get(`${this.baseAddress}rfxapi/RFx/DowloandRFxAttachment?RFxID=${RFxID}&DocumentName=${DocumentName}`, {
+          responseType: 'blob',
+          headers: new HttpHeaders().append('Content-Type', 'application/json')
+        })
+          .pipe(catchError(this.errorHandler));
+      }
+      DowloandResAttachment(DocumentName:string): Observable<Blob | string> {
+        return this._httpClient.get(`${this.baseAddress}rfxapi/RFx/DowloandResAttachment?DocumentName=${DocumentName}`, {
           responseType: 'blob',
           headers: new HttpHeaders().append('Content-Type', 'application/json')
         })
