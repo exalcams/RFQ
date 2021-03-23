@@ -49,8 +49,11 @@ export class RfqHomeComponent implements OnInit {
     this.GetAllRFxs();
   }
   Gotoheader(rfqid) {
-    this.route.navigate(['pages/rfq'], { queryParams: { id: rfqid } });
+    this.route.navigate(['pages/rfq']);
+    // { queryParams: { id: rfqid } }
+    localStorage.setItem('RFXID',rfqid);
   }
+  
   GetAllRFxs(): void {
     this.isProgressBarVisibile=true;
     this._RFxService.GetAllRFxHDocumets().subscribe(

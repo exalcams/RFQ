@@ -104,9 +104,10 @@ export class ResponseComponent implements OnInit {
       this._router.navigate(["/auth/login"]);
     }
     this.InitializeRFxFormGroup();
-    this._route.queryParams.subscribe(params => {
-      this.RFxID = params['id'];
-    });
+    // this._route.queryParams.subscribe(params => {
+    //   this.RFxID = params['id'];
+    // });
+    this.RFxID=localStorage.getItem('ResID');
     this.GetRFxs();
     this.GetResH(this.RFxID, this.currentUserName);
     this.GetRFQMasters();

@@ -63,7 +63,10 @@ export class ResponseHomeComponent implements OnInit {
   }
 
   Gotoheader(rfqid) {
-    this.route.navigate(['pages/response'], { queryParams: { id: rfqid } });
+    this.route.navigate(['pages/response']);
+    // { queryParams: { id: rfqid } }
+    localStorage.setItem('ResID',rfqid);
+
   }
   GetAllRFxs(): void {
     this.isProgressBarVisibile = true;
