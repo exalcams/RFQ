@@ -72,6 +72,7 @@ import { ResAttachDialogComponent } from './response/response-dialogs/res-attach
 import { SelectVendorDialogComponent } from './rfq/rfq-dialogs/select-vendor-dialog/select-vendor-dialog.component';
 import { SharedModule } from 'app/shared/shared-module';
 import { RemoveLeadingZeroPipe } from 'app/shared/remove-leading-zero';
+import { EvaluationHomeComponent } from './evaluation-home/evaluation-home.component';
 
 
 const routes = [
@@ -94,6 +95,10 @@ const routes = [
     {
         path: 'response',
         component: ResponseComponent
+    },
+    {
+        path: 'evaluationhome',
+        component: EvaluationHomeComponent
     },
     {
         path: '**',
@@ -172,7 +177,8 @@ const routes = [
         ResAnsDialogComponent,
         ResAttachDialogComponent,
         SelectVendorDialogComponent,
-        RemoveLeadingZeroPipe
+        RemoveLeadingZeroPipe,
+        EvaluationHomeComponent
     ],
     providers: [
         DecimalPipe,

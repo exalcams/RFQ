@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationDetails } from 'app/models/master';
 import { RFxHeader } from 'app/models/RFx';
 import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
+import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
+import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { RFxService } from 'app/services/rfx.service';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-response-home',
@@ -41,14 +44,18 @@ export class ResponseHomeComponent implements OnInit {
       url: '../assets/images/5.png'
     }
   ]
-  authenticationDetails: any;
-  currentUserID: any;
-  currentUserName: any;
+  authenticationDetails: AuthenticationDetails;
+  currentUserID: Guid;
+  currentUserName: string;
+  MenuItems: string[];
+  notificationSnackBarComponent: NotificationSnackBarComponent;
 
   constructor(private route: Router,
     private _RFxService: RFxService,
     private _route: ActivatedRoute,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog, public snackBar: MatSnackBar) {
+    this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+  }
 
   ngOnInit() {
     const retrievedObject = localStorage.getItem("authorizationData");
@@ -58,14 +65,23 @@ export class ResponseHomeComponent implements OnInit {
       ) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
       this.currentUserName = this.authenticationDetails.UserName;
+      this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
+      if (this.MenuItems.indexOf('RFQ_ResponseHome') < 0) {
+        this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
+        );
+        this.route.navigate(['/auth/login']);
+      }
+    } else {
+      this.route.navigate(['/auth/login']);
     }
+
     this.GetAllRFxs();
   }
 
   Gotoheader(rfqid) {
     this.route.navigate(['pages/response']);
     // { queryParams: { id: rfqid } }
-    localStorage.setItem('ResID',rfqid);
+    localStorage.setItem('ResID', rfqid);
 
   }
   GetAllRFxs(): void {
@@ -79,7 +95,7 @@ export class ResponseHomeComponent implements OnInit {
         }
       }
     );
-    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName,'2').subscribe(
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '1').subscribe(
       (data) => {
         if (data) {
           this.InitiatedHeaderDetails = data;
@@ -87,7 +103,7 @@ export class ResponseHomeComponent implements OnInit {
         }
       }
     );
-    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName,'3').subscribe(
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '2').subscribe(
       (data) => {
         if (data) {
           this.RespondedHeaderDetails = data;
@@ -95,7 +111,7 @@ export class ResponseHomeComponent implements OnInit {
         }
       }
     );
-    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName,'5').subscribe(
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '3').subscribe(
       (data) => {
         if (data) {
           this.EvaluatedHeaderDetails = data;
@@ -103,7 +119,7 @@ export class ResponseHomeComponent implements OnInit {
         }
       }
     );
-    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName,'6').subscribe(
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '5').subscribe(
       (data) => {
         if (data) {
           this.ClosedHeaderDetails = data;
@@ -120,7 +136,7 @@ export class ResponseHomeComponent implements OnInit {
 
   openAttachmentViewDialog(RFxID: string, Ataachments: string[]): void {
     const dialogConfig: MatDialogConfig = {
-      data: { Documents: Ataachments, RFxID: RFxID ,isResponse:true},
+      data: { Documents: Ataachments, RFxID: RFxID, isResponse: true },
       panelClass: "attachment-view-dialog",
     };
     const dialogRef = this.dialog.open(

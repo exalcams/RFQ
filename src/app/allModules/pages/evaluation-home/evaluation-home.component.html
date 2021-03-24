@@ -1,0 +1,121 @@
+<div fxFlex fxLayout="column">
+  <mat-toolbar class="cl_toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <h1>Evaluation</h1>
+    <div>
+      <img src="/assets/images/exalca_100.png">
+    </div>
+  </mat-toolbar>
+  <div fxFlex style="margin: 20px;">
+
+    <mat-card class="cl_card">
+      
+      <table mat-table [dataSource]="HeaderDetailsDataSource" class="mat-elevation-z8" matSort>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef class="header-cell"> S.No </th>
+          <td mat-cell class="td-cell" *matCellDef="let element;let i = index;"> {{i+1}}
+          </td>
+        </ng-container>
+
+        <!-- RFQ ID Column -->
+        <ng-container matColumnDef="RFxID">
+          <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> RFQ ID </th>
+          <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
+            *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.RFxID | removeLeadingZero}} </td>
+        </ng-container>
+
+        <!-- Type Column -->
+        <ng-container matColumnDef="RFxType">
+          <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Type </th>
+          <td mat-cell class="td-cell" *matCellDef="let element"> {{element.RFxType}}
+          </td>
+        </ng-container>
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="ValidityStartDate">
+          <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Date </th>
+
+          <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityStartDate | date :'dd/MM/yyyy'}}
+
+
+
+          </td>
+        </ng-container>
+
+        <!-- Expiry Column -->
+        <ng-container matColumnDef="ValidityEndDate">
+          <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Expiry </th>
+
+          <td mat-cell class="td-cell" *matCellDef="let element"> {{element.ValidityEndDate | date :'dd/MM/yyyy'}}
+
+          </td>
+        </ng-container>
+
+        <!-- Fulfilment Column -->
+        <ng-container matColumnDef="Fulfilment">
+          <th mat-header-cell style="text-align: center;" class="header-cell" *matHeaderCellDef> Fulfilment </th>
+          <td mat-cell style="text-align: center;" *matCellDef="let element">
+            <div fxLayout="row" fxLayoutAlign="start center" class="mt-4 mx-8">
+              <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
+                <div class="round" [style.border-color]="element.Status==='1'?'gray':'#34ad65'"></div>
+                <div style="width: 10px;" [class]="element.Status==='1'?'white-timeline':'green-timeline'"></div>
+                <div
+                  [class]="element.Status==='1'?'white-timeline':element.Status==='2'?'white-timeline':'green-timeline'"
+                  fxFlex></div>
+              </div>
+              <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
+                <div style="width: 10px;" [class]="getTimeline(element,'Responded')">
+                </div>
+                <div class="round" [style.border-color]="getStatusColor(element,'Responded')"></div>
+                <div style="width: 10px;" [class]="getTimeline(element,'Responded')">
+                </div>
+                <div [class]="getRestTimeline(element,'Responded')" fxFlex></div>
+              </div>
+              <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
+                <div style="width: 10px;" [class]="getTimeline(element,'Evaluated')">
+                </div>
+                <div class="round" [style.border-color]="getStatusColor(element,'Evaluated')"></div>
+                <div style="width: 10px;" [class]="getTimeline(element,'Evaluated')">
+                </div>
+                <div [class]="getRestTimeline(element,'Evaluated')" fxFlex></div>
+              </div>
+              <div fxFlex="10" fxLayout="row" fxLayoutAlign="start center">
+                <div style="width: 10px;" [class]="getTimeline(element,'Closed')">
+                </div>
+                <div class="round" [style.border-color]="getStatusColor(element,'Closed')"></div>
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxFlex="30" class="timelineItem">Initiated</div>
+              <div fxFlex="30" class="timelineItem">Responded</div>
+              <div fxFlex="30" class="timelineItem">Evaluated</div>
+              <div fxFlex="10" class="timelineItem">Closed</div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell class="header-cell" *matHeaderCellDef style="text-align: center;"> Action </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center;">
+            <button class="cl_action">
+              <mat-select placeholder="Actions" style="width: 90%;" class="Action-select">
+                <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RFxID)>Response</mat-option>
+              </mat-select>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
+      </table>
+      <div>
+        <!-- <p class="display">Displaying 10 of 54 records</p> -->
+        <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]"></mat-paginator>
+      </div>
+    </mat-card>
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+  </div>

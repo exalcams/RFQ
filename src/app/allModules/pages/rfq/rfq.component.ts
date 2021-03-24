@@ -16,6 +16,8 @@ import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notific
 import { MatSnackBar } from '@angular/material';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SelectVendorDialogComponent } from './rfq-dialogs/select-vendor-dialog/select-vendor-dialog.component';
+import { AuthenticationDetails } from 'app/models/master';
+import { Guid } from 'guid-typescript';
 
 
 @Component({
@@ -63,7 +65,10 @@ export class RfqComponent implements OnInit {
   RFxGroupMasters:MRFxGroup[]=[];
   isProgressBarVisibile:boolean;
   NewVendorMaser:MVendor[]=[];
-
+  authenticationDetails: AuthenticationDetails;
+  currentUserID: Guid;
+  currentUserRole: string;
+  MenuItems: string[];
   constructor(
     public dialog: MatDialog,
     private _formBuilder: FormBuilder,
@@ -76,6 +81,21 @@ export class RfqComponent implements OnInit {
     }
 
     ngOnInit(): void {
+      const retrievedObject = localStorage.getItem('authorizationData');
+      console.log(retrievedObject);   
+      if (retrievedObject) {
+        this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
+        this.currentUserID = this.authenticationDetails.UserID;
+        this.currentUserRole = this.authenticationDetails.UserRole;
+        this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
+        if (this.MenuItems.indexOf('RFQ_Dashboard') < 0) {
+          this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
+          );
+          this._router.navigate(['/auth/login']);
+        }
+      } else {
+        this._router.navigate(['/auth/login']);
+      }
       this.Rfxheader.Client="01";
       this.Rfxheader.Company="Exa";
       this.index=0;
