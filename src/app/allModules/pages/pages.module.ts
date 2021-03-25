@@ -72,10 +72,10 @@ import { ResItemDialogComponent } from './response/response-dialogs/res-item-dia
 import { ResAnsDialogComponent } from './response/response-dialogs/res-ans-dialog/res-ans-dialog.component';
 import { ResAttachDialogComponent } from './response/response-dialogs/res-attach-dialog/res-attach-dialog.component';
 import { SelectVendorDialogComponent } from './rfq/rfq-dialogs/select-vendor-dialog/select-vendor-dialog.component';
-import { SharedModule } from 'app/shared/shared-module';
 import { RemoveLeadingZeroPipe } from 'app/shared/remove-leading-zero';
 import { EvaluationHomeComponent } from './evaluation-home/evaluation-home.component';
 import { EvaluationComponent } from './evaluation/evaluation.component';
+import { EvaluationResponseComponent } from './evaluation-response/evaluation-response.component';
 
 
 const routes = [
@@ -106,6 +106,10 @@ const routes = [
     {
         path: 'evaluation',
         component: EvaluationComponent
+    },
+    {
+        path: 'evaluationresponse',
+        component: EvaluationResponseComponent
     },
     {
         path: '**',
@@ -187,7 +191,8 @@ const routes = [
         SelectVendorDialogComponent,
         RemoveLeadingZeroPipe,
         EvaluationHomeComponent,
-        EvaluationComponent
+        EvaluationComponent,
+        EvaluationResponseComponent
     ],
     providers: [
         DecimalPipe,
