@@ -532,7 +532,7 @@
 
         </mat-tab>
     </mat-tab-group>
-    <footer class="footer">
+    <footer class="footer" *ngIf="index==3">
         <mat-toolbar style="background-color: white;height: 56px;">
             <!-- <button (click)="PreviousClicked(index)" mat-button class="cl_button3" *ngIf="index!=0">
                 <img src="assets/images/back_arrow.png"> Previous</button>
@@ -541,7 +541,7 @@
                 Next
                 <img src="assets/images/next_arrow.png"></button> -->
                 <div style="flex:1 auto"></div>
-            <div *ngIf="index==3" fxLayout="row"  fxLayoutAlign="end end" fxLayoutGap="1rem">
+            <div fxLayout="row"  fxLayoutAlign="end end" fxLayoutGap="1rem">
                 <button mat-button  class="cl_button4" (click)="SaveResClicked()">Respond</button>
             </div>
 

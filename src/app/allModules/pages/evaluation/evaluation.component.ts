@@ -1,23 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { RFxHeader, RFxHC, RFxItem, RFxPartner, RFxOD, RFxVendorView, MRFxGroup, MRFxType, ResponseView, RespondedItems, ResItem, RespondedODs, ResOD, ResHC, ResHeader, ResODAttachment, RespondedODAttachments, RFxRemark, RFxODAttachment } from 'app/models/RFx';
-import { RFxService } from 'app/services/rfx.service';
-import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
-import { MatSnackBar } from '@angular/material';
-import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
-import { ResItemDialogComponent } from './response-dialogs/res-item-dialog/res-item-dialog.component';
-import { ResAnsDialogComponent } from './response-dialogs/res-ans-dialog/res-ans-dialog.component';
 import { AuthenticationDetails } from 'app/models/master';
+import { ResponseView, RFxHeader, MRFxType, MRFxGroup, RFxHC, RFxItem, RFxOD, ResHeader, ResItem, ResHC, ResOD, ResODAttachment, RFxRemark, RespondedItems, RespondedODs, RespondedODAttachments, RFxPartner, RFxVendorView, RFxODAttachment } from 'app/models/RFx';
+import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
+import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
+import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
+import { ResAnsDialogComponent } from '../response/response-dialogs/res-ans-dialog/res-ans-dialog.component';
+import { ResItemDialogComponent } from '../response/response-dialogs/res-item-dialog/res-item-dialog.component';
+
 @Component({
-  selector: 'app-response',
-  templateUrl: './response.component.html',
-  styleUrls: ['./response.component.scss']
+  selector: 'app-evaluation',
+  templateUrl: './evaluation.component.html',
+  styleUrls: ['./evaluation.component.scss']
 })
-export class ResponseComponent implements OnInit {
+export class EvaluationComponent implements OnInit {
 
   authenticationDetails: AuthenticationDetails;
   currentUserID: Guid;
@@ -48,7 +47,7 @@ export class ResponseComponent implements OnInit {
   RespondedI: RespondedItems[] = [];
   RespondedOD: RespondedODs[] = [];
   RespondedAttachment: RespondedODAttachments[] = [];
-  EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description'];
+  EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description','Action'];
   ItemsDetailsDisplayedColumns: string[] = ['position', 'Item', 'Material', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm', 'Action'];
   ODDetailsDisplayedColumns: string[] = ['position', 'Question', 'Answertype', 'Action'];
   ODAttachDetailsDisplayedColumns: string[] = ['position', 'Documenttitle', 'Remark'];
@@ -57,7 +56,6 @@ export class ResponseComponent implements OnInit {
   PartnerDetailsDataSource: MatTableDataSource<RFxPartner>;
   VendorDetailsDataSource: MatTableDataSource<RFxVendorView>;
   ODDetailsDataSource: MatTableDataSource<RFxOD>;
-  // ODAttachDetailsDataSource: MatTableDataSource<ResODAttachment>;
   ODAttachDetailsDataSource:MatTableDataSource<RFxODAttachment>;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   RFxID: string = null;
@@ -80,38 +78,41 @@ export class ResponseComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem("authorizationData");
-    if (retrievedObject) {
-      this.authenticationDetails = JSON.parse(
-        retrievedObject
-      ) as AuthenticationDetails;
-      this.currentUserID = this.authenticationDetails.UserID;
-      this.partnerID = this.authenticationDetails.UserName;
-      this.currentUserName = this.authenticationDetails.UserName;
-      this.currentUserRole = this.authenticationDetails.UserRole;
-      this.menuItems = this.authenticationDetails.MenuItemNames.split(
-        ","
-      );
-      // console.log(this.authenticationDetails);
-      // if (this.menuItems.indexOf("OrderFulFilmentCenter") < 0) {
-      //     this.notificationSnackBarComponent.openSnackBar(
-      //         "You do not have permission to visit this page",
-      //         SnackBarStatus.danger
-      //     );
-      //     this._router.navigate(["/auth/login"]);
-      // }
-    } else {
-      this._router.navigate(["/auth/login"]);
-    }
+    // const retrievedObject = localStorage.getItem("authorizationData");
+    // if (retrievedObject) {
+    //   this.authenticationDetails = JSON.parse(
+    //     retrievedObject
+    //   ) as AuthenticationDetails;
+    //   this.currentUserID = this.authenticationDetails.UserID;
+    //   this.partnerID = this.authenticationDetails.UserName;
+    //   this.currentUserName = this.authenticationDetails.UserName;
+    //   this.currentUserRole = this.authenticationDetails.UserRole;
+    //   this.menuItems = this.authenticationDetails.MenuItemNames.split(
+    //     ","
+    //   );
+    //   // console.log(this.authenticationDetails);
+    //   // if (this.menuItems.indexOf("OrderFulFilmentCenter") < 0) {
+    //   //     this.notificationSnackBarComponent.openSnackBar(
+    //   //         "You do not have permission to visit this page",
+    //   //         SnackBarStatus.danger
+    //   //     );
+    //   //     this._router.navigate(["/auth/login"]);
+    //   // }
+    // } else {
+    //   this._router.navigate(["/auth/login"]);
+    // }
     this.InitializeRFxFormGroup();
-    // this._route.queryParams.subscribe(params => {
-    //   this.RFxID = params['id'];
-    // });
-    this.RFxID=localStorage.getItem('ResID');
+    this.RFxID="0000000007";
     this.GetRFxs();
     this.GetResH(this.RFxID, this.currentUserName);
     this.GetRFQMasters();
     this.RFxFormGroup.disable();
+  }
+  onRate($event:{oldValue:number, newValue:number}) {
+    // alert(`Old Value:${$event.oldValue}, 
+    //   New Value: ${$event.newValue}, 
+    //   Checked Color: ${$event.starRating.checkedcolor}, 
+    //   Unchecked Color: ${$event.starRating.uncheckedcolor}`);
   }
 
   GetRFxs(): void {
@@ -227,7 +228,7 @@ export class ResponseComponent implements OnInit {
         this.ResOD.push(element.OD);
       }
     });
-    this.ResView.ItemResponded = RICount.toString();
+    this.ResH.ItemResponded = RICount.toString();
     this.ResView.Client = this.Rfxheader.Client;
     this.ResView.Company = this.Rfxheader.Company;
     this.ResView.RFxID = this.Rfxheader.RFxID;
@@ -272,7 +273,7 @@ export class ResponseComponent implements OnInit {
         this.ResOD.push(element.OD);
       }
     });
-    this.ResView.ItemResponded = RICount.toString();
+    this.ResH.ItemResponded = RICount.toString();
     this.ResView.Client = this.Rfxheader.Client;
     this.ResView.Company = this.Rfxheader.Company;
     this.ResView.RFxID = this.Rfxheader.RFxID;
@@ -374,7 +375,6 @@ export class ResponseComponent implements OnInit {
             res.OD.Client = element.Client;
             res.OD.Company = element.Company;
             res.OD.RFxID = this.RFxID;
-            res.OD.QuestionID=element.QuestionID;
             res.isResponded = false;
             this.RespondedOD.push(res);
           });
@@ -488,22 +488,8 @@ export class ResponseComponent implements OnInit {
     });
   }
 
-  // OpenResDocumentDialog(Document: ResODAttachment, bool: boolean) {
-  //   const dialogRef = this.dialog.open(ResAttachDialogComponent, {
-  //     data: { data: Document, isCreate: bool }, height: '52%',
-  //     width: '50%'
-  //   });
-  //   dialogRef.disableClose = true;
-  //   dialogRef.afterClosed().subscribe(res => {
-  //     if (res && res.isCreate) {
-  //       this.ResAttachment.push(res.data);
-  //       this.ODAttachDetailsDataSource = new MatTableDataSource(this.ResAttachment);
-  //     }
-  //     this.FilesToUpload.push(res.Attachments);
-  //   });
-  // }
-  // DeleteAttachment(index) {
-  //   this.ResAttachment.splice(index, 1);
-  //   this.ODAttachDetailsDataSource = new MatTableDataSource(this.ResAttachment);
-  // }
+  CancelClicked(){
+    localStorage.removeItem("EvalID");
+    this._router.navigate(['pages/evaluationhome']);
+  }
 }

@@ -225,6 +225,15 @@ export class ResOD extends CommonClass {
     Attachment: string;
     Date: Date | string;
 }
+export class ResODView{
+    Client: string;
+    Company: string;
+    RFxID: string;
+    RESID: string;
+    QuestionID: number;
+    Qusetion: string;
+    Answer: string;
+}
 export class ResODAttachment extends CommonClass{
     Client: string;
     Company: string;

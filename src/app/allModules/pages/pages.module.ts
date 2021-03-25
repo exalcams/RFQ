@@ -4,6 +4,8 @@ import { FuseSidebarModule } from '@fuse/components';
 import { RfqHomeComponent } from './rfq-home/rfq-home.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 
+import { RatingModule } from 'ng-starrating';
+
 import {
     MatFormFieldModule,
     MatAutocompleteModule,
@@ -73,6 +75,7 @@ import { SelectVendorDialogComponent } from './rfq/rfq-dialogs/select-vendor-dia
 import { SharedModule } from 'app/shared/shared-module';
 import { RemoveLeadingZeroPipe } from 'app/shared/remove-leading-zero';
 import { EvaluationHomeComponent } from './evaluation-home/evaluation-home.component';
+import { EvaluationComponent } from './evaluation/evaluation.component';
 
 
 const routes = [
@@ -99,6 +102,10 @@ const routes = [
     {
         path: 'evaluationhome',
         component: EvaluationHomeComponent
+    },
+    {
+        path: 'evaluation',
+        component: EvaluationComponent
     },
     {
         path: '**',
@@ -158,7 +165,8 @@ const routes = [
         FuseMaterialColorPickerModule,
         FuseWidgetModule,
 
-        FormsModule
+        FormsModule,
+        RatingModule
     ],
     declarations: [
         DashboardComponent,
@@ -178,7 +186,8 @@ const routes = [
         ResAttachDialogComponent,
         SelectVendorDialogComponent,
         RemoveLeadingZeroPipe,
-        EvaluationHomeComponent
+        EvaluationHomeComponent,
+        EvaluationComponent
     ],
     providers: [
         DecimalPipe,
