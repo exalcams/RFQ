@@ -82,7 +82,7 @@ export class RfqComponent implements OnInit {
 
     ngOnInit(): void {
       const retrievedObject = localStorage.getItem('authorizationData');
-      console.log(retrievedObject);   
+      // console.log(retrievedObject);   
       if (retrievedObject) {
         this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
         this.currentUserID = this.authenticationDetails.UserID;
@@ -103,7 +103,13 @@ export class RfqComponent implements OnInit {
       // this._route.queryParams.subscribe(params => {
       //   this.RFxID = params['id'];
       // });
-      this.RFxID=localStorage.getItem('RFXID');
+      if(localStorage.getItem('RFXID')!="undefined"){
+        this.RFxID=localStorage.getItem('RFXID');
+      }
+      else{
+        this.RFxID=null;
+      }
+      console.log(this.RFxID);
       if(this.RFxID){
         this.GetRFxs();   
       }

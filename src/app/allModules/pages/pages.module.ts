@@ -4,6 +4,8 @@ import { FuseSidebarModule } from '@fuse/components';
 import { RfqHomeComponent } from './rfq-home/rfq-home.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 
+import { RatingModule } from 'ng-starrating';
+
 import {
     MatFormFieldModule,
     MatAutocompleteModule,
@@ -70,9 +72,10 @@ import { ResItemDialogComponent } from './response/response-dialogs/res-item-dia
 import { ResAnsDialogComponent } from './response/response-dialogs/res-ans-dialog/res-ans-dialog.component';
 import { ResAttachDialogComponent } from './response/response-dialogs/res-attach-dialog/res-attach-dialog.component';
 import { SelectVendorDialogComponent } from './rfq/rfq-dialogs/select-vendor-dialog/select-vendor-dialog.component';
-import { SharedModule } from 'app/shared/shared-module';
 import { RemoveLeadingZeroPipe } from 'app/shared/remove-leading-zero';
 import { EvaluationHomeComponent } from './evaluation-home/evaluation-home.component';
+import { EvaluationComponent } from './evaluation/evaluation.component';
+import { EvaluationResponseComponent } from './evaluation-response/evaluation-response.component';
 
 
 const routes = [
@@ -99,6 +102,14 @@ const routes = [
     {
         path: 'evaluationhome',
         component: EvaluationHomeComponent
+    },
+    {
+        path: 'evaluation',
+        component: EvaluationComponent
+    },
+    {
+        path: 'evaluationresponse',
+        component: EvaluationResponseComponent
     },
     {
         path: '**',
@@ -158,7 +169,8 @@ const routes = [
         FuseMaterialColorPickerModule,
         FuseWidgetModule,
 
-        FormsModule
+        FormsModule,
+        RatingModule
     ],
     declarations: [
         DashboardComponent,
@@ -178,7 +190,9 @@ const routes = [
         ResAttachDialogComponent,
         SelectVendorDialogComponent,
         RemoveLeadingZeroPipe,
-        EvaluationHomeComponent
+        EvaluationHomeComponent,
+        EvaluationComponent,
+        EvaluationResponseComponent
     ],
     providers: [
         DecimalPipe,
