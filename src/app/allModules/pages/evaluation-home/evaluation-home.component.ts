@@ -7,6 +7,7 @@ import { NotificationSnackBarComponent } from 'app/notifications/notification-sn
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
+import { EvaItemDialogComponent } from '../eva-item-dialog/eva-item-dialog.component';
 
 
 @Component({
@@ -71,6 +72,16 @@ export class EvaluationHomeComponent implements OnInit {
     this.HeaderDetailsDataSource = new MatTableDataSource(DataArray);
     this.HeaderDetailsDataSource.paginator=this.RFQPaginator;
     this.HeaderDetailsDataSource.sort=this.RFQSort;
+  }
+
+  OpenEvaItemDialog() {
+    const dialogRef = this.dialog.open(EvaItemDialogComponent, {
+      data: { data: "1" }, height: '90%',
+      width: '82%'
+    });
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(res => {
+    });
   }
 
 //fulfilment Status

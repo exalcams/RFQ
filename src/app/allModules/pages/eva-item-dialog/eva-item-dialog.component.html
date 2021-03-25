@@ -1,0 +1,309 @@
+<div>
+  <mat-toolbar class="toolbar1">
+    <p class="add_criteria">Add Item</p>
+    <img (click)="dialogRef.close()" style="cursor: pointer;" src="assets/images/cancel1.png">
+  </mat-toolbar>
+</div>
+<mat-dialog-content [formGroup]="DialogueFormGroup">
+  <div style="padding: 2rem;" fxLayout="column">
+    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="3%">
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Item</mat-label>
+        <input matInput fxFlex formControlName="Item" autocomplete="off">
+
+        <!-- <mat-error *ngIf="DialogueFormGroup.get('Item').touched && DialogueFormGroup.get('Item').hasError('required')">
+          Item is required
+        </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Material</mat-label>
+        <mat-select fxFlex formControlName="material" [disabled]="true">
+          <mat-option value="A">A</mat-option>
+        </mat-select>
+        <!-- <mat-error
+          *ngIf="DialogueFormGroup.get('material').touched && DialogueFormGroup.get('material').hasError('required')">
+          Material is required
+        </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Material Text</mat-label>
+        <input matInput formControlName="material_text" fxFlex autocomplete="off">
+
+        <!-- <mat-error
+          *ngIf="DialogueFormGroup.get('material_text').touched && DialogueFormGroup.get('material_text').hasError('required')">
+          Material Text is required
+        </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>UOM</mat-label>
+        <input matInput formControlName="Uom" maxlength="3" size="3" fxFlex autocomplete="off">
+
+        <!-- <mat-error *ngIf="DialogueFormGroup.get('Uom').touched && DialogueFormGroup.get('Uom').hasError('required')">
+          UOM is required
+        </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Total Qty</mat-label>
+        <input matInput formControlName="TotalQty" type="number" fxFlex autocomplete="off">
+
+        <!-- <mat-error
+          *ngIf="DialogueFormGroup.get('TotalQty').touched && DialogueFormGroup.get('TotalQty').hasError('required')">
+          Total Quantity is required
+        </mat-error> -->
+        <!-- <mat-error *ngIf="DialogueFormGroup.get('TotalQty').hasError('pattern')">Enter
+          only 3 decimal digits</mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Per Schedule Qty</mat-label>
+        <input matInput formControlName="per_schedule_qty" type="number" fxFlex autocomplete="off"
+          (keyup)="CalculateTotalSchedules()">
+
+        <!-- <mat-error
+          *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('required')">
+          Per Schedule Quantity is required
+        </mat-error>
+        <mat-error *ngIf="DialogueFormGroup.get('per_schedule_qty').hasError('pattern')">Enter
+          only 3 decimal digits</mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Total Schedules</mat-label>
+        <input matInput formControlName="totalSchedules" type="number" fxFlex autocomplete="off">
+
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Bidding Price Low</mat-label>
+        <input matInput formControlName="LowPrice" type="number" fxFlex autocomplete="off">
+
+        <!-- <mat-error
+          *ngIf="DialogueFormGroup.get('LowPrice').touched && DialogueFormGroup.get('LowPrice').hasError('required')">
+          Bidding price low is required
+        </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Bidding Price High</mat-label>
+        <input matInput formControlName="HighPrice" type="number" fxFlex autocomplete="off">
+
+        <!-- <mat-error
+          *ngIf="DialogueFormGroup.get('HighPrice').touched && DialogueFormGroup.get('HighPrice').hasError('required')">
+          Bidding Price High is required
+        </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Interval</mat-label>
+        <input matInput type="number" fxFlex autocomplete="off">
+        <!-- formControlName="Interval"
+        <mat-error
+          *ngIf="DialogueFormGroup.get('Interval').touched && DialogueFormGroup.get('Interval').hasError('required')">
+          Interval is required
+        </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Incoterm</mat-label>
+        <input matInput max="2" size="2" fxFlex autocomplete="off">
+        <!-- formControlName="incoterm"
+        <mat-error
+          *ngIf="DialogueFormGroup.get('incoterm').touched && DialogueFormGroup.get('incoterm').hasError('required')">
+          Incoterm is required
+        </mat-error>
+        <mat-error
+          *ngIf="DialogueFormGroup.get('incoterm').touched && DialogueFormGroup.get('incoterm').hasError('pattern')">
+          Incoterm should be less than 2 characters
+        </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Lead Time</mat-label>
+        <input matInput type="number" fxFlex autocomplete="off">
+        <!-- formControlName="LeadTime"
+        <mat-error
+          *ngIf="DialogueFormGroup.get('LeadTime').touched && DialogueFormGroup.get('LeadTime').hasError('required')">
+          Lead Time is required
+        </mat-error> -->
+      </mat-form-field>
+
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Notes</mat-label>
+        <input matInput max="2" size="2" fxFlex autocomplete="off" />
+        <!-- formControlName="Notes" 
+        <mat-error
+          *ngIf="DialogueFormGroup.get('Notes').touched && DialogueFormGroup.get('Notes').hasError('required')">
+          Notes is required
+        </mat-error> -->
+      </mat-form-field>
+
+
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Price</mat-label>
+        <input matInput fxFlex autocomplete="off" type="number">
+        <!-- formControlName="Price" 
+        <mat-error
+          *ngIf="DialogueFormGroup.get('Price').touched && DialogueFormGroup.get('Price').hasError('required')">
+          price is required
+        </mat-error>
+        <mat-error
+          *ngIf="DialogueFormGroup.get('Price').touched && DialogueFormGroup.get('Price').hasError('min')">
+          price do not exceed minimum bidding
+        </mat-error>
+        <mat-error
+          *ngIf="DialogueFormGroup.get('Price').touched && DialogueFormGroup.get('Price').hasError('max')">
+          price do not exceed maximum bidding
+        </mat-error> -->
+      </mat-form-field>
+
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>USP Remark</mat-label>
+        <input matInput fxFlex autocomplete="off">
+        <!-- formControlName="USPRemark"
+        <mat-error
+          *ngIf="DialogueFormGroup.get('USPRemark').touched && DialogueFormGroup.get('USPRemark').hasError('required')">
+          USP Remark is required
+        </mat-error> -->
+      </mat-form-field>
+
+
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Price Rating</mat-label>
+        <input matInput maxlength="1" max="5" min="1" fxFlex autocomplete="off" type="number">
+        <!-- formControlName="PriceRating"
+        <mat-error
+          *ngIf="DialogueFormGroup.get('PriceRating').touched && DialogueFormGroup.get('PriceRating').hasError('required')">
+          Price Rating is required
+        </mat-error>
+        <mat-error *ngIf="DialogueFormGroup.get('PriceRating').hasError('pattern')">Enter
+          only 1 digits</mat-error> -->
+      </mat-form-field>
+
+
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Lead Time Rating</mat-label>
+        <input matInput type="number" fxFlex autocomplete="off">
+        <!-- formControlName="LeadTimeRating"
+        <mat-error
+          *ngIf="DialogueFormGroup.get('LeadTimeRating').touched && DialogueFormGroup.get('LeadTimeRating').hasError('required')">
+          Lead Time Rating is required
+        </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+        <mat-label>Lead Time is acceptable</mat-label>
+        <mat-select fxFlex>
+          <mat-option value="type">type</mat-option>
+        </mat-select>
+        <!-- formControlName="LeadTimeAccept"
+        <mat-error
+          *ngIf="DialogueFormGroup.get('LeadTimeAccept').touched && DialogueFormGroup.get('LeadTimeAccept').hasError('required')">
+          Lead time is required
+        </mat-error> -->
+      </mat-form-field>
+
+      <!-- <mat-form-field *ngIf="DialogueFormGroup.get('LeadTimeAccept').value=='No'" fxFlex=30 style="font-size: 14px;"
+        appearance="outline">
+        <mat-label>Remark</mat-label>
+        <input matInput formControlName="LeadTimeRemark" fxFlex autocomplete="off">
+        <mat-error
+          *ngIf="DialogueFormGroup.get('LeadTimeRemark').touched && DialogueFormGroup.get('LeadTimeRemark').hasError('required')">
+          Lead Time Remark is required
+        </mat-error>
+      </mat-form-field> -->
+
+    </div>
+    <div fxLayout="row">
+    <div fxFlex="20">
+      <p class="attachment">RFx Attachment <span matBadgeSize="small" matBadgeColor="accent" matBadgeOverlap="false">
+          <img style="width: 20px;cursor: pointer;" src="assets/images/attachment.png"></span></p>
+    </div>
+
+    <div fxFlex="20">
+      <p class="attachment">Response Attachment <span matBadgeSize="small" matBadgeColor="accent"
+          matBadgeOverlap="false">
+          <img style="width: 20px;cursor: pointer;" src="assets/images/attachment.png"></span></p>
+    </div>
+  </div>
+    <div>
+      <table mat-table [dataSource]="EvaluationDetailsDataSource" class="mat-elevation-z8" matSort>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef style=" font-size: 13px;
+                            font-weight: 500;
+                            font-stretch: normal;
+                            font-style: normal;
+                            line-height: 1.5;
+                            letter-spacing: normal;
+                            text-align: left;
+                            color: #595d6e;width: 6%;" class="Rectangle-4510"> S.No </th>
+          <td mat-cell style="font-size: 12px;" *matCellDef="let element;let i = index;">{{i+1}}
+          </td>
+        </ng-container>
+
+        <!-- Criteria Column -->
+        <ng-container matColumnDef="Criteria">
+          <th mat-header-cell mat-sort-header style=" font-size: 13px;
+                            font-weight: 500;
+                            font-stretch: normal;
+                            font-style: normal;
+                            line-height: 1.5;
+                            letter-spacing: normal;
+                            text-align: left;
+                            color: #595d6e;width: 5%;" class="Rectangle-4510" *matHeaderCellDef> Criteria
+          </th>
+          <td mat-cell style="font-size: 12px;" *matCellDef="let element">
+          </td>
+        </ng-container>
+
+        <!-- Description Column -->
+        <ng-container matColumnDef="Description">
+          <th mat-header-cell style=" font-size: 13px;
+                            font-weight: 500;
+                            font-stretch: normal;
+                            font-style: normal;
+                            line-height: 1.5;
+                            letter-spacing: normal;
+                            text-align: center;
+                            color: #595d6e;width: 80%;" class="Rectangle-4510" *matHeaderCellDef>
+            Description </th>
+          <td mat-cell style="font-size: 12px;text-align: center;" *matCellDef="let element"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell style=" font-size: 13px;
+                          font-weight: 500;
+                          font-stretch: normal;
+                          font-style: normal;
+                          line-height: 1.5;
+                          letter-spacing: normal;
+                          text-align: center;
+                          color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Rating </th>
+          <td mat-cell *matCellDef="let element;index as i;" style="text-align: center;">
+            <button>Evaluate</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="EvaluationDetailsDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: EvaluationDetailsDisplayedColumns;"></tr>
+      </table>
+    </div>
+
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center" style="box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);">
+  <button mat-button class="cl_button1" (click)="Save()"><span class="add">{{data.isCreate?'Add':'Save'}}</span>
+  </button>
+</mat-dialog-actions>

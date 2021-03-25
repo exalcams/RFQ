@@ -76,6 +76,7 @@ import { RemoveLeadingZeroPipe } from 'app/shared/remove-leading-zero';
 import { EvaluationHomeComponent } from './evaluation-home/evaluation-home.component';
 import { EvaluationComponent } from './evaluation/evaluation.component';
 import { EvaluationResponseComponent } from './evaluation-response/evaluation-response.component';
+import { EvaItemDialogComponent } from './eva-item-dialog/eva-item-dialog.component';
 
 
 const routes = [
@@ -192,7 +193,8 @@ const routes = [
         RemoveLeadingZeroPipe,
         EvaluationHomeComponent,
         EvaluationComponent,
-        EvaluationResponseComponent
+        EvaluationResponseComponent,
+        EvaItemDialogComponent
     ],
     providers: [
         DecimalPipe,
@@ -209,7 +211,8 @@ const routes = [
         ResItemDialogComponent,
         ResAnsDialogComponent,
         ResAttachDialogComponent,
-        SelectVendorDialogComponent
+        SelectVendorDialogComponent,
+        EvaItemDialogComponent
     ]
 })
 export class PagesModule { }
