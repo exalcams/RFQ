@@ -169,7 +169,10 @@ export class RFxService {
         return this._httpClient.get<ResHeader>(`${this.baseAddress}rfxapi/RFx/GetResponseByPartnerID?RFxID=${RFxID}&PartnerID=${PartnerID}`)
             .pipe(catchError(this.errorHandler));
     }
-
+    GetResponseByRFxID(RFxID:string):Observable<ResHeader | string> {
+        return this._httpClient.get<ResHeader>(`${this.baseAddress}rfxapi/RFx/GetResponseByRFxID?RFxID=${RFxID}`)
+        .pipe(catchError(this.errorHandler));
+    }
     GetResponseItemsByResponseID(ResponseID: string): Observable<ResItem[] | string> {
         return this._httpClient.get<ResItem[]>(`${this.baseAddress}rfxapi/RFx/GetResponseItemsByResponseID?ResponseID=${ResponseID}`)
             .pipe(catchError(this.errorHandler));
