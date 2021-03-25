@@ -35,13 +35,12 @@ export class EvaluationHomeComponent implements OnInit {
 
   ngOnInit() {
     const retrievedObject = localStorage.getItem('authorizationData');
-    console.log(retrievedObject);   
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
       this.currentUserRole = this.authenticationDetails.UserRole;
       this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
-      if (this.MenuItems.indexOf('RFQ_RFQ') < 0) {
+      if (this.MenuItems.indexOf('RFQ_EvaluationHome') < 0) {
         this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
         );
         this.route.navigate(['/auth/login']);
@@ -52,7 +51,9 @@ export class EvaluationHomeComponent implements OnInit {
     this.GetAllRFxs();
   }
   Gotoheader(rfqid) {
-   
+    this.route.navigate(['pages/evaluationresponse']);
+    // { queryParams: { id: rfqid } }
+    localStorage.setItem('E_RFXID', rfqid);
   }
   GetAllRFxs(): void {
     this.isProgressBarVisibile=true;
