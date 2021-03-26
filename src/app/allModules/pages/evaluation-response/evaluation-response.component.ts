@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
 import { ResHeader, RFxHeader } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 
@@ -21,7 +22,7 @@ export class EvaluationResponseComponent implements OnInit {
   isProgressBarVisibile: boolean;
   HeaderDetailsDataSource: MatTableDataSource<ResHeader>;
   constructor(private _RFxService: RFxService,
-    private _formBuilder: FormBuilder,) { }
+    private _formBuilder: FormBuilder,private route:Router) { }
 
   ngOnInit() {
     this.RFxID = localStorage.getItem('E_RFXID');
@@ -59,8 +60,7 @@ export class EvaluationResponseComponent implements OnInit {
     this._RFxService.GetResponseByRFxID(this.RFxID).subscribe(
       (data) => {
         if (data) {
-          this.AllResponseDetails = data;
-          console.log(this.AllResponseDetails);         
+          this.AllResponseDetails = data;      
           this.isProgressBarVisibile = false;
           this.LoadTableSource(this.AllResponseDetails);
         }
@@ -90,7 +90,6 @@ export class EvaluationResponseComponent implements OnInit {
   }
   LoadTableSource(DataArray: any[]) {
     this.HeaderDetailsDataSource = new MatTableDataSource(DataArray);
-    console.log(this.HeaderDetailsDataSource);
     this.HeaderDetailsDataSource.paginator = this.ResPaginator;
     this.HeaderDetailsDataSource.sort = this.ResSort;
   }
@@ -207,5 +206,8 @@ export class EvaluationResponseComponent implements OnInit {
         return "";
     }
   }
-
+  Gotoheader(RESID:string) {
+    localStorage.setItem("E_RESID",RESID);
+    this.route.navigate(['pages/evaluation']);
+  }
 }

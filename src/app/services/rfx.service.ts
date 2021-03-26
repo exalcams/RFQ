@@ -4,7 +4,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 // import { _MatChipListMixinBase } from '@angular/material';
 // import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment } from '../models/RFx';
+import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, RFxH } from '../models/RFx';
 import { environment } from '../../environments/environment';
 
 
@@ -323,4 +323,47 @@ export class RFxService {
         })
           .pipe(catchError(this.errorHandler));
       }
+
+      //Evaluation
+      GetResODViewsByRESID(ResponseID: string): Observable<ResODView[] | string> {
+        return this._httpClient.get<ResODView[]>(`${this.baseAddress}rfxapi/RFx/GetResODViewsByRESID?ResponseID=${ResponseID}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    CreateEvaluation(Eval: EvaluationView): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateEvaluation`,
+        Eval,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
+            .pipe(catchError(this.errorHandler));
+    }
+
+    UpdateEvaluation(Eval: EvaluationView): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/UpdateEvaluation`,
+        Eval,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
+            .pipe(catchError(this.errorHandler));
+    }
+    GetEvalHeaderByID(RESID: string,User:string): Observable<EvalHeader | string> {
+        return this._httpClient.get<EvalHeader>(`${this.baseAddress}rfxapi/RFx/GetEvalHeaderByID?RESID=${RESID}&User=${User}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetEvalHCsByID(EvalID: string): Observable<EvalHC[] | string> {
+        return this._httpClient.get<EvalHC[]>(`${this.baseAddress}rfxapi/RFx/GetEvalHCsByID?EvalID=${EvalID}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetEvalICsByID(EvalID: string): Observable<EvalIC[] | string> {
+        return this._httpClient.get<EvalIC[]>(`${this.baseAddress}rfxapi/RFx/GetEvalICsByID?EvalID=${EvalID}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    UpdateHeaderStatus(RFxID:string,Status:string):Observable<RFxHeader | string> {
+        return this._httpClient.get<RFxHeader>(`${this.baseAddress}rfxapi/RFx/UpdateHeaderStatus?RFxID=${RFxID}&Status=${Status}`)
+            .pipe(catchError(this.errorHandler));
+    }
 }

@@ -24,8 +24,13 @@
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
               <mat-label>RFQ Date</mat-label>
-              <input matInput type="text" formControlName="RfqTitle" fxFlex>
-            </mat-form-field>
+              <input matInput [matDatepicker]="picker1"
+                  formControlName="ValidityEndDate" fxFlex>
+              <mat-datepicker-toggle matSuffix [for]="picker1">
+                  <img src="assets/images/calendar.png" matDatePickerToggleIcon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
           </div>
         </form>
       </div>
@@ -74,6 +79,15 @@
 
     <mat-card class="cl_card">
 
+      <div fxLayout="column">
+        <mat-toolbar style="background-color: white;height: 31px;" fxLayoutAlign="space-between center">
+            <!-- <img src="assets/image/add.png"> -->
+            <span style="cursor: pointer;" class="cl_header1">Response List</span>
+            <!-- <button mat-button (click)="Gotoheader()" class="cl_button1"><img
+                    src="/assets/images/new1.png"></button> -->
+        </mat-toolbar>
+    </div>
+
       <table mat-table [dataSource]="HeaderDetailsDataSource" class="mat-elevation-z8" matSort>
 
         <!-- Position Column -->
@@ -117,7 +131,7 @@
           <td mat-cell *matCellDef="let element" style="text-align: center;">
             <button class="cl_action">
               <mat-select placeholder="Actions" style="width: 90%;" class="Action-select">
-                <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RESID)>Process</mat-option>
+                <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RESID)>Evaluate</mat-option>
               </mat-select>
             </button>
           </td>
