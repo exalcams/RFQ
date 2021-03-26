@@ -349,7 +349,28 @@ export class RespondedODs{
     isResponded:boolean;
     OD:ResOD;
 }
+export class EvaluatedHCs{
+    isEvaluated:boolean;
+    HC:EvalHC
+}
+export class EvaluatedICs{
+    isEvaluated:boolean;
+    IC:EvalHC
+}
 export class RespondedODAttachments{
     isResponded:boolean;
     Attachment:ResODAttachment;
+}
+export class EvaluationView {
+    Client: string;
+    Company: string;
+    RESID: string;
+    RFxID: string;
+    EvalID:string;
+    User: string;
+    Date: Date | string;
+    ItemResponded: string;
+    EvalRemarks: string;
+    EvalHCs: EvalHC[];
+    EvalICs: EvalIC[];
 }

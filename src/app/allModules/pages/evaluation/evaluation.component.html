@@ -220,11 +220,11 @@
                                   line-height: 1.5;
                                   letter-spacing: normal;
                                   text-align: center;
-                                  color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
+                                  color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Rating </th>
               <td mat-cell *matCellDef="let element;index as i;" style="text-align: center;">
                 <div style="width:10rem">
-                  <star-rating value="0" checkedcolor="gold" uncheckedcolor="#b9bdbb" size="20px" readonly="false"
-                  (rate)="onRate($event)"></star-rating>
+                  <star-rating [value]="EvalHcs[i].Rating" checkedcolor="gold" uncheckedcolor="#b9bdbb" size="20px" readonly="false"
+                  (rate)="onRate($event,i)"></star-rating>
                 </div>
               </td>
             </ng-container>
@@ -379,10 +379,9 @@
                                     text-align: center;
                                     color: #595d6e;width:4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
               <td mat-cell *matCellDef="let element;index as i;">
-                <button *ngIf="!RespondedI[i].isResponded" class="cl_button4" mat-button
-                  (click)="OpenResItemDialog(i,element)">Respond</button>
-                <img *ngIf="RespondedI[i].isResponded" src="assets/images/edit_blue.png"
-                  (click)="OpenResItemDialog(i,element)" class="clickable">
+                <button class="cl_button4" mat-button>Evaluate</button>
+                <!-- <img *ngIf="RespondedI[i].isResponded" src="assets/images/edit_blue.png"
+                  (click)="OpenResItemDialog(i,element)" class="clickable"> -->
               </td>
             </ng-container>
 
@@ -422,7 +421,7 @@
                                   line-height: 1.5;
                                   letter-spacing: normal;
                                   text-align: left;
-                                  color: #595d6e;width: 12%;" class="Rectangle-4510"> S.No </th>
+                                  color: #595d6e;" class="Rectangle-4510"> S.No </th>
               <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element;let i = index;">
                 {{i+1}} </td>
             </ng-container>
@@ -436,29 +435,13 @@
                                   line-height: 1.5;
                                   letter-spacing: normal;
                                   text-align: left;
-                                  color: #595d6e;width: 641px;" class="Rectangle-4510" *matHeaderCellDef> Question
+                                  color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Question
               </th>
               <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                 {{element.Qusetion}} </td>
             </ng-container>
 
-            <!-- Answer type Column -->
-            <ng-container matColumnDef="Answertype">
-              <th mat-header-cell mat-sort-header style=" font-size: 13px;
-                                  font-weight: 500;
-                                  font-stretch: normal;
-                                  font-style: normal;
-                                  line-height: 1.5;
-                                  letter-spacing: normal;
-                                  text-align: left;
-                                  color: #595d6e;width: 35%;" class="Rectangle-4510" *matHeaderCellDef> Answer Type
-              </th>
-              <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
-                {{GetAnswerType(element.AnswerType)}} </td>
-            </ng-container>
-
-
-            <ng-container matColumnDef="Action">
+            <ng-container matColumnDef="Answer">
               <th mat-header-cell style=" font-size: 13px;
                                   font-weight: 500;
                                   font-stretch: normal;
@@ -466,13 +449,9 @@
                                   line-height: 1.5;
                                   letter-spacing: normal;
                                   text-align: center;
-                                  color: #595d6e;width:4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-              <td mat-cell *matCellDef="let element;index as i;">
-                <button *ngIf="!RespondedOD[i].isResponded" class="cl_button4" mat-button
-                  (click)="OpenResAnsDialog(element,i)">Answer</button>
-                <img *ngIf="RespondedOD[i].isResponded" src="assets/images/edit_blue.png"
-                  (click)="OpenResAnsDialog(element,i)" class="clickable ">
-              </td>
+                                  color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Answer</th>
+              <td mat-cell style="color: #48465b;font-size: 12px;text-align: center;" *matCellDef="let element">
+                {{element.Answer}} </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="ODDetailsDisplayedColumns"></tr>
@@ -501,7 +480,7 @@
                                   line-height: 1.5;
                                   letter-spacing: normal;
                                   text-align: left;
-                                  color: #595d6e;width: 50px;" class="Rectangle-4510"> S.No </th>
+                                  color: #595d6e;" class="Rectangle-4510"> S.No </th>
               <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element;let i = index;">
                 {{i+1}} </td>
             </ng-container>
@@ -515,7 +494,7 @@
                                   line-height: 1.5;
                                   letter-spacing: normal;
                                   text-align: left;
-                                  color: #595d6e;width: 21%;" class="Rectangle-4510" *matHeaderCellDef> Document
+                                  color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Document
                 title </th>
               <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                 {{element.DocumentTitle}} </td>
@@ -530,7 +509,7 @@
                                   line-height: 1.5;
                                   letter-spacing: normal;
                                   text-align: center;
-                                  color: #595d6e;width: 67%;" class="Rectangle-4510" *matHeaderCellDef> Document
+                                  color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Document
               </th>
               <td mat-cell style="color: #48465b;font-size: 12px;text-align: center;" *matCellDef="let element">
                 {{element.DocumentName}} </td>
@@ -552,7 +531,7 @@
       </div>
     </mat-tab>
   </mat-tab-group>
-  <footer class="footer" *ngIf="index==3">
+  <footer class="footer">
     <mat-toolbar style="background-color: white;height: 56px;">
       <!-- <button (click)="PreviousClicked(index)" mat-button class="cl_button3" *ngIf="index!=0">
               <img src="assets/images/back_arrow.png"> Previous</button>
@@ -563,8 +542,8 @@
       <button mat-button class="cl_button2" (click)="CancelClicked()">Cancel</button>
       <div style="flex:1 auto"></div>
       <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="1rem">
-        <button mat-button class="cl_button2">Release</button>
-        <button mat-button class="cl_button4">Save</button>
+        <button mat-button class="cl_button2" (click)="SaveEvalClicked(true)">Release</button>
+        <button mat-button class="cl_button4" (click)="SaveEvalClicked(false)">Save</button>
       </div>
 
     </mat-toolbar>
