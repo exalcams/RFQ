@@ -239,3 +239,6 @@
   <button mat-button class="cl_button1" (click)="Save()"><span class="add">{{data.isCreate?'Add':'Save'}}</span>
   </button>
 </mat-dialog-actions>
+<mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+</mat-progress-spinner>
+<div id="overlay" *ngIf="isProgressBarVisibile"></div>

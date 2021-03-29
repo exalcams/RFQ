@@ -21,6 +21,8 @@ export class ResItemDialogComponent implements OnInit {
   ResItem:ResItem=new ResItem();
   accept:boolean=false;
   ResODAttachments:ResODAttachment[]=[];
+  ResItemFiles:File[]=[];
+  isProgressBarVisibile:boolean;
 
   constructor(private _formBuilder: FormBuilder, private _RFxService: RFxService,public dialogRef: MatDialogRef<ResItemDialogComponent>,  private dialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -28,6 +30,7 @@ export class ResItemDialogComponent implements OnInit {
       this.ResItem=data.Res;
       this.RFxID=this.rfxitem.RFxID;
       this.ResODAttachments=data.Docs;
+      this.ResItemFiles=data.DocFiles;
      }    
 
   ngOnInit() {
@@ -45,24 +48,7 @@ export class ResItemDialogComponent implements OnInit {
     if(this.rfxitem.Attachment){
       this.SelectedFileName.push(this.rfxitem.Attachment);
     }
-    // this.ResODAttachments.forEach(oda => {
-    //   this._RFxService.DowloandAttachment(this.rfxitem.RFxID,oda.DocumentName).subscribe(data=>{
-    //     const blob = new Blob([data])
-    //     let blobArr=new Array<Blob>();
-    //     blobArr.push(blob);
-    //     var file=new File(blobArr,oda.DocumentName);
-    //     this.files.push(file);
-    //   });
-    // });
-    this.ResODAttachments.forEach(oda => {
-      this._RFxService.DowloandResAttachment(oda.DocumentName).subscribe(data=>{
-        const blob = new Blob([data])
-        let blobArr=new Array<Blob>();
-        blobArr.push(blob);
-        var file=new File(blobArr,oda.DocumentName);
-        this.files.push(file);
-      });
-    });
+    this.files=this.ResItemFiles;
   }
   types: any = [
     'Yes',
@@ -118,14 +104,31 @@ export class ResItemDialogComponent implements OnInit {
     );
 }
 onSelect(event) {
-  if(this.files.length<=2){
-    this.files.push(event.addedFiles[0]);
-    var resodAttach=new ResODAttachment;
-    resodAttach.Client=this.rfxitem.Client;
-    resodAttach.Company=this.rfxitem.Company;
-    resodAttach.RFxID=this.rfxitem.RFxID;
-    resodAttach.DocumentName=event.addedFiles[0].name;
-    this.ResODAttachments.push(resodAttach);
+  if(event.addedFiles.length<=3){
+    if(event.addedFiles.length>1){
+      this.ResODAttachments=[];
+      this.files=[];
+      event.addedFiles.forEach(doc => {
+        var resodAttach=new ResODAttachment;
+        resodAttach.Client=this.rfxitem.Client;
+        resodAttach.Company=this.rfxitem.Company;
+        resodAttach.RFxID=this.rfxitem.RFxID;
+        resodAttach.DocumentName=doc.name;
+        this.ResODAttachments.push(resodAttach);
+        this.files.push(doc);
+      });
+    }
+    else{
+      if(this.files.length<3){
+        var resodAttach=new ResODAttachment;
+        resodAttach.Client=this.rfxitem.Client;
+        resodAttach.Company=this.rfxitem.Company;
+        resodAttach.RFxID=this.rfxitem.RFxID;
+        resodAttach.DocumentName=event.addedFiles[0].name;
+        this.ResODAttachments.push(resodAttach);
+        this.files.push(event.addedFiles[0]);
+      }
+    }
   }
 }
 onRemove(event) {
@@ -154,7 +157,7 @@ Save(){
     this.ResItem.LeadTimeRating=this.DialogueFormGroup.get('LeadTimeRating').value;
     this.ResItem.LeadTimeRemark=this.DialogueFormGroup.get('LeadTimeRemark').value;
     var Result={data:this.ResItem,Attachments:this.files,Docs:this.ResODAttachments};
-    console.log(Result);
+    // console.log(Result);
     this.dialogRef.close(Result);
   }
   else{

@@ -113,21 +113,19 @@
 
     </div>
     <div fxLayout="row">
-      <div fxFlex="20">
-        <p class="attachment">RFx Attachment <span matBadgeSize="small" matBadgeColor="accent" matBadgeOverlap="false"
-            [matBadge]="RFxItemAttachment.length">
-            <img (click)="openAttachmentViewDialog(rfxitem.RFxID,RFxItemAttachment,false)"
-              style="width: 20px;cursor: pointer;" src="assets/images/attachment.png"></span></p>
+      <div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <p class="attachment">RFx Attachment</p>
+        <span matBadgeSize="small" matBadgeColor="accent" matBadgeOverlap="false" [matBadge]="RFxItemAttachment.length">
+          <img (click)="openAttachmentViewDialog(rfxitem.RFxID,RFxItemAttachment,false)"
+            style="width: 20px;cursor: pointer;" src="assets/images/attachment.png"></span>
       </div>
 
-      <div fxFlex="20">
-        <p class="attachment">Response Attachment
-          <span matBadgeSize="small" matBadgeColor="accent" [matBadge]="ResItemAttachment.length"
-            matBadgeOverlap="false">
-            <img (click)="openAttachmentViewDialog(rfxitem.RFxID,ResItemAttachment,true)"
-              style="width: 20px;cursor: pointer;" src="assets/images/attachment.png">
-          </span>
-        </p>
+      <div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <p class="attachment">Response Attachment</p>
+        <span matBadgeSize="small" matBadgeColor="accent" [matBadge]="ResItemAttachment.length" matBadgeOverlap="false">
+          <img (click)="openAttachmentViewDialog(rfxitem.RFxID,ResItemAttachment,true)"
+            style="width: 20px;cursor: pointer;" src="assets/images/attachment.png">
+        </span>
       </div>
     </div>
     <div>
@@ -175,7 +173,7 @@
           <td mat-cell style="font-size: 12px;text-align: center;" *matCellDef="let element">{{element.Text}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="OverallRating">
+        <!-- <ng-container matColumnDef="OverallRating">
           <th mat-header-cell style=" font-size: 13px;
                               font-weight: 500;
                               font-stretch: normal;
@@ -190,7 +188,7 @@
                 readonly="true"></star-rating>
             </div>
           </td>
-        </ng-container>
+        </ng-container> -->
 
         <ng-container matColumnDef="ItemRating">
           <th mat-header-cell style=" font-size: 13px;
@@ -200,7 +198,7 @@
                               line-height: 1.5;
                               letter-spacing: normal;
                               text-align: center;
-                              color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef>Item Rating </th>
+                              color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef>Rating </th>
           <td mat-cell *matCellDef="let element;index as i;" style="text-align: center;">
             <div>
               <star-rating [value]="EvalICs[i].Rating" checkedcolor="gold" uncheckedcolor="#b9bdbb" size="20px"

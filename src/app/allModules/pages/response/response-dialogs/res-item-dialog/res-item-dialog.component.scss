@@ -532,7 +532,7 @@ background-color: #ffffff;
 }
 .preview{
   height: 50px !important;
-  width: auto !important;
+  max-width: 500px !important;
   min-height: 50px !important;
   margin: 0px 10px !important;
 }
