@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { MMaterial, ResItem, RespondedItems, RFxItem } from 'app/models/RFx';
+import { MatDialog, MatDialogConfig, MatDialogRef, MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
+import { EvalCriteriaView, EvalHC, EvalIC, EvaluatedICs, MMaterial, ResItem, ResODAttachment, RespondedItems, RFxItem } from 'app/models/RFx';
+import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { RFxService } from 'app/services/rfx.service';
 export interface PeriodicElement {
   position: number;
@@ -22,100 +23,110 @@ const ElementSource: PeriodicElement[] = [
 
 
 export class EvaItemDialogComponent implements OnInit {
-  EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description','Action'];
-  // EvaluationDetailsDataSource: MatTableDataSource<RFxHC>;
-  EvaluationDetailsDataSource = ElementSource;
-  files: File[] = [];
-  RFxID:string;
-  SelectedFileName:string[]=[];
-  RespondedI: RespondedItems[] = [];
+  EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description','OverallRating','ItemRating'];
+  EvaluationDetailsDataSource: MatTableDataSource<EvalCriteriaView>;
+  ResODAttachment:ResODAttachment[]=[];
+  EvalHcViews:EvalCriteriaView[]=[];
+  EvalICs:EvalIC[]=[];
+  RFxItemAttachment:string[]=[];
+  ResItemAttachment:string[]=[];
+  RespondedI: EvaluatedICs[] = [];
   DialogueFormGroup: FormGroup;
-  rfxitem = new RFxItem;
-  ResI: ResItem[] = [];
-  Rfxitem : RFxItem[] = [];
+  rfxitem = new RFxItem();
   MaterialMaster:MMaterial[]=[];
   ResItem:ResItem = new ResItem();
- 
+  types: any = [
+    'Yes',
+    'No'
+  ];
   constructor(private _formBuilder: FormBuilder, private _RFxService: RFxService,public dialogRef: MatDialogRef<EvaItemDialogComponent>,  private dialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-      
+      this.rfxitem=data.RFxItem;
+      this.ResItem=data.ResItem;
+      this.EvalHcViews=data.EvalHCs;
+      this.EvalICs=data.EvalIC;
      }
 
   ngOnInit() {
+    console.log(this.data);
     this.InitializeDialogueFormGroup();
-    this.DisableRFxItem();
-    this.RFxID="0000000007";
-    this.GetRFxs();
-    this._RFxService.GetRFxItemsByRFxID("0000000007").subscribe(
-      data => {
-        // console.log("RFXItem",data);
-        this.Rfxitem = <RFxItem[]>data;
-        console.log("RFxItem",this.Rfxitem);
-        
-      }
-    )
+    this.DialogueFormGroup.disable();
     this._RFxService.GetAllRFxMaterialM().subscribe(master=>{
       this.MaterialMaster=master as MMaterial[];
     });
-    if(this.rfxitem.Attachment){
-      this.SelectedFileName.push(this.rfxitem.Attachment);
+    this.GetResODAttachments(this.ResItem.RESID);
+    if(this.ResItem.LeadTimeRemark){
+      this.DialogueFormGroup.get('LeadTimeAccept').setValue('No');
+    }
+    else{
+      this.DialogueFormGroup.get('LeadTimeAccept').setValue('Yes');
+    }
+    this.EvaluationDetailsDataSource=new MatTableDataSource(this.EvalHcViews);
+    if(this.EvalICs.length==0){
+      this.LoadEvalIcs();
     }
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Item: ['', Validators.required],
-      Uom: ['', Validators.required],
-      LowPrice: ['', Validators.required],
-      HighPrice: ['', Validators.required],
-      //rating: [this.rfxitem.Rating, Validators.required],
-      material: [this.rfxitem.Material, Validators.required],
-      TotalQty: [this.rfxitem.TotalQty, [Validators.required,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]],
-      Interval: [this.rfxitem.Interval, Validators.required],
-      Notes: [this.rfxitem.Notes, Validators.required],
-      material_text: [this.rfxitem.MaterialText, Validators.required],
-      per_schedule_qty: [this.rfxitem.PerScheduleQty, [Validators.required,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]],
+      Item: [this.rfxitem.Item],
+      Uom: [this.rfxitem.UOM],
+      LowPrice: [this.rfxitem.BiddingPriceLow],
+      HighPrice: [this.rfxitem.BiddingPriceHigh],
+      material: [this.rfxitem.Material],
+      TotalQty: [this.rfxitem.TotalQty],
+      Interval: [this.rfxitem.Interval],
+      Notes: [this.rfxitem.Notes],
+      material_text: [this.rfxitem.MaterialText],
+      per_schedule_qty: [this.rfxitem.PerScheduleQty],
       totalSchedules: [this.rfxitem.TotalSchedules],
-      incoterm: [this.rfxitem.IncoTerm, [Validators.required,Validators.pattern('^([a-zA-Z]){1,2}?$')]], 
-      LeadTime:[this.rfxitem.LeadTime,[Validators.required]], 
-      Price:[this.ResItem.Price,[Validators.required,Validators.min(parseInt(this.rfxitem.BiddingPriceLow)),Validators.max(parseInt(this.rfxitem.BiddingPriceHigh))]],
-      USPRemark:[this.ResItem.USPRemark,Validators.required],
-      PriceRating:[this.ResItem.PriceRating,[Validators.required,Validators.pattern('^([0-9]{1})?$')]],
-      LeadTimeRating:[this.ResItem.LeadTimeRating,Validators.required],
-      LeadTimeAccept:[this.ResItem.LeadTimeAccept,Validators.required],
+      incoterm: [this.rfxitem.IncoTerm], 
+      LeadTime:[this.rfxitem.LeadTime], 
+      Price:[this.ResItem.Price],
+      USPRemark:[this.ResItem.USPRemark],
+      PriceRating:[this.ResItem.PriceRating],
+      LeadTimeRating:[this.ResItem.LeadTimeRating],
+      LeadTimeAccept:["No"],
       LeadTimeRemark:[this.ResItem.LeadTimeRemark]
     });
+    this.RFxItemAttachment.push(this.rfxitem.Attachment);
   }
-  DisableRFxItem(){
-    this.DialogueFormGroup.get('Item').disable();
-    this.DialogueFormGroup.get('material_text').disable();
-    this.DialogueFormGroup.get('Uom').disable();
-    this.DialogueFormGroup.get('TotalQty').disable();
-    this.DialogueFormGroup.get('per_schedule_qty').disable();
-    this.DialogueFormGroup.get('totalSchedules').disable();
-    this.DialogueFormGroup.get('LowPrice').disable();
-    this.DialogueFormGroup.get('HighPrice').disable();
-    this.DialogueFormGroup.get('Interval').disable();
-    this.DialogueFormGroup.get('incoterm').disable();
-    this.DialogueFormGroup.get('Notes').disable();
-    this.DialogueFormGroup.get('LeadTime').disable();
-  }
-  GetRFxs():void{
-    this.GetResI("000003");
-  }
-  GetResI(ResID: string) {
-    this._RFxService.GetResponseItemsByResponseID("0000000007").subscribe(data => {
-      // console.log("ResI",data);
-      this.ResI = <ResItem[]>data;
-      console.log("ResI",this.ResI);
-      if (this.ResI.length != 0) {
-        this.RespondedI = [];
-        this.ResI.forEach(element => {
-          var resItem = new RespondedItems();
-          resItem.Item = element;
-          resItem.isResponded = true;
-          this.RespondedI.push(resItem);
-        });
-      }
+  GetResODAttachments(ResID: string) {
+    this._RFxService.GetResponseODAttachmentsByResponseID(ResID).subscribe(data => {
+      this.ResODAttachment = <ResODAttachment[]>data;  
+      this.ResODAttachment.forEach(element => {
+        this.ResItemAttachment.push(element.DocumentName);
+      });
     });
+  }
+
+  LoadEvalIcs(){
+    this.EvalHcViews.forEach(element => {
+      var evalIC=new EvalIC();
+      evalIC.Client=this.rfxitem.Client;
+      evalIC.Company=this.rfxitem.Company;
+      evalIC.Item=this.rfxitem.Item;
+      evalIC.Criteria=element.CriteriaID;
+      evalIC.Rating="0";
+      this.EvalICs.push(evalIC);
+    });
+  }
+
+  OnItemRating($event:{oldValue:number, newValue:number},index:any) {
+    this.EvalICs[index].Rating=$event.newValue.toString();
+  }
+  
+  openAttachmentViewDialog(RFxID:string,Ataachments:string[],isResponse:boolean): void {
+    const dialogConfig: MatDialogConfig = {
+        data: {Documents:Ataachments,RFxID:RFxID,isResponse:isResponse},
+        panelClass: "attachment-view-dialog",
+    };
+    const dialogRef = this.dialog.open(
+        AttachmentViewDialogComponent,
+        dialogConfig
+    );
+  }
+  Save(){
+    var Result=this.EvalICs;
+    this.dialogRef.close(Result);
   }
 }

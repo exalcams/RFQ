@@ -896,13 +896,13 @@
                         <div class="cl_divider_header" fxFlex=94.5></div>
                     </div>
                     <textarea matInput fxFlex style="margin: 1rem;
-                    border: 1px solid #48465b4a;" [(ngModel)]="RFxRemark.Remark"></textarea>
+                    border: 1px solid #48465b4a;" [(ngModel)]="RFxRemark.Remark" [disabled]="Rfxheader.Status!='1'"></textarea>
                 </mat-card>
             </div>
         </mat-tab>
 
     </mat-tab-group>
-    <footer class="footer">
+    <footer class="footer" *ngIf="Rfxheader.Status=='1'">
         <mat-toolbar style="background-color: white;height: 56px;">
             <button (click)="PreviousClicked(index)" mat-button class="cl_button3" *ngIf="index!=0">
                 <img src="assets/images/back_arrow.png"> Previous</button>
@@ -911,9 +911,9 @@
                 Next
                 <img src="assets/images/next_arrow.png"></button>
             <div *ngIf="index==5" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-                <button *ngIf="Rfxheader.Status=='1'" mat-button class="cl_button2"
+                <button mat-button class="cl_button2"
                     (click)="SaveRFxClicked(true)">Release</button>
-                <button *ngIf="Rfxheader.Status=='1'" mat-button class="cl_button4"
+                <button mat-button class="cl_button4"
                     (click)="SaveRFxClicked(false)">Save</button>
             </div>
 

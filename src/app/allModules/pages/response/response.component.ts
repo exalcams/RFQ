@@ -164,8 +164,7 @@ export class ResponseComponent implements OnInit {
   }
   GetResODAttachments(ResID: string) {
     this._RFxService.GetResponseODAttachmentsByResponseID(ResID).subscribe(data => {
-      this.ResODAttachment = <ResODAttachment[]>data;
-      
+      this.ResODAttachment = <ResODAttachment[]>data;  
     });
   }
 

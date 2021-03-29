@@ -74,16 +74,6 @@ export class EvaluationHomeComponent implements OnInit {
     this.HeaderDetailsDataSource.sort=this.RFQSort;
   }
 
-  OpenEvaItemDialog() {
-    const dialogRef = this.dialog.open(EvaItemDialogComponent, {
-      data: { data: "1" }, height: '90%',
-      width: '82%'
-    });
-    dialogRef.disableClose = true;
-    dialogRef.afterClosed().subscribe(res => {
-    });
-  }
-
 //fulfilment Status
 getStatusColor(element: RFxHeader, StatusFor: string): string {
   switch (StatusFor) {

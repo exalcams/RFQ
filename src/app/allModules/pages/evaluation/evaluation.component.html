@@ -378,10 +378,10 @@
                                     letter-spacing: normal;
                                     text-align: center;
                                     color: #595d6e;width:4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-              <td mat-cell *matCellDef="let element;index as i;">
-                <button class="cl_button4" mat-button>Evaluate</button>
-                <!-- <img *ngIf="RespondedI[i].isResponded" src="assets/images/edit_blue.png"
-                  (click)="OpenResItemDialog(i,element)" class="clickable"> -->
+              <td mat-cell *matCellDef="let element;index as i;" style="text-align: center;">
+                <button *ngIf="!EvaluatedICs[i].isEvaluated" class="cl_button4" mat-button (click)="OpenEvaItemDialog(element,i)">Evaluate</button>
+                <img *ngIf="EvaluatedICs[i].isEvaluated" src="assets/images/edit_blue.png"
+                  (click)="OpenEvaItemDialog(element,i)" class="clickable">
               </td>
             </ng-container>
 
@@ -531,6 +531,7 @@
       </div>
     </mat-tab>
   </mat-tab-group>
+
   <footer class="footer">
     <mat-toolbar style="background-color: white;height: 56px;">
       <!-- <button (click)="PreviousClicked(index)" mat-button class="cl_button3" *ngIf="index!=0">
@@ -539,7 +540,7 @@
           <button *ngIf="index!=3" (click)="NextClicked(index)" mat-button class="cl_button2">
               Next
               <img src="assets/images/next_arrow.png"></button> -->
-      <button mat-button class="cl_button2" (click)="CancelClicked()">Cancel</button>
+      <button mat-button class="cl_button2" (click)="CancelClicked()">Back</button>
       <div style="flex:1 auto"></div>
       <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="1rem">
         <button mat-button class="cl_button2" (click)="SaveEvalClicked(true)">Release</button>

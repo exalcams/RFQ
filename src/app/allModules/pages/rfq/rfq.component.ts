@@ -188,7 +188,6 @@ export class RfqComponent implements OnInit {
           else{ 
             this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
             this.isProgressBarVisibile=false;
-            this._router.navigate(['pages/home']);
           }
         },
         error => {
@@ -245,7 +244,6 @@ export class RfqComponent implements OnInit {
           else{
             this.isProgressBarVisibile=false;
             this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
-            this._router.navigate(['pages/home']);
           }
         },
         error => {
