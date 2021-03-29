@@ -77,6 +77,9 @@ import { EvaluationHomeComponent } from './evaluation-home/evaluation-home.compo
 import { EvaluationComponent } from './evaluation/evaluation.component';
 import { EvaluationResponseComponent } from './evaluation-response/evaluation-response.component';
 import { EvaItemDialogComponent } from './eva-item-dialog/eva-item-dialog.component';
+import { AwardHomeComponent } from './award-home/award-home.component';
+import { AwardResponseComponent } from './award-response/award-response.component';
+import { AwardComponent } from './award/award.component';
 
 
 const routes = [
@@ -111,6 +114,18 @@ const routes = [
     {
         path: 'evaluationresponse',
         component: EvaluationResponseComponent
+    },
+    {
+        path:'awardhome',
+        component: AwardHomeComponent
+    },
+    {
+        path:'awardresponse',
+        component:AwardResponseComponent
+    },
+    {
+        path:'award',
+        component:AwardComponent
     },
     {
         path: '**',
@@ -194,7 +209,11 @@ const routes = [
         EvaluationHomeComponent,
         EvaluationComponent,
         EvaluationResponseComponent,
-        EvaItemDialogComponent
+        EvaItemDialogComponent,
+        AwardHomeComponent,
+        AwardResponseComponent,
+        AwardComponent,
+
     ],
     providers: [
         DecimalPipe,
