@@ -3,11 +3,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationDetails } from 'app/models/master';
-import { ResponseView, RFxHeader, MRFxType, MRFxGroup, RFxHC, RFxItem, RFxOD, ResHeader, ResItem, ResHC, ResOD, ResODAttachment, RFxRemark, RespondedItems, RespondedODs, RespondedODAttachments, RFxPartner, RFxVendorView, RFxODAttachment, EvalHC, EvalIC, EvaluatedHCs, EvaluatedICs, EvalHeader, ResODView, EvaluationView } from 'app/models/RFx';
+import { RFxHeader, MRFxType, MRFxGroup, RFxHC, RFxItem, ResItem, RFxRemark, RFxPartner, RFxVendorView, RFxODAttachment, EvalHC, EvalIC, EvaluatedICs, EvalHeader, ResODView, EvaluationView, EvalCriteriaView } from 'app/models/RFx';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
+import { EvaItemDialogComponent } from '../eva-item-dialog/eva-item-dialog.component';
 import { ResItemDialogComponent } from '../response/response-dialogs/res-item-dialog/res-item-dialog.component';
 
 @Component({
@@ -26,6 +27,7 @@ export class EvaluationComponent implements OnInit {
   isProgressBarVisibile: boolean;
 
   EvalView: EvaluationView = new EvaluationView();
+  EvalHCViews:EvalCriteriaView[]=[];
   RFxFormGroup: FormGroup;
   IsProgressBarVisibile: boolean;
   Rfxheader: RFxHeader = new RFxHeader();
@@ -36,6 +38,7 @@ export class EvaluationComponent implements OnInit {
   EvaluationDetails: RFxHC[] = [];
   EvalHcs:EvalHC[]=[];
   EvalIcs:EvalIC[]=[];
+  ResItem:ResItem[]=[];
   EvaluatedICs:EvaluatedICs[]=[];
   ItemDetails: RFxItem[] = [];
   ODDetails: ResODView[] = [];
@@ -107,6 +110,7 @@ export class EvaluationComponent implements OnInit {
     this.GetRFxHsByRFxID(this.RFxID);
     this.GetRFxHCsByRFxID(this.RFxID);
     this.GetRFxItemsByRFxID(this.RFxID);
+    this.GetResItem(this.RESID);
     this.GetResODViewssByRFxID(this.RESID);
     this.GetRFxODAttachmentsByRFxID(this.RFxID);
     this.GetRFxRemarkByRFxID(this.RFxID);
@@ -142,6 +146,11 @@ export class EvaluationComponent implements OnInit {
             criteria.Criteria=element.CriteriaID;
             criteria.Rating="0";
             this.EvalHcs.push(criteria);
+            var hcview=new EvalCriteriaView();
+            hcview.CriteriaID=element.CriteriaID;
+            hcview.Text=element.Text;
+            hcview.Rating="0";
+            this.EvalHCViews.push(hcview);
           });
           this.EvaluationDetailsDataSource = new MatTableDataSource(this.EvaluationDetails);
         }
@@ -154,6 +163,12 @@ export class EvaluationComponent implements OnInit {
         if (data) {
           this.ItemDetails = <RFxItem[]>data;
           this.ItemDetailsDataSource = new MatTableDataSource(this.ItemDetails);
+          this.ItemDetails.forEach(item => {
+            var EIC=new EvaluatedICs();
+            EIC.isEvaluated=false;
+            EIC.IC=[];
+            this.EvaluatedICs.push(EIC);
+          });
         }
       }
     );
@@ -168,6 +183,12 @@ export class EvaluationComponent implements OnInit {
         }
       }
     );
+  }
+
+  GetResItem(ResID: string) {
+    this._RFxService.GetResponseItemsByResponseID(ResID).subscribe(data => {
+      this.ResItem = <ResItem[]>data;
+    });
   }
   
   GetRFxRemarkByRFxID(RFxID: string) {
@@ -218,20 +239,24 @@ export class EvaluationComponent implements OnInit {
 
   GetEvalHCs(EvalID:string){
     this._RFxService.GetEvalHCsByID(EvalID).subscribe(data=>{
-      this.EvalHcs=<EvalHC[]>data;
-      console.log(this.EvalHcs);
+      if(data){
+        this.EvalHcs=<EvalHC[]>data;
+        for (let index = 0; index < this.EvalHcs.length; index++) {
+          this.EvalHCViews[index].Rating=this.EvalHcs[index].Rating;
+        }
+      }
     });
   }
   GetEvalICs(EvalID:string){
     this._RFxService.GetEvalICsByID(EvalID).subscribe(data=>{
-      this.EvalIcs=<EvalIC[]>data;
-      if (this.EvalIcs.length != 0) {
-        this.EvaluatedICs = [];
-        this.EvalIcs.forEach(element => {
-          var rating = new EvaluatedICs();
-          rating.IC = element;
-          rating.isEvaluated = true;
-          this.EvaluatedICs.push(rating);
+      if(data){
+        this.EvalIcs=<EvalIC[]>data;
+        this.EvaluatedICs=[];
+        this.ItemDetails.forEach(evalIC => {
+          var EItem=new EvaluatedICs();
+          EItem.IC=this.EvalIcs.filter(x=>x.Item==evalIC.Item);
+          EItem.isEvaluated=true;
+          this.EvaluatedICs.push(EItem);
         });
       }
     });
@@ -288,7 +313,13 @@ export class EvaluationComponent implements OnInit {
     this.EvalView.ItemResponded=null;
     this.EvalView.EvalRemarks=null;
     this.EvalView.EvalHCs=this.EvalHcs;
-    this.EvalView.EvalICs=this.EvalIcs;
+    this.EvalView.EvalICs=[];
+    this.EvaluatedICs.forEach(EICs => {
+      if(EICs.isEvaluated){
+        this.EvalView.EvalICs=this.EvalView.EvalICs.concat(EICs.IC);
+      }
+    });
+    console.log(this.EvalView);
     this._RFxService.CreateEvaluation(this.EvalView).subscribe((response)=>{
       console.log("response",response);
       if(isRelease){
@@ -326,7 +357,13 @@ export class EvaluationComponent implements OnInit {
     this.EvalView.ItemResponded=null;
     this.EvalView.EvalRemarks=null;
     this.EvalView.EvalHCs=this.EvalHcs;
-    this.EvalView.EvalICs=this.EvalIcs;
+    this.EvalView.EvalICs=[];
+    this.EvaluatedICs.forEach(EICs => {
+      if(EICs.isEvaluated){
+        this.EvalView.EvalICs=this.EvalView.EvalICs.concat(EICs.IC);
+      }
+    });
+    console.log(this.EvalView);
     this._RFxService.UpdateEvaluation(this.EvalView).subscribe((response)=>{
       console.log("response",response);
       if(isRelease){
@@ -364,20 +401,27 @@ export class EvaluationComponent implements OnInit {
       return "Long text"
     }
   }
-  // OpenResItemDialog(index, RFxItem) {
-  //   const dialogRef = this.dialog.open(ResItemDialogComponent, {
-  //     data: { data: RFxItem}, height: '90%',
-  //     width: '82%'
-  //   });
-  //   dialogRef.disableClose = true;
-  //   dialogRef.afterClosed().subscribe(res => {
-  //     if (res) {
-  //     }
-  //   });
-  // }
+
+  OpenEvaItemDialog(item:RFxItem, index) {
+    var resItem=this.ResItem.filter(x=>x.Item==item.Item && x.Client==item.Client && x.Company==item.Company);
+    var EvalICs=this.EvaluatedICs[index].IC;
+    console.log("opening",this.EvaluatedICs);
+    const dialogRef = this.dialog.open(EvaItemDialogComponent, {
+      data: { RFxItem:item,ResItem:resItem[0],EvalHCs:this.EvalHCViews,EvalIC:EvalICs}, height: '90%',
+      width: '82%'
+    });
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(res => {
+      if(res){
+        this.EvaluatedICs[index].IC=<EvalIC[]>res;
+        this.EvaluatedICs[index].isEvaluated=true;
+      }
+    });
+  }
 
   onRate($event:{oldValue:number, newValue:number},index:any) {
     this.EvalHcs[index].Rating=$event.newValue.toString();
+    this.EvalHCViews[index].Rating=$event.newValue.toString();
   }
 
   CancelClicked(){

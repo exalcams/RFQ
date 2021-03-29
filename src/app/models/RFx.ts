@@ -293,6 +293,12 @@ export class EvalIC extends CommonClass {
     Rating: string;
 }
 
+export class EvalCriteriaView{
+    CriteriaID: string;
+    Text: string;
+    Rating: string;
+}
+
 
 export class RFxView {
     Client: string;
@@ -349,13 +355,9 @@ export class RespondedODs{
     isResponded:boolean;
     OD:ResOD;
 }
-export class EvaluatedHCs{
-    isEvaluated:boolean;
-    HC:EvalHC
-}
 export class EvaluatedICs{
     isEvaluated:boolean;
-    IC:EvalHC
+    IC:EvalIC[];
 }
 export class RespondedODAttachments{
     isResponded:boolean;
