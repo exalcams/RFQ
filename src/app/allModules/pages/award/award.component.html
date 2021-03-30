@@ -1,0 +1,123 @@
+<div fxFlex fxLayout="column">
+  <mat-toolbar class="cl_toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <h1></h1>
+    <div>
+      <img src="/assets/images/exalca_100.png">
+    </div>
+  </mat-toolbar>
+  <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 20px;background-color: white;height: 120px;">
+    <mat-radio-group aria-label="Select an option">
+      <mat-radio-button [checked]="true" value="1" (click)="TableVendor()">Vendor</mat-radio-button>
+      <mat-radio-button value="2" (click)="TableMaterial()">Material</mat-radio-button>
+      <mat-radio-button value="3" (click)="TableEvaluation()">Evaluation Parameter</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div *ngIf="value==1" fxFlex style="margin: 20px;">
+    <mat-card class="cl_card">
+   <table mat-table [dataSource]="HeaderDetailsDataSource" class="mat-elevation-z8" matSort>
+
+       <!-- Position Column -->
+       <ng-container matColumnDef="position">
+           <th mat-header-cell *matHeaderCellDef class="header-cell"> S.No </th>
+           <td mat-cell class="td-cell" *matCellDef="let element;let i = index;"> {{i+1}}
+           </td>
+       </ng-container>
+
+       <!-- Supplier Column -->
+       <ng-container matColumnDef="RFxID">
+           <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> Supplier </th>
+           <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
+               *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.PartnerID}} </td>
+       </ng-container>
+
+       <!-- Criteria Column -->
+       <ng-container matColumnDef="RFxType">
+           <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Criteria </th>
+           <td mat-cell class="td-cell" *matCellDef="let element"> {{element.Criteria}}
+           </td>
+       </ng-container>
+
+       <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
+       <tr mat-row *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
+   </table>
+   <div>
+   </div>
+</mat-card>
+<mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+</mat-progress-spinner>
+<div id="overlay" *ngIf="isProgressBarVisibile"></div>
+</div>
+
+<div *ngIf="value==2" fxFlex style="margin: 20px;">
+  <mat-card class="cl_card">
+ <table mat-table [dataSource]="HeaderDetailsDataSource" class="mat-elevation-z8" matSort>
+
+     <!-- Position Column -->
+     <ng-container matColumnDef="position">
+         <th mat-header-cell *matHeaderCellDef class="header-cell"> S.No </th>
+         <td mat-cell class="td-cell" *matCellDef="let element;let i = index;"> {{i+1}}
+         </td>
+     </ng-container>
+
+     <!-- Supplier Column -->
+     <ng-container matColumnDef="Product">
+         <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> Product </th>
+         <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
+             *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.PartnerID}} </td>
+     </ng-container>
+
+     <!-- Best Supplier Column -->
+     <ng-container matColumnDef="RFxType">
+         <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Best Supplier </th>
+         <td mat-cell class="td-cell" *matCellDef="let element"> {{element.Criteria}}
+         </td>
+     </ng-container>
+
+     <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
+     <tr mat-row *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
+ </table>
+ <div>
+ </div>
+</mat-card>
+<mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+</mat-progress-spinner>
+<div id="overlay" *ngIf="isProgressBarVisibile"></div>
+</div>
+
+<div *ngIf="value==3" fxFlex style="margin: 20px;">
+  <mat-card class="cl_card">
+ <table mat-table [dataSource]="HeaderDetailsDataSource" class="mat-elevation-z8" matSort>
+
+     <!-- Position Column -->
+     <ng-container matColumnDef="position">
+         <th mat-header-cell *matHeaderCellDef class="header-cell"> S.No </th>
+         <td mat-cell class="td-cell" *matCellDef="let element;let i = index;"> {{i+1}}
+         </td>
+     </ng-container>
+
+     <!-- Criteria Column -->
+     <ng-container matColumnDef="Product">
+         <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> Criteria </th>
+         <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
+             *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.PartnerID}} </td>
+     </ng-container>
+
+     <!-- Best Supplier Column -->
+     <ng-container matColumnDef="RFxType">
+         <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Best Supplier </th>
+         <td mat-cell class="td-cell" *matCellDef="let element"> {{element.Criteria}}
+         </td>
+     </ng-container>
+
+     <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
+     <tr mat-row *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
+ </table>
+ <div>
+ </div>
+</mat-card>
+<mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+</mat-progress-spinner>
+<div id="overlay" *ngIf="isProgressBarVisibile"></div>
+</div>
+
+</div>

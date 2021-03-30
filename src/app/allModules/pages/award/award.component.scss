@@ -1,0 +1,14 @@
+.cl_toolbar{
+    width: 100%;
+    height: 55px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
+    background-color: #ffffff !important;
+  } 
+  .mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }
+  .cl_card{
+    //   border-top: 4px solid #29abe2;
+      margin-top: 1.5rem;
+      padding-top: 10px;
+    }

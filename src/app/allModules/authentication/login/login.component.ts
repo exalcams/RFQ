@@ -124,6 +124,9 @@ export class LoginComponent implements OnInit {
     else if (data.UserRole === 'Evaluator') {
       this._router.navigate(['pages/evaluationhome']);
     }
+    else if (data.UserRole == 'Purchase Lead') {
+      this._router.navigate(['pages/awardhome'])
+    }
     else{
       this._router.navigate(['master/role']);
     }
@@ -263,6 +266,20 @@ export class LoginComponent implements OnInit {
           isSvgIcon: false,
           // icon: 'dashboard',
           url: '/pages/evaluationhome',
+        }
+      );
+    }
+    if (this.MenuItems.indexOf('RFQ_AwardHome') >= 0) {
+      this.children.push(
+        {
+          id: 'dashboard',
+          title: 'Dashboard',
+          translate: 'NAV.SAMPLE.TITLE',
+          type: 'item',
+          icon: 'dashboard',
+          isSvgIcon: false,
+          // icon: 'dashboard',
+          url: '/pages/awardhome',
         }
       );
     }
