@@ -111,7 +111,7 @@ export class EvaluationComponent implements OnInit {
     this.GetRFxHCsByRFxID(this.RFxID);
     this.GetRFxItemsByRFxID(this.RFxID);
     this.GetResItem(this.RESID);
-    this.GetResODViewssByRFxID(this.RESID);
+    this.GetResODViewsByRESID(this.RESID);
     this.GetRFxODAttachmentsByRFxID(this.RFxID);
     this.GetRFxRemarkByRFxID(this.RFxID);
   }
@@ -174,7 +174,7 @@ export class EvaluationComponent implements OnInit {
     );
   }
 
-  GetResODViewssByRFxID(RESID: string): void {
+  GetResODViewsByRESID(RESID: string): void {
     this._RFxService.GetResODViewsByRESID(RESID).subscribe(
       (data) => {
         if (data) {

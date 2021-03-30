@@ -23,7 +23,7 @@ const ElementSource: PeriodicElement[] = [
 
 
 export class EvaItemDialogComponent implements OnInit {
-  EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description','OverallRating','ItemRating'];
+  EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description','ItemRating'];
   EvaluationDetailsDataSource: MatTableDataSource<EvalCriteriaView>;
   ResODAttachment:ResODAttachment[]=[];
   EvalHcViews:EvalCriteriaView[]=[];
@@ -50,7 +50,6 @@ export class EvaItemDialogComponent implements OnInit {
   ngOnInit() {
     console.log(this.data);
     this.InitializeDialogueFormGroup();
-    this.DialogueFormGroup.disable();
     this._RFxService.GetAllRFxMaterialM().subscribe(master=>{
       this.MaterialMaster=master as MMaterial[];
     });
@@ -65,6 +64,7 @@ export class EvaItemDialogComponent implements OnInit {
     if(this.EvalICs.length==0){
       this.LoadEvalIcs();
     }
+    this.DialogueFormGroup.disable();
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({

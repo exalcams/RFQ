@@ -65,6 +65,7 @@ export class ResponseComponent implements OnInit {
   minDate = new Date();
   selectedIndex: number = 0;
   FilesToUpload: File[] = [];
+  ResItemFiles:File[]=[];
   ODAttachDetails: RFxODAttachment[] = [];
 
   constructor(
@@ -155,7 +156,7 @@ export class ResponseComponent implements OnInit {
         this.ResOD.forEach(element => {
           var resItem = new RespondedODs();
           resItem.OD = element;
-          resItem.OD.QuestionID = undefined;
+          resItem.OD.QuestionID = element.QuestionID;
           resItem.isResponded = true;
           this.RespondedOD.push(resItem);
         });
@@ -165,6 +166,16 @@ export class ResponseComponent implements OnInit {
   GetResODAttachments(ResID: string) {
     this._RFxService.GetResponseODAttachmentsByResponseID(ResID).subscribe(data => {
       this.ResODAttachment = <ResODAttachment[]>data;  
+      this.ResODAttachment.forEach(oda => {
+        this._RFxService.DowloandResAttachment(oda.DocumentName).subscribe(data=>{
+          const blob = new Blob([data])
+          let blobArr=new Array<Blob>();
+          blobArr.push(blob);
+          var file=new File(blobArr,oda.DocumentName);
+          this.ResItemFiles.push(file);
+          this.isProgressBarVisibile=false;
+        });
+      });
     });
   }
 
@@ -453,7 +464,7 @@ export class ResponseComponent implements OnInit {
   }
   OpenResItemDialog(index, RFxItem) {
     const dialogRef = this.dialog.open(ResItemDialogComponent, {
-      data: { data: RFxItem,Res:this.RespondedI[index].Item,Docs:this.ResODAttachment }, height: '90%',
+      data: { data: RFxItem,Res:this.RespondedI[index].Item,Docs:this.ResODAttachment,DocFiles:this.ResItemFiles }, height: '90%',
       width: '82%'
     });
     dialogRef.disableClose = true;
@@ -461,14 +472,9 @@ export class ResponseComponent implements OnInit {
       if (res) {
         this.RespondedI[index].isResponded = true;
         this.RespondedI[index].Item = res.data;
-        this.ResODAttachment=[];
-        this.FilesToUpload=[];
-        res.Attachments.forEach(element => {
-          this.FilesToUpload.push(element);
-        });
-        res.Docs.forEach(element => {
-          this.ResODAttachment.push(element);
-        });
+        this.ResODAttachment=res.Docs;
+        this.FilesToUpload=res.Attachments;
+        this.ResItemFiles=this.FilesToUpload;
       }
     });
   }
