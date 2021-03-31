@@ -376,3 +376,15 @@ export class EvaluationView {
     EvalHCs: EvalHC[];
     EvalICs: EvalIC[];
 }
+export class EvaluationRating extends ResHeader
+{
+    Rating:number;
+}
+export class ByMaterial {
+    Material : string;
+    BestSupplier : string;
+}
+export class ByCriteria {
+    Criteria : string;
+    BestSupplier : string;
+}

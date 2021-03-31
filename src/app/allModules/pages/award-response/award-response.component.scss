@@ -147,3 +147,15 @@
       background-color: white;
       border-color: gray;
     }
+    .cl_button4.mat-button {
+      color: white !important;
+      background: #2acb68 !important;
+      }
+      .cl_button4{
+        border-radius: 2px;
+        border: none;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        margin-right: -20px;
+      }

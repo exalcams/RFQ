@@ -4,7 +4,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 // import { _MatChipListMixinBase } from '@angular/material';
 // import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, RFxH } from '../models/RFx';
+import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, RFxH, EvaluationRating, ByMaterial, ByCriteria } from '../models/RFx';
 import { environment } from '../../environments/environment';
 
 
@@ -365,5 +365,17 @@ export class RFxService {
     UpdateHeaderStatus(RFxID:string,Status:string):Observable<RFxHeader | string> {
         return this._httpClient.get<RFxHeader>(`${this.baseAddress}rfxapi/RFx/UpdateHeaderStatus?RFxID=${RFxID}&Status=${Status}`)
             .pipe(catchError(this.errorHandler));
+    }
+    GetEvalRatingByID(RFxID:string):Observable<EvaluationRating | string> {
+        return this._httpClient.get<EvaluationRating>(`${this.baseAddress}rfxapi/RFx/GetEvalRating?RFxID=${RFxID}`)
+             .pipe(catchError(this.errorHandler));    
+    }
+    GetMaterialByVendor(RFxID:string):Observable<ByMaterial | string> {
+        return this._httpClient.get<ByMaterial>(`${this.baseAddress}rfxapi/RFx/CompareByMaterial?RFxID=${RFxID}`)
+             .pipe(catchError(this.errorHandler));    
+    }
+    GetCriteriaByVendor(RFxID:string):Observable<ByCriteria | string> {
+        return this._httpClient.get<ByCriteria>(`${this.baseAddress}rfxapi/RFx/CompareByCriteria?RFxID=${RFxID}`)
+             .pipe(catchError(this.errorHandler));    
     }
 }
