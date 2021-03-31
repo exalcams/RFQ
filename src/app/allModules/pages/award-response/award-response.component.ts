@@ -16,7 +16,7 @@ export class AwardResponseComponent implements OnInit {
   Rfxheader: RFxHeader = new RFxHeader();
   RFxFormGroup: FormGroup;
   RFxID: string = null;
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'PartnerID', 'RESID', 'ModifiedOn', 'ItemResponded', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['position', 'PartnerID', 'RESID', 'ModifiedOn', 'ItemResponded'];
   AllHeaderDetails: any = [];
   AllResponseDetails: any = [];
   isProgressBarVisibile: boolean;
@@ -206,8 +206,8 @@ export class AwardResponseComponent implements OnInit {
         return "";
     }
   }
-  Gotoheader(RESID:string) {
-    localStorage.setItem("E_RESID",RESID);
+  Gotoheader(RFxID:string) {
+    localStorage.setItem("E_RFXID",RFxID);
      this.route.navigate(['pages/award']);
   }
 }
