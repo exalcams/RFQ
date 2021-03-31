@@ -109,7 +109,7 @@ export class RfqComponent implements OnInit {
       else{
         this.RFxID=null;
       }
-      console.log(this.RFxID);
+      //console.log(this.RFxID);
       if(this.RFxID){
         this.GetRFxs();   
       }
@@ -178,7 +178,7 @@ export class RfqComponent implements OnInit {
     this._RFxService.CreateRFx(this.RFxView)
       .subscribe(
         response => {
-          console.log("response",response);
+          //console.log("response",response);
           this._RFxService.UploadRFxAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
           if(isRelease){
             this.isProgressBarVisibile=false;
@@ -234,7 +234,7 @@ export class RfqComponent implements OnInit {
       this._RFxService.UpdateRFx(this.RFxView)
       .subscribe(
         response => {
-          console.log("response",response);
+          //console.log("response",response);
           this._RFxService.UploadRFxAttachment(response.RFxID,this.FilesToUpload).subscribe(x=>console.log("attachRes",x));
           if(isRelease){
             this.isProgressBarVisibile=false;
@@ -468,7 +468,7 @@ export class RfqComponent implements OnInit {
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
-      console.log(res);
+      //console.log(res);
       if(res){
         this.VendorDetails.push(res.data);
         this.Vendors=[];
@@ -491,7 +491,7 @@ export class RfqComponent implements OnInit {
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
-      console.log(res);
+      //console.log(res);
       if(res){
         this.VendorDetails=res.data;
         this.Vendors=[];
@@ -526,7 +526,7 @@ export class RfqComponent implements OnInit {
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
-      console.log(res);
+      //console.log(res);
       if(res && res.isCreate){
         this.ODAttachDetails.push(res.data);
         this.ODAttachDetailsDataSource=new MatTableDataSource(this.ODAttachDetails);
@@ -537,7 +537,7 @@ export class RfqComponent implements OnInit {
       else{
         this.FilesToUpload.push(res.Attachments);
       }
-      console.log(this.FilesToUpload);
+      //console.log(this.FilesToUpload);
     });
   }
   ShowValidationErrors(formGroup:FormGroup): void {
@@ -572,7 +572,7 @@ export class RfqComponent implements OnInit {
     if(this.Rfxheader.Status=="1" && this.EvaluationDetails.length>0 && this.ItemDetails.length>0 && this.PartnerDetails.length>0 && this.VendorDetails.length>0 && this.ODDetails.length>0 && this.ODAttachDetails.length>0){
       if(this.NewVendorMaser.length>0){
         this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res=>{
-          console.log("vendor created");
+          //console.log("vendor created");
         },err=>{console.log("vendor master not created!;")});
       }
       if(!this.RFxID){

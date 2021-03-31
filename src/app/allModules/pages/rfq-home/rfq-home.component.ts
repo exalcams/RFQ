@@ -41,7 +41,7 @@ export class RfqHomeComponent implements OnInit {
 
   ngOnInit(): void {
     const retrievedObject = localStorage.getItem('authorizationData');
-    console.log(retrievedObject);   
+    //console.log(retrievedObject);   
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

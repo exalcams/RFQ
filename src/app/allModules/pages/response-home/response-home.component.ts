@@ -81,7 +81,7 @@ export class ResponseHomeComponent implements OnInit {
   Gotoheader(rfqid) {
     this.route.navigate(['pages/response']);
     // { queryParams: { id: rfqid } }
-    localStorage.setItem('ResID', rfqid);
+    localStorage.setItem('RFxID', rfqid);
 
   }
   GetAllRFxs(): void {

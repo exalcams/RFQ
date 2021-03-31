@@ -75,7 +75,10 @@ export class RFxService {
         return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetAllRFxHDocumetsByVendorName?UserName=${UserName}&status=${status}`)
             .pipe(catchError(this.errorHandler));
     }
-
+    GetAllEvalRFxH():Observable<any>{
+        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetAllEvalRFxH`)
+            .pipe(catchError(this.errorHandler));
+    }
 
     GetRFxByRFxID(RFxID: string): Observable<RFxHeader | string> {
         return this._httpClient.get<RFxHeader>(`${this.baseAddress}rfxapi/RFx/GetRFxByRFxID?RFxID=${RFxID}`)
