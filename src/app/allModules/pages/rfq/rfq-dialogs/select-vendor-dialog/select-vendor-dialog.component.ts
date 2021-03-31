@@ -24,14 +24,12 @@ export class SelectVendorDialogComponent implements OnInit {
     }
 
   ngOnInit() {
-    console.log(this.RFxVendorsViews);
     this._RFxService.GetAllRFxVendorM().subscribe(master=>{
       this.VendorMaster=master as MVendor[];
       this.VendorMaster.forEach((vendor:any) => {
         vendor.Checked=false;
         this.MVendorViews.push(vendor)
       });
-      console.log("total",this.MVendorViews);
       this.MVendorViews.forEach(element => {
         var MVendor=this.RFxVendorsViews.filter(t=>t.PatnerID==element.PatnerID);
         if(MVendor.length>0){
@@ -39,22 +37,17 @@ export class SelectVendorDialogComponent implements OnInit {
           this.SelectedVendors.push(element);
         }
       });
-      console.log("selected",this.SelectedVendors);
+      this.FilteredVendors=this.MVendorViews;
     });
     
   }
   
   FilterVendor(){
-    if(this.Searchkey.length>=3){
-      this.FilteredVendors=this.MVendorViews.filter(vm=>
-        vm.VendorName.toLowerCase().indexOf(this.Searchkey.toLowerCase())>=0 ||
-        vm.GST.toLowerCase().indexOf(this.Searchkey.toLowerCase())>=0 ||
-        vm.City.toLowerCase().indexOf(this.Searchkey.toLowerCase())>=0
-      );
-    }
-    else{
-      this.FilteredVendors=[];
-    }
+    this.FilteredVendors=this.MVendorViews.filter(vm=>
+      vm.VendorName.toLowerCase().indexOf(this.Searchkey.toLowerCase())>=0 ||
+      vm.GST.toLowerCase().indexOf(this.Searchkey.toLowerCase())>=0 ||
+      vm.City.toLowerCase().indexOf(this.Searchkey.toLowerCase())>=0
+    );
   }
 
   Toggle(vendor:MVendorView){
