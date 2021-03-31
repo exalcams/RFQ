@@ -33,6 +33,7 @@ export class AwardComponent implements OnInit {
   BestSupplier = "";
   BestSupplier1 = "";
   value: number = 1;
+  Click : number = 0;
   Rfxheader: RFxHeader = new RFxHeader();
   selection = new SelectionModel<EvaluationRating>(true, []);
   isHightlight: boolean;
@@ -121,13 +122,16 @@ export class AwardComponent implements OnInit {
     )
   }
   TableHighlight(row: EvaluationRating) {
+    this.Click=1;
     this.SelectedVendor = row.PartnerID;
   }
   TableHighlight2(row: ByMaterial) {
+    this.Click=2;
     this.BestSupplier = row.BestSupplier;
   }
   TableHighlight3(row: ByCriteria) {
     this.BestSupplier1 = row.BestSupplier;
+    this.Click=3;
   }
   LoadCriteriaTableSource(DataArray: any[]) {
     this.CriteriaDetailsDataSource = new MatTableDataSource(DataArray);
