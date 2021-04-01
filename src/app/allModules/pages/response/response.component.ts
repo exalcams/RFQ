@@ -108,7 +108,7 @@ export class ResponseComponent implements OnInit {
     // this._route.queryParams.subscribe(params => {
     //   this.RFxID = params['id'];
     // });
-    this.RFxID=localStorage.getItem('ResID');
+    this.RFxID=localStorage.getItem('RFxID');
     this.GetRFxs();
     this.GetResH(this.RFxID, this.currentUserName);
     this.GetRFQMasters();
@@ -138,12 +138,12 @@ export class ResponseComponent implements OnInit {
     this._RFxService.GetResponseItemsByResponseID(ResID).subscribe(data => {
       this.ResI = <ResItem[]>data;
       if (this.ResI.length != 0) {
-        this.RespondedI = [];
         this.ResI.forEach(element => {
-          var resItem = new RespondedItems();
-          resItem.Item = element;
-          resItem.isResponded = true;
-          this.RespondedI.push(resItem);
+          var res=this.RespondedI.filter(x=>x.Item.Item==element.Item);
+          if(res.length>0){
+            res[0].isResponded=true;
+            res[0].Item=element;
+          }
         });
       }
     });
@@ -255,7 +255,7 @@ export class ResponseComponent implements OnInit {
           console.log("response", response);
           this.isProgressBarVisibile = false;
           this._router.navigate(['pages/responsehome']);
-          this.notificationSnackBarComponent.openSnackBar('Res saved successfully', SnackBarStatus.success);
+          this.notificationSnackBarComponent.openSnackBar('Responded successfully', SnackBarStatus.success);
           this._RFxService.UploadResAttachment(response.RESID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
         },
         error => {
@@ -301,7 +301,7 @@ export class ResponseComponent implements OnInit {
           // console.log("response", response);
           this.isProgressBarVisibile = false;
           this._RFxService.UploadResAttachment(response.RESID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
-          this.notificationSnackBarComponent.openSnackBar('Res saved successfully', SnackBarStatus.success);
+          this.notificationSnackBarComponent.openSnackBar('Responded successfully', SnackBarStatus.success);
           this._router.navigate(['pages/responsehome']);
         },
         error => {
@@ -463,6 +463,8 @@ export class ResponseComponent implements OnInit {
     }
   }
   OpenResItemDialog(index, RFxItem) {
+    console.log("rfxitem",RFxItem);
+    console.log("res",this.RespondedI[index].Item);
     const dialogRef = this.dialog.open(ResItemDialogComponent, {
       data: { data: RFxItem,Res:this.RespondedI[index].Item,Docs:this.ResODAttachment,DocFiles:this.ResItemFiles }, height: '90%',
       width: '82%'

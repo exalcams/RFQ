@@ -58,7 +58,7 @@ export class EvaluationHomeComponent implements OnInit {
   }
   GetAllRFxs(): void {
     this.isProgressBarVisibile=true;
-    this._RFxService.GetAllRFxHDocumets('3').subscribe(
+    this._RFxService.GetAllEvalRFxH().subscribe(
       (data) => {
         if (data) {
           this.AllHeaderDetails =data;
