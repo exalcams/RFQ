@@ -15,7 +15,9 @@
       <mat-radio-button value="3" (click)="TableEvaluation()">By Evaluation Parameter</mat-radio-button>
     </mat-radio-group>
   </div>
+
   <div *ngIf="value == 1" style="margin: 20px;">
+
     <mat-card class="cl_card">
 
       <div fxLayout="column">
@@ -66,7 +68,7 @@
     <div id="overlay" *ngIf="isProgressBarVisibile"></div>
   </div>
 
-  <div *ngIf="value==2" style="margin: 20px;">
+  <div *ngIf="value==2" fxFlex style="margin: 20px;">
     <mat-card class="cl_card">
 
       <div fxLayout="column">
@@ -112,7 +114,7 @@
     <div id="overlay" *ngIf="isProgressBarVisibile"></div>
   </div>
 
-  <div *ngIf="value==3" style="margin: 20px;">
+  <div *ngIf="value==3" fxFlex style="margin: 20px;">
     <mat-card class="cl_card">
 
       <div fxLayout="column">
@@ -158,6 +160,8 @@
     <div id="overlay" *ngIf="isProgressBarVisibile"></div>
   </div>
 
+
+
   <form autocomplete="off" [formGroup]="AwardFormGroup">
     <mat-card *ngIf="Click == 1 || Click == 2 || Click ==3" class="cl_card3" fxLayout="column">
       <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -191,6 +195,7 @@
   </form>
 
   <footer class="footer" *ngIf="Click == 1 || Click == 2 || Click ==3">
+
     <mat-toolbar style="background-color: white;height: 56px;">
             <div style="flex:1 auto"></div>
         <div fxLayout="row"  fxLayoutAlign="end end" fxLayoutGap="1rem">

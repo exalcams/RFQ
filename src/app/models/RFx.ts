@@ -181,7 +181,7 @@ export class RFxPartner extends CommonClass {
     Company: string;
     RFxID: string;
     Type: string;
-    User: Date | string;
+    User:string;
 }
 export class RFxRemark extends CommonClass{
     Client:string;

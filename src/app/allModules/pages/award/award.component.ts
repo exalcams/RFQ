@@ -35,7 +35,6 @@ export class AwardComponent implements OnInit {
   BestSupplier : string = "";
   BestSupplier1: string = "";
   value: number = 1;
-  Click : number = 0;
   Rfxheader: RFxHeader = new RFxHeader();
   Responses:ResHeader = new ResHeader();
   RFxAward:RFxAward=new RFxAward();
@@ -214,14 +213,12 @@ export class AwardComponent implements OnInit {
     )
   }
   TableHighlight(row: EvaluationRating) {
-    this.Click=1;
     this.SelectedVendor = row.PartnerID;
     this.rating = row.Rating.toString();  
     console.log(this.SelectedVendor,this.rating);
       
   }
   TableHighlight2(row: ByMaterial) {
-    this.Click=2;
     this.BestSupplier = row.BestSupplier;
     this.material = row.Material;
     console.log(this.BestSupplier,this.material);
@@ -230,7 +227,6 @@ export class AwardComponent implements OnInit {
     this.BestSupplier1 = row.BestSupplier;
     this.criteria = row.Criteria;
     console.log(this.BestSupplier1,this.criteria);
-    
     this.Click=3;
   }
   LoadCriteriaTableSource(DataArray: any[]) {
