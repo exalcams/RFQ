@@ -84,7 +84,8 @@
                         <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem;">
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity start date</mat-label>
-                                <input [min]="minDate" matInput [matDatepicker]="picker" formControlName="ValidityStartDate" fxFlex>
+                                <input [min]="minDate" matInput [matDatepicker]="picker"
+                                    formControlName="ValidityStartDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
@@ -125,6 +126,18 @@
                             </mat-form-field>
 
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                                <mat-label>Response start Time</mat-label>
+                                <input matInput type="time" formControlName="ResponseStartTime" fxFlex>
+                                <mat-error
+                                    *ngIf="RFxFormGroup.get('ResponseStartTime').touched && RFxFormGroup.get('ResponseStartTime').hasError('required')">
+                                    Response Start Time is required
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem;">
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response end date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
                                     [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker3"
@@ -138,6 +151,39 @@
                                     Response End Date is required
                                 </mat-error>
                             </mat-form-field>
+
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                                <mat-label>Response end Time</mat-label>
+                                <input matInput type="time" formControlName="ResponseEndTime" fxFlex>
+                                <mat-error
+                                    *ngIf="RFxFormGroup.get('ResponseEndTime').touched && RFxFormGroup.get('ResponseEndTime').hasError('required')">
+                                    Response End Time is required
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                                <mat-label>Evaluation end date</mat-label>
+                                <input matInput [min]="RFxFormGroup.get('ResponseEndDate').value"
+                                    [matDatepicker]="picker4" formControlName="EvaluationEndDate" fxFlex>
+                                <mat-datepicker-toggle matSuffix [for]="picker4">
+                                    <img src="assets/images/calendar.png" matDatePickerToggleIcon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker4></mat-datepicker>
+                                <mat-error
+                                    *ngIf="RFxFormGroup.get('EvaluationEndDate').touched && RFxFormGroup.get('EvaluationEndDate').hasError('required')">
+                                    Evaluation End Date is required
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                                <mat-label>Evaluation end Time</mat-label>
+                                <input matInput type="time" formControlName="EvaluationEndTime" fxFlex>
+                                <mat-error
+                                    *ngIf="RFxFormGroup.get('EvaluationEndTime').touched && RFxFormGroup.get('EvaluationEndTime').hasError('required')">
+                                    Evaluation End Time is required
+                                </mat-error>
+                            </mat-form-field>
+
 
                         </div>
                     </mat-card>
@@ -223,11 +269,12 @@
                             <td mat-cell *matCellDef="let element;index as i;">
                                 <div *ngIf="Rfxheader.Status=='1'">
                                     <img src="assets/images/edit_blue.png" (click)="OpenCriteriaDialog(element)"
-                                    class="clickable">
+                                        class="clickable">
                                     <img style="margin-left: 9px;" (click)="DeleteCriteria(i)" class="clickable"
                                         src="assets/images/delete1.png">
                                 </div>
-                                <span *ngIf="Rfxheader.Status!='1'" style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
+                                <span *ngIf="Rfxheader.Status!='1'"
+                                    style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
                             </td>
                         </ng-container>
 
@@ -381,14 +428,15 @@
                                     text-align: right;
                                     color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
                             <td mat-cell *matCellDef="let element;index as i;">
-                                    <div *ngIf="Rfxheader.Status=='1'">
-                                        <img src="assets/images/edit_blue.png" (click)="OpenItemDialog(element)"
+                                <div *ngIf="Rfxheader.Status=='1'">
+                                    <img src="assets/images/edit_blue.png" (click)="OpenItemDialog(element)"
                                         class="clickable">
-                                        <img style="margin-left: 9px;" (click)="DeleteItem(i)" class="clickable"
-                                            src="assets/images/delete1.png">
-                                    </div>
-                                    <span *ngIf="Rfxheader.Status!='1'" style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
-                                </td>
+                                    <img style="margin-left: 9px;" (click)="DeleteItem(i)" class="clickable"
+                                        src="assets/images/delete1.png">
+                                </div>
+                                <span *ngIf="Rfxheader.Status!='1'"
+                                    style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
+                            </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="ItemsDetailsDisplayedColumns"></tr>
@@ -558,13 +606,15 @@
                                       text-align: right;
                                       color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
                             <td mat-cell *matCellDef="let element;index as i;">
-                                    <div *ngIf="Rfxheader.Status=='1'">
-                                        <img src="assets/images/edit_blue.png" (click)="OpenPartnerDialog(element)"
+                                <div *ngIf="Rfxheader.Status=='1'">
+                                    <img src="assets/images/edit_blue.png" (click)="OpenPartnerDialog(element)"
                                         class="clickable">
-                                        <img style="margin-left: 9px;" (click)="DeletePartner(i)" class="clickable"
-                                            src="assets/images/delete1.png">
-                                    </div>
-                                    <span *ngIf="Rfxheader.Status!='1'" style="font-size: 12px;font-weight:500;text-align: center;">Released</span> </td>
+                                    <img style="margin-left: 9px;" (click)="DeletePartner(i)" class="clickable"
+                                        src="assets/images/delete1.png">
+                                </div>
+                                <span *ngIf="Rfxheader.Status!='1'"
+                                    style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
+                            </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="PartnerDetailsDisplayedColumns"></tr>
@@ -699,11 +749,12 @@
                                       color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action
                             </th>
                             <td mat-cell *matCellDef="let element;index as i;">
-                                    <div *ngIf="Rfxheader.Status=='1'">
-                                        <img style="margin-left: 9px;" (click)="DeleteVendor(i)" class="clickable"
-                                            src="assets/images/delete1.png">
-                                    </div>
-                                    <span *ngIf="Rfxheader.Status!='1'" style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
+                                <div *ngIf="Rfxheader.Status=='1'">
+                                    <img style="margin-left: 9px;" (click)="DeleteVendor(i)" class="clickable"
+                                        src="assets/images/delete1.png">
+                                </div>
+                                <span *ngIf="Rfxheader.Status!='1'"
+                                    style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
                             </td>
                         </ng-container>
 
@@ -790,14 +841,15 @@
                                       text-align:right;
                                       color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
                             <td mat-cell *matCellDef="let element;index as i;">
-                                    <div *ngIf="Rfxheader.Status=='1'">
-                                        <img src="assets/images/edit_blue.png" (click)="OpenQuestionDialog(element)"
+                                <div *ngIf="Rfxheader.Status=='1'">
+                                    <img src="assets/images/edit_blue.png" (click)="OpenQuestionDialog(element)"
                                         class="clickable">
-                                        <img style="margin-left: 9px;" (click)="DeleteQuetion(i)" class="clickable"
-                                            src="assets/images/delete1.png">
-                                    </div>
-                                    <span *ngIf="Rfxheader.Status!='1'" style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
-                                </td>
+                                    <img style="margin-left: 9px;" (click)="DeleteQuetion(i)" class="clickable"
+                                        src="assets/images/delete1.png">
+                                </div>
+                                <span *ngIf="Rfxheader.Status!='1'"
+                                    style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
+                            </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="ODDetailsDisplayedColumns"></tr>
@@ -875,14 +927,15 @@
                                       text-align: right;
                                       color: #595d6e;width:4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
                             <td mat-cell *matCellDef="let element;index as i;">
-                                    <div *ngIf="Rfxheader.Status=='1'">
-                                        <img src="assets/images/edit_blue.png" (click)="OpenDocumentDialog(element)"
+                                <div *ngIf="Rfxheader.Status=='1'">
+                                    <img src="assets/images/edit_blue.png" (click)="OpenDocumentDialog(element)"
                                         class="clickable">
-                                        <img style="margin-left: 9px;" (click)="DeleteAttachment(i)" class="clickable"
-                                            src="assets/images/delete1.png">
-                                    </div>
-                                    <span *ngIf="Rfxheader.Status!='1'" style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
-                                </td>
+                                    <img style="margin-left: 9px;" (click)="DeleteAttachment(i)" class="clickable"
+                                        src="assets/images/delete1.png">
+                                </div>
+                                <span *ngIf="Rfxheader.Status!='1'"
+                                    style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
+                            </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="ODAttachDetailsDisplayedColumns"></tr>
@@ -896,7 +949,8 @@
                         <div class="cl_divider_header" fxFlex=94.5></div>
                     </div>
                     <textarea matInput fxFlex style="margin: 1rem;
-                    border: 1px solid #48465b4a;" [(ngModel)]="RFxRemark.Remark" [disabled]="Rfxheader.Status!='1'"></textarea>
+                    border: 1px solid #48465b4a;" [(ngModel)]="RFxRemark.Remark"
+                        [disabled]="Rfxheader.Status!='1'"></textarea>
                 </mat-card>
             </div>
         </mat-tab>
@@ -911,10 +965,8 @@
                 Next
                 <img src="assets/images/next_arrow.png"></button>
             <div *ngIf="index==5 && Rfxheader.Status=='1'" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-                <button mat-button class="cl_button2"
-                    (click)="SaveRFxClicked(true)">Release</button>
-                <button mat-button class="cl_button4"
-                    (click)="SaveRFxClicked(false)">Save</button>
+                <button mat-button class="cl_button2" (click)="SaveRFxClicked(true)">Release</button>
+                <button mat-button class="cl_button4" (click)="SaveRFxClicked(false)">Save</button>
             </div>
 
         </mat-toolbar>

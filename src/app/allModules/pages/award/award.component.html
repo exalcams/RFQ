@@ -1,4 +1,4 @@
-<div fxFlex fxLayout="column">
+<div fxFlex fxLayout="column" style="overflow: scroll;height:100%">
   <mat-toolbar class="cl_toolbar" fxLayout="row" fxLayoutAlign="space-between center">
     <h1>{{Rfxheader.Title}}</h1>
     <div>
@@ -15,17 +15,19 @@
       <mat-radio-button value="3" (click)="TableEvaluation()">By Evaluation Parameter</mat-radio-button>
     </mat-radio-group>
   </div>
-  <div  *ngIf="value == 1" fxFlex style="margin: 20px;">
+
+  <div *ngIf="value == 1" style="margin: 20px;">
+
     <mat-card class="cl_card">
 
       <div fxLayout="column">
         <mat-toolbar style="background-color: white;height: 31px;" fxLayoutAlign="space-between center">
-            <!-- <img src="assets/image/add.png"> -->
-            <span style="cursor: pointer;" class="cl_header1">By Vendor Rating List</span>
-            <!-- <button mat-button (click)="Gotoheader()" class="cl_button1"><img
+          <!-- <img src="assets/image/add.png"> -->
+          <span style="cursor: pointer;" class="cl_header1">By Vendor Rating List</span>
+          <!-- <button mat-button (click)="Gotoheader()" class="cl_button1"><img
                     src="/assets/images/new1.png"></button> -->
         </mat-toolbar>
-    </div>
+      </div>
 
       <table mat-table [dataSource]="HeaderDetailsDataSource" class="mat-elevation-z8" matSort>
 
@@ -38,25 +40,26 @@
 
         <!-- Supplier Column -->
         <ng-container matColumnDef="PartnerID">
-          <th mat-header-cell  class="header-cell" *matHeaderCellDef> Supplier </th>
+          <th mat-header-cell class="header-cell" *matHeaderCellDef> Supplier </th>
           <td mat-cell style="font-size: 12px;" *matCellDef="let element">
             {{element.PartnerID}} </td>
         </ng-container>
 
         <!-- Criteria Rating Column -->
         <ng-container matColumnDef="Rating">
-          <th mat-header-cell  style="text-align: center;" class="header-cell"  *matHeaderCellDef> Criteria Rating </th>
+          <th mat-header-cell style="text-align: center;" class="header-cell" *matHeaderCellDef> Criteria Rating </th>
           <td mat-cell class="td-cell" style="text-align: center;" *matCellDef="let element;index as i">
             <div style="width:10rem" style="width: 100%;" fxLayoutAlign="center">
-              <star-rating [value]="AllEvalRatingDetails[i].Rating" checkedcolor="gold" uncheckedcolor="#b9bdbb" size="20px" readonly="true"
-              (rate)="onRate($event,i)"></star-rating>
-            </div> 
+              <star-rating [value]="AllEvalRatingDetails[i].Rating" checkedcolor="gold" uncheckedcolor="#b9bdbb"
+                size="20px" readonly="true" (rate)="onRate($event,i)"></star-rating>
+            </div>
             <!-- {{element.Rating}} -->
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
-        <tr mat-row (click)="TableHighlight(row)"  [class.highlighted]="row.PartnerID==SelectedVendor" *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
+        <tr mat-row (click)="TableHighlight(row)" [class.highlighted]="row.PartnerID==SelectedVendor"
+          *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
       </table>
 
     </mat-card>
@@ -70,38 +73,38 @@
 
       <div fxLayout="column">
         <mat-toolbar style="background-color: white;height: 31px;" fxLayoutAlign="space-between center">
-            <!-- <img src="assets/image/add.png"> -->
-            <span style="cursor: pointer;" class="cl_header1">By Material Vendor List</span>
-            <!-- <button mat-button (click)="Gotoheader()" class="cl_button1"><img
+          <!-- <img src="assets/image/add.png"> -->
+          <span style="cursor: pointer;" class="cl_header1">By Material Vendor List</span>
+          <!-- <button mat-button (click)="Gotoheader()" class="cl_button1"><img
                     src="/assets/images/new1.png"></button> -->
         </mat-toolbar>
-    </div>
+      </div>
 
       <table mat-table [dataSource]="MaterialDetailsDataSource" class="mat-elevation-z8" matSort>
 
         <!-- Position Column -->
         <ng-container matColumnDef="position">
-          <th mat-header-cell  *matHeaderCellDef class="header-cell"> S.No </th>
+          <th mat-header-cell *matHeaderCellDef class="header-cell"> S.No </th>
           <td mat-cell class="td-cell" *matCellDef="let element;let i = index;"> {{i+1}}
           </td>
         </ng-container>
 
         <!-- Supplier Column -->
         <ng-container matColumnDef="Material">
-          <th mat-header-cell  class="header-cell" *matHeaderCellDef> Product </th>
-          <td mat-cell style="font-size: 12px;"
-            *matCellDef="let element"> {{element.Material}} </td>
+          <th mat-header-cell class="header-cell" *matHeaderCellDef> Product </th>
+          <td mat-cell style="font-size: 12px;" *matCellDef="let element"> {{element.Material}} </td>
         </ng-container>
 
         <!-- Best Supplier Column -->
         <ng-container matColumnDef="BestSupplier">
           <th mat-header-cell style="text-align: center;" class="header-cell" *matHeaderCellDef> Best Supplier </th>
-          <td mat-cell class="td-cell"  style="text-align: center;" *matCellDef="let element"> {{element.BestSupplier}}
+          <td mat-cell class="td-cell" style="text-align: center;" *matCellDef="let element"> {{element.BestSupplier}}
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="MaterialDetailsDisplayedColumns"></tr>
-        <tr mat-row (click)="TableHighlight2(row)"  [class.highlighted]="row.BestSupplier==BestSupplier" *matRowDef="let row; columns: MaterialDetailsDisplayedColumns;"></tr>
+        <tr mat-row (click)="TableHighlight2(row)" [class.highlighted]="row.BestSupplier==BestSupplier"
+          *matRowDef="let row; columns: MaterialDetailsDisplayedColumns;"></tr>
       </table>
       <div>
       </div>
@@ -116,12 +119,12 @@
 
       <div fxLayout="column">
         <mat-toolbar style="background-color: white;height: 31px;" fxLayoutAlign="space-between center">
-            <!-- <img src="assets/image/add.png"> -->
-            <span style="cursor: pointer;" class="cl_header1">By Evaluation Parameter List</span>
-            <!-- <button mat-button (click)="Gotoheader()" class="cl_button1"><img
+          <!-- <img src="assets/image/add.png"> -->
+          <span style="cursor: pointer;" class="cl_header1">By Evaluation Parameter List</span>
+          <!-- <button mat-button (click)="Gotoheader()" class="cl_button1"><img
                     src="/assets/images/new1.png"></button> -->
         </mat-toolbar>
-    </div>
+      </div>
 
       <table mat-table [dataSource]="CriteriaDetailsDataSource" class="mat-elevation-z8" matSort>
 
@@ -135,8 +138,7 @@
         <!-- Criteria Column -->
         <ng-container matColumnDef="Criteria">
           <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> Criteria </th>
-          <td mat-cell style="font-size: 12px;"
-            *matCellDef="let element"> {{element.Criteria}} </td>
+          <td mat-cell style="font-size: 12px;" *matCellDef="let element"> {{element.Criteria}} </td>
         </ng-container>
 
         <!-- Best Supplier Column -->
@@ -147,7 +149,8 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="CriteriaDetailsDisplayedColumns"></tr>
-        <tr mat-row (click)="TableHighlight3(row)"  [class.highlighted]="row.BestSupplier==BestSupplier1" *matRowDef="let row; columns: CriteriaDetailsDisplayedColumns;"></tr>
+        <tr mat-row (click)="TableHighlight3(row)" [class.highlighted]="row.BestSupplier==BestSupplier1"
+          *matRowDef="let row; columns: CriteriaDetailsDisplayedColumns;"></tr>
       </table>
       <div>
       </div>
@@ -156,15 +159,51 @@
     </mat-progress-spinner>
     <div id="overlay" *ngIf="isProgressBarVisibile"></div>
   </div>
-  <footer class="footer">
-    <mat-toolbar style="background-color: white;height: 56px;">
-      <div style="flex:1 auto"></div>
-      <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="1rem">
-        <button mat-button class="cl_button4" (click)="AwardClicked(true)">Award</button>
+
+
+
+  <form autocomplete="off" [formGroup]="AwardFormGroup">
+    <mat-card *ngIf="Click == 1 || Click == 2 || Click ==3" class="cl_card3" fxLayout="column">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <label class="cl_header1">Reason</label>
+        <div class="cl_divider_header" fxFlex=94.5></div>
       </div>
+      <mat-form-field appearance="none">
+      <textarea matInput fxFlex style="margin: 1rem;
+    border: 1px solid #48465b4a;" formControlName="Reason"></textarea>
+      <mat-error *ngIf="AwardFormGroup.get('Reason').touched && AwardFormGroup.get('Reason').hasError('required')">
+        Reason is required
+      </mat-error>
+    </mat-form-field>
+    </mat-card>
+
+    <mat-card *ngIf="Click == 1 || Click == 2 || Click ==3" class="cl_card3" fxLayout="column">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <label class="cl_header1">Remarks</label>
+        <div class="cl_divider_header" fxFlex=94.5></div>
+      </div>
+      <mat-form-field appearance="none"> 
+      <textarea matInput fxFlex style="margin: 1rem;
+    border: 1px solid #48465b4a;width: 98%;
+    height: 50px;" formControlName="Remark"></textarea>
+      <mat-error *ngIf="AwardFormGroup.get('Remark').touched && AwardFormGroup.get('Remark').hasError('required')">
+        Remark is required
+      </mat-error>
+    </mat-form-field>
+    </mat-card>
+
+  </form>
+
+  <footer class="footer" *ngIf="Click == 1 || Click == 2 || Click ==3">
+
+    <mat-toolbar style="background-color: white;height: 56px;">
+            <div style="flex:1 auto"></div>
+        <div fxLayout="row"  fxLayoutAlign="end end" fxLayoutGap="1rem">
+            <button mat-button  class="cl_button4" (click)="AwardClicked(true)">Award</button>
+        </div>
 
     </mat-toolbar>
-  </footer>
+</footer>
   <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
   </mat-progress-spinner>
   <div id="overlay" *ngIf="isProgressBarVisibile"></div>

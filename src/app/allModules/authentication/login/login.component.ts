@@ -124,7 +124,7 @@ export class LoginComponent implements OnInit {
     else if (data.UserRole === 'Evaluator') {
       this._router.navigate(['pages/evaluationhome']);
     }
-    else if (data.UserRole == 'Purchase Lead') {
+    else if (data.UserRole == 'Award Committee') {
       this._router.navigate(['pages/awardhome'])
     }
     else{
