@@ -88,12 +88,15 @@ export class RFxHeader extends CommonClass {
     ResponseStartTime: string;
     ResponseEndDate: Date;
     ResponseEndTime: string;
+    EvalEndDate: Date;
+    EvalEndTime:string;
     Currency: string;
     Invited: string;
     Responded: string;
     Evaluated: string;
     ReleasedOn: Date | string | null;
     ReleasedBy: string;
+    
 }
 
 export class RFxItem extends CommonClass {
@@ -315,6 +318,8 @@ export class RFxView {
     ResponseStartTime: string;
     ResponseEndDate: Date | string | null;
     ResponseEndTime: string;
+    EvalEndDate: Date | string | null;
+    EvalEndTime:string;
     Currency: string;
     Invited: string;
     Responded: string;
@@ -387,4 +392,36 @@ export class ByMaterial {
 export class ByCriteria {
     Criteria : string;
     BestSupplier : string;
+}
+export class RFxAward extends CommonClass {
+    Client : string;
+    Company:string;
+    RFxID : string;
+    RESID : string;
+    PartnerID : string;
+    AwardedOn : Date;
+    AwardedBy : string;
+    Reason : string;
+    Remark : string;
+}
+export class RFxCEPartner extends CommonClass {
+    Client : string;
+    Company:string;
+    RFxID : string;
+    PartnerID : string;
+    Rating :string;
+}
+export class RFxCEMaterial extends CommonClass{
+    Client : string;
+    Company:string;
+    RFxID : string;
+    Material : string;
+    BestSupplier :string;
+}
+export class RFxCECriteria extends CommonClass {
+    Client : string;
+    Company:string;
+    RFxID : string;
+    Criteria : string;
+    BestSupplier :string;
 }

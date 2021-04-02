@@ -4,7 +4,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 // import { _MatChipListMixinBase } from '@angular/material';
 // import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, RFxH, EvaluationRating, ByMaterial, ByCriteria } from '../models/RFx';
+import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, RFxH, EvaluationRating, ByMaterial, ByCriteria, RFxAward, RFxCEPartner, RFxCEMaterial, RFxCECriteria } from '../models/RFx';
 import { environment } from '../../environments/environment';
 
 
@@ -380,5 +380,45 @@ export class RFxService {
     GetCriteriaByVendor(RFxID:string):Observable<ByCriteria | string> {
         return this._httpClient.get<ByCriteria>(`${this.baseAddress}rfxapi/RFx/CompareByCriteria?RFxID=${RFxID}`)
              .pipe(catchError(this.errorHandler));    
+    }
+    CreateAward(RFxAward : RFxAward):Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateAward`,
+        RFxAward,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
+            .pipe(catchError(this.errorHandler));
+    }
+    CreateCEPartner(RfxPartner : RFxCEPartner):Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateCEPartner`,
+        RfxPartner,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
+            .pipe(catchError(this.errorHandler));
+    }
+    CreateCEMaterial(RfxMaterial : RFxCEMaterial):Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateCEMaterial`,
+        RfxMaterial,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
+            .pipe(catchError(this.errorHandler));
+    }
+    CreateCECriteria(RfxCriteria : RFxCECriteria):Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateCECriteria`,
+        RfxCriteria,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
+            .pipe(catchError(this.errorHandler));
     }
 }
