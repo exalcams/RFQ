@@ -421,4 +421,8 @@ export class RFxService {
             })
             .pipe(catchError(this.errorHandler));
     }
+    GetAllAwardedWithAttachments(): Observable<any> {
+        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetAllAwardedWithAttachments`)
+            .pipe(catchError(this.errorHandler));
+    }
 }

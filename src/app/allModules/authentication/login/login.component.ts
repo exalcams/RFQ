@@ -283,60 +283,19 @@ export class LoginComponent implements OnInit {
         }
       );
     }
-    // if (this.MenuItems.indexOf('RFQ_Response') >= 0) {
-    //   this.children.push(
-    //     {
-    //       id: 'rfq',
-    //       title: 'Response',
-    //       translate: 'NAV.SAMPLE.TITLE',
-    //       type: 'item',
-    //       icon: 'payment',
-    //       isSvgIcon: false,
-    //       // icon: 'dashboard',
-    //       url: '/pages/response',
-    //     }
-    //   );
-    // }
-    // if (this.MenuItems.indexOf('InvoiceDetails') >= 0) {
-    //   this.children.push(
-    //     {
-    //       id: 'invoiceDetails',
-    //       title: 'Invoices',
-    //       translate: 'NAV.SAMPLE.TITLE',
-    //       type: 'item',
-    //       icon: 'receiptIcon',
-    //       isSvgIcon: true,
-    //       // icon: 'receipt',
-    //       url: '/pages/invoices',
-    //     }
-    //   );
-    // }
-    if (this.MenuItems.indexOf('Reports') >= 0) {
+    if (this.MenuItems.indexOf('RFQ_Awarded') >= 0) {
       this.children.push(
         {
-          id: 'reports',
-          title: 'Report',
+          id: 'Report',
+          title: 'Awarded',
           translate: 'NAV.SAMPLE.TITLE',
           type: 'item',
           icon: 'reportIcon',
           isSvgIcon: true,
-          // icon: 'assignment',
-          url: '/reports',
+          url: '/pages/awardreport',
         }
       );
     }
-    // if (this.MenuItems.indexOf('InvoiceItem') >= 0) {
-    //   this.children.push(
-    //     {
-    //       id: 'invItem',
-    //       title: 'Invoice Item',
-    //       translate: 'NAV.SAMPLE.TITLE',
-    //       type: 'item',
-    //       icon: 'dashboard',
-    //       url: '/pages/courses',
-    //     }
-    //   );
-    // }
     if (this.MenuItems.indexOf('App') >= 0) {
       this.subChildren.push(
         {
