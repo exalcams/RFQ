@@ -9,8 +9,10 @@
         <div fxLayout="column" fxFlex="100">
             <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
                 <mat-label>Partner type</mat-label>
-                <mat-select formControlName="Partner" fxFlex>
-                    <mat-option value=" A"> RA </mat-option>
+                <mat-select formControlName="Partner" fxFlex (selectionChange)="RoleSelected($event.value)">
+                    <mat-option value="Evaluator"> Evaluator </mat-option>
+                    <mat-option value="Award Committee"> Award Committee </mat-option>
+                    <mat-option value="Notifier"> Notifier </mat-option>
                 </mat-select>
                 <mat-error
                 *ngIf="DialogueFormGroup.get('Partner').touched && DialogueFormGroup.get('Partner').hasError('required')">
@@ -20,11 +22,13 @@
 
             <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
                 <mat-label>User table</mat-label>
-                <input matInput formControlName="User" fxFlex>
+                <mat-select formControlName="User" fxFlex multiple>
+                    <mat-option *ngFor="let user of Users" [value]="user"> {{user}} </mat-option>
+                </mat-select>
                 <mat-error
                 *ngIf="DialogueFormGroup.get('User').touched && DialogueFormGroup.get('User').hasError('required')">
                 User table is required
-            </mat-error>
+                </mat-error>
             </mat-form-field>
         </div>
     </div>

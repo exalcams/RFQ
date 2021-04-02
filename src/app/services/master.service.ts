@@ -77,6 +77,13 @@ export class MasterService {
             )
             .pipe(catchError(this.errorHandler));
     }
+    GetRFQRoleWithUsers(role:string): Observable<any> {
+        return this._httpClient
+            .get<string[]>(
+                `${this.baseAddress}authenticationapi/Master/GetRFQRoleWithUsers?RoleName=${role}`
+            )
+            .pipe(catchError(this.errorHandler));
+    }
 
     UpdateMenuApp(menuApp: MenuApp): Observable<any> {
         return this._httpClient

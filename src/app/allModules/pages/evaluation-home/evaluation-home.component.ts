@@ -25,6 +25,7 @@ export class EvaluationHomeComponent implements OnInit {
   isProgressBarVisibile:boolean;
   authenticationDetails: AuthenticationDetails;
   currentUserID: Guid;
+  CurrentUserName:string;
   currentUserRole: string;
   MenuItems: string[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
@@ -40,6 +41,7 @@ export class EvaluationHomeComponent implements OnInit {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
       this.currentUserRole = this.authenticationDetails.UserRole;
+      this.CurrentUserName=this.authenticationDetails.UserName;
       this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
       if (this.MenuItems.indexOf('RFQ_EvaluationHome') < 0) {
         this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
@@ -58,7 +60,7 @@ export class EvaluationHomeComponent implements OnInit {
   }
   GetAllRFxs(): void {
     this.isProgressBarVisibile=true;
-    this._RFxService.GetAllEvalRFxH().subscribe(
+    this._RFxService.GetAllEvalRFxH(this.CurrentUserName).subscribe(
       (data) => {
         if (data) {
           this.AllHeaderDetails =data;

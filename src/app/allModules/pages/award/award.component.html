@@ -15,7 +15,7 @@
       <mat-radio-button value="3" (click)="TableEvaluation()">By Evaluation Parameter</mat-radio-button>
     </mat-radio-group>
   </div>
-  <div  *ngIf="value == 1" style="margin: 20px;">
+  <div  *ngIf="value == 1" fxFlex style="margin: 20px;">
     <mat-card class="cl_card">
 
       <div fxLayout="column">
@@ -65,7 +65,7 @@
     <div id="overlay" *ngIf="isProgressBarVisibile"></div>
   </div>
 
-  <div *ngIf="value==2" style="margin: 20px;">
+  <div *ngIf="value==2" fxFlex style="margin: 20px;">
     <mat-card class="cl_card">
 
       <div fxLayout="column">
@@ -111,7 +111,7 @@
     <div id="overlay" *ngIf="isProgressBarVisibile"></div>
   </div>
 
-  <div *ngIf="value==3" style="margin: 20px;">
+  <div *ngIf="value==3" fxFlex style="margin: 20px;">
     <mat-card class="cl_card">
 
       <div fxLayout="column">
@@ -156,17 +156,7 @@
     </mat-progress-spinner>
     <div id="overlay" *ngIf="isProgressBarVisibile"></div>
   </div>
-  
-  <mat-card *ngIf="Click == 1 || Click == 2 || Click ==3" class="cl_card3" fxLayout="column">
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-        <label class="cl_header1">Remarks</label>
-        <div class="cl_divider_header" fxFlex=94.5></div>
-    </div>
-    <textarea matInput fxFlex style="margin: 1rem;
-    border: 1px solid #48465b4a;"></textarea>
-</mat-card>
-
-  <footer *ngIf="Click == 1 || Click == 2 || Click ==3" class="footer">
+  <footer class="footer">
     <mat-toolbar style="background-color: white;height: 56px;">
       <div style="flex:1 auto"></div>
       <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="1rem">
