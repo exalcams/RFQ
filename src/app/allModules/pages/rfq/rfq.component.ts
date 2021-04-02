@@ -124,7 +124,11 @@ export class RfqComponent implements OnInit {
       ValidityStartDate: ['',[ Validators.required]],
       ValidityEndDate: ['', [Validators.required]],
       ResponseStartDate: ['',[ Validators.required]],
+      ResponseStartTime: ['',[ Validators.required]],
       ResponseEndDate: ['', [Validators.required]],
+      ResponseEndTime: ['',[ Validators.required]],
+      EvaluationEndDate: ['', [Validators.required]],
+      EvaluationEndTime: ['',[ Validators.required]],
       Currency: ['', [Validators.required]],
     });
   }
@@ -156,7 +160,11 @@ export class RfqComponent implements OnInit {
     this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
     this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
     this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
+    this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
     this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
+    this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
+    this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
+    this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
     this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
     if(isRelease){
       this.RFxView.Status="2";
@@ -213,7 +221,11 @@ export class RfqComponent implements OnInit {
       this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
       this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
       this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
+      this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
       this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
+      this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
+      this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
+      this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
       this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
       this.RFxView.Invited=this.Rfxheader.Invited;
       this.RFxView.Responded=this.Rfxheader.Responded;
@@ -280,7 +292,11 @@ export class RfqComponent implements OnInit {
           this.RFxFormGroup.get("ValidityStartDate").setValue(this.Rfxheader.ValidityStartDate);
           this.RFxFormGroup.get("ValidityEndDate").setValue(this.Rfxheader.ValidityEndDate);
           this.RFxFormGroup.get("ResponseStartDate").setValue(this.Rfxheader.ResponseStartDate);
+          this.RFxFormGroup.get("ResponseStartTime").setValue(this.Rfxheader.ResponseStartTime);
           this.RFxFormGroup.get("ResponseEndDate").setValue(this.Rfxheader.ResponseEndDate);
+          this.RFxFormGroup.get("ResponseEndTime").setValue(this.Rfxheader.ResponseEndTime);
+          this.RFxFormGroup.get("EvaluationEndDate").setValue(this.Rfxheader.EvalEndDate);
+          this.RFxFormGroup.get("EvaluationEndTime").setValue(this.Rfxheader.EvalEndTime);
           this.RFxFormGroup.get("Currency").setValue(this.Rfxheader.Currency);
           if(this.Rfxheader.Status=="2"){
             this.RFxFormGroup.disable();
@@ -450,13 +466,13 @@ export class RfqComponent implements OnInit {
   }
   OpenPartnerDialog(Partner:RFxPartner,bool:boolean) {
     const dialogRef = this.dialog.open(DialogContentExampleDialog3Component, {
-      data: {data:Partner,isCreate:bool}, height: '43%',
-      width: '50%'
+      data: {data:Partner,isCreate:bool,RFxPartners:this.PartnerDetails}, height: '43%',
+      width: '40%'
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res=>{
-      if(res && res.isCreate){
-        this.PartnerDetails.push(res.data);
+      if(res){
+        this.PartnerDetails=res;
         this.PartnerDetailsDataSource=new MatTableDataSource(this.PartnerDetails);
       }
     });
