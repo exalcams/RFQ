@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
-import { ByCriteria, ByMaterial, EvaluationRating, ResHeader, RFxAward, RFxCECriteria, RFxCEMaterial, RFxCEPartner, RFxHeader } from 'app/models/RFx';
+import { ByCriteria, ByMaterial, EvaluationRating, PartnerWithRating, ResHeader, RFxAward, RFxCECriteria, RFxCEMaterial, RFxCEPartner, RFxHeader } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
@@ -31,27 +31,28 @@ export class AwardComponent implements OnInit {
   AllMaterialDetails: any = [];
   AllCriteriaDetails: any = [];
   isProgressBarVisibile: boolean;
-  SelectedVendor :string = "";
-  BestSupplier : string = "";
-  BestSupplier1: string = "";
+  SelectedVendor: string ;
+  selectedRESID:string;
   value: number = 1;
   Rfxheader: RFxHeader = new RFxHeader();
-  Responses:ResHeader = new ResHeader();
-  RFxAward:RFxAward=new RFxAward();
-  RFxCEPartner:RFxCEPartner = new RFxCEPartner();
-  RFxCEMaterial: RFxCEMaterial = new RFxCEMaterial();
-  RFxCECriteria: RFxCECriteria = new RFxCECriteria();
+  Responses: ResHeader = new ResHeader();
+  RFxAward: RFxAward = new RFxAward();
+  VendorRating: PartnerWithRating = new PartnerWithRating();
+  RFxCEPartner: RFxCEPartner[] = [];
+  RFxCEMaterial: RFxCEMaterial[] = [];
+  RFxCECriteria: RFxCECriteria[] = [];
   selection = new SelectionModel<EvaluationRating>(true, []);
   isHightlight: boolean;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   currentUserID: any;
   currentUserName: string;
   AllResponseDetails: any = [];
-  rating:string = "";
-  material : string = "";
-  criteria  : string = "";
+  rating: string = "";
+  material: string = "";
+  criteria: string = "";
+  Click: boolean = false;
 
-  constructor(private _RFxService: RFxService, private _route: ActivatedRoute,private _formBuilder: FormBuilder,
+  constructor(private _RFxService: RFxService, private _route: ActivatedRoute, private _formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
     private _router: Router) {
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -78,8 +79,8 @@ export class AwardComponent implements OnInit {
     this._RFxService.GetResponseByRFxID(this.RFxID).subscribe(
       (data) => {
         if (data) {
-          this.Responses = data as ResHeader;  
-          console.log("responses",this.Responses);  
+          this.Responses = data as ResHeader;
+          console.log("responses", this.Responses);
         }
       }
     )
@@ -94,46 +95,35 @@ export class AwardComponent implements OnInit {
       }
     );
   }
-  
+
   InitializeRFxFormGroup(): void {
     this.AwardFormGroup = this._formBuilder.group({
-      Remark:  ['', [Validators.required]],
+      Remarks: ['', [Validators.required]],
       Reason: ['', [Validators.required]],
     });
   }
-  GetEvalRatingByID(RFxID: string): void {
-    this._RFxService.GetEvalRatingByID(this.RFxID).subscribe(
-      (data) => {
-        if (data) {
-          this.AllEvalRatingDetails = data;
-          this.isProgressBarVisibile = false;
-          this.LoadTableSource(this.AllEvalRatingDetails);
-        }
-      })
+
+  AwardClicked() {
+    if (this.AwardFormGroup.valid) {
+      this.CreateAward();
+    }
+    else {
+      this.ShowValidationErrors(this.AwardFormGroup);
+    }
   }
 
-  AwardClicked(isRelease: boolean) {
-    this.CreateAward(isRelease);
-  }
-
-  CreateAward(isRelease: boolean) {
-
+  CreateAward() {
     this.isProgressBarVisibile = true;
     this.RFxAward.Client = this.Rfxheader.Client;
     this.RFxAward.Company = this.Rfxheader.Company;
     this.RFxAward.RFxID = this.RFxID;
     this.RFxAward.AwardedBy = this.currentUserName;
-    this.RFxAward.PartnerID = this.Responses.PartnerID;
-    this.RFxAward.RESID = this.Responses.RESID;
-    this.RFxAward.Reason =this.AwardFormGroup.get('Reason').value;
-    this.RFxAward.Remark = this.AwardFormGroup.get('Remark').value;
+    this.RFxAward.PartnerID = this.SelectedVendor;
+    this.RFxAward.RESID = this.selectedRESID;
+    this.RFxAward.Reason = this.AwardFormGroup.get('Reason').value;
+    this.RFxAward.Remarks = this.AwardFormGroup.get('Remarks').value;
 
     this._RFxService.CreateAward(this.RFxAward).subscribe(x => {
-      this.isProgressBarVisibile = false;
-      console.log(this.RFxAward); 
-    })
-    
-    if (isRelease) {
       this._RFxService.UpdateHeaderStatus(this.RFxID, "6").subscribe(x => {
         this.isProgressBarVisibile = false;
         this.notificationSnackBarComponent.openSnackBar(' Awarded successfully', SnackBarStatus.success);
@@ -144,51 +134,75 @@ export class AwardComponent implements OnInit {
           this.isProgressBarVisibile = false;
           this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
         });
+    },err=>{
+      console.log(err);
+      this.isProgressBarVisibile=false;
+      this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
     }
+    );
     this.CreateCEPartner();
     this.CreateCEMatrial();
     this.CreateCECriteria();
-
-    // else {
-    //   this.isProgressBarVisibile = false;
-    //   this.notificationSnackBarComponent.openSnackBar('Awarded successfully', SnackBarStatus.success);
-    // }
   }
   CreateCEPartner() {
-    this.RFxCEPartner.Client = this.Rfxheader.Client;
-    this.RFxCEPartner.Company = this.Rfxheader.Company;
-    this.RFxCEPartner.RFxID = this.RFxID;
-    this.RFxCEPartner.PartnerID = this.SelectedVendor;
-    this.RFxCEPartner.Rating = this.rating;
-
-    this._RFxService.CreateCEPartner(this.RFxCEPartner).subscribe(x =>{
-      console.log(this.RFxCEPartner);
+    this.AllEvalRatingDetails.forEach(CEPartner => {
+      var cepartner = new RFxCEPartner();
+      cepartner.Client = this.Rfxheader.Client;
+      cepartner.Company = this.Rfxheader.Company;
+      cepartner.RFxID = this.RFxID;
+      cepartner.PartnerID = CEPartner.PartnerID;
+      cepartner.Rating = CEPartner.Rating;
+      this.RFxCEPartner.push(cepartner);
+    });
+    console.log("Partner", this.RFxCEPartner);
+    this._RFxService.CreateCEPartner(this.RFxCEPartner).subscribe(x => {
+      console.log(x);
     })
   }
 
   CreateCEMatrial() {
-    this.RFxCEMaterial.Client = this.Rfxheader.Client;
-    this.RFxCEMaterial.Company = this.Rfxheader.Company;
-    this.RFxCEMaterial.RFxID = this.RFxID;
-    this.RFxCEMaterial.BestSupplier = this.BestSupplier;
-    this.RFxCEMaterial.Material = this.material;
+    this.AllMaterialDetails.forEach(CEPartner => {
+      var cepartner = new RFxCEMaterial();
+      cepartner.Client = this.Rfxheader.Client;
+      cepartner.Company = this.Rfxheader.Company;
+      cepartner.RFxID = this.RFxID;
+      cepartner.BestSupplier = CEPartner.BestSupplier;
+      cepartner.Material = CEPartner.Material;
+      this.RFxCEMaterial.push(cepartner);
+    });
+    console.log("Material", this.RFxCEMaterial);
 
-    this._RFxService.CreateCEMaterial(this.RFxCEMaterial).subscribe(x=> {
+    this._RFxService.CreateCEMaterial(this.RFxCEMaterial).subscribe(x => {
       console.log(this.RFxCEMaterial);
-      
+
     })
   }
 
   CreateCECriteria() {
-    this.RFxCECriteria.Client = this.Rfxheader.Client;
-    this.RFxCECriteria.Company = this.Rfxheader.Company;
-    this.RFxCECriteria.RFxID = this.RFxID;
-    this.RFxCECriteria.BestSupplier = this.BestSupplier1;
-    this.RFxCECriteria.Criteria = this.criteria;
+    this.AllCriteriaDetails.forEach(CEPartner => {
+      var cepartner = new RFxCECriteria();
+      cepartner.Client = this.Rfxheader.Client;
+      cepartner.Company = this.Rfxheader.Company;
+      cepartner.RFxID = this.RFxID;
+      cepartner.BestSupplier = CEPartner.BestSupplier;
+      cepartner.Criteria = CEPartner.Criteria;
+      this.RFxCECriteria.push(cepartner);
+    });
+    console.log("Criteria", this.RFxCECriteria);
 
-    this._RFxService.CreateCECriteria(this.RFxCECriteria).subscribe(x=>{
+    this._RFxService.CreateCECriteria(this.RFxCECriteria).subscribe(x => {
       console.log(this.RFxCECriteria);
     })
+  }
+  GetEvalRatingByID(RFxID: string): void {
+    this._RFxService.GetEvalRatingByID(this.RFxID).subscribe(
+      (data) => {
+        if (data) {
+          this.AllEvalRatingDetails = data;
+          this.isProgressBarVisibile = false;
+          this.HeaderDetailsDataSource = new MatTableDataSource(this.AllEvalRatingDetails);
+        }
+      })
   }
   GetMaterialByVendor(RFxID: string): void {
     this._RFxService.GetMaterialByVendor(this.RFxID).subscribe(
@@ -196,7 +210,7 @@ export class AwardComponent implements OnInit {
         if (data) {
           this.AllMaterialDetails = data;
           this.isProgressBarVisibile = false;
-          this.LoadMaterialTableSource(this.AllMaterialDetails);
+          this.MaterialDetailsDataSource = new MatTableDataSource(this.AllMaterialDetails);
         }
       })
   }
@@ -207,44 +221,20 @@ export class AwardComponent implements OnInit {
         if (data) {
           this.AllCriteriaDetails = data;
           this.isProgressBarVisibile = false;
-          this.LoadCriteriaTableSource(this.AllCriteriaDetails);
+          this.CriteriaDetailsDataSource = new MatTableDataSource(this.AllCriteriaDetails);
         }
       }
     )
   }
-  TableHighlight(row: EvaluationRating) {
-    this.SelectedVendor = row.PartnerID;
-    this.rating = row.Rating.toString();  
-    console.log(this.SelectedVendor,this.rating);
-      
-  }
-  TableHighlight2(row: ByMaterial) {
-    this.BestSupplier = row.BestSupplier;
-    this.material = row.Material;
-    console.log(this.BestSupplier,this.material);
-  }
-  TableHighlight3(row: ByCriteria) {
-    this.BestSupplier1 = row.BestSupplier;
-    this.criteria = row.Criteria;
-    console.log(this.BestSupplier1,this.criteria);
-    this.Click=3;
-  }
-  LoadCriteriaTableSource(DataArray: any[]) {
-    this.CriteriaDetailsDataSource = new MatTableDataSource(DataArray);
-    this.CriteriaDetailsDataSource.paginator = this.EvalPaginator;
-    this.CriteriaDetailsDataSource.sort = this.EvalSort;
-  }
-
-  LoadMaterialTableSource(DataArray: any[]) {
-    this.MaterialDetailsDataSource = new MatTableDataSource(DataArray);
-    this.MaterialDetailsDataSource.paginator = this.EvalPaginator;
-    this.MaterialDetailsDataSource.sort = this.EvalSort;
-  }
-
-  LoadTableSource(DataArray: any[]) {
-    this.HeaderDetailsDataSource = new MatTableDataSource(DataArray);
-    this.HeaderDetailsDataSource.paginator = this.EvalPaginator;
-    this.HeaderDetailsDataSource.sort = this.EvalSort;
+  TableHighlight(row: any,table:number) {
+    if(table==1){
+      this.SelectedVendor = row.PartnerID;
+    }
+    else{
+      this.SelectedVendor = row.BestSupplier;
+    }
+    this.selectedRESID=row.RESID;
+    this.Click = true;
   }
 
   TableVendor(): void {
@@ -259,7 +249,11 @@ export class AwardComponent implements OnInit {
     this.value = 3;
   }
 
-  onRate($event: { oldValue: number, newValue: number }, index: any) {
-    this.AllEvalRatingDetails[index].Rating = $event.newValue.toString();
+  ShowValidationErrors(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      formGroup.get(key).markAsTouched();
+      formGroup.get(key).markAsDirty();
+    });
+
   }
 }

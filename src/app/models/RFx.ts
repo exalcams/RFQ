@@ -384,14 +384,22 @@ export class EvaluationView {
 export class EvaluationRating extends ResHeader
 {
     Rating:number;
+
+}
+export class PartnerWithRating {
+    PartnerID : string;
+    AvgRating : number;
+    RESID : string;
 }
 export class ByMaterial {
     Material : string;
     BestSupplier : string;
+    RESID : string;
 }
 export class ByCriteria {
     Criteria : string;
     BestSupplier : string;
+    RESID : string;
 }
 export class RFxAward extends CommonClass {
     Client : string;
@@ -402,7 +410,7 @@ export class RFxAward extends CommonClass {
     AwardedOn : Date;
     AwardedBy : string;
     Reason : string;
-    Remark : string;
+    Remarks : string;
 }
 export class RFxCEPartner extends CommonClass {
     Client : string;

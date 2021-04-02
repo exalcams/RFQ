@@ -391,17 +391,16 @@ export class RFxService {
             })
             .pipe(catchError(this.errorHandler));
     }
-    CreateCEPartner(RfxPartner : RFxCEPartner):Observable<any> {
-        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateCEPartner`,
-        RfxPartner,
-            {
-                headers: new HttpHeaders({
-                    'Content-Type': 'application/json'
-                })
+    CreateCEPartner(RfxPartner : RFxCEPartner[]):Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateCEPartner`,RfxPartner,
+        {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
             })
+        })
             .pipe(catchError(this.errorHandler));
     }
-    CreateCEMaterial(RfxMaterial : RFxCEMaterial):Observable<any> {
+    CreateCEMaterial(RfxMaterial : RFxCEMaterial[]):Observable<any> {
         return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateCEMaterial`,
         RfxMaterial,
             {
@@ -411,7 +410,7 @@ export class RFxService {
             })
             .pipe(catchError(this.errorHandler));
     }
-    CreateCECriteria(RfxCriteria : RFxCECriteria):Observable<any> {
+    CreateCECriteria(RfxCriteria : RFxCECriteria[]):Observable<any> {
         return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateCECriteria`,
         RfxCriteria,
             {
