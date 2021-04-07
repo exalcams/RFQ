@@ -1,6 +1,9 @@
 .cl_toolbar{
-    width: 100%;
+    width: 95%;
     height: 55px;
+    position:fixed;
+    top:0;
+    z-index: 1;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
     background-color: #ffffff !important;
   } 
@@ -46,13 +49,14 @@
       color:#333333;
   }
   .mat-row.highlighted .mat-cell  {
-    background-color: #c3e1e6 !important;
+    background-color: #03a9f4 !important;
   }
   .footer {
     bottom: 0px;
-    position: absolute;
-    width: 100%;
+    position: fixed;
+    width: 95%;
     z-index: 1;
+    bottom: 0;
     background-color: white;
     box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
     }
@@ -67,3 +71,13 @@
         justify-content: space-evenly;
         align-items: center;
       }
+      .cl_card3{
+        margin-top: 15px;
+        height: 140px;
+        margin: 20px;
+      }
+      .cl_divider_header{
+        height: 1px;
+        border-top: 1px solid #068dd0;
+        opacity: 0.6;
+    }
