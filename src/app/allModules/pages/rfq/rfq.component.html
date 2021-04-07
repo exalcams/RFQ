@@ -1,5 +1,5 @@
 <div fxFlex fxLayout="column">
-    <mat-toolbar class="cl_toolbar2" fxLayout="row">
+    <mat-toolbar class="cl_toolbar" fxLayout="row">
         <div fxLayout="column" fxFlex=20>
             <label class="Create-RFQ">Create RFQ</label>
             <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
@@ -8,16 +8,16 @@
                 <label class="Create-RFQ1">Create RFQ</label>
             </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="4px" fxFlex=80>
+        <!-- <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="4px" fxFlex=80>
             <img src="/assets/images/foreclose1.png" class="cl_fore">
             <label class="cl_foreclose">Foreclose</label>
             <img src="/assets/images/delete.png" class="cl_del">
             <label class="cl_delete">Delete</label>
             <img src="/assets/images/cancel.png" class="cl_can">
             <label class="cl_cancel">Cancel</label>
-        </div>
+        </div> -->
     </mat-toolbar>
-    <mat-tab-group style="padding: 2rem 1rem 4rem 1rem; overflow-y: scroll;" [selectedIndex]="selectedIndex"
+    <mat-tab-group style="padding: 2rem 0rem 4rem 1.5rem; overflow-y: scroll;" [selectedIndex]="selectedIndex"
         (selectedTabChange)="tabClick($event)" fxFlex>
         <!-- First Tab -->
         <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
@@ -81,15 +81,15 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem;">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem 2rem 0 2rem;">
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity start date</mat-label>
-                                <input [min]="minDate" matInput [matDatepicker]="picker"
+                                <input [min]="minDate" matInput [matDatepicker]="picker1"
                                     formControlName="ValidityStartDate" fxFlex>
-                                <mat-datepicker-toggle matSuffix [for]="picker">
+                                <mat-datepicker-toggle matSuffix [for]="picker1">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-datepicker #picker1></mat-datepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('ValidityStartDate').touched && RFxFormGroup.get('ValidityStartDate').hasError('required')">
                                     Validity Start Date is required
@@ -99,11 +99,11 @@
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity end date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
-                                    [matDatepicker]="picker1" formControlName="ValidityEndDate" fxFlex>
-                                <mat-datepicker-toggle matSuffix [for]="picker1">
+                                    [matDatepicker]="picker2" formControlName="ValidityEndDate" fxFlex>
+                                <mat-datepicker-toggle matSuffix [for]="picker2">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
-                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-datepicker #picker2></mat-datepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('ValidityEndDate').touched && RFxFormGroup.get('ValidityEndDate').hasError('required')">
                                     Validity End Date is required
@@ -113,12 +113,12 @@
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response start date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
-                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker2"
+                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker3"
                                     formControlName="ResponseStartDate" fxFlex>
-                                <mat-datepicker-toggle matSuffix [for]="picker2">
+                                <mat-datepicker-toggle matSuffix [for]="picker3">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
-                                <mat-datepicker #picker2></mat-datepicker>
+                                <mat-datepicker #picker3></mat-datepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('ResponseStartDate').touched && RFxFormGroup.get('ResponseStartDate').hasError('required')">
                                     Response Start Date is required
@@ -127,7 +127,8 @@
 
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response start Time</mat-label>
-                                <input matInput type="time" formControlName="ResponseStartTime" fxFlex>
+                                <input matInput [ngxTimepicker]="picker6" formControlName="ResponseStartTime" fxFlex>
+                                <ngx-material-timepicker #picker6></ngx-material-timepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('ResponseStartTime').touched && RFxFormGroup.get('ResponseStartTime').hasError('required')">
                                     Response Start Time is required
@@ -140,12 +141,12 @@
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response end date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
-                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker3"
+                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker4"
                                     formControlName="ResponseEndDate" fxFlex>
-                                <mat-datepicker-toggle matSuffix [for]="picker3">
+                                <mat-datepicker-toggle matSuffix [for]="picker4">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
-                                <mat-datepicker #picker3></mat-datepicker>
+                                <mat-datepicker #picker4></mat-datepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('ResponseEndDate').touched && RFxFormGroup.get('ResponseEndDate').hasError('required')">
                                     Response End Date is required
@@ -154,7 +155,8 @@
 
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response end Time</mat-label>
-                                <input matInput type="time" formControlName="ResponseEndTime" fxFlex>
+                                <input matInput [ngxTimepicker]="picker7" formControlName="ResponseEndTime" fxFlex>
+                                <ngx-material-timepicker #picker7></ngx-material-timepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('ResponseEndTime').touched && RFxFormGroup.get('ResponseEndTime').hasError('required')">
                                     Response End Time is required
@@ -164,11 +166,11 @@
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Evaluation end date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ResponseEndDate').value"
-                                    [matDatepicker]="picker4" formControlName="EvaluationEndDate" fxFlex>
-                                <mat-datepicker-toggle matSuffix [for]="picker4">
+                                    [matDatepicker]="picker5" formControlName="EvaluationEndDate" fxFlex>
+                                <mat-datepicker-toggle matSuffix [for]="picker5">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
-                                <mat-datepicker #picker4></mat-datepicker>
+                                <mat-datepicker #picker5></mat-datepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('EvaluationEndDate').touched && RFxFormGroup.get('EvaluationEndDate').hasError('required')">
                                     Evaluation End Date is required
@@ -177,7 +179,8 @@
 
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Evaluation end Time</mat-label>
-                                <input matInput type="time" formControlName="EvaluationEndTime" fxFlex>
+                                <input matInput [ngxTimepicker]="picker8" formControlName="EvaluationEndTime" fxFlex>
+                                <ngx-material-timepicker #picker8></ngx-material-timepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('EvaluationEndTime').touched && RFxFormGroup.get('EvaluationEndTime').hasError('required')">
                                     Evaluation End Time is required
@@ -211,19 +214,6 @@
 
                     <table mat-table [dataSource]="EvaluationDetailsDataSource" class="mat-elevation-z8" matSort>
 
-                        <!-- Position Column -->
-                        <ng-container matColumnDef="position">
-                            <th mat-header-cell *matHeaderCellDef style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 6%;" class="Rectangle-4510"> S.No </th>
-                            <td mat-cell style="font-size: 12px;" *matCellDef="let element;let i = index;">{{i+1}}
-                            </td>
-                        </ng-container>
 
                         <!-- Criteria Column -->
                         <ng-container matColumnDef="Criteria">
@@ -234,7 +224,7 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: left;
-                                      color: #595d6e;width: 5%;" class="Rectangle-4510" *matHeaderCellDef> Criteria
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Criteria
                             </th>
                             <td mat-cell style="font-size: 12px;" *matCellDef="let element"> {{element.CriteriaID}}
                             </td>
@@ -249,7 +239,7 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: center;
-                                      color: #595d6e;width: 80%;" class="Rectangle-4510" *matHeaderCellDef>
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef>
                                 Description </th>
                             <td mat-cell style="font-size: 12px;text-align: center;" *matCellDef="let element">
                                 {{element.Text}} </td>
@@ -263,10 +253,9 @@
                                       font-style: normal;
                                       line-height: 1.5;
                                       letter-spacing: normal;
-                                      text-align: center;
-                                      color: #595d6e;
-                                      width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element;index as i;">
+                                      text-align: end;
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
+                            <td mat-cell *matCellDef="let element;index as i;" style="text-align: end;">
                                 <div *ngIf="Rfxheader.Status=='1'">
                                     <img src="assets/images/edit_blue.png" (click)="OpenCriteriaDialog(element)"
                                         class="clickable">
@@ -274,7 +263,7 @@
                                         src="assets/images/delete1.png">
                                 </div>
                                 <span *ngIf="Rfxheader.Status!='1'"
-                                    style="font-size: 12px;font-weight:500;text-align: center;">Released</span>
+                                    style="font-size: 12px;font-weight:500;">Released</span>
                             </td>
                         </ng-container>
 
@@ -305,19 +294,6 @@
 
                     <table mat-table [dataSource]="ItemDetailsDataSource" class="mat-elevation-z8" matSort>
 
-                        <!-- Position Column -->
-                        <ng-container matColumnDef="position">
-                            <th mat-header-cell *matHeaderCellDef style=" font-size: 13px;
-                                  font-weight: 500;
-                                  font-stretch: normal;
-                                  font-style: normal;
-                                  line-height: 1.5;
-                                  letter-spacing: normal;
-                                  text-align: left;
-                                  color: #595d6e;" class="Rectangle-4510"> S.No </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;"
-                                *matCellDef="let element;let i = index;"> {{i+1}}</td>
-                        </ng-container>
 
                         <!-- Item Column -->
                         <ng-container matColumnDef="Item">
@@ -425,9 +401,9 @@
                                     font-style: normal;
                                     line-height: 1.5;
                                     letter-spacing: normal;
-                                    text-align: right;
-                                    color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element;index as i;">
+                                    text-align: end;
+                                    color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
+                            <td mat-cell *matCellDef="let element;index as i;" style="text-align: end;">
                                 <div *ngIf="Rfxheader.Status=='1'">
                                     <img src="assets/images/edit_blue.png" (click)="OpenItemDialog(element)"
                                         class="clickable">
@@ -550,20 +526,6 @@
 
                     <table mat-table [dataSource]="PartnerDetailsDataSource" class="mat-elevation-z8" matSort>
 
-                        <!-- Position Column -->
-                        <ng-container matColumnDef="position">
-                            <th mat-header-cell *matHeaderCellDef style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 6%;" class="Rectangle-4510"> S.No </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;"
-                                *matCellDef="let element;let i = index;">{{i+1}} </td>
-                        </ng-container>
-
                         <!-- Type Column -->
                         <ng-container matColumnDef="Type">
                             <th mat-header-cell mat-sort-header style=" font-size: 13px;
@@ -573,7 +535,7 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: left;
-                                      color: #595d6e;width: 5%;" class="Rectangle-4510" *matHeaderCellDef> Type
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Type
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                                 {{element.Type}} </td>
@@ -588,7 +550,7 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: center;
-                                      color: #595d6e;width: 80%;" class="Rectangle-4510" *matHeaderCellDef> User tables
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> User tables
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;text-align: center;"
                                 *matCellDef="let element">
@@ -603,9 +565,9 @@
                                       font-style: normal;
                                       line-height: 1.5;
                                       letter-spacing: normal;
-                                      text-align: right;
-                                      color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element;index as i;">
+                                      text-align: end;
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
+                            <td mat-cell *matCellDef="let element;index as i;" style="text-align: end;">
                                 <div *ngIf="Rfxheader.Status=='1'">
                                     <img src="assets/images/edit_blue.png" (click)="OpenPartnerDialog(element)"
                                         class="clickable">
@@ -647,20 +609,6 @@
 
                     <table mat-table [dataSource]="VendorDetailsDataSource" class="mat-elevation-z8" matSort>
 
-                        <!-- Position Column -->
-                        <ng-container matColumnDef="position">
-                            <th mat-header-cell *matHeaderCellDef style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 5%;" class="Rectangle-4510"> S.No </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;"
-                                *matCellDef="let element;let i = index;"> {{i+1}} </td>
-                        </ng-container>
-
                         <!-- Vendor Column -->
                         <ng-container matColumnDef="Vendor">
                             <th mat-header-cell mat-sort-header style=" font-size: 13px;
@@ -670,7 +618,7 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: left;
-                                      color: #595d6e;width: 15%;" class="Rectangle-4510" *matHeaderCellDef> Vendor
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Vendor
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                                 {{element.PatnerID}} </td>
@@ -685,7 +633,7 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: left;
-                                      color: #595d6e;width: 15%;" class="Rectangle-4510" *matHeaderCellDef> Type
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Type
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                                 {{element.Type}} </td>
@@ -700,7 +648,7 @@
                                         line-height: 1.5;
                                         letter-spacing: normal;
                                         text-align: left;
-                                        color: #595d6e;width: 15%;" class="Rectangle-4510" *matHeaderCellDef> Vendor
+                                        color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Vendor
                                 name </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                                 {{element.VendorName}} </td>
@@ -715,7 +663,7 @@
                                         line-height: 1.5;
                                         letter-spacing: normal;
                                         text-align: left;
-                                        color: #595d6e;width: 17%;" class="Rectangle-4510" *matHeaderCellDef> GST
+                                        color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> GST
                                 number </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                                 {{element.GSTNumber}} </td>
@@ -730,7 +678,7 @@
                                         line-height: 1.5;
                                         letter-spacing: normal;
                                         text-align: left;
-                                        color: #595d6e;width: 12%;" class="Rectangle-4510" *matHeaderCellDef> City
+                                        color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> City
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                                 {{element.City}} </td>
@@ -745,10 +693,10 @@
                                       font-style: normal;
                                       line-height: 1.5;
                                       letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action
+                                      text-align: end;
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Action
                             </th>
-                            <td mat-cell *matCellDef="let element;index as i;">
+                            <td mat-cell *matCellDef="let element;index as i;" style="text-align: end;">
                                 <div *ngIf="Rfxheader.Status=='1'">
                                     <img style="margin-left: 9px;" (click)="DeleteVendor(i)" class="clickable"
                                         src="assets/images/delete1.png">
@@ -784,21 +732,6 @@
 
                     <table mat-table [dataSource]="ODDetailsDataSource" class="mat-elevation-z8" matSort>
 
-                        <!-- Position Column -->
-                        <ng-container matColumnDef="position">
-                            <th mat-header-cell *matHeaderCellDef style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 5%;" class="Rectangle-4510"> S.No </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;"
-                                *matCellDef="let element;let i = index;">
-                                {{i+1}} </td>
-                        </ng-container>
-
                         <!-- Question Column -->
                         <ng-container matColumnDef="Question">
                             <th mat-header-cell mat-sort-header style=" font-size: 13px;
@@ -808,7 +741,7 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: left;
-                                      color: #595d6e;width: 641px;" class="Rectangle-4510" *matHeaderCellDef> Question
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Question
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                                 {{element.Qusetion}} </td>
@@ -816,14 +749,14 @@
 
                         <!-- Answer type Column -->
                         <ng-container matColumnDef="Answertype">
-                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
+                            <th mat-header-cell style=" font-size: 13px;
                                       font-weight: 500;
                                       font-stretch: normal;
                                       font-style: normal;
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: left;
-                                      color: #595d6e;width: 35%;" class="Rectangle-4510" *matHeaderCellDef> Answer Type
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Answer Type
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                                 {{GetAnswerType(element.AnswerType)}} </td>
@@ -838,9 +771,9 @@
                                       font-style: normal;
                                       line-height: 1.5;
                                       letter-spacing: normal;
-                                      text-align:right;
-                                      color: #595d6e;width: 4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element;index as i;">
+                                      text-align:end;
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
+                            <td mat-cell *matCellDef="let element;index as i;" style="text-align: end;">
                                 <div *ngIf="Rfxheader.Status=='1'">
                                     <img src="assets/images/edit_blue.png" (click)="OpenQuestionDialog(element)"
                                         class="clickable">
@@ -869,21 +802,6 @@
 
                     <table mat-table [dataSource]="ODAttachDetailsDataSource" class="mat-elevation-z8" matSort>
 
-                        <!-- Position Column -->
-                        <ng-container matColumnDef="position">
-                            <th mat-header-cell *matHeaderCellDef style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;width: 50px;" class="Rectangle-4510"> S.No </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;"
-                                *matCellDef="let element;let i = index;">
-                                {{i+1}} </td>
-                        </ng-container>
-
                         <!-- Document title Column -->
                         <ng-container matColumnDef="Documenttitle">
                             <th mat-header-cell mat-sort-header style=" font-size: 13px;
@@ -893,7 +811,7 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: left;
-                                      color: #595d6e;width: 21%;" class="Rectangle-4510" *matHeaderCellDef> Document
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Document
                                 title </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                                 {{element.DocumentTitle}} </td>
@@ -908,7 +826,7 @@
                                       line-height: 1.5;
                                       letter-spacing: normal;
                                       text-align: center;
-                                      color: #595d6e;width: 67%;" class="Rectangle-4510" *matHeaderCellDef> Document
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Document
                             </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;text-align: center;"
                                 *matCellDef="let element">
@@ -924,9 +842,9 @@
                                       font-style: normal;
                                       line-height: 1.5;
                                       letter-spacing: normal;
-                                      text-align: right;
-                                      color: #595d6e;width:4%;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element;index as i;">
+                                      text-align: end;
+                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
+                            <td mat-cell *matCellDef="let element;index as i;" style="text-align: end;">
                                 <div *ngIf="Rfxheader.Status=='1'">
                                     <img src="assets/images/edit_blue.png" (click)="OpenDocumentDialog(element)"
                                         class="clickable">

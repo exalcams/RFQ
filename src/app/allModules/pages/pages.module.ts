@@ -80,6 +80,8 @@ import { EvaItemDialogComponent } from './eva-item-dialog/eva-item-dialog.compon
 import { AwardHomeComponent } from './award-home/award-home.component';
 import { AwardResponseComponent } from './award-response/award-response.component';
 import { AwardComponent } from './award/award.component';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { AwardReportComponent } from './award-report/award-report.component';
 
 
 const routes = [
@@ -126,6 +128,10 @@ const routes = [
     {
         path:'award',
         component:AwardComponent
+    },
+    {
+        path:'awardreport',
+        component:AwardReportComponent
     },
     {
         path: '**',
@@ -186,7 +192,8 @@ const routes = [
         FuseWidgetModule,
 
         FormsModule,
-        RatingModule
+        RatingModule,
+        NgxMaterialTimepickerModule
     ],
     declarations: [
         DashboardComponent,
@@ -213,6 +220,7 @@ const routes = [
         AwardHomeComponent,
         AwardResponseComponent,
         AwardComponent,
+        AwardReportComponent
 
     ],
     providers: [
