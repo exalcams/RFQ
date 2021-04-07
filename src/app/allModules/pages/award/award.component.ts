@@ -50,6 +50,7 @@ export class AwardComponent implements OnInit {
   rating:string = "";
   material : string = "";
   criteria  : string = "";
+  Click:number=0;
 
   constructor(private _RFxService: RFxService, private _route: ActivatedRoute,private _formBuilder: FormBuilder,
     public snackBar: MatSnackBar,

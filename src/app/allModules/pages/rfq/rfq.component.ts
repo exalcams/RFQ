@@ -40,13 +40,13 @@ export class RfqComponent implements OnInit {
   ODDetails: RFxOD[] = [];
   ODAttachDetails: RFxODAttachment[] = [];
   RFxRemark:RFxRemark=new RFxRemark();
-  EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description', 'Action'];
-  ItemsDetailsDisplayedColumns: string[] = ['position', 'Item', 'Material', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm', 'Action'];
-  RatingDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description', 'Action'];
-  PartnerDetailsDisplayedColumns: string[] = ['position', 'Type', 'Usertables', 'Action'];
-  VendorDetailsDisplayedColumns: string[] = ['position', 'Vendor', 'Type', 'VendorName', 'GSTNo', 'City', 'Action'];
-  ODDetailsDisplayedColumns: string[] = ['position', 'Question', 'Answertype', 'Action'];
-  ODAttachDetailsDisplayedColumns: string[] = ['position', 'Documenttitle', 'Remark', 'Action'];
+  EvaluationDetailsDisplayedColumns: string[] = ['Criteria', 'Description', 'Action'];
+  ItemsDetailsDisplayedColumns: string[] = ['Item', 'Material', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm', 'Action'];
+  RatingDetailsDisplayedColumns: string[] = ['Criteria', 'Description', 'Action'];
+  PartnerDetailsDisplayedColumns: string[] = ['Type', 'Usertables', 'Action'];
+  VendorDetailsDisplayedColumns: string[] = ['Vendor', 'Type', 'VendorName', 'GSTNo', 'City', 'Action'];
+  ODDetailsDisplayedColumns: string[] = ['Question', 'Answertype', 'Action'];
+  ODAttachDetailsDisplayedColumns: string[] = ['Documenttitle', 'Remark', 'Action'];
   EvaluationDetailsDataSource:MatTableDataSource<RFxHC>;
   ItemDetailsDataSource:MatTableDataSource<RFxItem>;
   // RatingDetailsDataSource=new BehaviorSubject<RFxVendorView[]>([]);
@@ -568,8 +568,11 @@ export class RfqComponent implements OnInit {
     if(index==0 && !this.RFxFormGroup.valid && this.Rfxheader.RFxID==null){
       this.ShowValidationErrors(this.RFxFormGroup);
     }
-    else if(index==0){
+    else if(index==0 && this.Rfxheader.RFxID==null){
       this.Rfxheader.Status="1";
+      this.selectedIndex=index+1;
+    }
+    else{
       this.selectedIndex=index+1;
     }
     if(index==1 && this.EvaluationDetails.length==0){}

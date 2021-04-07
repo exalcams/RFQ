@@ -10,29 +10,23 @@ import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
 
 @Component({
-  selector: 'app-rfq-home',
-  templateUrl: './rfq-home.component.html',
-  styleUrls: ['./rfq-home.component.css']
+  selector: 'app-award-report',
+  templateUrl: './award-report.component.html',
+  styleUrls: ['./award-report.component.scss']
 })
-export class RfqHomeComponent implements OnInit {
+export class AwardReportComponent implements OnInit {
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
   @ViewChild(MatSort) RFQSort: MatSort;
-  RFxTableAttachments: string[] = [];
-  AllHeaderDetails: any[] = [];
-  InitiatedHeaderDetails: any[] = [];
-  RespondedHeaderDetails: any[] = [];
-  EvaluatedHeaderDetails: any[] = [];
-  ClosedHeaderDetails: any[] = [];
-  HeaderStatus: any[];
   HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
-  HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
+  HeaderDetailsDataSource: MatTableDataSource<any>;
+  AllHeaderDetails:any[]=[];
   isProgressBarVisibile: boolean;
   authenticationDetails: AuthenticationDetails;
   currentUserID: Guid;
+  currentUserName:string;
   currentUserRole: string;
   MenuItems: string[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
-  
   constructor(private route: Router,
     private _RFxService: RFxService,
     private dialog: MatDialog, public snackBar: MatSnackBar) {
@@ -46,12 +40,13 @@ export class RfqHomeComponent implements OnInit {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
       this.currentUserRole = this.authenticationDetails.UserRole;
+      this.currentUserName=this.authenticationDetails.UserName;
       this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
-      if (this.MenuItems.indexOf('RFQ_RFQ') < 0) {
-        this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
-        );
-        this.route.navigate(['/auth/login']);
-      }
+      // if (this.MenuItems.indexOf('RFQ_RFQ') < 0) {
+      //   this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
+      //   );
+      //   this.route.navigate(['/auth/login']);
+      // }
     } else {
       this.route.navigate(['/auth/login']);
     }
@@ -65,44 +60,12 @@ export class RfqHomeComponent implements OnInit {
 
   GetAllRFxs(): void {
     this.isProgressBarVisibile = true;
-    this._RFxService.GetAllRFxHDocumets().subscribe(
+    this._RFxService.GetAllAwardedWithAttachments().subscribe(
       (data) => {
         if (data) {
           this.AllHeaderDetails = data;
           this.isProgressBarVisibile = false;
           this.LoadTableSource(this.AllHeaderDetails);
-        }
-      }
-    );
-    this._RFxService.GetAllRFxHDocumets('1').subscribe(
-      (data) => {
-        if (data) {
-          this.InitiatedHeaderDetails = data;
-          this.isProgressBarVisibile = false;
-        }
-      }
-    );
-    this._RFxService.GetAllRFxHDocumets('2').subscribe(
-      (data) => {
-        if (data) {
-          this.RespondedHeaderDetails = data;
-          this.isProgressBarVisibile = false;
-        }
-      }
-    );
-    this._RFxService.GetAllRFxHDocumets('3').subscribe(
-      (data) => {
-        if (data) {
-          this.EvaluatedHeaderDetails = data;
-          this.isProgressBarVisibile = false;
-        }
-      }
-    );
-    this._RFxService.GetAllRFxHDocumets('5').subscribe(
-      (data) => {
-        if (data) {
-          this.ClosedHeaderDetails = data;
-          this.isProgressBarVisibile = false;
         }
       }
     );
