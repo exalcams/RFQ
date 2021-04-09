@@ -140,6 +140,7 @@
         <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
       </table>
+      <div *ngIf="AllHeaderDetails.length==0" style="text-align: center;padding: 16px;width: 100%;color:rgba(0, 0, 0, 0.54);">No records found</div>
       <div>
         <!-- <p class="display">Displaying 10 of 54 records</p> -->
         <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]"></mat-paginator>
