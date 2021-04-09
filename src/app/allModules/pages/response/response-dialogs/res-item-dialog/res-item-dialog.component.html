@@ -18,8 +18,7 @@
 
       <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
         <mat-label>Material</mat-label>
-        <mat-select formControlName="material" fxFlex (selectionChange)="MaterialSelected($event.value)"
-          [disabled]="true">
+        <mat-select formControlName="material" fxFlex [disabled]="true">
           <mat-option *ngFor="let item of MaterialMaster" [value]="item.Material">{{item.Material}}</mat-option>
         </mat-select>
         <mat-error
@@ -58,8 +57,7 @@
 
       <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
         <mat-label>Per Schedule Qty</mat-label>
-        <input matInput type="number" formControlName="per_schedule_qty" fxFlex autocomplete="off"
-          (keyup)="CalculateTotalSchedules()">
+        <input matInput type="number" formControlName="per_schedule_qty" fxFlex autocomplete="off">
         <mat-error
           *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('required')">
           Per Schedule Quantity is required
