@@ -18,7 +18,7 @@
           <ng-container matColumnDef="RFxID">
             <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> RFQ ID </th>
             <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
-              *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.RFxID |
+              *matCellDef="let element" (click)="GotoAwardDetails(element.RFxID,element.AwardedTo)"> {{element.RFxID |
               removeLeadingZero}} </td>
           </ng-container>
 
@@ -121,7 +121,7 @@
             <td mat-cell *matCellDef="let element" style="text-align: center;">
               <button class="cl_action">
                 <mat-select placeholder="Actions" style="width: 90%;" class="Action-select">
-                  <mat-option style="font-weight: 500;">View Details
+                  <mat-option style="font-weight: 500;" (click)="GotoAwardDetails(element.RFxID,element.AwardedTo)">View Details
                   </mat-option>
                 </mat-select>
               </button>
