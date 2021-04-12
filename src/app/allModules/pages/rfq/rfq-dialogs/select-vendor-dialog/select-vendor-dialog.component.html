@@ -13,7 +13,7 @@
         <input matInput fxFlex [(ngModel)]="Searchkey" (keyup)="FilterVendor()" placeholder="Search">
       </mat-form-field>
       <mat-form-field fxFlex=48 style="font-size: 14px;" appearance="outline">
-        <mat-select fxFlex placeholder="Type" [(ngModel)]="VendorType">
+        <mat-select fxFlex placeholder="Type" [(ngModel)]="VendorType"  disableOptionCentering panelClass="myPanelClass">
           <mat-option value="Domestic Supply">Domestic Supply</mat-option>
           <mat-option value="Domestic Service"> Domestic Service </mat-option>
           <mat-option value="Import Vendor"> Import Vendor</mat-option>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { AuthenticationDetails } from 'app/models/master';
@@ -14,7 +14,7 @@ import { Guid } from 'guid-typescript';
   templateUrl: './rfq-home.component.html',
   styleUrls: ['./rfq-home.component.css']
 })
-export class RfqHomeComponent implements OnInit {
+export class RfqHomeComponent implements OnInit,OnDestroy {
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
   @ViewChild(MatSort) RFQSort: MatSort;
   RFxTableAttachments: string[] = [];
@@ -32,6 +32,7 @@ export class RfqHomeComponent implements OnInit {
   currentUserRole: string;
   MenuItems: string[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
+  IsNewHeader:boolean=true;
   
   constructor(private route: Router,
     private _RFxService: RFxService,
@@ -58,6 +59,7 @@ export class RfqHomeComponent implements OnInit {
     this.GetAllRFxs();
   }
   Gotoheader(rfqid) {
+    this.IsNewHeader=false;
     this.route.navigate(['pages/rfq']);
     // { queryParams: { id: rfqid } }
     localStorage.setItem('RFXID', rfqid);
@@ -236,5 +238,9 @@ export class RfqHomeComponent implements OnInit {
         return "";
     }
   }
-
+ngOnDestroy(){
+  if(this.IsNewHeader){
+    localStorage.removeItem('RFXID');
+  }
+}
 }

@@ -18,6 +18,7 @@ import { NotificationSnackBarComponent } from 'app/notifications/notification-sn
 import { SelectVendorDialogComponent } from './rfq-dialogs/select-vendor-dialog/select-vendor-dialog.component';
 import { AuthenticationDetails } from 'app/models/master';
 import { Guid } from 'guid-typescript';
+import { MasterService } from 'app/services/master.service';
 
 
 @Component({
@@ -70,14 +71,16 @@ export class RfqComponent implements OnInit {
   currentUserID: Guid;
   currentUserRole: string;
   MenuItems: string[];
-  selectedCurrency = "INR";
+  Evaluators:string[]=[];
+  CurrencyList:string[]=["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LVL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STD", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "USS", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XFU", "XOF", "XPD", "XPF", "XPT", "XTS", "XXX", "YER", "ZAR", "ZMW"];
   constructor(
     public dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _RFxService: RFxService,
     private _route: ActivatedRoute,
     public snackBar: MatSnackBar,
-    private _router: Router
+    private _router: Router,
+    private masterService:MasterService
   ) {
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
   }
@@ -124,21 +127,26 @@ export class RfqComponent implements OnInit {
       RfqGroup: ['', [Validators.required]],
       RfqTitle: ['', [Validators.required]],
       ValidityStartDate: ['', [Validators.required]],
+      ValidityStartTime: ['', [Validators.required]],
       ValidityEndDate: ['', [Validators.required]],
+      ValidityEndTime: ['', [Validators.required]],
       ResponseStartDate: ['', [Validators.required]],
       ResponseStartTime: ['', [Validators.required]],
       ResponseEndDate: ['', [Validators.required]],
       ResponseEndTime: ['', [Validators.required]],
       EvaluationEndDate: ['', [Validators.required]],
       EvaluationEndTime: ['', [Validators.required]],
-      Evaluator: ['', [Validators.required]],
-      Currency: ['', [Validators.required]],
+      Evaluator: [null, [Validators.required,Validators.max(this.Evaluators.length)]],
+      Currency: ['INR', [Validators.required]],
     });
   }
 
   GetRFQMasters() {
     this.GetRFQTypeMaster();
     this.GetRFQGroupMaster();
+    this.masterService.GetRFQRoleWithUsers("Evaluator").subscribe(data=>{
+      this.Evaluators=data;
+    });
   }
 
   GetRFQTypeMaster() {
@@ -189,6 +197,8 @@ export class RfqComponent implements OnInit {
     this._RFxService.CreateRFx(this.RFxView)
       .subscribe(
         response => {
+          localStorage.setItem("RFxID",response.RFxID);
+          this.RFxID=response.RFxID;
           //console.log("response",response);
           this._RFxService.UploadRFxAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
           if (isRelease) {
@@ -568,6 +578,7 @@ export class RfqComponent implements OnInit {
   }
 
   NextClicked(index: number): void {
+    console.log(this.RFxFormGroup.get('ValidityStartTime').value);
     if (index == 0 && !this.RFxFormGroup.valid && this.Rfxheader.RFxID == null) {
       this.ShowValidationErrors(this.RFxFormGroup);
     }
@@ -575,27 +586,25 @@ export class RfqComponent implements OnInit {
       this.Rfxheader.Status = "1";
       this.selectedIndex = index + 1;
     }
-    else {
-      this.selectedIndex = index + 1;
-    }
-    if (index == 1 && this.EvaluationDetails.length == 0) { }
+    else if (index == 1 && this.EvaluationDetails.length == 0) { }
     else if (index == 2 && this.ItemDetails.length == 0) { }
     else if (index == 3) {
-
       var array = this.PartnerDetails.filter(x => x.Type == "Evaluator")
       var lent = array.length;
-
-      if (lent == this.RFxFormGroup.get('Evaluator').value && lent != 0) {
-        this.selectedIndex = index + 1;
+      var awardC=this.PartnerDetails.filter(x=>x.Type=="Award Committee");
+      if (lent < this.RFxFormGroup.get('Evaluator').value || lent == 0) {
+        this.notificationSnackBarComponent.openSnackBar('Minimum no of evaluator required', SnackBarStatus.danger);   
+      }
+      else if(awardC.length<1){
+        this.notificationSnackBarComponent.openSnackBar('Award committee required', SnackBarStatus.danger);
       }
       else {
-        this.notificationSnackBarComponent.openSnackBar('Minimum no of evaluator needed', SnackBarStatus.danger);
+        this.selectedIndex = index + 1;
       }
-
     }
     else if (index == 4 && this.VendorDetails.length == 0) { }
     else if (index == 5 && this.ODDetails.length == 0 && this.ODAttachDetails.length == 0) { }
-    else if (index != 0) {
+    else {
       this.selectedIndex = index + 1;
     }
   }
@@ -609,7 +618,7 @@ export class RfqComponent implements OnInit {
           //console.log("vendor created");
         }, err => { console.log("vendor master not created!;") });
       }
-      if (!this.RFxID) {
+      if (!this.RFxID || this.RFxID=="-1") {
         this.CreateRfX(isRelease);
       }
       else {
@@ -654,5 +663,18 @@ export class RfqComponent implements OnInit {
     else if (type == 3) {
       return "Long text"
     }
+  } 
+  ConvertToDateTime(Date:Date,Time:string):Date{
+    var timeReg = /(\d+)\.(\d+) (\w+)/;
+    var parts = Time.match(timeReg);
+    
+    var hours = /am/i.test(parts[3]) ?
+        function(am) {return am < 12 ? am : 0}(parseInt(parts[1], 10)) :
+        function(pm) {return pm < 12 ? pm + 12 : 12}(parseInt(parts[1], 10));
+    
+    var minutes = parseInt(parts[2], 10);
+    Date.setHours(hours);
+    Date.setMinutes(minutes);
+    return Date;
   }
 }
