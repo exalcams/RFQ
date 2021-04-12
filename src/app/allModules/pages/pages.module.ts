@@ -82,6 +82,8 @@ import { AwardResponseComponent } from './award-response/award-response.componen
 import { AwardComponent } from './award/award.component';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { AwardReportComponent } from './award-report/award-report.component';
+import { AwardDetailComponent } from './award-detail/award-detail.component';
+import { AwardDetailEvaluationComponent } from './award-detail-evaluation/award-detail-evaluation.component';
 
 
 const routes = [
@@ -132,6 +134,14 @@ const routes = [
     {
         path:'awardreport',
         component:AwardReportComponent
+    },
+    {
+        path:'award-detail',
+        component:AwardDetailComponent
+    },
+    {
+        path:'award-evaluation',
+        component:AwardDetailEvaluationComponent
     },
     {
         path: '**',
@@ -220,8 +230,9 @@ const routes = [
         AwardHomeComponent,
         AwardResponseComponent,
         AwardComponent,
-        AwardReportComponent
-
+        AwardReportComponent,
+        AwardDetailComponent,
+        AwardDetailEvaluationComponent
     ],
     providers: [
         DecimalPipe,

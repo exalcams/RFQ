@@ -424,4 +424,8 @@ export class RFxService {
         return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetAllAwardedWithAttachments`)
             .pipe(catchError(this.errorHandler));
     }
+    GetEvalHeaderByResponse(RFxID:string,AwardedTo:string):Observable<EvalHeader[] | string> {
+        return this._httpClient.get<EvalHeader[]>(`${this.baseAddress}rfxapi/RFx/GetEvalHeaderByResponse?RFxID=${RFxID}&RESID=${AwardedTo}`)
+        .pipe(catchError(this.errorHandler));
+    }
 }

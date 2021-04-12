@@ -52,10 +52,10 @@ export class AwardReportComponent implements OnInit {
     }
     this.GetAllRFxs();
   }
-  Gotoheader(rfqid) {
-    this.route.navigate(['pages/rfq']);
-    // { queryParams: { id: rfqid } }
-    localStorage.setItem('RFXID', rfqid);
+  GotoAwardDetails(rfqid,vendor) {
+    localStorage.setItem('ARFXID', rfqid);
+    localStorage.setItem('AwardedTo', vendor);
+    this.route.navigate(['pages/award-detail']);
   }
 
   GetAllRFxs(): void {
