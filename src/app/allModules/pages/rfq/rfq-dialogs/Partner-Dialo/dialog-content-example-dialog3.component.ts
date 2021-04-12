@@ -1,4 +1,4 @@
-import { Component, OnInit, Optional, Inject } from '@angular/core';
+import { Component, OnInit, Optional, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {  RFxPartner } from 'app/models/RFx';
@@ -8,7 +8,8 @@ import { MasterService } from 'app/services/master.service';
 @Component({
   selector: 'app-dialog-content-example-dialog3',
   templateUrl: './dialog-content-example-dialog3.component.html',
-  styleUrls: ['./dialog-content-example-dialog3.component.css']
+  styleUrls: ['./dialog-content-example-dialog3.component.css'],
+   encapsulation: ViewEncapsulation.None
 })
 export class DialogContentExampleDialog3Component implements OnInit {
   DialogueFormGroup: FormGroup;

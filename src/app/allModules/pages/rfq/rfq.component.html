@@ -59,7 +59,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=47 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ title</mat-label>
                                 <input matInput type="text" formControlName="RfqTitle" fxFlex>
                                 <mat-error
@@ -68,18 +68,6 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=10 style="font-size: 14px;" appearance="outline">
-                                <mat-label>Currency</mat-label>
-                                <mat-select formControlName="Currency" [(ngModel)]="selectedCurrency" fxFlex disableOptionCentering panelClass="myPanelClass">
-                                    <mat-option value="INR" >INR</mat-option>
-                                    <mat-option value="USD">USD</mat-option>
-                                    <mat-option value="EUR">EUR</mat-option>
-                                </mat-select>
-                                <mat-error
-                                    *ngIf="RFxFormGroup.get('Currency').touched && RFxFormGroup.get('Currency').hasError('required')">
-                                    Currency is required
-                                </mat-error>
-                            </mat-form-field>
                         </div>
                         <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem 2rem 0 2rem;">
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
@@ -96,7 +84,15 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                                <mat-label>Validity start time</mat-label>
+                                <input matInput [ngxTimepicker]="picker9" formControlName="ValidityStartTime" fxFlex>
+                                <ngx-material-timepicker #picker9></ngx-material-timepicker>
+                                <mat-error
+                                    *ngIf="RFxFormGroup.get('ValidityStartTime').touched && RFxFormGroup.get('ValidityStartTime').hasError('required')">
+                                    Validity Start Time is required
+                                </mat-error>
+                            </mat-form-field>
 
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity end date</mat-label>
@@ -111,6 +107,21 @@
                                     Validity End Date is required
                                 </mat-error>
                             </mat-form-field>
+
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                                <mat-label>Validity end time</mat-label>
+                                <input matInput [ngxTimepicker]="picker10" formControlName="ValidityEndTime" fxFlex>
+                                <ngx-material-timepicker #picker10></ngx-material-timepicker>
+                                <mat-error
+                                    *ngIf="RFxFormGroup.get('ValidityEndTime').touched && RFxFormGroup.get('ValidityEndTime').hasError('required')">
+                                    Validity Start Time is required
+                                </mat-error>
+                            </mat-form-field>
+
+                           
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem 2rem 0px;">
 
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response start date</mat-label>
@@ -137,9 +148,6 @@
                                 </mat-error>
                             </mat-form-field>
 
-                        </div>
-
-                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem;">
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response end date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
@@ -165,6 +173,10 @@
                                 </mat-error>
                             </mat-form-field>
 
+                           
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem;">
+                            
                             <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Evaluation end date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ResponseEndDate').value"
@@ -188,16 +200,32 @@
                                     Evaluation End Time is required
                                 </mat-error>
                             </mat-form-field>
-                        </div>
-                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem;">
-                            <mat-form-field fxFlex=20 *ngIf="!RFxID" style="font-size: 14px;" appearance="outline">
+
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                                <mat-label>Currency</mat-label>
+                                <mat-select formControlName="Currency" fxFlex disableOptionCentering panelClass="myPanelClass">
+                                    <mat-option *ngFor="let currency of CurrencyList" [value]="currency">{{currency}}</mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="RFxFormGroup.get('Currency').touched && RFxFormGroup.get('Currency').hasError('required')">
+                                    Currency is required
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Minimum no. of evaluators</mat-label>
-                                <input matInput formControlName="Evaluator" fxFlex>
+                                <input matInput formControlName="Evaluator" fxFlex type="number">
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('Evaluator').touched && RFxFormGroup.get('Evaluator').hasError('required')">
                                     Minimum no. of evaluators is required
                                 </mat-error>
+                                <mat-error
+                                    *ngIf="RFxFormGroup.get('Evaluator').touched && RFxFormGroup.get('Evaluator').hasError('max')">
+                                    Only {{Evaluators.length}} evaluators are there
+                                </mat-error>
                             </mat-form-field>
+
+
                         </div>
                     </mat-card>
                 </div>
@@ -343,7 +371,7 @@
                                     letter-spacing: normal;
                                     text-align: left;
                                     color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Total qty </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
+                            <td mat-cell style="color: #48465b;font-size: 12px;text-align: -webkit-center;" *matCellDef="let element">
                                 {{element.TotalQty}} </td>
                         </ng-container>
 
@@ -357,7 +385,7 @@
                                     letter-spacing: normal;
                                     text-align: left;
                                     color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Per schedule qty </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
+                            <td mat-cell style="color: #48465b;font-size: 12px;text-align: -webkit-center" *matCellDef="let element">
                                 {{element.PerScheduleQty}} </td>
                         </ng-container>
 
