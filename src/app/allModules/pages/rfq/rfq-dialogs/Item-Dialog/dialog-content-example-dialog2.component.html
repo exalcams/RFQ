@@ -8,14 +8,14 @@
     <div style="padding: 2rem;" fxLayout="column">
         <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="3%">
 
-            <mat-form-field fxFlex=30 style="font-size: 14px;display: none;" appearance="outline">
+            <!-- <mat-form-field fxFlex=30 style="font-size: 14px;display: none;" appearance="outline">
                 <mat-label>Item</mat-label>
                 <input matInput formControlName="Item" fxFlex autocomplete="off">
                 <mat-error
                     *ngIf="DialogueFormGroup.get('Item').touched && DialogueFormGroup.get('Item').hasError('required')">
                     Item is required
                 </mat-error>
-            </mat-form-field>
+            </mat-form-field> -->
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Material</mat-label>
@@ -49,32 +49,35 @@
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
-                <mat-label>Per Schedule Qty</mat-label>
-                <input matInput type="number" formControlName="per_schedule_qty" fxFlex autocomplete="off" min="0"
-                    oninput="this.value = Math.abs(this.value)" (keyup)="CalculateTotalSchedules()">
-                <mat-error
-                    *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('required')">
-                    Per Schedule Quantity is required
-                </mat-error>
-                <mat-error *ngIf="DialogueFormGroup.get('per_schedule_qty').hasError('pattern')">Enter
-                    only 3 decimal digits</mat-error>
-            </mat-form-field>
-
-            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Total Qty</mat-label>
-                <input matInput type="number" formControlName="TotalQty" min="0"
+                <input  matInput type="number"  formControlName="TotalQty" min="0" (keyup)="CalculateTotalQTy()"
                     oninput="this.value = Math.abs(this.value)" fxFlex autocomplete="off">
                 <mat-error
                     *ngIf="DialogueFormGroup.get('TotalQty').touched && DialogueFormGroup.get('TotalQty').hasError('required')">
                     Total Quantity is required
                 </mat-error>
-                <mat-error *ngIf="DialogueFormGroup.get('TotalQty').hasError('pattern')">Enter
-                    only 3 decimal digits</mat-error>
+                <!-- <mat-error *ngIf="DialogueFormGroup.get('TotalQty').hasError('pattern')">Enter
+                    only 3 decimal digits</mat-error> -->
+               <mat-error *ngIf="DialogueFormGroup.get('TotalQty').touched && DialogueFormGroup.get('TotalQty').hasError('min')">Total Qty should not be less than per schedule qty</mat-error>
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                <mat-label>Per Schedule Qty</mat-label>
+                <input matInput formControlName="per_schedule_qty" type="number"  fxFlex autocomplete="off" min="0"
+                    oninput="this.value = Math.abs(this.value)" (keyup)="CalculateTotalSchedules()">
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('required')">
+                    Per Schedule Quantity is required
+                </mat-error>
+                <!-- <mat-error *ngIf="DialogueFormGroup.get('per_schedule_qty').hasError('pattern')">Enter
+                    only 3 decimal digits</mat-error> -->
+                    <mat-error *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('max')">Per schedule qty should be less than TotalQty</mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
                 <mat-label>Total Schedules</mat-label>
-                <input matInput type="number" formControlName="totalSchedules" fxFlex autocomplete="off" readonly>
+                <input matInput type="number" formControlName="totalSchedules" fxFlex autocomplete="off">
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
