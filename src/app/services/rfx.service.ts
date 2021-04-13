@@ -428,4 +428,8 @@ export class RFxService {
         return this._httpClient.get<EvalHeader[]>(`${this.baseAddress}rfxapi/RFx/GetEvalHeaderByResponse?RFxID=${RFxID}&RESID=${AwardedTo}`)
         .pipe(catchError(this.errorHandler));
     }
+    GetEvalHeaderByEvalID(EvalID: string): Observable<EvalHeader | string> {
+        return this._httpClient.get<EvalHeader>(`${this.baseAddress}rfxapi/RFx/GetEvalHeaderByEvalID?EvalID=${EvalID}`)
+            .pipe(catchError(this.errorHandler));
+    }
 }

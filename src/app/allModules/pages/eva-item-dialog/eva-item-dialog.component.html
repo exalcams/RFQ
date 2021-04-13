@@ -201,7 +201,7 @@
           <td mat-cell *matCellDef="let element;index as i;" style="text-align: center;">
             <div>
               <star-rating [value]="EvalICs[i].Rating" checkedcolor="gold" uncheckedcolor="#b9bdbb" size="20px"
-                readonly="false" (rate)="OnItemRating($event,i)"></star-rating>
+                [readonly]="IsReadOnly" (rate)="OnItemRating($event,i)"></star-rating>
             </div>
           </td>
         </ng-container>
@@ -215,6 +215,6 @@
 
 </mat-dialog-content>
 <mat-dialog-actions fxLayoutAlign="center" style="box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);">
-  <button mat-button class="cl_button1" (click)="Save()"><span class="add">Save</span>
+  <button *ngIf="!data.IsReadOnly" mat-button class="cl_button1" (click)="Save()"><span class="add">Save</span>
   </button>
 </mat-dialog-actions>

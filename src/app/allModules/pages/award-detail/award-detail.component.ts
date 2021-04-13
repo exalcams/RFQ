@@ -184,9 +184,10 @@ export class AwardDetailComponent implements OnInit {
         return "";
     }
   }
-  Gotoheader(RESID:string) {
-    localStorage.setItem("E_RESID",RESID);
-    this.route.navigate(['pages/evaluation']);
+  GotoAwardEvaluation(EvalID:string,RESID:string) {
+    localStorage.setItem("AE_EvalID",EvalID);
+    localStorage.setItem("AE_RESID",RESID);
+    this.route.navigate(['pages/award-evaluation']);
   }
 
 }
