@@ -131,7 +131,7 @@
           <td mat-cell *matCellDef="let element" style="text-align: center;">
             <button class="cl_action">
               <mat-select placeholder="Actions" style="width: 90%;" class="Action-select">
-                <mat-option style="font-weight: 500;">View evaluation</mat-option>
+                <mat-option style="font-weight: 500;" (click)="GotoAwardEvaluation(element.EvalID,element.RESID)">View evaluation</mat-option>
               </mat-select>
             </button>
           </td>

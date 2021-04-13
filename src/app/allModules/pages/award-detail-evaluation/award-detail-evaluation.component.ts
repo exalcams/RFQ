@@ -56,9 +56,11 @@ export class AwardDetailEvaluationComponent implements OnInit {
   notificationSnackBarComponent: NotificationSnackBarComponent;
   RFxID: string = null;
   RESID: string = null;
+  EvalID:string=null;
   index: number = 0;
   minDate = new Date();
   selectedIndex: number = 0;
+  IsReadOnly:boolean=false;
 
   constructor(
     public dialog: MatDialog,
@@ -97,11 +99,12 @@ export class AwardDetailEvaluationComponent implements OnInit {
       this._router.navigate(["/auth/login"]);
     }
     this.InitializeRFxFormGroup();
-    this.RFxID=localStorage.getItem("E_RFXID");
-    this.RESID=localStorage.getItem("E_RESID");
+    this.RFxID=localStorage.getItem("ARFXID");
+    this.RESID=localStorage.getItem("AE_RESID");
+    this.EvalID=localStorage.getItem("AE_EvalID");
     this.GetRFxs();
     this.GetRFQMasters();
-    this.GetEvalHeader(this.RESID,this.currentUserName);
+    this.GetEvalHeader(this.EvalID);
     this.RFxFormGroup.disable();
   }
 
@@ -226,8 +229,8 @@ export class AwardDetailEvaluationComponent implements OnInit {
     })
   }
   
-  GetEvalHeader(RESID:string,User:string){
-    this._RFxService.GetEvalHeaderByID(RESID,User).subscribe(evalH=>{
+  GetEvalHeader(EvalID:string){
+    this._RFxService.GetEvalHeaderByEvalID(EvalID).subscribe(evalH=>{
       if(evalH){
         this.EvalHeader=<EvalHeader>evalH;
         this.GetEvalHCs(this.EvalHeader.EvalID);
@@ -239,16 +242,20 @@ export class AwardDetailEvaluationComponent implements OnInit {
   GetEvalHCs(EvalID:string){
     this._RFxService.GetEvalHCsByID(EvalID).subscribe(data=>{
       if(data){
+        console.log("HCs",data)
         this.EvalHcs=<EvalHC[]>data;
         for (let index = 0; index < this.EvalHcs.length; index++) {
           this.EvalHCViews[index].Rating=this.EvalHcs[index].Rating;
         }
+        this.IsReadOnly=true;
+        console.log("HCViews",this.EvalHCViews);
       }
     });
   }
   GetEvalICs(EvalID:string){
     this._RFxService.GetEvalICsByID(EvalID).subscribe(data=>{
       if(data){
+        console.log("ICs",data)
         this.EvalIcs=<EvalIC[]>data;
         this.EvaluatedICs=[];
         this.ItemDetails.forEach(evalIC => {
@@ -406,7 +413,7 @@ export class AwardDetailEvaluationComponent implements OnInit {
     var EvalICs=this.EvaluatedICs[index].IC;
     console.log("opening",this.EvaluatedICs);
     const dialogRef = this.dialog.open(EvaItemDialogComponent, {
-      data: { RFxItem:item,ResItem:resItem[0],EvalHCs:this.EvalHCViews,EvalIC:EvalICs}, height: '90%',
+      data: { RFxItem:item,ResItem:resItem[0],EvalHCs:this.EvalHCViews,EvalIC:EvalICs,IsReadOnly:true}, height: '90%',
       width: '82%'
     });
     dialogRef.disableClose = true;
@@ -424,7 +431,7 @@ export class AwardDetailEvaluationComponent implements OnInit {
   }
 
   CancelClicked(){
-    this._router.navigate(['pages/evaluationresponse']);
+    this._router.navigate(['pages/award-detail']);
   }
 
 }

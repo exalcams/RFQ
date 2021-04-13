@@ -39,12 +39,14 @@ export class EvaItemDialogComponent implements OnInit {
     'Yes',
     'No'
   ];
+  IsReadOnly:boolean=false;
   constructor(private _formBuilder: FormBuilder, private _RFxService: RFxService,public dialogRef: MatDialogRef<EvaItemDialogComponent>,  private dialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
       this.rfxitem=data.RFxItem;
       this.ResItem=data.ResItem;
       this.EvalHcViews=data.EvalHCs;
       this.EvalICs=data.EvalIC;
+      this.IsReadOnly=data.IsReadOnly;
      }
 
   ngOnInit() {
@@ -109,6 +111,9 @@ export class EvaItemDialogComponent implements OnInit {
       evalIC.Rating="0";
       this.EvalICs.push(evalIC);
     });
+    if(this.data.IsReadOnly){
+      this.IsReadOnly=true;
+    }
   }
 
   OnItemRating($event:{oldValue:number, newValue:number},index:any) {
