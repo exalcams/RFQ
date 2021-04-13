@@ -27,6 +27,7 @@ export class DialogContentExampleDialog2Component implements OnInit {
   _Interval:number;
   MaterialMaster:MMaterial[]=[];
   FileError:boolean=false;
+  TotalQty:boolean=false;
   constructor(private _formBuilder: FormBuilder, private _RFxService: RFxService,public dialogRef: MatDialogRef<DialogContentExampleDialog2Component>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
       this.rfxitem = data.data;
@@ -44,30 +45,29 @@ export class DialogContentExampleDialog2Component implements OnInit {
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Item: [this.rfxitem.Item, Validators.required],
+      // Item: [this.rfxitem.Item, Validators.required],
       Uom: [this.rfxitem.UOM, Validators.required],
       LowPrice: [this.rfxitem.BiddingPriceLow, Validators.required],
       HighPrice: [this.rfxitem.BiddingPriceHigh, Validators.required],
       //rating: [this.rfxitem.Rating, Validators.required],
       material: [this.rfxitem.Material, Validators.required],
-      TotalQty: [this.rfxitem.TotalQty, [Validators.required,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]],
+      TotalQty: [this.rfxitem.TotalQty, [Validators.required]],//,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')
       Interval: [this.rfxitem.Interval, Validators.required],
       Notes: [this.rfxitem.Notes, Validators.required],
       material_text: [this.rfxitem.MaterialText, Validators.required],
-      per_schedule_qty: [this.rfxitem.PerScheduleQty, [Validators.required,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]],
+      per_schedule_qty: [this.rfxitem.PerScheduleQty, [Validators.required]],
       totalSchedules: [this.rfxitem.TotalSchedules],
       incoterm: [this.rfxitem.IncoTerm, [Validators.required,Validators.pattern('^([a-zA-Z]){1,2}?$')]],
       LeadTime:[this.rfxitem.LeadTime,Validators.required]
     });
+    this.DialogueFormGroup.get("per_schedule_qty").setValidators(Validators.max(this.DialogueFormGroup.get("TotalQty").value))
+    this.DialogueFormGroup.get("TotalQty").setValidators(Validators.min(this.DialogueFormGroup.get("per_schedule_qty").value))
+    this.DialogueFormGroup.get('totalSchedules').disable();
   }
 
-  CalculateInterval(){
-  this._TotalQty=this.DialogueFormGroup.get("TotalQty").value;
-  this._perscheduleQty=this.DialogueFormGroup.get("per_schedule_qty").value;
-  this._Interval=this._TotalQty-this._perscheduleQty;
-  console.log(this._Interval);
+  CalculateTotalQTy(){
+    this.DialogueFormGroup.get("TotalQty").setValidators(Validators.min(this.DialogueFormGroup.get("per_schedule_qty").value));
   }
-  
 onSelect(event) {
   this.files[0]=event.addedFiles[0];
   this.SelectedFileName=this.files[0].name;
@@ -88,11 +88,12 @@ CalculateTotalSchedules(){
   var Schedule=this.DialogueFormGroup.get('per_schedule_qty').value;
   var totalSchedule=parseInt(Total)/parseInt(Schedule);
   this.DialogueFormGroup.get('totalSchedules').setValue(round(totalSchedule).toString());
+  this.DialogueFormGroup.get("per_schedule_qty").setValidators(Validators.max(this.DialogueFormGroup.get("TotalQty").value));
 }
 Save(){
   console.log(this.DialogueFormGroup);
   if(this.DialogueFormGroup.valid){
-    this.rfxitem.Item=this.DialogueFormGroup.get("Item").value;
+    // this.rfxitem.Item=this.DialogueFormGroup.get("Item").value;
     this.rfxitem.UOM=this.DialogueFormGroup.get("Uom").value;
     this.rfxitem.BiddingPriceLow=this.DialogueFormGroup.get("LowPrice").value;
     this.rfxitem.BiddingPriceHigh=this.DialogueFormGroup.get("HighPrice").value;
