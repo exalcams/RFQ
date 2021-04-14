@@ -129,6 +129,9 @@
   margin-bottom: 2rem;
   background-color: white;
 }
+::ng-deep.mat-progress-bar-fill::after {
+  background-color: #10b1e8 !important;
+}
   
   .cl_toolbar3{
    width: 1295px;

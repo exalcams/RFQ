@@ -19,9 +19,6 @@ import { SelectVendorDialogComponent } from './rfq-dialogs/select-vendor-dialog/
 import { AuthenticationDetails } from 'app/models/master';
 import { Guid } from 'guid-typescript';
 import { MasterService } from 'app/services/master.service';
-import { forEach } from 'lodash';
-import { freemem } from 'os';
-import Swal from 'sweetalert2/dist/sweetalert2.js';  
 
 
 @Component({
@@ -45,7 +42,7 @@ export class RfqComponent implements OnInit {
   ODAttachDetails: RFxODAttachment[] = [];
   RFxRemark: RFxRemark = new RFxRemark();
   EvaluationDetailsDisplayedColumns: string[] = ['Criteria', 'Description', 'Action'];
-  ItemsDetailsDisplayedColumns: string[] = ['Item', 'Material', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm', 'Action'];
+  ItemsDetailsDisplayedColumns: string[] = ['Material','MaterialText', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm', 'Action'];
   RatingDetailsDisplayedColumns: string[] = ['Criteria', 'Description', 'Action'];
   PartnerDetailsDisplayedColumns: string[] = ['Type', 'Usertables', 'Action'];
   VendorDetailsDisplayedColumns: string[] = ['Vendor', 'Type', 'VendorName', 'GSTNo', 'City', 'Action'];
@@ -76,6 +73,8 @@ export class RfqComponent implements OnInit {
   MenuItems: string[];
   Evaluators: string[] = [];
   CurrencyList: string[] = ["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LVL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STD", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "USS", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XFU", "XOF", "XPD", "XPF", "XPT", "XTS", "XXX", "YER", "ZAR", "ZMW"];
+  IsComplete:boolean=false;
+  Progress:number=0;
   constructor(
     public dialog: MatDialog,
     private _formBuilder: FormBuilder,
@@ -111,7 +110,7 @@ export class RfqComponent implements OnInit {
     // this._route.queryParams.subscribe(params => {
     //   this.RFxID = params['id'];
     // });
-    if (localStorage.getItem('RFXID') != "undefined") {
+    if (localStorage.getItem('RFXID') != "undefined" || localStorage.getItem('RFXID') != "-1") {
       this.RFxID = localStorage.getItem('RFXID');
     }
     else {
@@ -139,8 +138,9 @@ export class RfqComponent implements OnInit {
       ResponseEndTime: ['', [Validators.required]],
       EvaluationEndDate: ['', [Validators.required]],
       EvaluationEndTime: ['', [Validators.required]],
-      Evaluator: [null, [Validators.required, Validators.max(this.Evaluators.length)]],
+      Evaluator: [null, [Validators.required]],
       Currency: ['INR', [Validators.required]],
+      Site: ['', [Validators.required]],
     });
   }
 
@@ -149,6 +149,7 @@ export class RfqComponent implements OnInit {
     this.GetRFQGroupMaster();
     this.masterService.GetRFQRoleWithUsers("Evaluator").subscribe(data => {
       this.Evaluators = data;
+      this.RFxFormGroup.get('Evaluator').setValidators([Validators.max(this.Evaluators.length)]);
     });
   }
 
@@ -163,126 +164,6 @@ export class RfqComponent implements OnInit {
       this.RFxGroupMasters = res as MRFxGroup[];
     })
   }
-
-  CreateRfX(isRelease: boolean) {
-    this.isProgressBarVisibile = true;
-    this.RFxView.Client = this.Rfxheader.Client;
-    this.RFxView.Company = this.Rfxheader.Company;
-    this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
-    this.RFxView.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
-    this.RFxView.Title = this.RFxFormGroup.get("RfqTitle").value;
-    this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
-    this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
-    this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
-    this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
-    this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
-    this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
-    this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
-    this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
-    this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
-    if (isRelease) {
-      this.RFxView.Status = "2";
-    }
-    else {
-      this.RFxView.Status = "1";
-    }
-    this.RFxView.RFxItems = this.ItemDetails;
-    this.RFxView.RFxHCs = this.EvaluationDetails;
-    this.RFxView.RFxICs = this.RatingDetails;
-    this.RFxView.RFxPartners = this.PartnerDetails;
-    this.RFxView.RFxVendors = this.Vendors;
-    this.RFxView.RFxODs = this.ODDetails;
-    this.RFxView.RFxODAttachments = this.ODAttachDetails;
-    this.RFxRemark.Client = this.RFxView.Client;
-    this.RFxRemark.Company = this.RFxView.Company;
-    this.RFxView.RFxRemark = this.RFxRemark;
-    console.log("rfxview", this.RFxView);
-    this._RFxService.CreateRFx(this.RFxView)
-      .subscribe(
-        response => {
-          localStorage.setItem("RFxID", response.RFxID);
-          this.RFxID = response.RFxID;
-          //console.log("response",response);
-          this._RFxService.UploadRFxAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
-          if (isRelease) {
-            this.isProgressBarVisibile = false;
-            this.notificationSnackBarComponent.openSnackBar('RFQ released successfully', SnackBarStatus.success);
-            this._router.navigate(['pages/home']);
-          }
-          else {
-            this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
-            this.isProgressBarVisibile = false;
-          }
-        },
-        error => {
-          this.isProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
-        });
-  }
-  UpdateRFx(isRelease: boolean) {
-    this.isProgressBarVisibile = true;
-    this.RFxView.Client = this.Rfxheader.Client;
-    this.RFxView.Company = this.Rfxheader.Company;
-    this.RFxView.RFxID = this.RFxID;
-    this.RFxView.Plant = this.Rfxheader.Plant;
-    this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
-    this.RFxView.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
-    if (isRelease) {
-      this.RFxView.Status = "2";
-    }
-    else {
-      this.RFxView.Status = "1";
-    }
-    this.RFxView.Title = this.RFxFormGroup.get("RfqTitle").value;
-    this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
-    this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
-    this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
-    this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
-    this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
-    this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
-    this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
-    this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
-    this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
-    this.RFxView.Invited = this.Rfxheader.Invited;
-    this.RFxView.Responded = this.Rfxheader.Responded;
-    this.RFxView.Evaluated = this.Rfxheader.Evaluated;
-    this.RFxView.ReleasedOn = this.Rfxheader.ReleasedOn;
-    this.RFxView.ReleasedBy = this.Rfxheader.ReleasedBy;
-    this.RFxView.RFxItems = this.ItemDetails;
-    this.RFxView.RFxHCs = this.EvaluationDetails;
-    this.RFxView.RFxICs = this.RatingDetails;
-    this.RFxView.RFxPartners = this.PartnerDetails;
-    this.RFxView.RFxVendors = this.Vendors;
-    this.RFxView.RFxODs = this.ODDetails;
-    this.RFxView.RFxODAttachments = this.ODAttachDetails;
-    this.RFxRemark.Client = this.RFxView.Client;
-    this.RFxRemark.Company = this.RFxView.Company;
-    this.RFxView.RFxRemark = this.RFxRemark;
-    console.log("rfxview", this.RFxView);
-    this._RFxService.UpdateRFx(this.RFxView)
-      .subscribe(
-        response => {
-          //console.log("response",response);
-          this._RFxService.UploadRFxAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
-          if (isRelease) {
-            this.isProgressBarVisibile = false;
-            this.notificationSnackBarComponent.openSnackBar('RFQ released successfully', SnackBarStatus.success);
-            this._router.navigate(['pages/home']);
-          }
-          else {
-            this.isProgressBarVisibile = false;
-            this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
-          }
-        },
-        error => {
-          this.isProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
-        });
-  }
-  tabClick(tab: any) {
-    this.index = parseInt(tab.index);
-  }
-
 
   GetRFxs(): void {
     this.GetRFxHsByRFxID(this.RFxID);
@@ -306,14 +187,18 @@ export class RfqComponent implements OnInit {
           this.RFxFormGroup.get("RfqGroup").setValue(this.Rfxheader.RFxGroup);
           this.RFxFormGroup.get("RfqTitle").setValue(this.Rfxheader.Title);
           this.RFxFormGroup.get("ValidityStartDate").setValue(this.Rfxheader.ValidityStartDate);
+          this.RFxFormGroup.get("ValidityStartTime").setValue(this.Rfxheader.ValidityStartTime);
           this.RFxFormGroup.get("ValidityEndDate").setValue(this.Rfxheader.ValidityEndDate);
+          this.RFxFormGroup.get("ValidityEndTime").setValue(this.Rfxheader.ValidityEndTime);
           this.RFxFormGroup.get("ResponseStartDate").setValue(this.Rfxheader.ResponseStartDate);
           this.RFxFormGroup.get("ResponseStartTime").setValue(this.Rfxheader.ResponseStartTime);
           this.RFxFormGroup.get("ResponseEndDate").setValue(this.Rfxheader.ResponseEndDate);
           this.RFxFormGroup.get("ResponseEndTime").setValue(this.Rfxheader.ResponseEndTime);
           this.RFxFormGroup.get("EvaluationEndDate").setValue(this.Rfxheader.EvalEndDate);
           this.RFxFormGroup.get("EvaluationEndTime").setValue(this.Rfxheader.EvalEndTime);
+          this.RFxFormGroup.get("Evaluator").setValue(this.Rfxheader.MinEvaluator);
           this.RFxFormGroup.get("Currency").setValue(this.Rfxheader.Currency);
+          this.RFxFormGroup.get("Site").setValue(this.Rfxheader.Site);
           if (this.Rfxheader.Status == "2") {
             this.RFxFormGroup.disable();
           }
@@ -328,6 +213,9 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.EvaluationDetails = <RFxHC[]>data;
           this.EvaluationDetailsDataSource = new MatTableDataSource(this.EvaluationDetails);
+          if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
+            this.IsComplete=true;
+          }else{this.IsComplete=false}
         }
       }
     );
@@ -338,6 +226,9 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.ItemDetails = <RFxItem[]>data;
           this.ItemDetailsDataSource = new MatTableDataSource(this.ItemDetails);
+          if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
+            this.IsComplete=true;
+          }else{this.IsComplete=false}
         }
       }
     );
@@ -360,6 +251,9 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.PartnerDetails = <RFxPartner[]>data;
           this.PartnerDetailsDataSource = new MatTableDataSource(this.PartnerDetails);
+          if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
+            this.IsComplete=true;
+          }else{this.IsComplete=false}
         }
       }
     );
@@ -383,6 +277,9 @@ export class RfqComponent implements OnInit {
       var data = result as RFxVendorView;
       this.VendorDetails.push(data);
       this.VendorDetailsDataSource = new MatTableDataSource(this.VendorDetails);
+      if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
+        this.IsComplete=true;
+      }else{this.IsComplete=false}
     });
   }
   GetRFxODsByRFxID(RFxID: string): void {
@@ -391,6 +288,9 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.ODDetails = <RFxOD[]>data;
           this.ODDetailsDataSource = new MatTableDataSource(this.ODDetails);
+          if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
+            this.IsComplete=true;
+          }else{this.IsComplete=false}
         }
       }
     );
@@ -401,6 +301,9 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.ODAttachDetails = <RFxODAttachment[]>data;
           this.ODAttachDetailsDataSource = new MatTableDataSource(this.ODAttachDetails);
+          if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
+            this.IsComplete=true;
+          }else{this.IsComplete=false}
         }
       }
     );
@@ -552,6 +455,12 @@ export class RfqComponent implements OnInit {
       if (res && res.isCreate) {
         this.ODDetails.push(res.data);
         this.ODDetailsDataSource = new MatTableDataSource(this.ODDetails);
+        if(this.ODAttachDetails.length>0){
+          this.Progress=7*14.28571428571429;
+        }
+        else{
+          this.Progress=6*14.28571428571429;
+        }
       }
     });
   }
@@ -566,6 +475,10 @@ export class RfqComponent implements OnInit {
       if (res && res.isCreate) {
         this.ODAttachDetails.push(res.data);
         this.ODAttachDetailsDataSource = new MatTableDataSource(this.ODAttachDetails);
+        this.Progress=7*14.28571428571429;
+        if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
+          this.IsComplete=true;
+        }else{this.IsComplete=false}
       }
       if (this.FilesToUpload.indexOf(res.Attachments) >= 0) {
         this.FilesToUpload[this.FilesToUpload.indexOf(res.Attachments)] = res.Attachments;
@@ -584,63 +497,6 @@ export class RfqComponent implements OnInit {
 
   }
 
-  NextClicked(index: number): void {
-    console.log(this.RFxFormGroup.get('ValidityStartTime').value);
-
-    this.ConvertToDateTime(this.RFxFormGroup.get('ValidityStartDate').value, this.RFxFormGroup.get('ValidityStartTime').value);
-    if (index == 0 && !this.RFxFormGroup.valid && this.Rfxheader.RFxID == null) {
-      this.ShowValidationErrors(this.RFxFormGroup);
-    }
-    else if (index == 0 && this.Rfxheader.RFxID == null) {
-      this.Rfxheader.Status = "1";
-      this.selectedIndex = index + 1;
-      this.CreateCriteria();
-    }
-    else if (index == 1 && this.EvaluationDetails.length == 0) {
-      this.CreateItem();
-    }
-    else if (index == 2 && this.ItemDetails.length == 0) { this.CreatePartner(); }
-    else if (index == 3) {
-      var array = this.PartnerDetails.filter(x => x.Type == "Evaluator")
-      var lent = array.length;
-      var awardC = this.PartnerDetails.filter(x => x.Type == "Award Committee");
-      if (lent < this.RFxFormGroup.get('Evaluator').value || lent == 0) {
-        this.notificationSnackBarComponent.openSnackBar('Minimum no of evaluator required', SnackBarStatus.danger);
-      }
-      else if (awardC.length < 1) {
-        this.notificationSnackBarComponent.openSnackBar('Award committee required', SnackBarStatus.danger);
-      }
-      else {
-        this.selectedIndex = index + 1;
-      }
-    }
-    else if (index == 4 && this.VendorDetails.length == 0) { }
-    else if (index == 5 && this.ODDetails.length == 0 && this.ODAttachDetails.length == 0) { }
-    else {
-      this.selectedIndex = index + 1;
-    }
-  }
-  PreviousClicked(index: number): void {
-    this.selectedIndex = index - 1;
-  }
-  SaveRFxClicked(isRelease: boolean) {
-    if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0) {
-      if (this.NewVendorMaser.length > 0) {
-        this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res => {
-          //console.log("vendor created");
-        }, err => { console.log("vendor master not created!;") });
-      }
-      if (!this.RFxID || this.RFxID == "-1") {
-        this.CreateRfX(isRelease);
-      }
-      else {
-        this.UpdateRFx(isRelease);
-      }
-    }
-    else {
-      this.notificationSnackBarComponent.openSnackBar('Please complete all steps', SnackBarStatus.danger);
-    }
-  }
   DeleteCriteria(index) {
     this.EvaluationDetails.splice(index, 1);
     this.EvaluationDetailsDataSource = new MatTableDataSource(this.EvaluationDetails);
@@ -691,11 +547,215 @@ export class RfqComponent implements OnInit {
     date.setSeconds(0,0);
     return date;
   }
-  SaveAlert(){  
-    Swal.fire('Saved Successfully');  
-  } 
-  ReleaseAlert(){  
-    Swal.fire('Released Successfully');  
-  }  
+  NextClicked(index: number): void {
+    if(index == 0){
+      if(this.RFxFormGroup.valid && (this.RFxID == null || this.RFxID=="-1")){
+        this.Rfxheader.Status = "1";
+        this.selectedIndex = index + 1;
+        this.Progress=14.28571428571429;
+        this.CreateCriteria();
+      }
+      else{
+        this.ShowValidationErrors(this.RFxFormGroup);
+      }
+    }
+    if(index == 1){
+      if(this.EvaluationDetails.length > 0){
+        this.selectedIndex = index + 1;
+        this.Progress=2*14.28571428571429;
+        this.CreateItem();
+      }
+      else{
+        this.notificationSnackBarComponent.openSnackBar('Criteria is required', SnackBarStatus.danger);
+      }
+    }
+    if(index == 2){
+      if(this.ItemDetails.length >= 0){
+        this.selectedIndex = index + 1;
+        this.Progress=3*14.28571428571429;
+        this.CreatePartner();
+      }
+      else{
+        this.notificationSnackBarComponent.openSnackBar('Item is required', SnackBarStatus.danger);
+      }
+    }
+    if(index == 3){
+      var array = this.PartnerDetails.filter(x => x.Type == "Evaluator")
+      var lent = array.length;
+      var awardC = this.PartnerDetails.filter(x => x.Type == "Award Committee");
+      if (lent < this.RFxFormGroup.get('Evaluator').value || lent == 0) {
+        this.notificationSnackBarComponent.openSnackBar('Minimum no of evaluator required', SnackBarStatus.danger);
+      }
+      else if (awardC.length < 1) {
+        this.notificationSnackBarComponent.openSnackBar('Award committee required', SnackBarStatus.danger);
+      }
+      else {
+        this.selectedIndex = index + 1;
+        this.Progress=4*14.28571428571429;
+      }
+    }
+    if(index == 4){
+      if(this.VendorDetails.length >= 0){
+        this.selectedIndex = index + 1;
+        this.Progress=5*14.28571428571429;
+      }
+      else{
+        this.notificationSnackBarComponent.openSnackBar('Vendor is required', SnackBarStatus.danger);
+      }
+    }
+  }
+  PreviousClicked(index: number): void {
+    this.selectedIndex = index - 1;
+    if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
+      this.IsComplete=true;
+    }else{this.IsComplete=false}
+  }
     
+  tabClick(tab: any) {
+    this.index = parseInt(tab.index);
+    if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
+      this.IsComplete=true;
+    }else{this.IsComplete=false}
+  }
+  SaveRFxClicked(isRelease: boolean) {
+    if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0) {
+      if (this.NewVendorMaser.length > 0) {
+        this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res => {
+          //console.log("vendor created");
+        }, err => { console.log("vendor master not created!;") });
+      }
+      if (!this.RFxID || this.RFxID == "-1") {
+        this.CreateRfX(isRelease);
+      }
+      else {
+        this.UpdateRFx(isRelease);
+      }
+    }
+    else {
+      this.notificationSnackBarComponent.openSnackBar('Please complete all steps', SnackBarStatus.danger);
+    }
+  }
+  CreateRfX(isRelease: boolean) {
+    this.isProgressBarVisibile = true;
+    this.RFxView.Client = this.Rfxheader.Client;
+    this.RFxView.Company = this.Rfxheader.Company;
+    this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
+    this.RFxView.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
+    this.RFxView.Title = this.RFxFormGroup.get("RfqTitle").value;
+    this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
+    this.RFxView.ValidityStartTime = this.RFxFormGroup.get("ValidityStartTime").value;
+    this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
+    this.RFxView.ValidityEndTime = this.RFxFormGroup.get("ValidityEndTime").value;
+    this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
+    this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
+    this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
+    this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
+    this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
+    this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
+    this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
+    this.RFxView.MinEvaluator=this.RFxFormGroup.get("Evaluator").value;
+    this.RFxView.Site=this.RFxFormGroup.get("Site").value;
+    if (isRelease) {
+      this.RFxView.Status = "2";
+    }
+    else {
+      this.RFxView.Status = "1";
+    }
+    this.RFxView.RFxItems = this.ItemDetails;
+    this.RFxView.RFxHCs = this.EvaluationDetails;
+    this.RFxView.RFxICs = this.RatingDetails;
+    this.RFxView.RFxPartners = this.PartnerDetails;
+    this.RFxView.RFxVendors = this.Vendors;
+    this.RFxView.RFxODs = this.ODDetails;
+    this.RFxView.RFxODAttachments = this.ODAttachDetails;
+    this.RFxRemark.Client = this.RFxView.Client;
+    this.RFxRemark.Company = this.RFxView.Company;
+    this.RFxView.RFxRemark = this.RFxRemark;
+    console.log("rfxview", this.RFxView);
+    this._RFxService.CreateRFx(this.RFxView)
+      .subscribe(
+        response => {
+          localStorage.setItem("RFxID", response.RFxID);
+          this.RFxID = response.RFxID;
+          //console.log("response",response);
+          this._RFxService.UploadRFxAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
+          if (isRelease) {
+            this.isProgressBarVisibile = false;
+            this.notificationSnackBarComponent.openSnackBar('RFQ released successfully', SnackBarStatus.success);
+            this._router.navigate(['pages/home']);
+          }
+          else {
+            this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
+            this.isProgressBarVisibile = false;
+          }
+        },
+        error => {
+          this.isProgressBarVisibile = false;
+          this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
+        });
+  }
+  UpdateRFx(isRelease: boolean) {
+    this.isProgressBarVisibile = true;
+    this.RFxView.Client = this.Rfxheader.Client;
+    this.RFxView.Company = this.Rfxheader.Company;
+    this.RFxView.RFxID = this.RFxID;
+    this.RFxView.Plant = this.Rfxheader.Plant;
+    this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
+    this.RFxView.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
+    if (isRelease) {
+      this.RFxView.Status = "2";
+    }
+    else {
+      this.RFxView.Status = "1";
+    }
+    this.RFxView.Title = this.RFxFormGroup.get("RfqTitle").value;
+    this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
+    this.RFxView.ValidityStartTime = this.RFxFormGroup.get("ValidityStartTime").value;
+    this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
+    this.RFxView.ValidityEndTime = this.RFxFormGroup.get("ValidityEndTime").value;
+    this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
+    this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
+    this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
+    this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
+    this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
+    this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
+    this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
+    this.RFxView.MinEvaluator=this.RFxFormGroup.get("Evaluator").value;
+    this.RFxView.Site=this.RFxFormGroup.get("Site").value;
+    this.RFxView.Invited = this.Rfxheader.Invited;
+    this.RFxView.Responded = this.Rfxheader.Responded;
+    this.RFxView.Evaluated = this.Rfxheader.Evaluated;
+    this.RFxView.ReleasedOn = this.Rfxheader.ReleasedOn;
+    this.RFxView.ReleasedBy = this.Rfxheader.ReleasedBy;
+    this.RFxView.RFxItems = this.ItemDetails;
+    this.RFxView.RFxHCs = this.EvaluationDetails;
+    this.RFxView.RFxICs = this.RatingDetails;
+    this.RFxView.RFxPartners = this.PartnerDetails;
+    this.RFxView.RFxVendors = this.Vendors;
+    this.RFxView.RFxODs = this.ODDetails;
+    this.RFxView.RFxODAttachments = this.ODAttachDetails;
+    this.RFxRemark.Client = this.RFxView.Client;
+    this.RFxRemark.Company = this.RFxView.Company;
+    this.RFxView.RFxRemark = this.RFxRemark;
+    console.log("rfxview", this.RFxView);
+    this._RFxService.UpdateRFx(this.RFxView)
+      .subscribe(
+        response => {
+          //console.log("response",response);
+          this._RFxService.UploadRFxAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
+          if (isRelease) {
+            this.isProgressBarVisibile = false;
+            this.notificationSnackBarComponent.openSnackBar('RFQ released successfully', SnackBarStatus.success);
+            this._router.navigate(['pages/home']);
+          }
+          else {
+            this.isProgressBarVisibile = false;
+            this.notificationSnackBarComponent.openSnackBar('RFQ saved successfully', SnackBarStatus.success);
+          }
+        },
+        error => {
+          this.isProgressBarVisibile = false;
+          this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
+        });
+  }
 }

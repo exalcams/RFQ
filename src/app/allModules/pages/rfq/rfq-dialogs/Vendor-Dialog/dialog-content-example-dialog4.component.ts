@@ -31,7 +31,7 @@ export class DialogContentExampleDialog4Component implements OnInit {
       Vendor: ['', Validators.required],
       Type: ['', Validators.required],
       v_name: ['', Validators.required],
-      GST: ['', Validators.required],
+      GST: [''],
       City: ['', Validators.required],
       mailid1:['',[Validators.required,Validators.email]],
       mailid2:['',Validators.email],
