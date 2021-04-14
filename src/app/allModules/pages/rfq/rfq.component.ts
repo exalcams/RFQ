@@ -21,6 +21,7 @@ import { Guid } from 'guid-typescript';
 import { MasterService } from 'app/services/master.service';
 import { forEach } from 'lodash';
 import { freemem } from 'os';
+import Swal from 'sweetalert2/dist/sweetalert2.js';  
 
 
 @Component({
@@ -690,4 +691,11 @@ export class RfqComponent implements OnInit {
     date.setSeconds(0,0);
     return date;
   }
+  SaveAlert(){  
+    Swal.fire('Saved Successfully');  
+  } 
+  ReleaseAlert(){  
+    Swal.fire('Released Successfully');  
+  }  
+    
 }

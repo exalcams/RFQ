@@ -8,6 +8,7 @@ import { NotificationSnackBarComponent } from 'app/notifications/notification-sn
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
+import { MutedialogComponent } from './Dialogs/mutedialog/mutedialog.component';
 
 @Component({
   selector: 'app-response-home',
@@ -25,7 +26,7 @@ export class ResponseHomeComponent implements OnInit {
   EvaluatedHeaderDetails: any[] = [];
   ClosedHeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID', 'Title','RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   imgArray: any[] = [
     {
@@ -257,5 +258,11 @@ export class ResponseHomeComponent implements OnInit {
         return "";
     }
   }
-
+OpenMuteDialog():void{
+  const dialogRef = this.dialog.open(MutedialogComponent, {
+    data: {}, height: '40%',
+    width: '60%'
+  });
+  dialogRef.disableClose = true;
+}
 }

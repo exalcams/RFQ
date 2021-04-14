@@ -1,0 +1,26 @@
+<div>
+  <mat-toolbar class="toolbar1">
+      <p class="add_criteria">Reason for Mute</p>
+      <img mat-ripple (click)="dialogRef.close()" style="cursor: pointer;" fxLayoutAlign="end"
+          src="assets/images/cancel1.png">
+  </mat-toolbar>
+</div>
+<form autocomplete="off" [formGroup]="MuteFormGroup">
+  <div style="padding: 2rem;">
+      <div fxLayout="column" fxFlex="100">
+
+          <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+              <mat-label>Reason</mat-label>
+              <input matInput formControlName="Reason" fxFlex>
+              <mat-error
+                  *ngIf="MuteFormGroup.get('Reason').touched && MuteFormGroup.get('Reason').hasError('required')">
+                  Reason is required
+              </mat-error>
+          </mat-form-field>
+      </div>
+  </div>
+  <div fxLayoutAlign="center">
+      <button mat-button class="cl_button1" (click)="Save()"><span class="add">Save</span>
+      </button>
+  </div>
+</form>

@@ -5,7 +5,37 @@
       <img src="/assets/images/exalca_100.png">
     </div>
   </mat-toolbar>
+
+
   <div fxFlex style="margin: 20px;">
+
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+
+      <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start"
+          (click)="LoadTableSource(EvaluatedHeaderDetails)" style="cursor: pointer;">
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;"
+              fxFlex>
+              <img class="cl_initiated" src="/assets/images/invoice1.png">
+              <label class="cl_8">{{EvaluatedHeaderDetails.length}}</label>
+          </div>
+          <div class="cl_brown" fxLayout="row" fxLayoutAlign="space-between center">
+              <label class="cl_rfq">Yet to be evaluated</label>
+              <!-- <img class="cl_info1" src="assets/images/info.png"> -->
+          </div>
+      </div>
+      <div class="cl_div1" fxLayout="column" fxLayoutAlign="space-between start"
+          (click)="LoadTableSource(ClosedHeaderDetails)" style="cursor: pointer;">
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" style="padding-left: 2rem;"
+              fxFlex>
+              <img class="cl_initiated" src="/assets/images/money.png">
+              <label class="cl_8">{{ClosedHeaderDetails.length}}</label>
+          </div>
+          <div class="cl_gray" fxLayout="row" fxLayoutAlign="space-between center">
+              <label class="cl_rfq">Evaluated</label>
+              <!-- <img class="cl_info1" src="assets/images/info.png"> -->
+          </div>
+      </div>
+  </div>
 
     <mat-card class="cl_card">
       <div fxLayout="column">
@@ -31,6 +61,14 @@
           <td mat-cell style="color: #068dd0;font-size: 12px;text-decoration: underline;cursor: pointer;"
             *matCellDef="let element" (click)="Gotoheader(element.RFxID)"> {{element.RFxID | removeLeadingZero}} </td>
         </ng-container>
+
+           <!-- RFQ Title  Column -->
+           <ng-container matColumnDef="Title">
+            <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> RFQ Title</th>
+            <td mat-cell style="font-size: 12px;"
+                *matCellDef="let element"> {{element.Title}} </td>
+        </ng-container>
+
 
         <!-- Type Column -->
         <ng-container matColumnDef="RFxType">
@@ -108,7 +146,8 @@
           <td mat-cell *matCellDef="let element" style="text-align: center;">
             <button class="cl_action">
               <mat-select placeholder="Actions" style="width: 90%;" class="Action-select">
-                <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RFxID)>Responses</mat-option>
+                <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RFxID)>Evaluate</mat-option>
+                <mat-option style="font-weight: 500;">View</mat-option>
               </mat-select>
             </button>
           </td>

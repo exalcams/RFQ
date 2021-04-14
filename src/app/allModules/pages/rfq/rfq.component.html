@@ -921,8 +921,8 @@
                 Next
                 <img src="assets/images/next_arrow.png"></button>
             <div *ngIf="index==5 && Rfxheader.Status=='1'" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-                <button mat-button class="cl_button2" (click)="SaveRFxClicked(true)">Release</button>
-                <button mat-button class="cl_button4" (click)="SaveRFxClicked(false)">Save</button>
+                <button mat-button class="cl_button2" (click)="SaveRFxClicked(true)" (click)="ReleaseAlert()">Release</button>
+                <button mat-button class="cl_button4" (click)="SaveRFxClicked(false)" (click)="SaveAlert()">Save</button>
             </div>
 
         </mat-toolbar>

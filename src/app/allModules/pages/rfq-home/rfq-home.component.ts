@@ -6,6 +6,7 @@ import { RFxHeader } from 'app/models/RFx';
 import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
+import { VendorViewListDialogComponent } from 'app/notifications/vendor-view-list-dialog/vendor-view-list-dialog.component';
 import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
 
@@ -24,7 +25,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
   EvaluatedHeaderDetails: any[] = [];
   ClosedHeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','Vendor', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   isProgressBarVisibile: boolean;
   authenticationDetails: AuthenticationDetails;
@@ -121,6 +122,16 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
     };
     const dialogRef = this.dialog.open(
       AttachmentViewDialogComponent,
+      dialogConfig
+    );
+  }
+  openVendorViewList(RFxID: string, Vendor: string[]):void{
+    const dialogConfig: MatDialogConfig = {
+      data: { PartnerID: Vendor, RFxID: RFxID, isResponse: false },
+      panelClass: "vendor-view-list-dialog",
+    };
+    const dialogRef = this.dialog.open(
+      VendorViewListDialogComponent,
       dialogConfig
     );
   }
