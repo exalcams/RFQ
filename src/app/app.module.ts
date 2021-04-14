@@ -23,6 +23,7 @@ import { WINDOW_PROVIDERS } from './window.providers';
 import { ExcelService } from './services/excel.service';
 import { AttachmentViewDialogComponent } from './notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentDialogComponent } from './notifications/attachment-dialog/attachment-dialog.component';
+import { VendorViewListDialogComponent } from './notifications/vendor-view-list-dialog/vendor-view-list-dialog.component';
 const appRoutes: Routes = [
     {
         path: 'auth',
@@ -52,7 +53,8 @@ const appRoutes: Routes = [
         NotificationSnackBarComponent,
         NotificationDialogComponent,
         AttachmentViewDialogComponent,
-        AttachmentDialogComponent
+        AttachmentDialogComponent,
+        VendorViewListDialogComponent
         
     ],
     imports: [
@@ -94,7 +96,8 @@ const appRoutes: Routes = [
     entryComponents: [
         NotificationDialogComponent,
         AttachmentViewDialogComponent,
-        AttachmentDialogComponent
+        AttachmentDialogComponent,
+        VendorViewListDialogComponent
     ]
 })
 export class AppModule {

@@ -66,6 +66,13 @@
                 </td>
             </ng-container>
 
+             <!-- RFQ Title  Column -->
+             <ng-container matColumnDef="Title">
+                <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> RFQ Title</th>
+                <td mat-cell style="font-size: 12px;"
+                    *matCellDef="let element"> {{element.Title}} </td>
+            </ng-container>
+
             <!-- RFQ ID Column -->
             <ng-container matColumnDef="RFxID">
                 <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> RFQ ID </th>
@@ -166,6 +173,8 @@
                     <button class="cl_action">
                         <mat-select placeholder="Actions" style="width: 90%;" class="Action-select">
                             <mat-option style="font-weight: 500;" (click)=Gotoheader(element.RFxID)>Response</mat-option>
+                            <mat-option style="font-weight: 500;" >View</mat-option>
+                            <mat-option style="font-weight: 500;" (click)="OpenMuteDialog()" >Mute</mat-option>
                         </mat-select>
                     </button>
                 </td>

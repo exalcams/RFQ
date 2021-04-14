@@ -84,6 +84,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { AwardReportComponent } from './award-report/award-report.component';
 import { AwardDetailComponent } from './award-detail/award-detail.component';
 import { AwardDetailEvaluationComponent } from './award-detail-evaluation/award-detail-evaluation.component';
+import { MutedialogComponent } from './response-home/Dialogs/mutedialog/mutedialog.component';
 
 
 const routes = [
@@ -232,7 +233,8 @@ const routes = [
         AwardComponent,
         AwardReportComponent,
         AwardDetailComponent,
-        AwardDetailEvaluationComponent
+        AwardDetailEvaluationComponent,
+        MutedialogComponent
     ],
     providers: [
         DecimalPipe,
@@ -250,7 +252,8 @@ const routes = [
         ResAnsDialogComponent,
         ResAttachDialogComponent,
         SelectVendorDialogComponent,
-        EvaItemDialogComponent
+        EvaItemDialogComponent,
+        MutedialogComponent
     ]
 })
 export class PagesModule { }

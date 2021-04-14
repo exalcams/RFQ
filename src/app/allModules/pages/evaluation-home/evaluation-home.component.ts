@@ -20,13 +20,15 @@ export class EvaluationHomeComponent implements OnInit {
   @ViewChild(MatSort) RFQSort: MatSort;
   AllHeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID','Title', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   isProgressBarVisibile:boolean;
   authenticationDetails: AuthenticationDetails;
   currentUserID: Guid;
   CurrentUserName:string;
   currentUserRole: string;
+  EvaluatedHeaderDetails: any[] = [];
+  ClosedHeaderDetails: any[] = [];
   MenuItems: string[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
   constructor(private route: Router,
@@ -66,6 +68,24 @@ export class EvaluationHomeComponent implements OnInit {
           this.AllHeaderDetails =data;
           this.isProgressBarVisibile=false;
           this.LoadTableSource(this.AllHeaderDetails);
+        }
+      }
+    );
+    this._RFxService.GetAllRFxHDocumets('3').subscribe(
+      (data) => {
+        if (data) {
+          this.EvaluatedHeaderDetails = data;
+          this.isProgressBarVisibile = false;
+          this.LoadTableSource(this.EvaluatedHeaderDetails);
+        }
+      }
+    );
+    this._RFxService.GetAllRFxHDocumets('5').subscribe(
+      (data) => {
+        if (data) {
+          this.ClosedHeaderDetails = data;
+          this.isProgressBarVisibile = false;
+          this.LoadTableSource(this.ClosedHeaderDetails);
         }
       }
     );

@@ -18,7 +18,7 @@ export class AwardHomeComponent implements OnInit {
   @ViewChild(MatSort) RFQSort: MatSort;
   AllHeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID','Title', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   isProgressBarVisibile:boolean;
   authenticationDetails: AuthenticationDetails;
