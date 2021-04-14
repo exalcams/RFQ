@@ -4,7 +4,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 // import { _MatChipListMixinBase } from '@angular/material';
 // import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, RFxH, EvaluationRating, ByMaterial, ByCriteria, RFxAward, RFxCEPartner, RFxCEMaterial, RFxCECriteria } from '../models/RFx';
+import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, EvaluationRating, ByMaterial, ByCriteria, RFxAward, RFxCEPartner, RFxCEMaterial, RFxCECriteria } from '../models/RFx';
 import { environment } from '../../environments/environment';
 
 
@@ -430,6 +430,10 @@ export class RFxService {
     }
     GetEvalHeaderByEvalID(EvalID: string): Observable<EvalHeader | string> {
         return this._httpClient.get<EvalHeader>(`${this.baseAddress}rfxapi/RFx/GetEvalHeaderByEvalID?EvalID=${EvalID}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    FiterMVendors(key:string,type:string): Observable<MVendor[] | string> {
+        return this._httpClient.get<MVendor[]>(`${this.baseAddress}rfxapi/RFx/FilterVendorM?key=${key}&type=${type}`)
             .pipe(catchError(this.errorHandler));
     }
 }

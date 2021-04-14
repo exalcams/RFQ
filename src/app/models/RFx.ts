@@ -1,28 +1,5 @@
 import { CommonClass } from './common';
 
-export class RFxH extends CommonClass{
-    Client: string;
-    Company: string;
-    RFxID: string;
-    Plant: string;
-    RFxType: string;
-    RFxGroup: string;
-    Status: string;
-    Title: string;
-    ValidityStartDate: Date | string | null;
-    ValidityEndDate: Date | string | null;
-    ResponseStartDate: Date | string | null;
-    ResponseStartTime: string;
-    ResponseEndDate: Date | string | null;
-    ResponseEndTime: string;
-    Currency: string;
-    Invited: string;
-    Responded: string;
-    Evaluated: string;
-    ReleasedOn: Date | string | null;
-    ReleasedBy: string;    
-}
-
 export class MVendor extends CommonClass {
     Client: string;
     Company: string;
@@ -78,12 +55,15 @@ export class RFxHeader extends CommonClass {
     Company: string;
     RFxID: string;
     Plant: string;
+    Site:string;
     RFxType: string;
     RFxGroup: string;
     Status: string;
     Title: string;
-    ValidityStartDate: Date;
-    ValidityEndDate: Date;
+    ValidityStartDate: Date | string | null;
+    ValidityStartTime: string;
+    ValidityEndDate: Date | string | null;
+    ValidityEndTime: string;
     ResponseStartDate: Date;
     ResponseStartTime: string;
     ResponseEndDate: Date;
@@ -91,6 +71,7 @@ export class RFxHeader extends CommonClass {
     EvalEndDate: Date;
     EvalEndTime:string;
     Currency: string;
+    MinEvaluator:string;
     Invited: string;
     Responded: string;
     Evaluated: string;
@@ -308,12 +289,15 @@ export class RFxView {
     Company: string;
     RFxID: string;
     Plant: string;
+    Site:string;
     RFxType: string;
     RFxGroup: string;
     Status: string;
     Title: string;
     ValidityStartDate: Date | string | null;
+    ValidityStartTime: string;
     ValidityEndDate: Date | string | null;
+    ValidityEndTime: string;
     ResponseStartDate: Date | string | null;
     ResponseStartTime: string;
     ResponseEndDate: Date | string | null;
@@ -321,6 +305,7 @@ export class RFxView {
     EvalEndDate: Date | string | null;
     EvalEndTime:string;
     Currency: string;
+    MinEvaluator:string;
     Invited: string;
     Responded: string;
     Evaluated: string;

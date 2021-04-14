@@ -8,14 +8,14 @@
                 <label class="Create-RFQ1">Create RFx</label>
             </div>
         </div>
-        <!-- <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="4px" fxFlex=80>
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="4px" fxFlex=80>
             <img src="/assets/images/foreclose1.png" class="cl_fore">
             <label class="cl_foreclose">Foreclose</label>
             <img src="/assets/images/delete.png" class="cl_del">
             <label class="cl_delete">Delete</label>
             <img src="/assets/images/cancel.png" class="cl_can">
             <label class="cl_cancel">Cancel</label>
-        </div> -->
+        </div>
     </mat-toolbar>
     <mat-tab-group style="padding: 2rem 0rem 4rem 1.5rem; overflow-y: scroll;" [selectedIndex]="selectedIndex"
         (selectedTabChange)="tabClick($event)" fxFlex>
@@ -33,9 +33,9 @@
                             <label class="cl_header1">General Data</label>
                             <!-- <div class="cl_divider_header" fxFlex=95.5></div> -->
                         </div>
-                        <div fxLayout="row wrap" fxLayoutAlign="space-between center"
+                        <div fxLayout="row" fxLayoutAlign="space-between center"
                             style="padding: 2.5rem 2rem 0 2rem;">
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ type</mat-label>
                                 <mat-select formControlName="RfqType" fxFlex disableOptionCentering panelClass="myPanelClass">
                                     <mat-option *ngFor="let type of RFxTypeMasters" [value]="type.RFQType">{{type.Text}}
@@ -47,7 +47,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ group</mat-label>
                                 <mat-select formControlName="RfqGroup" fxFlex disableOptionCentering panelClass="myPanelClass">
                                     <mat-option *ngFor="let group of RFxGroupMasters" [value]="group.RFQGroup">
@@ -59,7 +59,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=47 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=34.125 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ title</mat-label>
                                 <input matInput type="text" formControlName="RfqTitle" fxFlex>
                                 <mat-error
@@ -67,10 +67,20 @@
                                     RFQ Title is required
                                 </mat-error>
                             </mat-form-field>
+                            <mat-form-field fxFlex=11.375 style="font-size: 14px;" appearance="outline">
+                                <mat-label>Currency</mat-label>
+                                <mat-select formControlName="Currency" fxFlex disableOptionCentering panelClass="myPanelClass">
+                                    <mat-option *ngFor="let currency of CurrencyList" [value]="currency">{{currency}}</mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="RFxFormGroup.get('Currency').touched && RFxFormGroup.get('Currency').hasError('required')">
+                                    Currency is required
+                                </mat-error>
+                            </mat-form-field>
 
                         </div>
-                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem 2rem 0 2rem;">
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 2rem 2rem 0 2rem;">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity start date</mat-label>
                                 <input [min]="minDate" matInput [matDatepicker]="picker1"
                                     formControlName="ValidityStartDate" fxFlex>
@@ -84,7 +94,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity start time</mat-label>
                                 <input matInput [ngxTimepicker]="picker9" formControlName="ValidityStartTime" fxFlex>
                                 <ngx-material-timepicker #picker9></ngx-material-timepicker>
@@ -94,7 +104,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity end date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
                                     [matDatepicker]="picker2" formControlName="ValidityEndDate" fxFlex>
@@ -108,7 +118,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Validity end time</mat-label>
                                 <input matInput [ngxTimepicker]="picker10" formControlName="ValidityEndTime" fxFlex>
                                 <ngx-material-timepicker #picker10></ngx-material-timepicker>
@@ -121,9 +131,9 @@
                            
                         </div>
 
-                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem 2rem 0px;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 2rem 2rem 0px;">
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response start date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
                                     [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker3"
@@ -138,7 +148,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response start time</mat-label>
                                 <input matInput [ngxTimepicker]="picker6" formControlName="ResponseStartTime" fxFlex>
                                 <ngx-material-timepicker #picker6></ngx-material-timepicker>
@@ -148,7 +158,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response end date</mat-label>
                                 <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
                                     [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker4"
@@ -163,7 +173,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Response end time</mat-label>
                                 <input matInput [ngxTimepicker]="picker7" formControlName="ResponseEndTime" fxFlex>
                                 <ngx-material-timepicker #picker7></ngx-material-timepicker>
@@ -175,11 +185,11 @@
 
                            
                         </div>
-                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="padding: 2rem;">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="3%" style="padding: 2rem;">
                             
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Evaluation end date</mat-label>
-                                <input matInput [min]="RFxFormGroup.get('ResponseEndDate').value"
+                                <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value" [max]="RFxFormGroup.get('ValidityEndDate').value"
                                     [matDatepicker]="picker5" formControlName="EvaluationEndDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker5">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
@@ -191,7 +201,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Evaluation end time</mat-label>
                                 <input matInput [ngxTimepicker]="picker8" formControlName="EvaluationEndTime" fxFlex>
                                 <ngx-material-timepicker #picker8></ngx-material-timepicker>
@@ -201,18 +211,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
-                                <mat-label>Currency</mat-label>
-                                <mat-select formControlName="Currency" fxFlex disableOptionCentering panelClass="myPanelClass">
-                                    <mat-option *ngFor="let currency of CurrencyList" [value]="currency">{{currency}}</mat-option>
-                                </mat-select>
-                                <mat-error
-                                    *ngIf="RFxFormGroup.get('Currency').touched && RFxFormGroup.get('Currency').hasError('required')">
-                                    Currency is required
-                                </mat-error>
-                            </mat-form-field>
-
-                            <mat-form-field fxFlex=20 style="font-size: 14px;" appearance="outline">
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Minimum no. of evaluators</mat-label>
                                 <input matInput formControlName="Evaluator" fxFlex type="number">
                                 <mat-error
@@ -224,7 +223,14 @@
                                     Only {{Evaluators.length}} evaluators are there
                                 </mat-error>
                             </mat-form-field>
-
+                            <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
+                                <mat-label>Site</mat-label>
+                                <input matInput formControlName="Site" fxFlex>
+                                <mat-error
+                                    *ngIf="RFxFormGroup.get('Site').touched && RFxFormGroup.get('Site').hasError('required')">
+                                    Site is required
+                                </mat-error>
+                            </mat-form-field>
 
                         </div>
                     </mat-card>
@@ -332,21 +338,6 @@
 
                     <table mat-table [dataSource]="ItemDetailsDataSource" class="mat-elevation-z8" matSort>
 
-
-                        <!-- Item Column -->
-                        <ng-container matColumnDef="Item">
-                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
-                                  font-weight: 500;
-                                  font-stretch: normal;
-                                  font-style: normal;
-                                  line-height: 1.5;
-                                  letter-spacing: normal;
-                                  text-align: left;
-                                  color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Item </th>
-                            <td mat-cell style="color: #1f009e;font-size: 12px;text-decoration: underline;"
-                                *matCellDef="let element"> {{element.Item}} </td>
-                        </ng-container>
-
                         <!-- Material Column -->
                         <ng-container matColumnDef="Material">
                             <th mat-header-cell mat-sort-header style=" font-size: 13px;
@@ -359,6 +350,19 @@
                                   color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Material </th>
                             <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
                                 {{element.Material}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="MaterialText">
+                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
+                                  font-weight: 500;
+                                  font-stretch: normal;
+                                  font-style: normal;
+                                  line-height: 1.5;
+                                  letter-spacing: normal;
+                                  text-align: left;
+                                  color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Material text </th>
+                            <td mat-cell style="color: #48465b;font-size: 12px;" *matCellDef="let element">
+                                {{element.MaterialText}} </td>
                         </ng-container>
 
                         <!-- TotalQty Column -->
@@ -884,8 +888,8 @@
                                       color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Action </th>
                             <td mat-cell *matCellDef="let element;index as i;" style="text-align: end;">
                                 <div *ngIf="Rfxheader.Status=='1'">
-                                    <img src="assets/images/edit_blue.png" (click)="OpenDocumentDialog(element)"
-                                        class="clickable">
+                                    <!-- <img src="assets/images/edit_blue.png" (click)="OpenDocumentDialog(element)"
+                                        class="clickable"> -->
                                     <img style="margin-left: 9px;" (click)="DeleteAttachment(i)" class="clickable"
                                         src="assets/images/delete1.png">
                                 </div>
@@ -913,16 +917,17 @@
 
     </mat-tab-group>
     <footer class="footer">
+        <mat-progress-bar mode="determinate" [value]="Progress" *ngIf="!RFxID"></mat-progress-bar>
         <mat-toolbar style="background-color: white;height: 56px;">
-            <button (click)="PreviousClicked(index)" mat-button class="cl_button3" *ngIf="index!=0">
+            <button (click)="PreviousClicked(index)" mat-button class="cl_button3" *ngIf="index!=0 && !IsComplete">
                 <img src="assets/images/back_arrow.png"> Previous</button>
             <div style="flex:1 auto"></div>
-            <button *ngIf="index!=5" (click)="NextClicked(index)" mat-button class="cl_button2">
+            <button *ngIf="index!=5 && !IsComplete" (click)="NextClicked(index)" mat-button class="cl_button2">
                 Next
                 <img src="assets/images/next_arrow.png"></button>
-            <div *ngIf="index==5 && Rfxheader.Status=='1'" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-                <button mat-button class="cl_button2" (click)="SaveRFxClicked(true)" (click)="ReleaseAlert()">Release</button>
-                <button mat-button class="cl_button4" (click)="SaveRFxClicked(false)" (click)="SaveAlert()">Save</button>
+            <div *ngIf="Rfxheader.Status=='1' && IsComplete" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
+                <button mat-button class="cl_button2" (click)="SaveRFxClicked(true)">Release</button>
+                <button mat-button class="cl_button4" (click)="SaveRFxClicked(false)">Save</button>
             </div>
 
         </mat-toolbar>
