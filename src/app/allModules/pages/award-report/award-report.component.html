@@ -114,6 +114,11 @@
             </td>
           </ng-container>
 
+          <ng-container matColumnDef="AwardedTo">
+            <th mat-header-cell mat-sort-header class="header-cell" *matHeaderCellDef> Awarded to</th>
+            <td mat-cell style="font-size: 12px;" *matCellDef="let element"> {{element.Vendor}} </td>
+          </ng-container>
+
           <!-- Action Column -->
           <ng-container matColumnDef="Action">
             <th mat-header-cell class="header-cell" *matHeaderCellDef style="text-align: center;"> Action

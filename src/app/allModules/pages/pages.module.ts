@@ -85,6 +85,7 @@ import { AwardReportComponent } from './award-report/award-report.component';
 import { AwardDetailComponent } from './award-detail/award-detail.component';
 import { AwardDetailEvaluationComponent } from './award-detail-evaluation/award-detail-evaluation.component';
 import { MutedialogComponent } from './response-home/Dialogs/mutedialog/mutedialog.component';
+import { ForecloseDialogComponent } from './rfq/rfq-dialogs/foreclose-dialog/foreclose-dialog.component';
 
 
 const routes = [
@@ -234,7 +235,8 @@ const routes = [
         AwardReportComponent,
         AwardDetailComponent,
         AwardDetailEvaluationComponent,
-        MutedialogComponent
+        MutedialogComponent,
+        ForecloseDialogComponent
     ],
     providers: [
         DecimalPipe,
@@ -253,7 +255,8 @@ const routes = [
         ResAttachDialogComponent,
         SelectVendorDialogComponent,
         EvaItemDialogComponent,
-        MutedialogComponent
+        MutedialogComponent,
+        ForecloseDialogComponent
     ]
 })
 export class PagesModule { }

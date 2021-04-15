@@ -8,19 +8,28 @@
                 <label class="Create-RFQ1">Create RFx</label>
             </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="4px" fxFlex=80>
-            <img src="/assets/images/foreclose1.png" class="cl_fore">
-            <label class="cl_foreclose">Foreclose</label>
-            <img src="/assets/images/delete.png" class="cl_del">
-            <label class="cl_delete">Delete</label>
-            <img src="/assets/images/cancel.png" class="cl_can">
-            <label class="cl_cancel">Cancel</label>
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="4px" fxFlex>
+            <button *ngIf="RFxID!=-1 && RFxID" mat-button (click)="ForecloseClicked()" fxLayout="row"
+                fxLayoutAlign="start center" style="background-color: white;">
+                <img src="/assets/images/foreclose1.png">
+                <span class="cl_foreclose">Foreclose</span>
+            </button>
+            <button *ngIf="RFxID!=-1 && RFxID" mat-button (click)="DeleteClicked()" fxLayout="row"
+                fxLayoutAlign="start center" style="background-color: white;">
+                <img src="/assets/images/delete.png">
+                <span class="cl_foreclose">Delete</span>
+            </button>
+            <button mat-button (click)="CancelClicked()" fxLayout="row" fxLayoutAlign="start center"
+                style="background-color: white;">
+                <img src="/assets/images/cancel.png">
+                <span class="cl_foreclose">Cancel</span>
+            </button>
         </div>
     </mat-toolbar>
-    <mat-tab-group style="padding: 2rem 0rem 4rem 1.5rem; overflow-y: scroll;" [selectedIndex]="selectedIndex"
+    <mat-tab-group class="tab-group" style="padding: 2rem 0rem 4rem 1.5rem; overflow-y: scroll;" [selectedIndex]="selectedIndex"
         (selectedTabChange)="tabClick($event)" fxFlex>
         <!-- First Tab -->
-        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
+        <mat-tab #tab [disabled]="!tab.isActive && RFxID=='-1'">
             <ng-template mat-tab-label>
                 <p>General Data</p>
                 <mat-icon *ngIf="Rfxheader.Status!=undefined" style="margin-left: 1rem;"
@@ -33,11 +42,11 @@
                             <label class="cl_header1">General Data</label>
                             <!-- <div class="cl_divider_header" fxFlex=95.5></div> -->
                         </div>
-                        <div fxLayout="row" fxLayoutAlign="space-between center"
-                            style="padding: 2.5rem 2rem 0 2rem;">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 2.5rem 2rem 0 2rem;">
                             <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ type</mat-label>
-                                <mat-select formControlName="RfqType" fxFlex disableOptionCentering panelClass="myPanelClass">
+                                <mat-select formControlName="RfqType" fxFlex disableOptionCentering
+                                    panelClass="myPanelClass">
                                     <mat-option *ngFor="let type of RFxTypeMasters" [value]="type.RFQType">{{type.Text}}
                                     </mat-option>
                                 </mat-select>
@@ -49,7 +58,8 @@
 
                             <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>RFQ group</mat-label>
-                                <mat-select formControlName="RfqGroup" fxFlex disableOptionCentering panelClass="myPanelClass">
+                                <mat-select formControlName="RfqGroup" fxFlex disableOptionCentering
+                                    panelClass="myPanelClass">
                                     <mat-option *ngFor="let group of RFxGroupMasters" [value]="group.RFQGroup">
                                         {{group.Text}}</mat-option>
                                 </mat-select>
@@ -69,8 +79,10 @@
                             </mat-form-field>
                             <mat-form-field fxFlex=11.375 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Currency</mat-label>
-                                <mat-select formControlName="Currency" fxFlex disableOptionCentering panelClass="myPanelClass">
-                                    <mat-option *ngFor="let currency of CurrencyList" [value]="currency">{{currency}}</mat-option>
+                                <mat-select formControlName="Currency" fxFlex disableOptionCentering
+                                    panelClass="myPanelClass">
+                                    <mat-option *ngFor="let currency of CurrencyList" [value]="currency">{{currency}}
+                                    </mat-option>
                                 </mat-select>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('Currency').touched && RFxFormGroup.get('Currency').hasError('required')">
@@ -90,7 +102,7 @@
                                 <mat-datepicker #picker1></mat-datepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('ValidityStartDate').touched && RFxFormGroup.get('ValidityStartDate').hasError('required')">
-                                    Validity Start Date is required
+                                    Validity start date is required
                                 </mat-error>
                             </mat-form-field>
 
@@ -100,7 +112,7 @@
                                 <ngx-material-timepicker #picker9></ngx-material-timepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('ValidityStartTime').touched && RFxFormGroup.get('ValidityStartTime').hasError('required')">
-                                    Validity Start Time is required
+                                    Validity start time is required
                                 </mat-error>
                             </mat-form-field>
 
@@ -114,7 +126,7 @@
                                 <mat-datepicker #picker2></mat-datepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('ValidityEndDate').touched && RFxFormGroup.get('ValidityEndDate').hasError('required')">
-                                    Validity End Date is required
+                                    Validity end date is required
                                 </mat-error>
                             </mat-form-field>
 
@@ -124,11 +136,15 @@
                                 <ngx-material-timepicker #picker10></ngx-material-timepicker>
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('ValidityEndTime').touched && RFxFormGroup.get('ValidityEndTime').hasError('required')">
-                                    Validity Start Time is required
+                                    Validity end time is required
+                                </mat-error>
+                                <mat-error *ngIf="!RFxFormGroup.get('ValidityEndTime').hasError('required') &&
+                                RFxFormGroup.get('ValidityEndTime').hasError('EndTimeValidator')">
+                                    Please enter valid time
                                 </mat-error>
                             </mat-form-field>
 
-                           
+
                         </div>
 
                         <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 2rem 2rem 0px;">
@@ -152,9 +168,9 @@
                                 <mat-label>Response start time</mat-label>
                                 <input matInput [ngxTimepicker]="picker6" formControlName="ResponseStartTime" fxFlex>
                                 <ngx-material-timepicker #picker6></ngx-material-timepicker>
-                                <mat-error
-                                    *ngIf="RFxFormGroup.get('ResponseStartTime').touched && RFxFormGroup.get('ResponseStartTime').hasError('required')">
-                                    Response Start Time is required
+                                <mat-error *ngIf="!RFxFormGroup.get('ResponseStartTime').hasError('required') &&
+                                RFxFormGroup.get('ResponseStartTime').hasError('ResStartTimeValidator')">
+                                    Please enter valid time
                                 </mat-error>
                             </mat-form-field>
 
@@ -181,16 +197,21 @@
                                     *ngIf="RFxFormGroup.get('ResponseEndTime').touched && RFxFormGroup.get('ResponseEndTime').hasError('required')">
                                     Response End Time is required
                                 </mat-error>
+                                <mat-error *ngIf="!RFxFormGroup.get('ResponseEndTime').hasError('required') &&
+                                RFxFormGroup.get('ResponseEndTime').hasError('ResEndTimeValidator')">
+                                    Please enter valid time
+                                </mat-error>
                             </mat-form-field>
 
-                           
+
                         </div>
                         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="3%" style="padding: 2rem;">
-                            
+
                             <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                 <mat-label>Evaluation end date</mat-label>
-                                <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value" [max]="RFxFormGroup.get('ValidityEndDate').value"
-                                    [matDatepicker]="picker5" formControlName="EvaluationEndDate" fxFlex>
+                                <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
+                                    [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker5"
+                                    formControlName="EvaluationEndDate" fxFlex>
                                 <mat-datepicker-toggle matSuffix [for]="picker5">
                                     <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                 </mat-datepicker-toggle>
@@ -208,6 +229,10 @@
                                 <mat-error
                                     *ngIf="RFxFormGroup.get('EvaluationEndTime').touched && RFxFormGroup.get('EvaluationEndTime').hasError('required')">
                                     Evaluation End Time is required
+                                </mat-error>
+                                <mat-error *ngIf="!RFxFormGroup.get('EvaluationEndTime').hasError('required') &&
+                                RFxFormGroup.get('EvaluationEndTime').hasError('EvalEndTimeValidator')">
+                                    Please enter valid time
                                 </mat-error>
                             </mat-form-field>
 
@@ -239,9 +264,9 @@
             </form>
         </mat-tab>
         <!-- Second Tab -->
-        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
+        <mat-tab #tab [disabled]="!tab.isActive && RFxID=='-1'">
             <ng-template mat-tab-label>
-                <p>Evaluation</p>
+                <p>5Q Rating</p>
                 <mat-icon *ngIf="EvaluationDetails.length!=0" style="margin-left: 1rem;"
                     [ngStyle]="{'color':index==1?'white':'#18a421'}">check_circle</mat-icon>
             </ng-template>
@@ -258,22 +283,6 @@
 
                     <table mat-table [dataSource]="EvaluationDetailsDataSource" class="mat-elevation-z8" matSort>
 
-
-                        <!-- Criteria Column -->
-                        <ng-container matColumnDef="Criteria">
-                            <th mat-header-cell mat-sort-header style=" font-size: 13px;
-                                      font-weight: 500;
-                                      font-stretch: normal;
-                                      font-style: normal;
-                                      line-height: 1.5;
-                                      letter-spacing: normal;
-                                      text-align: left;
-                                      color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Criteria
-                            </th>
-                            <td mat-cell style="font-size: 12px;" *matCellDef="let element"> {{element.CriteriaID}}
-                            </td>
-                        </ng-container>
-
                         <!-- Description Column -->
                         <ng-container matColumnDef="Description">
                             <th mat-header-cell style=" font-size: 13px;
@@ -282,10 +291,10 @@
                                       font-style: normal;
                                       line-height: 1.5;
                                       letter-spacing: normal;
-                                      text-align: center;
+                                      text-align: left;
                                       color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef>
                                 Description </th>
-                            <td mat-cell style="font-size: 12px;text-align: center;" *matCellDef="let element">
+                            <td mat-cell style="font-size: 12px;text-align: left;" *matCellDef="let element">
                                 {{element.Text}} </td>
                         </ng-container>
 
@@ -319,7 +328,7 @@
 
         </mat-tab>
         <!-- Third Tab -->
-        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
+        <mat-tab #tab [disabled]="!tab.isActive && RFxID=='-1'">
             <ng-template mat-tab-label>
                 <p>Item</p>
                 <mat-icon *ngIf="ItemDetails.length!=0" style="margin-left: 1rem;"
@@ -375,7 +384,8 @@
                                     letter-spacing: normal;
                                     text-align: left;
                                     color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Total qty </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;text-align: -webkit-center;" *matCellDef="let element">
+                            <td mat-cell style="color: #48465b;font-size: 12px;text-align: -webkit-center;"
+                                *matCellDef="let element">
                                 {{element.TotalQty}} </td>
                         </ng-container>
 
@@ -389,7 +399,8 @@
                                     letter-spacing: normal;
                                     text-align: left;
                                     color: #595d6e;" class="Rectangle-4510" *matHeaderCellDef> Per schedule qty </th>
-                            <td mat-cell style="color: #48465b;font-size: 12px;text-align: -webkit-center" *matCellDef="let element">
+                            <td mat-cell style="color: #48465b;font-size: 12px;text-align: -webkit-center"
+                                *matCellDef="let element">
                                 {{element.PerScheduleQty}} </td>
                         </ng-container>
 
@@ -549,7 +560,7 @@
 
         </mat-tab> -->
         <!-- Fifth Tab -->
-        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
+        <mat-tab #tab [disabled]="!tab.isActive && RFxID=='-1'">
             <ng-template mat-tab-label>
                 <p>Partners</p>
                 <mat-icon *ngIf="PartnerDetails.length!=0" style="margin-left: 1rem;"
@@ -629,7 +640,7 @@
 
         </mat-tab>
         <!-- Sixth Tab -->
-        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
+        <mat-tab #tab [disabled]="!tab.isActive && RFxID=='-1'">
             <ng-template mat-tab-label>
                 <p>Vendors</p>
                 <mat-icon *ngIf="VendorDetails.length!=0" style="margin-left: 1rem;"
@@ -755,7 +766,7 @@
             </div>
         </mat-tab>
         <!-- Seven Tab -->
-        <mat-tab #tab [disabled]='!tab.isActive && !RFxID'>
+        <mat-tab #tab [disabled]="!tab.isActive && RFxID=='-1'">
             <ng-template mat-tab-label>
                 <p>Others</p>
                 <mat-icon *ngIf="ODDetails.length!=0 && ODAttachDetails.length!=0" style="margin-left: 1rem;"
@@ -917,7 +928,7 @@
 
     </mat-tab-group>
     <footer class="footer">
-        <mat-progress-bar mode="determinate" [value]="Progress" *ngIf="!RFxID"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="Progress" *ngIf="!RFxID || RFxID=='-1'"></mat-progress-bar>
         <mat-toolbar style="background-color: white;height: 56px;">
             <button (click)="PreviousClicked(index)" mat-button class="cl_button3" *ngIf="index!=0 && !IsComplete">
                 <img src="assets/images/back_arrow.png"> Previous</button>
@@ -925,7 +936,8 @@
             <button *ngIf="index!=5 && !IsComplete" (click)="NextClicked(index)" mat-button class="cl_button2">
                 Next
                 <img src="assets/images/next_arrow.png"></button>
-            <div *ngIf="Rfxheader.Status=='1' && IsComplete" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
+            <div *ngIf="Rfxheader.Status=='1' && IsComplete" fxLayout="row" fxLayoutAlign="end center"
+                fxLayoutGap="1rem">
                 <button mat-button class="cl_button2" (click)="SaveRFxClicked(true)">Release</button>
                 <button mat-button class="cl_button4" (click)="SaveRFxClicked(false)">Save</button>
             </div>

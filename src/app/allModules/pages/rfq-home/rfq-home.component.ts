@@ -251,7 +251,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
   }
 ngOnDestroy(){
   if(this.IsNewHeader){
-    localStorage.removeItem('RFXID');
+    localStorage.setItem('RFXID',"-1");
   }
 }
 }

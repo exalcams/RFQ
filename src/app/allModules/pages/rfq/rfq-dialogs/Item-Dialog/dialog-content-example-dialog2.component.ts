@@ -60,9 +60,34 @@ export class DialogContentExampleDialog2Component implements OnInit {
       incoterm: [this.rfxitem.IncoTerm, [Validators.required,Validators.pattern('^([a-zA-Z]){1,2}?$')]],
       LeadTime:[this.rfxitem.LeadTime,Validators.required]
     });
-    this.DialogueFormGroup.get("per_schedule_qty").setValidators(Validators.max(this.DialogueFormGroup.get("TotalQty").value))
-    this.DialogueFormGroup.get("TotalQty").setValidators(Validators.min(this.DialogueFormGroup.get("per_schedule_qty").value))
     this.DialogueFormGroup.get('totalSchedules').disable();
+    this.SetValidators();
+  }
+  SetValidators(){
+    this.DialogueFormGroup.get("LowPrice").valueChanges
+    .subscribe(data=> {
+      this.SetLowPriceValidator();
+    });
+    this.DialogueFormGroup.get("TotalQty").valueChanges
+    .subscribe(data=> {
+      this.SetPerScheduleValidator();
+    });
+    this.DialogueFormGroup.get("per_schedule_qty").valueChanges
+    .subscribe(data=> {
+      this.SetTotalQtyValidator();
+    });
+  }
+  SetLowPriceValidator(){
+    var LowPrice=this.DialogueFormGroup.get("LowPrice").value;
+    this.DialogueFormGroup.get("HighPrice").setValidators([Validators.min(LowPrice)]);
+  }
+  SetPerScheduleValidator(){
+    var TotalQty=this.DialogueFormGroup.get("TotalQty").value;
+    this.DialogueFormGroup.get("per_schedule_qty").setValidators([Validators.max(TotalQty)]);
+  }
+  SetTotalQtyValidator(){
+    var PSQ=this.DialogueFormGroup.get("per_schedule_qty").value;
+    this.DialogueFormGroup.get("TotalQty").setValidators([Validators.min(PSQ)]);
   }
 
   CalculateTotalQTy(){

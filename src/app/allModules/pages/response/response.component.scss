@@ -109,19 +109,19 @@ text-align: center;
 color: #d93763;
 margin-left: 10px;
 }
- ::ng-deep.mat-tab-label-active{
+ ::ng-deep .tab-group .mat-tab-label-active{
   background-color: #10b1e8 ;
   opacity: 1 !important;
   color: #ffffff !important;
  }
- ::ng-deep.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
-  background-color: inherit !important;
+ ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: #10b1e8 !important;
 }
-::ng-deep.mat-tab-labels {
+::ng-deep .tab-group .mat-tab-labels {
 display: flex;
 justify-content: space-between;
 }
-::ng-deep.mat-tab-label-container {
+::ng-deep .tab-group .mat-tab-label-container {
 display: flex;
 flex-grow: 1;
 overflow: hidden;
@@ -734,4 +734,14 @@ background-color: #ffffff;
 
 .clickable{
   cursor: pointer;
+}
+
+.table-th{
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #595d6e !important;  
+  background-color: #ecf8fa;                                  
+}
+.table-td{
+  font-size: 12px;                                   
 }

@@ -214,7 +214,7 @@
   </div>
 
 </mat-dialog-content>
-<mat-dialog-actions fxLayoutAlign="center" style="box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);">
-  <button *ngIf="!data.IsReadOnly" mat-button class="cl_button1" (click)="Save()"><span class="add">Save</span>
+<mat-dialog-actions *ngIf="!data.IsReadOnly" fxLayoutAlign="center" style="box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);">
+  <button mat-button class="cl_button1" (click)="Save()"><span class="add">Save</span>
   </button>
 </mat-dialog-actions>

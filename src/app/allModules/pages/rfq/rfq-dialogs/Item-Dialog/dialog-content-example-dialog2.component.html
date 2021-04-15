@@ -98,6 +98,10 @@
                     *ngIf="DialogueFormGroup.get('HighPrice').touched && DialogueFormGroup.get('HighPrice').hasError('required')">
                     Bidding Price High is required
                 </mat-error>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('HighPrice').touched && DialogueFormGroup.get('HighPrice').hasError('min')">
+                    Bidding Price High should be greater than bidding price low
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
@@ -148,7 +152,7 @@
         <div fxFlex="30">
             <p class="attachment">Attachment</p>
             <div>
-                <ngx-dropzone (change)="onSelect($event)" class="cl_div">
+                <ngx-dropzone (change)="onSelect($event)" [multiple]="false" class="cl_div">
                     <div *ngIf="!SelectedFileName">
                         <span style="color: #068dd0;font-size: 12px;">Drop here to upload or <a
                                 style="text-decoration: underline;">choose file</a></span>
