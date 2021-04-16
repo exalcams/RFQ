@@ -113,9 +113,10 @@ export class RFxIC extends CommonClass {
     Client: string;
     Company: string;
     RFxID: string;
-    Item: string;
-    Criteria: string;
     Text: string;
+    Criteria: string;
+    Weightage:number;
+    Consider:string;
 }
 
 export class RFxOD extends CommonClass {
@@ -183,6 +184,19 @@ export class ResHeader extends CommonClass {
     ItemResponded: string;
     ResRemarks: string;
 }
+//mounika
+export class ResVendorRatingView {
+    Client: string;
+    Company: string;
+    RESID: string;
+    RFxID: string;
+    PartnerID:string;
+    Price: number;
+    LeadTime: string;
+    Rating:string;
+}
+
+//mounika end
 
 export class ResItem extends CommonClass {
     Client: string;

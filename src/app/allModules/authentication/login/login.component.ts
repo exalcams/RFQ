@@ -231,7 +231,7 @@ export class LoginComponent implements OnInit {
       this.children.push(
         {
           id: 'rfq',
-          title: 'RFQ',
+          title: 'RFQ Creation',
           translate: 'NAV.SAMPLE.TITLE',
           type: 'item',
           icon: 'payment',

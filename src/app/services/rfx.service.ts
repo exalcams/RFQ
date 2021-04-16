@@ -4,7 +4,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 // import { _MatChipListMixinBase } from '@angular/material';
 // import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, EvaluationRating, ByMaterial, ByCriteria, RFxAward, RFxCEPartner, RFxCEMaterial, RFxCECriteria } from '../models/RFx';
+import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, EvaluationRating, ByMaterial, ByCriteria, RFxAward, RFxCEPartner, RFxCEMaterial, RFxCECriteria, ResVendorRatingView } from '../models/RFx';
 import { environment } from '../../environments/environment';
 
 
@@ -84,6 +84,7 @@ export class RFxService {
         return this._httpClient.get<RFxHeader>(`${this.baseAddress}rfxapi/RFx/GetRFxByRFxID?RFxID=${RFxID}`)
             .pipe(catchError(this.errorHandler));
     }
+
 
     GetRFxItemsByRFxID(RFxID: string): Observable<RFxItem[] | string> {
         return this._httpClient.get<RFxItem[]>(`${this.baseAddress}rfxapi/RFx/GetRFxItemsByRFxID?RFxID=${RFxID}`)
@@ -175,6 +176,20 @@ export class RFxService {
         return this._httpClient.get<ResHeader>(`${this.baseAddress}rfxapi/RFx/GetResponseByRFxID?RFxID=${RFxID}`)
         .pipe(catchError(this.errorHandler));
     }
+    //mounika 
+    GetResponseByRFxID_award(RFxID:string):Observable<ResHeader[] | string> {
+        return this._httpClient.get<ResHeader[]>(`${this.baseAddress}rfxapi/RFx/GetResponseByRFxID?RFxID=${RFxID}`)
+        .pipe(catchError(this.errorHandler));
+    }
+    GetResponseByRFxID_rating(RFxID:string):Observable<ResVendorRatingView[] | string> {
+        return this._httpClient.get<ResVendorRatingView[]>(`${this.baseAddress}rfxapi/RFx/GetResponseByRFxID_rating?RFxID=${RFxID}`)
+        .pipe(catchError(this.errorHandler));
+    }
+    GetCriteriaByRFxID_rating(RFxID:string):Observable<RFxIC[] | string> {
+        return this._httpClient.get<RFxIC[]>(`${this.baseAddress}rfxapi/RFx/GetCriteriaByRFxID_rating?RFxID=${RFxID}`)
+        .pipe(catchError(this.errorHandler));
+    }
+    // mounika end
     GetResponseItemsByResponseID(ResponseID: string): Observable<ResItem[] | string> {
         return this._httpClient.get<ResItem[]>(`${this.baseAddress}rfxapi/RFx/GetResponseItemsByResponseID?ResponseID=${ResponseID}`)
             .pipe(catchError(this.errorHandler));

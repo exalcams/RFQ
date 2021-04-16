@@ -6,7 +6,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { RFxHeader, RFxHC, RFxItem, RFxIC, RFxPartner, MVendor, RFxOD, RFxODAttachment, RFxVendor, RFxVendorView, RFxView, RFxRemark, MRFxType, MRFxGroup } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 import { DialogContentExampleDialogComponent } from './rfq-dialogs/Criteria-Dialog/dialog-content-example-dialog.component';
-import { DialogContentExampleDialog1Component } from './rfq-dialogs/Rateing-Dialog/dialog-content-example-dialog1.component';
 import { DialogContentExampleDialog2Component } from './rfq-dialogs/Item-Dialog/dialog-content-example-dialog2.component';
 import { DialogContentExampleDialog3Component } from './rfq-dialogs/Partner-Dialo/dialog-content-example-dialog3.component';
 import { DialogContentExampleDialog4Component } from './rfq-dialogs/Vendor-Dialog/dialog-content-example-dialog4.component';
@@ -22,6 +21,7 @@ import { MasterService } from 'app/services/master.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { ForecloseDialogComponent } from './rfq-dialogs/foreclose-dialog/foreclose-dialog.component';
 import { DateTimeValidator } from 'app/shared/date-time-validator';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Component({
@@ -32,6 +32,8 @@ import { DateTimeValidator } from 'app/shared/date-time-validator';
 export class RfqComponent implements OnInit {
   RFxView: RFxView = new RFxView();
   RFxFormGroup: FormGroup;
+  ICFormGroup:FormGroup;
+  ItemCriteriaFormArray:FormArray=this._formBuilder.array([]);
   IsProgressBarVisibile: boolean;
   Rfxheader: RFxHeader = new RFxHeader();
   ArrayLength: any;
@@ -46,14 +48,14 @@ export class RfqComponent implements OnInit {
   RFxRemark: RFxRemark = new RFxRemark();
   EvaluationDetailsDisplayedColumns: string[] = ['Description', 'Action'];
   ItemsDetailsDisplayedColumns: string[] = ['Material','MaterialText', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm', 'Action'];
-  RatingDetailsDisplayedColumns: string[] = ['Criteria', 'Description', 'Action'];
+  RatingDetailsDisplayedColumns: string[] = ['Criteria', 'Weightage', 'Consider'];
   PartnerDetailsDisplayedColumns: string[] = ['Type', 'Usertables', 'Action'];
   VendorDetailsDisplayedColumns: string[] = ['Vendor', 'Type', 'VendorName', 'GSTNo', 'City', 'Action'];
   ODDetailsDisplayedColumns: string[] = ['Question', 'Answertype', 'Action'];
   ODAttachDetailsDisplayedColumns: string[] = ['Documenttitle', 'Remark', 'Action'];
   EvaluationDetailsDataSource: MatTableDataSource<RFxHC>;
   ItemDetailsDataSource: MatTableDataSource<RFxItem>;
-  // RatingDetailsDataSource=new BehaviorSubject<RFxVendorView[]>([]);
+  RatingDetailsDataSource=new BehaviorSubject<AbstractControl[]>([]);;
   PartnerDetailsDataSource: MatTableDataSource<RFxPartner>;
   VendorDetailsDataSource: MatTableDataSource<RFxVendorView>;
   ODDetailsDataSource: MatTableDataSource<RFxOD>;
@@ -76,7 +78,7 @@ export class RfqComponent implements OnInit {
   MenuItems: string[];
   Evaluators: string[] = [];
   CurrencyList: string[] = ["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LVL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STD", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "USS", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XFU", "XOF", "XPD", "XPF", "XPT", "XTS", "XXX", "YER", "ZAR", "ZMW"];
-  IsComplete:boolean=false;
+  CompletedSteps:boolean[]=[false,false,false,false,false,false,false,false];
   Progress:number=0;
   constructor(
     public dialog: MatDialog,
@@ -110,7 +112,7 @@ export class RfqComponent implements OnInit {
     this.Rfxheader.Company = "Exa";
     this.index = 0;
     this.InitializeRFxFormGroup();
-    if (localStorage.getItem('RFXID') != "undefined" || localStorage.getItem('RFXID') != "-1") {
+    if (localStorage.getItem('RFXID') != "-1") {
       this.RFxID = localStorage.getItem('RFXID');
     }
     else {
@@ -120,6 +122,7 @@ export class RfqComponent implements OnInit {
       this.GetRFxs();
     }
     this.GetRFQMasters();
+    this.GetItemCriterias();
   }
 
   InitializeRFxFormGroup(): void {
@@ -140,6 +143,9 @@ export class RfqComponent implements OnInit {
       Evaluator: [null, [Validators.required]],
       Currency: ['INR', [Validators.required]],
       Site: ['', [Validators.required]],
+    });
+    this.ICFormGroup=this._formBuilder.group({
+      ItemCriterias:this.ItemCriteriaFormArray
     });
   }
 
@@ -167,14 +173,24 @@ export class RfqComponent implements OnInit {
   GetRFxs(): void {
     this.GetRFxHsByRFxID(this.RFxID);
     this.GetRFxHCsByRFxID(this.RFxID);
+    this.GetRFxICsByRFxID(this.RFxID);
     this.GetRFxItemsByRFxID(this.RFxID);
     this.GetRFxPartnersByRFxID(this.RFxID);
     this.GetRFxVendorsByRFxID(this.RFxID);
     this.GetRFxODsByRFxID(this.RFxID);
     this.GetRFxODAttachmentsByRFxID(this.RFxID);
     this.GetRFxRemarkByRFxID(this.RFxID);
+    this.CompletedSteps=[true,true,true,true,true,true,true,true];
+    console.log(this.CompletedSteps);
   }
-
+  public IsComplete():boolean{
+    if(this.CompletedSteps.includes(false)){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
   GetRFxHsByRFxID(RFxID: string): void {
     this.isProgressBarVisibile = true;
     this._RFxService.GetRFxByRFxID(RFxID).subscribe(
@@ -211,9 +227,6 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.EvaluationDetails = <RFxHC[]>data;
           this.EvaluationDetailsDataSource = new MatTableDataSource(this.EvaluationDetails);
-          if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
-            this.IsComplete=true;
-          }else{this.IsComplete=false}
         }
       }
     );
@@ -224,34 +237,30 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.ItemDetails = <RFxItem[]>data;
           this.ItemDetailsDataSource = new MatTableDataSource(this.ItemDetails);
-          if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
-            this.IsComplete=true;
-          }else{this.IsComplete=false}
         }
       }
     );
   }
-  // GetRFxICsByRFxID(RFxID:string): void {
-  //   this._RFxService.GetRFxICsByRFxID(RFxID).subscribe(
-  //     (data) => {
-  //       if (data) {
-  //         this.RatingDetails = <RFxIC[]>data;
-  //         this.RatingDetailsDataSource = new MatTableDataSource(
-  //           this.RatingDetails
-  //         );
-  //       }
-  //     }
-  //   );
-  // }
+  GetRFxICsByRFxID(RFxID:string): void {
+    this._RFxService.GetRFxICsByRFxID(RFxID).subscribe(
+      (data) => {
+        if (data) {
+          this.RatingDetails = <RFxIC[]>data;
+          this.ClearFormArray(this.ItemCriteriaFormArray);
+          this.RatingDetails.forEach(element => {
+            this.AddRowToIC(element);
+          });
+          this.RatingDetailsDataSource.next(this.ItemCriteriaFormArray.controls);
+        }
+      }
+    );
+  }
   GetRFxPartnersByRFxID(RFxID: string): void {
     this._RFxService.GetRFxPartnersByRFxID(RFxID).subscribe(
       (data) => {
         if (data) {
           this.PartnerDetails = <RFxPartner[]>data;
           this.PartnerDetailsDataSource = new MatTableDataSource(this.PartnerDetails);
-          if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
-            this.IsComplete=true;
-          }else{this.IsComplete=false}
         }
       }
     );
@@ -275,9 +284,6 @@ export class RfqComponent implements OnInit {
       var data = result as RFxVendorView;
       this.VendorDetails.push(data);
       this.VendorDetailsDataSource = new MatTableDataSource(this.VendorDetails);
-      if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
-        this.IsComplete=true;
-      }else{this.IsComplete=false}
     });
   }
   GetRFxODsByRFxID(RFxID: string): void {
@@ -286,9 +292,6 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.ODDetails = <RFxOD[]>data;
           this.ODDetailsDataSource = new MatTableDataSource(this.ODDetails);
-          if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
-            this.IsComplete=true;
-          }else{this.IsComplete=false}
         }
       }
     );
@@ -299,9 +302,6 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.ODAttachDetails = <RFxODAttachment[]>data;
           this.ODAttachDetailsDataSource = new MatTableDataSource(this.ODAttachDetails);
-          if (this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
-            this.IsComplete=true;
-          }else{this.IsComplete=false}
         }
       }
     );
@@ -313,6 +313,23 @@ export class RfqComponent implements OnInit {
         //console.log(this.RFxRemark);
       }
     })
+  }
+
+  GetItemCriterias(){
+    for (let index = 0; index < 3; index++) {
+      var IC=new RFxIC();
+      IC.Client=this.Rfxheader.Client;
+      IC.Company=this.Rfxheader.Company;
+      IC.Criteria=(index+1).toString();
+      this.RatingDetails.push(IC);
+    }
+    this.RatingDetails[0].Text="Price";
+    this.RatingDetails[1].Text="LeadTime";
+    this.RatingDetails[2].Text="Lorenipsum";
+    this.RatingDetails.forEach(ic => {
+      this.AddRowToIC(ic);
+    });
+    this.RatingDetailsDataSource.next(this.ItemCriteriaFormArray.controls);
   }
 
   CreateCriteria() {
@@ -456,10 +473,12 @@ export class RfqComponent implements OnInit {
         this.ODDetails.push(res.data);
         this.ODDetailsDataSource = new MatTableDataSource(this.ODDetails);
         if(this.ODAttachDetails.length>0){
-          this.Progress=7*14.28571428571429;
+          this.Progress=8*12.5;
+          this.CompletedSteps[6]=true;
         }
         else{
-          this.Progress=6*14.28571428571429;
+          this.Progress=7*12.5;
+          this.CompletedSteps[6]=true;
         }
       }
     });
@@ -475,10 +494,8 @@ export class RfqComponent implements OnInit {
       if (res && res.isCreate) {
         this.ODAttachDetails.push(res.data);
         this.ODAttachDetailsDataSource = new MatTableDataSource(this.ODAttachDetails);
-        this.Progress=7*14.28571428571429;
-        if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
-          this.IsComplete=true;
-        }else{this.IsComplete=false}
+        this.CompletedSteps[7]=true;
+        this.Progress=8*12.5;
       }
       if (this.FilesToUpload.indexOf(res.Attachments) >= 0) {
         this.FilesToUpload[this.FilesToUpload.indexOf(res.Attachments)] = res.Attachments;
@@ -491,10 +508,30 @@ export class RfqComponent implements OnInit {
   }
   ShowValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
-      formGroup.get(key).markAsTouched();
-      formGroup.get(key).markAsDirty();
+        if (!formGroup.get(key).valid) {
+            console.log(key);
+        }
+        formGroup.get(key).markAsTouched();
+        formGroup.get(key).markAsDirty();
+        if (formGroup.get(key) instanceof FormArray) {
+            const FormArrayControls = formGroup.get(key) as FormArray;
+            Object.keys(FormArrayControls.controls).forEach(key1 => {
+                if (FormArrayControls.get(key1) instanceof FormGroup) {
+                    const FormGroupControls = FormArrayControls.get(key1) as FormGroup;
+                    Object.keys(FormGroupControls.controls).forEach(key2 => {
+                        FormGroupControls.get(key2).markAsTouched();
+                        FormGroupControls.get(key2).markAsDirty();
+                        if (!FormGroupControls.get(key2).valid) {
+                            console.log(key2);
+                        }
+                    });
+                } else {
+                    FormArrayControls.get(key1).markAsTouched();
+                    FormArrayControls.get(key1).markAsDirty();
+                }
+            });
+        }
     });
-
   }
 
   DeleteCriteria(index) {
@@ -552,7 +589,8 @@ export class RfqComponent implements OnInit {
       if(this.RFxFormGroup.valid && (this.RFxID == null || this.RFxID=="-1")){
         this.Rfxheader.Status = "1";
         this.selectedIndex = index + 1;
-        this.Progress=14.28571428571429;
+        this.Progress=12.5;
+        this.CompletedSteps[index]=true;
         this.CreateCriteria();
       }
       else{
@@ -562,24 +600,37 @@ export class RfqComponent implements OnInit {
     if(index == 1){
       if(this.EvaluationDetails.length > 0){
         this.selectedIndex = index + 1;
-        this.Progress=2*14.28571428571429;
-        this.CreateItem();
+        this.Progress=2*12.5;
+        this.CompletedSteps[index]=true;
       }
       else{
         this.notificationSnackBarComponent.openSnackBar('Criteria is required', SnackBarStatus.danger);
       }
     }
     if(index == 2){
+      if(this.ICFormGroup.valid){
+        this.selectedIndex = index + 1;
+        this.Progress=3*12.5;
+        this.CompletedSteps[index]=true;
+        this.CreateItem();
+      }
+      else{
+        this.ShowValidationErrors(this.ICFormGroup);
+        this.notificationSnackBarComponent.openSnackBar('Please fill all fields', SnackBarStatus.danger);
+      }
+    }
+    if(index == 3){
       if(this.ItemDetails.length >= 0){
         this.selectedIndex = index + 1;
-        this.Progress=3*14.28571428571429;
+        this.Progress=4*12.5;
+        this.CompletedSteps[index]=true;
         this.CreatePartner();
       }
       else{
         this.notificationSnackBarComponent.openSnackBar('Item is required', SnackBarStatus.danger);
       }
     }
-    if(index == 3){
+    if(index == 4){
       var array = this.PartnerDetails.filter(x => x.Type == "Evaluator")
       var lent = array.length;
       var awardC = this.PartnerDetails.filter(x => x.Type == "Award Committee");
@@ -590,14 +641,16 @@ export class RfqComponent implements OnInit {
         this.notificationSnackBarComponent.openSnackBar('Award committee required', SnackBarStatus.danger);
       }
       else {
+        this.CompletedSteps[index]=true;
         this.selectedIndex = index + 1;
-        this.Progress=4*14.28571428571429;
+        this.Progress=5*12.5;
       }
     }
-    if(index == 4){
+    if(index == 5){
       if(this.VendorDetails.length >= 0){
         this.selectedIndex = index + 1;
-        this.Progress=5*14.28571428571429;
+        this.Progress=6*12.5;
+        this.CompletedSteps[index]=true;
       }
       else{
         this.notificationSnackBarComponent.openSnackBar('Vendor is required', SnackBarStatus.danger);
@@ -606,16 +659,10 @@ export class RfqComponent implements OnInit {
   }
   PreviousClicked(index: number): void {
     this.selectedIndex = index - 1;
-    if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
-      this.IsComplete=true;
-    }else{this.IsComplete=false}
   }
     
   tabClick(tab: any) {
     this.index = parseInt(tab.index);
-    if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0){
-      this.IsComplete=true;
-    }else{this.IsComplete=false}
   }
   SaveRFxClicked(isRelease: boolean) {
     if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0) {
@@ -624,6 +671,12 @@ export class RfqComponent implements OnInit {
           //console.log("vendor created");
         }, err => { console.log("vendor master not created!;") });
       }
+      const ICFormArray = this.ICFormGroup.get('ItemCriterias') as FormArray;
+      ICFormArray.controls.forEach((x, i) => {
+                this.RatingDetails[i].Consider=x.get('Consider').value;
+                this.RatingDetails[i].Weightage=x.get('Weightage').value;
+      });
+      //console.log(this.RatingDetails);
       if (!this.RFxID || this.RFxID == "-1") {
         this.CreateRfX(isRelease);
       }
@@ -793,4 +846,16 @@ export class RfqComponent implements OnInit {
         }
       });
   }
+  AddRowToIC(Row:RFxIC){
+    this.ItemCriteriaFormArray.push(this._formBuilder.group({
+      Criteria:[Row.Text],
+      Weightage:[Row.Weightage,Validators.required],
+      Consider:[Row.Consider,Validators.required]
+    }));
+  }
+  ClearFormArray = (formArray: FormArray) => {
+    while (formArray.length !== 0) {
+        formArray.removeAt(0);
+    }
+}
 }
