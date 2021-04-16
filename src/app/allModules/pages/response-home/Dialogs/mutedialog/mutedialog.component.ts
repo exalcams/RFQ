@@ -32,6 +32,17 @@ export class MutedialogComponent implements OnInit {
     });
   }
   Save(){
-    
+    if(this.MuteFormGroup.valid){
+      this.matDialogRef.close(this.MuteFormGroup.get("Reason").value);
+    }
+    else{
+      this.ShowValidationErrors(this.MuteFormGroup);
+    }
+  }
+  ShowValidationErrors(formGroup:FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      formGroup.get(key).markAsTouched();
+      formGroup.get(key).markAsDirty();
+    });
   }
 }

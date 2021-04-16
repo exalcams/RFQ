@@ -2,13 +2,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationDetails } from 'app/models/master';
-import { RFxHeader } from 'app/models/RFx';
+import { ResHeader, RFxHeader } from 'app/models/RFx';
 import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
+import { VendorViewListDialogComponent } from 'app/notifications/vendor-view-list-dialog/vendor-view-list-dialog.component';
 import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
 import { MutedialogComponent } from './Dialogs/mutedialog/mutedialog.component';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({
   selector: 'app-response-home',
@@ -21,12 +23,10 @@ export class ResponseHomeComponent implements OnInit {
   @ViewChild(MatSort) RFQSort: MatSort;
   RFxTableAttachments: string[] = [];
   AllHeaderDetails: any[] = [];
-  InitiatedHeaderDetails: any[] = [];
+  DueToRespondHeaderDetails: any[] = [];
   RespondedHeaderDetails: any[] = [];
-  EvaluatedHeaderDetails: any[] = [];
-  ClosedHeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID', 'Title','RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['RFxID', 'Title','RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   imgArray: any[] = [
     {
@@ -82,7 +82,7 @@ export class ResponseHomeComponent implements OnInit {
   Gotoheader(rfqid) {
     this.route.navigate(['pages/response']);
     // { queryParams: { id: rfqid } }
-    localStorage.setItem('RFxID', rfqid);
+    localStorage.setItem('RRFxID', rfqid);
 
   }
   GetAllRFxs(): void {
@@ -96,18 +96,10 @@ export class ResponseHomeComponent implements OnInit {
         }
       }
     );
-    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '1').subscribe(
-      (data) => {
-        if (data) {
-          this.InitiatedHeaderDetails = data;
-          this.isProgressBarVisibile = false;
-        }
-      }
-    );
     this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '2').subscribe(
       (data) => {
         if (data) {
-          this.RespondedHeaderDetails = data;
+          this.DueToRespondHeaderDetails = data;
           this.isProgressBarVisibile = false;
         }
       }
@@ -115,15 +107,7 @@ export class ResponseHomeComponent implements OnInit {
     this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '3').subscribe(
       (data) => {
         if (data) {
-          this.EvaluatedHeaderDetails = data;
-          this.isProgressBarVisibile = false;
-        }
-      }
-    );
-    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '5').subscribe(
-      (data) => {
-        if (data) {
-          this.ClosedHeaderDetails = data;
+          this.RespondedHeaderDetails = data;
           this.isProgressBarVisibile = false;
         }
       }
@@ -258,11 +242,32 @@ export class ResponseHomeComponent implements OnInit {
         return "";
     }
   }
-OpenMuteDialog():void{
+OpenMuteDialog(RFxH:RFxHeader):void{
   const dialogRef = this.dialog.open(MutedialogComponent, {
-    data: {}, height: '40%',
-    width: '60%'
+    data: {}, height: '30%',
+    width: '40%'
   });
-  dialogRef.disableClose = true;
+  dialogRef.afterClosed().subscribe(res=>{
+    if(res){
+      var header=new ResHeader();
+      header.Client=RFxH.Client;
+      header.Company=RFxH.Company;
+      header.RFxID=RFxH.RFxID;
+      header.PartnerID=this.currentUserName;
+      header.ResRemarks=res;
+      this.MuteRFx(header);
+    }
+  });
+}
+MuteRFx(header:ResHeader){
+  this.isProgressBarVisibile=true;
+  this._RFxService.MuteRFx(header).subscribe(res=>{
+    Swal.fire('RFQ muted Successfully');
+    this.isProgressBarVisibile=false;
+  },err=>{
+    this.isProgressBarVisibile=false;
+    console.log(err);
+  }
+  );
 }
 }

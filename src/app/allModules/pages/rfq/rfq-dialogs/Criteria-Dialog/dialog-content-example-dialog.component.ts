@@ -23,14 +23,12 @@ export class DialogContentExampleDialogComponent implements OnInit {
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Criteria: [this.rfxHC.CriteriaID, Validators.required],
       Description: [this.rfxHC.Text, Validators.compose([Validators.required,Validators.maxLength(20)])]
     });
   }
 
 Save(){
   if(this.DialogueFormGroup.valid){
-    this.rfxHC.CriteriaID = this.DialogueFormGroup.get("Criteria").value;
     this.rfxHC.Text =this.DialogueFormGroup.get("Description").value;
     var Result={data:this.rfxHC,isCreate:this.data.isCreate};
     this.dialogRef.close(Result);

@@ -85,7 +85,6 @@ export class RFxService {
             .pipe(catchError(this.errorHandler));
     }
 
-
     GetRFxItemsByRFxID(RFxID: string): Observable<RFxItem[] | string> {
         return this._httpClient.get<RFxItem[]>(`${this.baseAddress}rfxapi/RFx/GetRFxItemsByRFxID?RFxID=${RFxID}`)
             .pipe(catchError(this.errorHandler));
@@ -434,6 +433,16 @@ export class RFxService {
     }
     FiterMVendors(key:string,type:string): Observable<MVendor[] | string> {
         return this._httpClient.get<MVendor[]>(`${this.baseAddress}rfxapi/RFx/FilterVendorM?key=${key}&type=${type}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    MuteRFx(ResH:ResHeader): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/MuteRFx`,
+        ResH,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
             .pipe(catchError(this.errorHandler));
     }
 }

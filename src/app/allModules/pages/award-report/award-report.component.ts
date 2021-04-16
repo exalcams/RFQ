@@ -17,7 +17,7 @@ import { Guid } from 'guid-typescript';
 export class AwardReportComponent implements OnInit {
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
   @ViewChild(MatSort) RFQSort: MatSort;
-  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','AwardedTo', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<any>;
   AllHeaderDetails:any[]=[];
   isProgressBarVisibile: boolean;
