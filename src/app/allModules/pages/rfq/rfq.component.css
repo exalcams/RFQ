@@ -738,3 +738,10 @@ table {
   .clickable{
     cursor: pointer;
   }
+  .tb_formfield{
+    /* width: 90%; */
+    font-size: 12px;
+  }
+  ::ng-deep .tb_formfield .mat-form-field-wrapper {
+    padding-bottom: 0px !important;
+}

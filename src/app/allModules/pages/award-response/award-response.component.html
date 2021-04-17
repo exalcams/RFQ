@@ -134,6 +134,59 @@
         <!-- <p class="display">Displaying 10 of 54 records</p> -->
         <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]"></mat-paginator>
       </div>
+
+
+
+<!-- mounika -->
+
+<table mat-table [dataSource]="RatingtableDataSource" class="mat-elevation-z8" >
+
+  <!-- Position Column -->
+  <!-- <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef class="header-cell"> S.No </th>
+    <td mat-cell class="td-cell" *matCellDef="let element;let i = index;"> {{i+1}}
+    </td>
+  </ng-container> -->
+
+  <!-- Vendor Name  Column -->
+  <ng-container matColumnDef="PartnerID">
+    <th mat-header-cell  class="header-cell" *matHeaderCellDef> Vendor Name </th>
+    <td mat-cell style="font-size: 12px;" *matCellDef="let element">
+      {{element.PartnerID}} </td>
+  </ng-container>
+
+  <!-- Response ID  Column -->
+  <ng-container matColumnDef="RESID">
+    <th mat-header-cell class="header-cell"  *matHeaderCellDef> Response ID </th>
+    <td mat-cell class="td-cell" *matCellDef="let element"> {{element.RESID | removeLeadingZero}}
+    </td>
+  </ng-container>
+
+  <!-- Responded On   Column -->
+  <ng-container matColumnDef="Price">
+    <th mat-header-cell class="header-cell"  *matHeaderCellDef> Price </th>
+    <td mat-cell class="td-cell" *matCellDef="let element"> {{element.Price}}
+    </td>
+  </ng-container>
+
+  <!-- Items  Column -->
+  <ng-container matColumnDef="LeadTime">
+    <th mat-header-cell class="header-cell" style="text-align: center;" *matHeaderCellDef> Lead Time </th>
+    <td mat-cell class="td-cell" style="text-align: center;" *matCellDef="let element"> {{element.LeadTime}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Rating">
+    <th mat-header-cell class="header-cell" style="text-align: center;" *matHeaderCellDef> Rating </th>
+    <td mat-cell class="td-cell" style="text-align: center;" *matCellDef="let element">  {{element.Rating}}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="RatingtableDisplayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: RatingtableDisplayedColumns;"></tr>
+</table>
+
+
+<!-- mounika end -->
     </mat-card>
   </div>
 </div>

@@ -31,7 +31,7 @@ export class DialogContentExampleDialog1Component implements OnInit {
     this.rfxIC.RFxID =this.rfxHeader.RFxID;
     this.rfxIC.Client = this.rfxHeader.Client;
     this.rfxIC.Company = this.rfxHeader.Company;
-    this.rfxIC.Item=this.DialogueFormGroup.get("Item").value;
+    //this.rfxIC.Item=this.DialogueFormGroup.get("Item").value;
     this.rfxIC.Criteria = this.DialogueFormGroup.get("Criteria").value;
     this.rfxIC.Text = this.DialogueFormGroup.get("Description").value;
     this._RFxService.AddtoRatingTable(this.rfxIC)

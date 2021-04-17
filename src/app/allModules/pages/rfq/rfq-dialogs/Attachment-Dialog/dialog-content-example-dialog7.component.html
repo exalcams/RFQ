@@ -20,7 +20,7 @@
             <div fxFlex>
                 <p class="attachment">Document</p>
                 <div>
-                    <ngx-dropzone (change)="onSelect($event)" class="cl_div">
+                    <ngx-dropzone (change)="onSelect($event)" [multiple]="false" class="cl_div">
                         <div *ngIf="!SelectedFileName">
                             <span style="color: #068dd0;font-size: 12px;">Drop here to upload or <a
                                     style="text-decoration: underline;">choose file</a></span>
