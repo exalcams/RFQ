@@ -86,6 +86,7 @@ import { AwardDetailComponent } from './award-detail/award-detail.component';
 import { AwardDetailEvaluationComponent } from './award-detail-evaluation/award-detail-evaluation.component';
 import { MutedialogComponent } from './response-home/Dialogs/mutedialog/mutedialog.component';
 import { ForecloseDialogComponent } from './rfq/rfq-dialogs/foreclose-dialog/foreclose-dialog.component';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 
 const routes = [
@@ -205,7 +206,8 @@ const routes = [
 
         FormsModule,
         RatingModule,
-        NgxMaterialTimepickerModule
+        NgxMaterialTimepickerModule,
+        NgApexchartsModule
     ],
     declarations: [
         DashboardComponent,

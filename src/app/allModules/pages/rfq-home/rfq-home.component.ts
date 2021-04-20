@@ -9,13 +9,33 @@ import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { VendorViewListDialogComponent } from 'app/notifications/vendor-view-list-dialog/vendor-view-list-dialog.component';
 import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
+import { ApexDataLabels, ApexLegend, ApexPlotOptions, ChartComponent } from "ng-apexcharts";
+
+import {
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexChart
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  colors:string[];
+  dataLabels: ApexDataLabels;
+  plotOptions:ApexPlotOptions;
+  legend: ApexLegend;
+};
 
 @Component({
   selector: 'app-rfq-home',
   templateUrl: './rfq-home.component.html',
-  styleUrls: ['./rfq-home.component.css']
+  styleUrls: ['./rfq-home.component.scss']
 })
 export class RfqHomeComponent implements OnInit,OnDestroy {
+  @ViewChild("overviewchart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
   @ViewChild(MatSort) RFQSort: MatSort;
   RFxTableAttachments: string[] = [];
@@ -25,7 +45,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
   EvaluatedHeaderDetails: any[] = [];
   ClosedHeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','Vendor', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType','RFxGroup', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','Vendor', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   isProgressBarVisibile: boolean;
   authenticationDetails: AuthenticationDetails;
@@ -34,11 +54,88 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
   MenuItems: string[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsNewHeader:boolean=true;
+  SelectedTab:string="1";
   
   constructor(private route: Router,
     private _RFxService: RFxService,
     private dialog: MatDialog, public snackBar: MatSnackBar) {
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+    // chart begin
+    this.chartOptions = {
+      series: [],
+      colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
+      chart: {
+        type: "donut",
+        width:280,
+        height:'auto'
+      },
+      labels: ["Released", "Responded", "Evaluated", "Awarded"],
+      dataLabels: {
+        enabled: true,
+        distributed: true,
+        textAnchor:'middle',
+        style: {
+            fontSize: '10px',
+            fontFamily: 'Poppins',
+            fontWeight: '600',
+            colors: ['#083a6f', '#033283', '#1665f0','#0fb752']
+        },
+        dropShadow: {
+          enabled: false,
+      }
+      },
+      plotOptions: {
+        pie: {
+          dataLabels: {
+            offset: 25,
+          },
+          donut: {
+            size: '65%'
+          }
+        }
+      },
+      legend: {
+        show: true,
+        position: 'right',
+        horizontalAlign: 'center', 
+        floating: false,
+        fontSize: '11px',
+        fontFamily: 'Poppins',
+        fontWeight: 600,
+        width: undefined,
+        height: undefined,
+        tooltipHoverFormatter: undefined,
+        offsetX: 0,
+        offsetY: 0,
+        labels: {
+            colors: ["#2b3540","#2b3540","#2b3540","#2b3540"],
+            useSeriesColors: false
+        },
+        markers: {
+            width: 6,
+            height: 6,
+            strokeWidth: 0,
+            strokeColor: '#fff',
+            fillColors: undefined,
+            radius: 6,
+            customHTML: undefined,
+            onClick: undefined,
+            offsetX: 0,
+            offsetY: 0
+        },
+        itemMargin: {
+            horizontal: 8,
+            vertical: 4
+        },
+        onItemClick: {
+            toggleDataSeries: true
+        },
+        onItemHover: {
+            highlightDataSeries: true
+        },
+    }
+    };
+    // chart end
   }
 
   ngOnInit(): void {
@@ -73,7 +170,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
         if (data) {
           this.AllHeaderDetails = data;
           this.isProgressBarVisibile = false;
-          this.LoadTableSource(this.AllHeaderDetails);
+          this.LoadTableSource(this.AllHeaderDetails,"1");
         }
       }
     );
@@ -81,7 +178,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
       (data) => {
         if (data) {
           this.InitiatedHeaderDetails = data;
-          this.isProgressBarVisibile = false;
+          //this.isProgressBarVisibile = false;
         }
       }
     );
@@ -89,7 +186,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
       (data) => {
         if (data) {
           this.RespondedHeaderDetails = data;
-          this.isProgressBarVisibile = false;
+          //this.isProgressBarVisibile = false;
         }
       }
     );
@@ -97,7 +194,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
       (data) => {
         if (data) {
           this.EvaluatedHeaderDetails = data;
-          this.isProgressBarVisibile = false;
+          //this.isProgressBarVisibile = false;
         }
       }
     );
@@ -105,12 +202,16 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
       (data) => {
         if (data) {
           this.ClosedHeaderDetails = data;
-          this.isProgressBarVisibile = false;
+          //this.isProgressBarVisibile = false;
         }
       }
     );
+    this._RFxService.GetRFxPieData().subscribe(x=>{
+      this.chartOptions.series=x;
+    });
   }
-  LoadTableSource(DataArray: any[]) {
+  LoadTableSource(DataArray: any[],Tab:string) {
+    this.SelectedTab=Tab;
     this.HeaderDetailsDataSource = new MatTableDataSource(DataArray);
     this.HeaderDetailsDataSource.paginator = this.RFQPaginator;
     this.HeaderDetailsDataSource.sort = this.RFQSort;
@@ -253,5 +354,9 @@ ngOnDestroy(){
   if(this.IsNewHeader){
     localStorage.setItem('RFXID',"-1");
   }
+}
+applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.HeaderDetailsDataSource.filter = filterValue.trim().toLowerCase();
 }
 }

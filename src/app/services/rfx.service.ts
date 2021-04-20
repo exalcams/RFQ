@@ -460,4 +460,8 @@ export class RFxService {
             })
             .pipe(catchError(this.errorHandler));
     }
+    GetRFxPieData(): Observable<any> {
+        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetRFxPieData`)
+            .pipe(catchError(this.errorHandler));
+    }
 }
