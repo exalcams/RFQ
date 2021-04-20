@@ -17,6 +17,7 @@ import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 import { MenuUpdataionService } from './services/menu-update.service';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FuseConfig, FuseNavigationItem } from '@fuse/types';
 
 @Component({
     selector: 'app',
@@ -24,8 +25,8 @@ import { DomSanitizer } from '@angular/platform-browser';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-    fuseConfig: any;
-    navigation: any;
+    fuseConfig: FuseConfig;
+    navigation: FuseNavigationItem[];
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -145,7 +146,7 @@ export class AppComponent implements OnInit, OnDestroy {
             .subscribe((config) => {
 
                 this.fuseConfig = config;
-
+                this.fuseConfig.layout.toolbar.position="above";
                 // Boxed
                 if (this.fuseConfig.layout.width === 'boxed') {
                     this.document.body.classList.add('boxed');
