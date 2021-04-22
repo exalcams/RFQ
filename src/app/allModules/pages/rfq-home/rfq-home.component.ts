@@ -106,7 +106,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
         height: undefined,
         tooltipHoverFormatter: undefined,
         offsetX: 0,
-        offsetY: 0,
+        offsetY: -8,
         labels: {
             colors: ["#2b3540","#2b3540","#2b3540","#2b3540"],
             useSeriesColors: false
