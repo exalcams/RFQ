@@ -1,0 +1,154 @@
+@import "src/@fuse/scss/fuse";
+#rfq-creation{
+    .poppins{
+        font-family: Poppins;
+        font-weight: 600;
+    }
+    .title{
+        @extend .poppins;
+        color: #00061c;
+        font-size: 16px;
+    }
+    .container{
+        width: 100%;
+        height: 78vh;
+        background-color: white;
+        border-radius: 4px;
+        overflow-y: scroll;
+    }
+    .footer{
+        width: 60%;
+        height: 58px;
+        border-radius: 4px;
+        box-shadow: 0 2px 18px 0 rgba(74, 122, 255, 0.38);
+        background-color: #fdfdfd;
+        position: absolute;
+        bottom: 12px;
+        z-index: 1;
+    }
+    .prevnxtbtn{
+        background-color: #e3e3e5;
+        @extend .poppins;
+        color: #00061c;
+        font-size: 12px;
+    }
+    .progressbar{
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        height: 6px;
+    }
+    table {
+        width: 100%;
+    
+        th {
+          color: white;
+          background-color: #5f2cff;
+        //   box-shadow: 0 3px 6px 0 rgba(95, 44, 255, 0.12);
+          @extend .poppins;
+        }
+    
+        td {
+          @extend .poppins;
+          font-size: 11px;
+          color: #3e485a;
+          min-width: max-content !important;
+        }
+
+        td.mat-cell{
+            border-bottom-color: transparent;
+        }
+    
+        tr {
+          height: 42px;
+        }
+        th.mat-header-cell:first-child {
+            border-top-left-radius: 4px !important;
+            border-bottom-left-radius: 4px !important;
+        }
+
+        th.mat-header-cell:last-child {
+            border-top-right-radius: 4px !important;
+            border-bottom-right-radius: 4px !important;
+        }
+    }
+    .mat-form-field {
+        font-family: Poppins;
+        font-weight: 500;
+        font-size: 13px !important;
+    }
+    .mat-select{
+        font-family: Poppins;
+        font-weight: 500;
+    }
+    .clickable{
+        cursor: pointer;
+    }
+    .tab-title{
+        @extend .poppins;
+        font-size: 14px;
+        color: #5f2cff;
+    }
+    .createbtn{
+        border-radius: 4px;
+        @extend .poppins;
+        font-size: 12px;
+        font-weight: 500;
+        background-color: #5f2cff;
+        color: white;
+    }
+    .savebtn{
+        background-color: #e3e3e5;
+        @extend .poppins;
+        color: #00061c;
+        font-size: 12px;
+    }
+    .releasebtn{
+        background-color: #5f2cff;
+        @extend .poppins;
+        color: #ffffff;
+        font-size: 12px;
+    }
+    .square{
+        width: 30px;
+        height: 20px;
+        background-color: #00bb58;
+    }
+    .tbcount{
+        @extend .poppins;
+        font-size: 12px;
+        color: white;
+    }
+}
+::ng-deep .progressbar .mat-progress-bar-fill::after {
+    background-color: #00ba53 !important;
+}
+::ng-deep .tab-group .mat-tab-header{
+    background-color: #f4f4fb !important;
+    border-radius: 4px;
+}
+::ng-deep .mat-ink-bar{
+    visibility: hidden !important;
+}
+::ng-deep .mat-tab-label{
+    padding: 0 !important;
+    opacity: 1 !important;
+    font-family: Poppins;
+    font-weight: 600;
+    font-size: 12px;
+    color: #00061c !important;
+}
+// ::ng-deep .mat-tab-label:focus{
+//     background-color: #5f2cff;
+//     color: white !important;
+// }
+::ng-deep .mat-tab-header-pagination-chevron{
+    border-color: #0c0c0c66 !important;
+}
+::ng-deep .mat-tab-labels {
+    justify-content: space-between;
+}
+::ng-deep .tab-group .mat-tab-label-active{
+    background-color: #5f2cff ;
+    opacity: 1 !important;
+    color: #ffffff !important;
+}

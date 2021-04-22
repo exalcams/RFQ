@@ -27,14 +27,13 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-rfq',
   templateUrl: './rfq.component.html',
-  styleUrls: ['./rfq.component.css']
+  styleUrls: ['./rfq.component.scss']
 })
 export class RfqComponent implements OnInit {
   RFxView: RFxView = new RFxView();
   RFxFormGroup: FormGroup;
   ICFormGroup:FormGroup;
   ItemCriteriaFormArray:FormArray=this._formBuilder.array([]);
-  IsProgressBarVisibile: boolean;
   Rfxheader: RFxHeader = new RFxHeader();
   ArrayLength: any;
   HeaderDetails: RFxHeader[] = [];
@@ -47,12 +46,12 @@ export class RfqComponent implements OnInit {
   ODAttachDetails: RFxODAttachment[] = [];
   RFxRemark: RFxRemark = new RFxRemark();
   EvaluationDetailsDisplayedColumns: string[] = ['Description', 'Action'];
-  ItemsDetailsDisplayedColumns: string[] = ['Material','MaterialText', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm', 'Action'];
+  ItemsDetailsDisplayedColumns: string[] = ['Material','MaterialText', 'TotalQty', 'PerScheduleQty', 'TotalSchedules', 'UOM', 'IncoTerm', 'Action'];
   RatingDetailsDisplayedColumns: string[] = ['Criteria', 'Weightage', 'Consider'];
   PartnerDetailsDisplayedColumns: string[] = ['Type', 'Usertables', 'Action'];
-  VendorDetailsDisplayedColumns: string[] = ['Vendor', 'Type', 'VendorName', 'GSTNo', 'City', 'Action'];
-  ODDetailsDisplayedColumns: string[] = ['Question', 'Answertype', 'Action'];
-  ODAttachDetailsDisplayedColumns: string[] = ['Documenttitle', 'Remark', 'Action'];
+  VendorDetailsDisplayedColumns: string[] = ['Vendor', 'Type', 'VendorName', 'GSTNumber', 'City', 'Action'];
+  ODDetailsDisplayedColumns: string[] = ['Question', 'AnswerType', 'Action'];
+  ODAttachDetailsDisplayedColumns: string[] = ['DocumentTitle', 'DocumentName', 'Action'];
   EvaluationDetailsDataSource: MatTableDataSource<RFxHC>;
   ItemDetailsDataSource: MatTableDataSource<RFxItem>;
   RatingDetailsDataSource=new BehaviorSubject<AbstractControl[]>([]);;
@@ -110,7 +109,6 @@ export class RfqComponent implements OnInit {
     }
     this.Rfxheader.Client = "01";
     this.Rfxheader.Company = "Exa";
-    this.index = 0;
     this.InitializeRFxFormGroup();
     if (localStorage.getItem('RFXID') != "-1") {
       this.RFxID = localStorage.getItem('RFXID');
@@ -181,7 +179,6 @@ export class RfqComponent implements OnInit {
     this.GetRFxODAttachmentsByRFxID(this.RFxID);
     this.GetRFxRemarkByRFxID(this.RFxID);
     this.CompletedSteps=[true,true,true,true,true,true,true,true];
-    console.log(this.CompletedSteps);
   }
   public IsComplete():boolean{
     if(this.CompletedSteps.includes(false)){
@@ -591,32 +588,32 @@ export class RfqComponent implements OnInit {
         this.selectedIndex = index + 1;
         this.Progress=12.5;
         this.CompletedSteps[index]=true;
-        this.CreateCriteria();
       }
       else{
         this.ShowValidationErrors(this.RFxFormGroup);
       }
     }
     if(index == 1){
-      if(this.EvaluationDetails.length > 0){
+      if(this.ICFormGroup.valid){
         this.selectedIndex = index + 1;
         this.Progress=2*12.5;
         this.CompletedSteps[index]=true;
+        this.CreateCriteria();
       }
       else{
-        this.notificationSnackBarComponent.openSnackBar('Criteria is required', SnackBarStatus.danger);
+        this.ShowValidationErrors(this.ICFormGroup);
+        this.notificationSnackBarComponent.openSnackBar('Please fill all fields', SnackBarStatus.danger);
       }
     }
     if(index == 2){
-      if(this.ICFormGroup.valid){
+      if(this.EvaluationDetails.length > 0){
         this.selectedIndex = index + 1;
         this.Progress=3*12.5;
         this.CompletedSteps[index]=true;
         this.CreateItem();
       }
       else{
-        this.ShowValidationErrors(this.ICFormGroup);
-        this.notificationSnackBarComponent.openSnackBar('Please fill all fields', SnackBarStatus.danger);
+        this.notificationSnackBarComponent.openSnackBar('Criteria is required', SnackBarStatus.danger);
       }
     }
     if(index == 3){
@@ -662,7 +659,7 @@ export class RfqComponent implements OnInit {
   }
     
   tabClick(tab: any) {
-    this.index = parseInt(tab.index);
+    this.selectedIndex = parseInt(tab.index);
   }
   SaveRFxClicked(isRelease: boolean) {
     if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0) {
