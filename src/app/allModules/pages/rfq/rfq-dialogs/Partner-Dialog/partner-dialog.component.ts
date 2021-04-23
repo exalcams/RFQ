@@ -6,18 +6,18 @@ import { AuthService } from 'app/services/auth.service';
 import { MasterService } from 'app/services/master.service';
 
 @Component({
-  selector: 'app-dialog-content-example-dialog3',
-  templateUrl: './dialog-content-example-dialog3.component.html',
-  styleUrls: ['./dialog-content-example-dialog3.component.css'],
+  selector: 'app-partner-dialog',
+  templateUrl: './partner-dialog.component.html',
+  styleUrls: ['./partner-dialog.component.scss'],
    encapsulation: ViewEncapsulation.None
 })
-export class DialogContentExampleDialog3Component implements OnInit {
+export class PartnerDialogComponent implements OnInit {
   DialogueFormGroup: FormGroup;
   rfx = new RFxPartner;
   RFxPartners:RFxPartner[]=[];
   Users:string[]=[];
   SelectedUsers:string[]=[];
-  constructor(private _formBuilder: FormBuilder,private masterService: MasterService, public dialogRef: MatDialogRef<DialogContentExampleDialog3Component>,
+  constructor(private _formBuilder: FormBuilder,private masterService: MasterService, public dialogRef: MatDialogRef<PartnerDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) { this.rfx = data.data;
     this.RFxPartners=data.RFxPartners;
     }

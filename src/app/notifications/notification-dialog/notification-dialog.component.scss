@@ -7,12 +7,13 @@
   @include media-breakpoint-up("sm") {
     width: 440px;
   }
-  .mat-radio-button {
-    margin: 0 5px;
+  .poppins{
+    font-family: Poppins;
+    font-weight: 600;
   }
   .mat-dialog-container {
     padding: 0;
-    border-radius: 0px;
+    border-radius: 4px;
   }
 
   .dialog-content-wrapper {
@@ -20,12 +21,24 @@
     display: flex;
     flex-direction: column;
   }
-  .toolBg {
-    background-color: #121214 !important;
-    color: white !important;
+  .toolbar{
+    background-color: #f4f4fb;
+    height: 56px;
   }
-  .btnBg{
-    background-color: #efb577 !important;
-    color: white !important;
+  .title{
+      @extend .poppins;
+      font-size: 12px;
+      color: #2c2c2e;
+  }
+  .footer{
+    box-shadow: 0 2px 18px 0 rgba(74, 122, 255, 0.38);
+    background-color: #fdfdfd;
+    height: 56px;
+  }
+  .savebtn{
+    background-color: #5f2cff !important;
+    @extend .poppins;
+    color: #ffffff !important;
+    font-size: 12px;
   }
 }

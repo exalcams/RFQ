@@ -5,6 +5,23 @@
                 <img src="assets/images/rfq/backbutton.svg" style="width: 24px;">
             </button>
             <label class="title">Create RFx</label>
+            <div fxFlex></div>
+            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="4px" fxFlex>
+                <button *ngIf="RFxID!=-1 && RFxID" mat-button (click)="ForecloseClicked()"
+                    style="background-color: transparent;">
+                    <img src="/assets/images/foreclose1.png">
+                    <span class="foreclose">Foreclose</span>
+                </button>
+                <button *ngIf="RFxID!=-1 && RFxID" mat-button (click)="DeleteClicked()"
+                    style="background-color: transparent;">
+                    <img src="/assets/images/delete.png">
+                    <span class="delete">Delete</span>
+                </button>
+                <button mat-button (click)="CancelClicked()" style="background-color: transparent;">
+                    <img src="/assets/images/cancel.png">
+                    <span class="cancel">Cancel</span>
+                </button>
+            </div>
         </div>
         <div class="container mt-8 p-8">
             <mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="tabClick($event)" color="accent"
@@ -12,7 +29,8 @@
                 <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
                     <ng-template mat-tab-label>
                         <span>General data</span>
-                        <mat-icon *ngIf="CompletedSteps[0]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==0?'white':'#18a421'}">check_circle</mat-icon>
+                        <mat-icon *ngIf="CompletedSteps[0]" style="margin-left: 1rem;"
+                            [ngStyle]="{'color':selectedIndex==0?'white':'#18a421'}">check_circle</mat-icon>
                     </ng-template>
                     <mat-card>
                         <form autocomplete="off" [formGroup]="RFxFormGroup">
@@ -246,7 +264,8 @@
                 <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
                     <ng-template mat-tab-label>
                         <span>Criteria</span>
-                        <mat-icon *ngIf="CompletedSteps[1]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==1?'white':'#18a421'}">check_circle</mat-icon>
+                        <mat-icon *ngIf="CompletedSteps[1]" style="margin-left: 1rem;"
+                            [ngStyle]="{'color':selectedIndex==1?'white':'#18a421'}">check_circle</mat-icon>
                     </ng-template>
                     <mat-card>
                         <div fxLayout="column">
@@ -266,7 +285,7 @@
                                     <ng-container matColumnDef="Weightage">
                                         <th mat-header-cell *matHeaderCellDef>Weightage</th>
                                         <td mat-cell *matCellDef="let element;index as i;" [formGroupName]="i">
-                                            <mat-form-field class="tb_formfield">
+                                            <mat-form-field class="tb_formfield" style="width: 40%;">
                                                 <input matInput formControlName="Weightage" type="number">
                                             </mat-form-field>
                                         </td>
@@ -275,9 +294,9 @@
                                     <ng-container matColumnDef="Consider">
                                         <th mat-header-cell *matHeaderCellDef>Consider</th>
                                         <td mat-cell *matCellDef="let element;index as i;" [formGroupName]="i">
-                                            <mat-form-field class="tb_formfield">
-                                                <mat-select formControlName="Consider"
-                                                    disableOptionCentering panelClass="myPanelClass">
+                                            <mat-form-field class="tb_formfield" style="width: 100%;">
+                                                <mat-select formControlName="Consider" disableOptionCentering
+                                                    panelClass="myPanelClass">
                                                     <mat-option value="1">High</mat-option>
                                                     <mat-option value="0">Low</mat-option>
                                                 </mat-select>
@@ -295,16 +314,19 @@
                 <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
                     <ng-template mat-tab-label>
                         <span>5Q Rating</span>
-                        <mat-icon *ngIf="CompletedSteps[2]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==2?'white':'#18a421'}">check_circle</mat-icon>
-                        <div class="square" *ngIf="CompletedSteps[2]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==2?'#1a34ba':'white'}">
-                            <span class="tbcount">{{EvaluationDetails.length}}</span>
+                        <!-- <mat-icon *ngIf="CompletedSteps[2]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==2?'white':'#18a421'}">check_circle</mat-icon> -->
+                        <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==2?'#ffffff':'#18a421'}"
+                            fxLayoutAlign="center center" *ngIf="CompletedSteps[2]">
+                            <span class="tbcount"
+                                [ngStyle]="{'color':selectedIndex==2?'#5f2cff':'#ffffff'}">{{EvaluationDetails.length}}</span>
                         </div>
                     </ng-template>
                     <mat-card>
                         <div fxLayout="column">
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                 <label class="tab-title">Criterias</label>
-                                <button mat-button color="primary" class="createbtn" (click)="CreateCriteria()" *ngIf="Rfxheader.Status=='1'">Add</button>
+                                <button mat-button color="primary" class="createbtn" (click)="CreateCriteria()"
+                                    *ngIf="Rfxheader.Status=='1'">Add</button>
                             </div>
                             <table mat-table [dataSource]="EvaluationDetailsDataSource" matSort class="py-10">
                                 <ng-container matColumnDef="Description">
@@ -317,8 +339,10 @@
                                     </th>
                                     <td mat-cell *matCellDef="let element" style="text-align: right;">
                                         <div *ngIf="Rfxheader.Status=='1'">
-                                            <img src="assets/images/edit_blue.png" (click)="OpenCriteriaDialog(element)" class="clickable">
-                                            <img style="margin-left: 9px;" (click)="DeleteCriteria(i)" class="clickable" src="assets/images/delete1.png">
+                                            <img src="assets/images/edit_blue.png" (click)="OpenCriteriaDialog(element)"
+                                                class="clickable">
+                                            <img style="margin-left: 9px;" (click)="DeleteCriteria(i)" class="clickable"
+                                                src="assets/images/delete1.png">
                                         </div>
                                         <span *ngIf="Rfxheader.Status!='1'" style="text-align: right;">Released</span>
                                     </td>
@@ -332,13 +356,19 @@
                 <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
                     <ng-template mat-tab-label>
                         <span>Item</span>
-                        <mat-icon *ngIf="CompletedSteps[3]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==3?'white':'#18a421'}">check_circle</mat-icon>
+                        <!-- <mat-icon *ngIf="CompletedSteps[3]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==3?'white':'#18a421'}">check_circle</mat-icon> -->
+                        <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==3?'#ffffff':'#18a421'}"
+                            fxLayoutAlign="center center" *ngIf="CompletedSteps[3]">
+                            <span class="tbcount"
+                                [ngStyle]="{'color':selectedIndex==3?'#5f2cff':'#ffffff'}">{{ItemDetails.length}}</span>
+                        </div>
                     </ng-template>
                     <mat-card>
                         <div fxLayout="column">
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                 <label class="tab-title">Items</label>
-                                <button mat-button color="primary" class="createbtn" (click)="CreateItem()" *ngIf="Rfxheader.Status=='1'">Add</button>
+                                <button mat-button color="primary" class="createbtn" (click)="CreateItem()"
+                                    *ngIf="Rfxheader.Status=='1'">Add</button>
                             </div>
                             <table mat-table [dataSource]="ItemDetailsDataSource" matSort class="py-10">
                                 <ng-container matColumnDef="Material">
@@ -383,8 +413,10 @@
                                     </th>
                                     <td mat-cell *matCellDef="let element" style="text-align: center;">
                                         <div *ngIf="Rfxheader.Status=='1'">
-                                            <img src="assets/images/edit_blue.png" (click)="OpenItemDialog(element)" class="clickable">
-                                            <img style="margin-left: 9px;" (click)="DeleteItem(i)" class="clickable" src="assets/images/delete1.png">
+                                            <img src="assets/images/edit_blue.png" (click)="OpenItemDialog(element)"
+                                                class="clickable">
+                                            <img style="margin-left: 9px;" (click)="DeleteItem(i)" class="clickable"
+                                                src="assets/images/delete1.png">
                                         </div>
                                         <span *ngIf="Rfxheader.Status!='1'" style="text-align: center;">Released</span>
                                     </td>
@@ -399,13 +431,19 @@
                 <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
                     <ng-template mat-tab-label>
                         <span>Partners</span>
-                        <mat-icon *ngIf="CompletedSteps[4]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==4?'white':'#18a421'}">check_circle</mat-icon>
+                        <!-- <mat-icon *ngIf="CompletedSteps[4]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==4?'white':'#18a421'}">check_circle</mat-icon> -->
+                        <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==4?'#ffffff':'#18a421'}"
+                            fxLayoutAlign="center center" *ngIf="CompletedSteps[4]">
+                            <span class="tbcount"
+                                [ngStyle]="{'color':selectedIndex==4?'#5f2cff':'#ffffff'}">{{PartnerDetails.length}}</span>
+                        </div>
                     </ng-template>
                     <mat-card>
                         <div fxLayout="column">
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                 <label class="tab-title">Partners</label>
-                                <button mat-button color="primary" class="createbtn" (click)="CreatePartner()" *ngIf="Rfxheader.Status=='1'">Add</button>
+                                <button mat-button color="primary" class="createbtn" (click)="CreatePartner()"
+                                    *ngIf="Rfxheader.Status=='1'">Add</button>
                             </div>
                             <table mat-table [dataSource]="PartnerDetailsDataSource" matSort class="py-10">
                                 <ng-container matColumnDef="Type">
@@ -423,7 +461,8 @@
                                     </th>
                                     <td mat-cell *matCellDef="let element" style="text-align: right;">
                                         <div *ngIf="Rfxheader.Status=='1'">
-                                            <img (click)="DeletePartner(i)" class="clickable" src="assets/images/delete1.png">
+                                            <img (click)="DeletePartner(i)" class="clickable"
+                                                src="assets/images/delete1.png">
                                         </div>
                                         <span *ngIf="Rfxheader.Status!='1'" style="text-align: right;">Released</span>
                                     </td>
@@ -437,7 +476,12 @@
                 <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
                     <ng-template mat-tab-label>
                         <span>Vendors</span>
-                        <mat-icon *ngIf="CompletedSteps[5]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==5?'white':'#18a421'}">check_circle</mat-icon>
+                        <!-- <mat-icon *ngIf="CompletedSteps[5]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==5?'white':'#18a421'}">check_circle</mat-icon> -->
+                        <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==5?'#ffffff':'#18a421'}"
+                            fxLayoutAlign="center center" *ngIf="CompletedSteps[5]">
+                            <span class="tbcount"
+                                [ngStyle]="{'color':selectedIndex==5?'#5f2cff':'#ffffff'}">{{VendorDetails.length}}</span>
+                        </div>
                     </ng-template>
                     <mat-card>
                         <div fxLayout="column">
@@ -446,9 +490,12 @@
                                     <label class="tab-title">Vendors</label>
                                 </div>
                                 <div fxFlex=50 fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-                                    <button mat-button color="primary" class="createbtn" (click)="OpenSelectVendorDialog(VendorDetails)" *ngIf="Rfxheader.Status=='1'">Select</button>
-                                    <button mat-button color="primary" class="createbtn" (click)="CreateVendor()" *ngIf="Rfxheader.Status=='1'">Add</button>
-                                </div> 
+                                    <button mat-button color="primary" class="createbtn"
+                                        (click)="OpenSelectVendorDialog(VendorDetails)"
+                                        *ngIf="Rfxheader.Status=='1'">Select</button>
+                                    <button mat-button color="primary" class="createbtn" (click)="CreateVendor()"
+                                        *ngIf="Rfxheader.Status=='1'">Add</button>
+                                </div>
                             </div>
                             <table mat-table [dataSource]="VendorDetailsDataSource" matSort class="py-10">
                                 <ng-container matColumnDef="Vendor">
@@ -481,7 +528,8 @@
                                     </th>
                                     <td mat-cell *matCellDef="let element" style="text-align: center;">
                                         <div *ngIf="Rfxheader.Status=='1'">
-                                            <img (click)="DeleteVendor(i)" class="clickable" src="assets/images/delete1.png">
+                                            <img (click)="DeleteVendor(i)" class="clickable"
+                                                src="assets/images/delete1.png">
                                         </div>
                                         <span *ngIf="Rfxheader.Status!='1'" style="text-align: center;">Released</span>
                                     </td>
@@ -495,14 +543,16 @@
                 <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
                     <ng-template mat-tab-label>
                         <span>Others</span>
-                        <mat-icon *ngIf="CompletedSteps[6]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==6?'white':'#18a421'}">check_circle</mat-icon>
+                        <mat-icon *ngIf="CompletedSteps[6]" style="margin-left: 1rem;"
+                            [ngStyle]="{'color':selectedIndex==6?'white':'#18a421'}">check_circle</mat-icon>
                     </ng-template>
                     <mat-card>
                         <div fxLayout="column">
                             <div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                     <label class="tab-title">Questions</label>
-                                    <button mat-button color="primary" class="createbtn" (click)="CreateQuestion()" *ngIf="Rfxheader.Status=='1'">Add</button>
+                                    <button mat-button color="primary" class="createbtn" (click)="CreateQuestion()"
+                                        *ngIf="Rfxheader.Status=='1'">Add</button>
                                 </div>
                                 <table mat-table [dataSource]="ODDetailsDataSource" matSort class="py-10">
                                     <ng-container matColumnDef="Question">
@@ -512,18 +562,22 @@
 
                                     <ng-container matColumnDef="AnswerType">
                                         <th mat-header-cell mat-sort-header *matHeaderCellDef> Answer type </th>
-                                        <td mat-cell *matCellDef="let element"> {{GetAnswerType(element.AnswerType)}} </td>
+                                        <td mat-cell *matCellDef="let element"> {{GetAnswerType(element.AnswerType)}}
+                                        </td>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="Action">
                                         <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Action
                                         </th>
                                         <td mat-cell *matCellDef="let element" style="text-align: right;">
                                             <div *ngIf="Rfxheader.Status=='1'">
-                                                <img src="assets/images/edit_blue.png" (click)="OpenQuestionDialog(element)" class="clickable">
-                                                <img style="margin-left: 9px;" (click)="DeleteQuetion(i)" class="clickable" src="assets/images/delete1.png">
+                                                <img src="assets/images/edit_blue.png"
+                                                    (click)="OpenQuestionDialog(element)" class="clickable">
+                                                <img style="margin-left: 9px;" (click)="DeleteQuetion(i)"
+                                                    class="clickable" src="assets/images/delete1.png">
                                             </div>
-                                            <span *ngIf="Rfxheader.Status!='1'" style="text-align: right;">Released</span>
+                                            <span *ngIf="Rfxheader.Status!='1'"
+                                                style="text-align: right;">Released</span>
                                         </td>
                                     </ng-container>
                                     <tr mat-header-row *matHeaderRowDef="ODDetailsDisplayedColumns"></tr>
@@ -533,27 +587,30 @@
                             <div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center" class="py-24">
                                     <label class="tab-title">Documents</label>
-                                    <button mat-button color="primary" class="createbtn" (click)="CreateDocument()" *ngIf="Rfxheader.Status=='1'">Add</button>
+                                    <button mat-button color="primary" class="createbtn" (click)="CreateDocument()"
+                                        *ngIf="Rfxheader.Status=='1'">Add</button>
                                 </div>
                                 <table mat-table [dataSource]="ODAttachDetailsDataSource" matSort class="py-10">
                                     <ng-container matColumnDef="DocumentTitle">
                                         <th mat-header-cell mat-sort-header *matHeaderCellDef> Document title </th>
                                         <td mat-cell *matCellDef="let element"> {{element.DocumentTitle}} </td>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="DocumentName">
                                         <th mat-header-cell mat-sort-header *matHeaderCellDef> Document </th>
                                         <td mat-cell *matCellDef="let element"> {{element.DocumentName}} </td>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="Action">
                                         <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Action
                                         </th>
                                         <td mat-cell *matCellDef="let element" style="text-align: right;">
                                             <div *ngIf="Rfxheader.Status=='1'">
-                                                <img (click)="DeleteAttachment(i)" class="clickable" src="assets/images/delete1.png">
+                                                <img (click)="DeleteAttachment(i)" class="clickable"
+                                                    src="assets/images/delete1.png">
                                             </div>
-                                            <span *ngIf="Rfxheader.Status!='1'" style="text-align: right;">Released</span>
+                                            <span *ngIf="Rfxheader.Status!='1'"
+                                                style="text-align: right;">Released</span>
                                         </td>
                                     </ng-container>
                                     <tr mat-header-row *matHeaderRowDef="ODAttachDetailsDisplayedColumns"></tr>
@@ -564,23 +621,31 @@
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
                                     <label class="tab-title">Remarks</label>
                                 </div>
-                                <textarea style="border: 1px solid #48465b4a;" matInput fxFlex [(ngModel)]="RFxRemark.Remark" [disabled]="Rfxheader.Status!='1'"></textarea>
+                                <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
+                                    <textarea matInput fxFlex
+                                        [(ngModel)]="RFxRemark.Remark" [disabled]="Rfxheader.Status!='1'"></textarea>
+                                </mat-form-field>
                             </div>
                         </div>
                     </mat-card>
                 </mat-tab>
             </mat-tab-group>
         </div>
-        <div class="footer" fxLayout="column" fxLayoutAlign="space-between">
+        <div class="footer" fxLayout="column" fxLayoutAlign="space-between"
+            *ngIf="Rfxheader.Status=='1' || !Rfxheader.Status">
             <div fxLayout="row" fxLayoutAlign="space-between center" class="px-8 pt-8" *ngIf="!IsComplete()">
-                <button *ngIf="index!=0" (click)="PreviousClicked(selectedIndex)" mat-button class="prevnxtbtn">Previous</button>
-                <button *ngIf="index!=6" (click)="NextClicked(selectedIndex)" mat-button class="prevnxtbtn">Next</button>
+                <button *ngIf="index!=0" (click)="PreviousClicked(selectedIndex)" mat-button
+                    class="prevnxtbtn">Previous</button>
+                <button *ngIf="index!=6" (click)="NextClicked(selectedIndex)" mat-button
+                    class="prevnxtbtn">Next</button>
             </div>
-            <div *ngIf="Rfxheader.Status=='1' && IsComplete()" fxLayout="row" fxLayoutAlign="space-between center" fxFlex class="px-8">
+            <div *ngIf="Rfxheader.Status=='1' && IsComplete()" fxLayout="row" fxLayoutAlign="space-between center"
+                fxFlex class="px-8">
                 <button mat-button class="savebtn" (click)="SaveRFxClicked(false)">Save</button>
                 <button mat-button class="releasebtn" (click)="SaveRFxClicked(true)">Release</button>
             </div>
-            <mat-progress-bar class="progressbar" mode="determinate" [value]="Progress" *ngIf="!RFxID"></mat-progress-bar>
+            <mat-progress-bar class="progressbar" mode="determinate" [value]="Progress" *ngIf="!RFxID">
+            </mat-progress-bar>
         </div>
     </div>
     <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">

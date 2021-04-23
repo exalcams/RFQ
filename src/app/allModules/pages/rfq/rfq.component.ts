@@ -5,12 +5,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractCon
 import { MatTableDataSource } from '@angular/material/table';
 import { RFxHeader, RFxHC, RFxItem, RFxIC, RFxPartner, MVendor, RFxOD, RFxODAttachment, RFxVendor, RFxVendorView, RFxView, RFxRemark, MRFxType, MRFxGroup } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
-import { DialogContentExampleDialogComponent } from './rfq-dialogs/Criteria-Dialog/dialog-content-example-dialog.component';
-import { DialogContentExampleDialog2Component } from './rfq-dialogs/Item-Dialog/dialog-content-example-dialog2.component';
-import { DialogContentExampleDialog3Component } from './rfq-dialogs/Partner-Dialo/dialog-content-example-dialog3.component';
-import { DialogContentExampleDialog4Component } from './rfq-dialogs/Vendor-Dialog/dialog-content-example-dialog4.component';
-import { DialogContentExampleDialog5Component } from './rfq-dialogs/Question-Dialog/dialog-content-example-dialog5.component';
-import { DialogContentExampleDialog7Component } from './rfq-dialogs/Attachment-Dialog/dialog-content-example-dialog7.component';
+import { CriteriaDialogComponent } from './rfq-dialogs/Criteria-Dialog/criteria-dialog.component';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { MatSnackBar } from '@angular/material';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
@@ -22,6 +17,12 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { ForecloseDialogComponent } from './rfq-dialogs/foreclose-dialog/foreclose-dialog.component';
 import { DateTimeValidator } from 'app/shared/date-time-validator';
 import { BehaviorSubject } from 'rxjs';
+import { ItemDialogComponent } from './rfq-dialogs/Item-Dialog/item-dialog.component';
+import { PartnerDialogComponent } from './rfq-dialogs/Partner-Dialog/partner-dialog.component';
+import { AddVendorDialogComponent } from './rfq-dialogs/add-vendor-dialog/add-vendor-dialog.component';
+import { QuestionDialogComponent } from './rfq-dialogs/Question-Dialog/question-dialog.component';
+import { RFQAttachmentDialogComponent } from './rfq-dialogs/Attachment-Dialog/rfq-attachment-dialog.component';
+import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 
 
 @Component({
@@ -374,11 +375,14 @@ export class RfqComponent implements OnInit {
   }
 
   OpenCriteriaDialog(Criteria: RFxHC, bool: boolean) {
-    const dialogRef = this.dialog.open(DialogContentExampleDialogComponent, {
-      data: { data: Criteria, isCreate: bool }, height: '32%',
-      width: '50%'
-    });
-    dialogRef.disableClose = true;
+    const dialogConfig: MatDialogConfig = {
+      data: {
+        data: Criteria,
+        isCreate: bool 
+      },
+      panelClass: "criteria-dialog"
+    };
+    const dialogRef = this.dialog.open(CriteriaDialogComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(res => {
       if (res && res.isCreate) {
         this.EvaluationDetails.push(res.data);
@@ -387,11 +391,9 @@ export class RfqComponent implements OnInit {
     });
   }
   OpenItemDialog(Item: RFxItem, bool: boolean) {
-    const dialogRef = this.dialog.open(DialogContentExampleDialog2Component, {
-      data: { data: Item, isCreate: bool }, height: '82%',
-      width: '82%'
+    const dialogRef = this.dialog.open(ItemDialogComponent, {
+      data: { data: Item, isCreate: bool }, panelClass:"item-dialog"
     });
-    dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res => {
       if (res && res.isCreate) {
         this.ItemDetails.push(res.data);
@@ -402,11 +404,9 @@ export class RfqComponent implements OnInit {
     });
   }
   OpenPartnerDialog(Partner: RFxPartner, bool: boolean) {
-    const dialogRef = this.dialog.open(DialogContentExampleDialog3Component, {
-      data: { data: Partner, isCreate: bool, RFxPartners: this.PartnerDetails }, height: '43%',
-      width: '40%'
+    const dialogRef = this.dialog.open(PartnerDialogComponent, {
+      data: { data: Partner, isCreate: bool, RFxPartners: this.PartnerDetails }, panelClass:"partner-dialog"
     });
-    dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
         this.PartnerDetails = res;
@@ -415,13 +415,10 @@ export class RfqComponent implements OnInit {
     });
   }
   OpenVendorDialog(Vendor: RFxVendorView) {
-    const dialogRef = this.dialog.open(DialogContentExampleDialog4Component, {
-      data: { data: Vendor }, height: '90%',
-      width: '40%'
+    const dialogRef = this.dialog.open(AddVendorDialogComponent, {
+      data: { data: Vendor }, panelClass:"add-vendor-dialog"
     });
-    dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res => {
-      //console.log(res);
       if (res) {
         this.VendorDetails.push(res.data);
         this.Vendors = [];
@@ -439,12 +436,9 @@ export class RfqComponent implements OnInit {
   }
   OpenSelectVendorDialog(vendors: RFxVendorView[]) {
     const dialogRef = this.dialog.open(SelectVendorDialogComponent, {
-      data: { data: vendors }, height: '80%',
-      width: '40%'
+      data: { data: vendors }, panelClass:"select-vendor-dialog"
     });
-    dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res => {
-      //console.log(res);
       if (res) {
         this.VendorDetails = res.data;
         this.Vendors = [];
@@ -460,11 +454,9 @@ export class RfqComponent implements OnInit {
     });
   }
   OpenQuestionDialog(Question: RFxOD, bool: boolean) {
-    const dialogRef = this.dialog.open(DialogContentExampleDialog5Component, {
-      data: { data: Question, isCreate: bool }, height: '44%',
-      width: '50%'
+    const dialogRef = this.dialog.open(QuestionDialogComponent, {
+      data: { data: Question, isCreate: bool }, panelClass:"question-dialog"
     });
-    dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res => {
       if (res && res.isCreate) {
         this.ODDetails.push(res.data);
@@ -481,13 +473,10 @@ export class RfqComponent implements OnInit {
     });
   }
   OpenDocumentDialog(Document: RFxODAttachment, bool: boolean) {
-    const dialogRef = this.dialog.open(DialogContentExampleDialog7Component, {
-      data: { data: Document, isCreate: bool }, height: '52%',
-      width: '50%'
+    const dialogRef = this.dialog.open(RFQAttachmentDialogComponent, {
+      data: { data: Document, isCreate: bool }, panelClass:"rfq-attachment-dialog"
     });
-    dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res => {
-      //console.log(res);
       if (res && res.isCreate) {
         this.ODAttachDetails.push(res.data);
         this.ODAttachDetailsDataSource = new MatTableDataSource(this.ODAttachDetails);
@@ -500,13 +489,29 @@ export class RfqComponent implements OnInit {
       else {
         this.FilesToUpload.push(res.Attachments);
       }
-      //console.log(this.FilesToUpload);
     });
+  }
+  OpenForecloseDialog(): void {
+    const dialogConfig: MatDialogConfig = {
+      data: {
+        RFxTitle: this.Rfxheader.Title
+      },
+      panelClass: 'foreclose-dialog'
+    };
+    const dialogRef = this.dialog.open(ForecloseDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+          this.RFxRemark.Remark=result;
+          this.UpdateRFx(false,true);
+          this._router.navigate(["pages/home"]);
+        }
+      });
   }
   ShowValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
         if (!formGroup.get(key).valid) {
-            console.log(key);
+            //console.log(key);
         }
         formGroup.get(key).markAsTouched();
         formGroup.get(key).markAsDirty();
@@ -519,7 +524,7 @@ export class RfqComponent implements OnInit {
                         FormGroupControls.get(key2).markAsTouched();
                         FormGroupControls.get(key2).markAsDirty();
                         if (!FormGroupControls.get(key2).valid) {
-                            console.log(key2);
+                            //console.log(key2);
                         }
                     });
                 } else {
@@ -566,21 +571,6 @@ export class RfqComponent implements OnInit {
       return "Long text"
     }
   }
-  // ConvertToDateTime(ParamDate: Date, Time: string): Date {
-  //   var date=new Date(ParamDate);
-  //   var test = Time;
-  //   var timeReg =/([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])\s*([AaPp][Mm])/;
-  //   var parts = test.match(timeReg);
-  //   var hours = /am/i.test(parts[3]) ?
-  //     function (am) { return am < 12 ? am : 0 }(parseInt(parts[1], 10)) :
-  //     function (pm) { return pm < 12 ? pm + 12 : 12 }(parseInt(parts[1], 10));
-
-  //   var minutes = parseInt(parts[2], 10);
-  //   date.setHours(hours);
-  //   date.setMinutes(minutes);
-  //   date.setSeconds(0,0);
-  //   return date;
-  // }
   NextClicked(index: number): void {
     if(index == 0){
       if(this.RFxFormGroup.valid && (this.RFxID == null || this.RFxID=="-1")){
@@ -799,7 +789,7 @@ export class RfqComponent implements OnInit {
           this._RFxService.UploadRFxAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
           if (isRelease) {
             this.isProgressBarVisibile = false;
-            Swal.fire('RFQ released saved Successfully');
+            Swal.fire('RFQ released successfully');
             this._router.navigate(['pages/home']);
           }
           else {
@@ -821,27 +811,10 @@ export class RfqComponent implements OnInit {
     this.OpenForecloseDialog();
   }
   DeleteClicked(){
-
+    this.OpenConfirmationDialog("Delete","RFx")
   }
   CancelClicked(){
     this._router.navigate(['pages/home'])
-  }
-  OpenForecloseDialog(): void {
-    const dialogConfig: MatDialogConfig = {
-      data: {
-        RFxTitle: this.Rfxheader.Title
-      },
-      panelClass: 'foreclose-dialog'
-    };
-    const dialogRef = this.dialog.open(ForecloseDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      result => {
-        if (result) {
-          this.RFxRemark.Remark=result;
-          this.UpdateRFx(false,true);
-          this._router.navigate(["pages/home"]);
-        }
-      });
   }
   AddRowToIC(Row:RFxIC){
     this.ItemCriteriaFormArray.push(this._formBuilder.group({
@@ -854,5 +827,32 @@ export class RfqComponent implements OnInit {
     while (formArray.length !== 0) {
         formArray.removeAt(0);
     }
+}
+OpenConfirmationDialog(Actiontype: string, Catagory: string): void {
+  const dialogConfig: MatDialogConfig = {
+    data: {
+      Actiontype: Actiontype,
+      Catagory: Catagory
+    },
+    panelClass: 'confirmation-dialog'
+  };
+  const dialogRef = this.dialog.open(NotificationDialogComponent, dialogConfig);
+  dialogRef.afterClosed().subscribe(
+    result => {
+      if (result) {
+        this.DeleteRFx(this.RFxID);
+      }
+    });
+}
+DeleteRFx(RFxID:string){
+  this.isProgressBarVisibile=true;
+  this._RFxService.DeleteRFx(RFxID).subscribe(x=>{
+    this.isProgressBarVisibile=false;
+    Swal.fire('RFQ deleted Successfully');
+    this._router.navigate(['pages/home']);
+  },err=>{
+    console.log(err);
+    this.isProgressBarVisibile=false;
+  });
 }
 }

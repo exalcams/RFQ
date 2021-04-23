@@ -1,15 +1,15 @@
 @import "src/@fuse/scss/fuse";
 
 .attachment-dialog {
-    .mat-radio-button {
-        margin: 0 5px;
-    }
-    .mat-dialog-container {
+    .poppins{
+        font-family: Poppins;
+        font-weight: 600;
+      }
+      .mat-dialog-container {
         padding: 0px;
-        //width: 1140px;
         width:75vw !important;
         overflow-x: hidden;
-        border-radius: 0px;
+        border-radius: 4px;
     }
     .mat-dialog-content {
         margin: 0px;
@@ -17,19 +17,24 @@
         padding-left: 5px;
         max-height: 80vh;
     }
-    .toolBg {
-        //background-color: #121214 !important;
-        height: 46px;
-        box-shadow: 0 3px 6px 0 #0000001a;
-        color: #595d6e !important;
-    }
-    .btnBg {
-        background-color: #068dd0 !important;
-        color: white !important;
-    }
-    .btclose{
-       
-        background-color:#068dd0 !important;
-        color:  white !important;
-    }
+      .toolbar{
+        background-color: #f4f4fb;
+        height: 56px;
+      }
+      .title{
+          @extend .poppins;
+          font-size: 12px;
+          color: #2c2c2e;
+      }
+      .footer{
+        box-shadow: 0 2px 18px 0 rgba(74, 122, 255, 0.38);
+        background-color: #fdfdfd;
+        height: 56px;
+      }
+      .savebtn{
+        background-color: #5f2cff !important;
+        @extend .poppins;
+        color: #ffffff !important;
+        font-size: 12px;
+      }
 }

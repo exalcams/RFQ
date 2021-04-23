@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DialogContentExampleDialog2Component } from 'app/allModules/pages/rfq/rfq-dialogs/Item-Dialog/dialog-content-example-dialog2.component';
 import { ResOD, RFxOD } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 
@@ -17,7 +16,7 @@ export class ResAnsDialogComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
      private _RFxService: RFxService,
-     public dialogRef: MatDialogRef<DialogContentExampleDialog2Component>,
+     public dialogRef: MatDialogRef<ResAnsDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
     ) {
       this.Question=data.data;

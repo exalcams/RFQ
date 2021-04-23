@@ -59,13 +59,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DecimalPipe } from '@angular/common';
 import { RfqComponent } from './rfq/rfq.component';
 import { EventEmitterService } from 'app/services/event-emitter.service';
-import { DialogContentExampleDialogComponent } from './rfq/rfq-dialogs/Criteria-Dialog/dialog-content-example-dialog.component';
-import { DialogContentExampleDialog1Component } from './rfq/rfq-dialogs/Rateing-Dialog/dialog-content-example-dialog1.component';
-import { DialogContentExampleDialog2Component } from './rfq/rfq-dialogs/Item-Dialog/dialog-content-example-dialog2.component';
-import { DialogContentExampleDialog3Component } from './rfq/rfq-dialogs/Partner-Dialo/dialog-content-example-dialog3.component';
-import { DialogContentExampleDialog4Component } from './rfq/rfq-dialogs/Vendor-Dialog/dialog-content-example-dialog4.component';
-import { DialogContentExampleDialog5Component } from './rfq/rfq-dialogs/Question-Dialog/dialog-content-example-dialog5.component';
-import { DialogContentExampleDialog7Component } from './rfq/rfq-dialogs/Attachment-Dialog/dialog-content-example-dialog7.component';
+import { CriteriaDialogComponent } from './rfq/rfq-dialogs/Criteria-Dialog/criteria-dialog.component';
 import { ResponseHomeComponent } from './response-home/response-home.component';
 import { ResponseComponent } from './response/response.component';
 import { ResItemDialogComponent } from './response/response-dialogs/res-item-dialog/res-item-dialog.component';
@@ -87,6 +81,11 @@ import { AwardDetailEvaluationComponent } from './award-detail-evaluation/award-
 import { MutedialogComponent } from './response-home/Dialogs/mutedialog/mutedialog.component';
 import { ForecloseDialogComponent } from './rfq/rfq-dialogs/foreclose-dialog/foreclose-dialog.component';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { ItemDialogComponent } from './rfq/rfq-dialogs/Item-Dialog/item-dialog.component';
+import { PartnerDialogComponent } from './rfq/rfq-dialogs/Partner-Dialog/partner-dialog.component';
+import { AddVendorDialogComponent } from './rfq/rfq-dialogs/add-vendor-dialog/add-vendor-dialog.component';
+import { QuestionDialogComponent } from './rfq/rfq-dialogs/Question-Dialog/question-dialog.component';
+import { RFQAttachmentDialogComponent } from './rfq/rfq-dialogs/Attachment-Dialog/rfq-attachment-dialog.component';
 
 
 const routes = [
@@ -213,13 +212,12 @@ const routes = [
         DashboardComponent,
         RfqHomeComponent,
         RfqComponent,
-        DialogContentExampleDialogComponent,
-        DialogContentExampleDialog2Component,
-        DialogContentExampleDialog1Component,
-        DialogContentExampleDialog3Component,
-        DialogContentExampleDialog4Component,
-        DialogContentExampleDialog5Component,
-        DialogContentExampleDialog7Component,
+        CriteriaDialogComponent,
+        ItemDialogComponent,
+        PartnerDialogComponent,
+        AddVendorDialogComponent,
+        QuestionDialogComponent,
+        RFQAttachmentDialogComponent,
         ResponseHomeComponent,
         ResponseComponent,
         ResItemDialogComponent,
@@ -245,13 +243,12 @@ const routes = [
         EventEmitterService,
     ],
     entryComponents: [
-        DialogContentExampleDialogComponent,
-        DialogContentExampleDialog2Component,
-        DialogContentExampleDialog1Component,
-        DialogContentExampleDialog3Component,
-        DialogContentExampleDialog4Component,
-        DialogContentExampleDialog5Component,
-        DialogContentExampleDialog7Component,
+        CriteriaDialogComponent,
+        ItemDialogComponent,
+        PartnerDialogComponent,
+        AddVendorDialogComponent,
+        QuestionDialogComponent,
+        RFQAttachmentDialogComponent,
         ResItemDialogComponent,
         ResAnsDialogComponent,
         ResAttachDialogComponent,

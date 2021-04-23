@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MVendor, MVendorView, RFxVendor, RFxVendorView } from 'app/models/RFx';
@@ -7,7 +7,8 @@ import { RFxService } from 'app/services/rfx.service';
 @Component({
   selector: 'app-select-vendor-dialog',
   templateUrl: './select-vendor-dialog.component.html',
-  styleUrls: ['./select-vendor-dialog.component.scss']
+  styleUrls: ['./select-vendor-dialog.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
 export class SelectVendorDialogComponent implements OnInit {
   Searchkey: string = '';

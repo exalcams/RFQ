@@ -1,0 +1,103 @@
+<div>
+    <mat-toolbar class="toolbar1">
+        <p class="add_criteria">Add Vendor</p>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+            <img (click)="dialogRef.close()" style="cursor: pointer;" src="assets/images/cancel1.png">
+            <!-- <img (click)="dialogRef.close()" src="assets/images/cancel1.png"> -->
+        </div>
+    </mat-toolbar>
+</div>
+<mat-dialog-content [formGroup]="DialogueFormGroup">
+    <div style="padding: 2rem 2rem 0rem;">
+        <div fxLayout="column" fxFlex="100">
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>Vendor</mat-label>
+                <input matInput formControlName="Vendor" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('Vendor').touched && DialogueFormGroup.get('Vendor').hasError('required')">
+                    Vendor is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>Type</mat-label>
+                <mat-select formControlName="Type" fxFlex>
+                    <mat-option value="Domestic Supply">Domestic Supply</mat-option>
+                    <mat-option value="Domestic Service"> Domestic Service </mat-option>
+                    <mat-option value="Import Vendor"> Import Vendor</mat-option>
+                </mat-select>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('Type').touched && DialogueFormGroup.get('Type').hasError('required')">
+                    Vendor type is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>Vendor name</mat-label>
+                <input matInput maxlength="40" size="40" formControlName="v_name" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('v_name').touched && DialogueFormGroup.get('v_name').hasError('required')">
+                    Vendor name is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>GST no.</mat-label>
+                <input matInput maxlength="15" size="15" formControlName="GST" fxFlex>
+            </mat-form-field>
+
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>City</mat-label>
+                <input matInput formControlName="City" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('City').touched && DialogueFormGroup.get('City').hasError('required')">
+                    City is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>Email ID 1</mat-label>
+                <input matInput formControlName="mailid1" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('mailid1').touched && DialogueFormGroup.get('mailid1').hasError('required')">
+                    Mail ID is required
+                </mat-error>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('mailid1').touched && DialogueFormGroup.get('mailid1').hasError('email')">
+                    Invalid Email
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>Email ID 2</mat-label>
+                <input matInput formControlName="mailid2" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('mailid2').touched && DialogueFormGroup.get('mailid2').hasError('email')">
+                    Invalid Email
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>Contact Person</mat-label>
+                <input matInput formControlName="contactPerson" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('contactPerson').touched && DialogueFormGroup.get('contactPerson').hasError('required')">
+                    Contact person is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>contact Person Mobile</mat-label>
+                <input matInput formControlName="mobile" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('mobile').touched && DialogueFormGroup.get('mobile').hasError('required')">
+                    Contact person mobile is required
+                </mat-error>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('mobile').touched && DialogueFormGroup.get('mobile').hasError('pattern')">
+                    Invalid mobile number
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center">
+    <button mat-button class="cl_button1" (click)="Save()"><span class="add">Create</span>
+    </button>
+</mat-dialog-actions>

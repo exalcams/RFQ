@@ -1,4 +1,4 @@
-import { Component, OnInit ,Optional, Inject } from '@angular/core';
+import { Component, OnInit ,Optional, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MVendor, RFxVendor, RFxVendorView } from 'app/models/RFx';
@@ -6,18 +6,19 @@ import { RFxService } from 'app/services/rfx.service';
 
 
 @Component({
-  selector: 'app-dialog-content-example-dialog4',
-  templateUrl: './dialog-content-example-dialog4.component.html',
-  styleUrls: ['./dialog-content-example-dialog4.component.css']
+  selector: 'app-add-vendor-dialog',
+  templateUrl: './add-vendor-dialog.component.html',
+  styleUrls: ['./add-vendor-dialog.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
-export class DialogContentExampleDialog4Component implements OnInit {
+export class AddVendorDialogComponent implements OnInit {
   DialogueFormGroup: FormGroup;
   VendorView=new RFxVendorView;
   VendorMaster:MVendor[]=[];
   constructor
   (
     private _formBuilder: FormBuilder,
-    private _RFxService: RFxService, public dialogRef: MatDialogRef<DialogContentExampleDialog4Component>,
+    private _RFxService: RFxService, public dialogRef: MatDialogRef<AddVendorDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) { this.VendorView = data.data; }
   ngOnInit(): void {

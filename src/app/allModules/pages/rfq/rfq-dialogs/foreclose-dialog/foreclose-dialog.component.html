@@ -1,21 +1,21 @@
 <div class="dialog-content-wrapper">
-  <mat-toolbar class="toolbar1">
-    <p class="add_criteria">Foreclose</p>
-    <img (click)="dialogRef.close()" src="assets/images/cancel1.png" style="cursor: pointer;">
+  <mat-toolbar class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+      <p class="title">Foreclose</p>
+      <img (click)="dialogRef.close()" src="assets/images/cancel1.png" style="cursor: pointer;">
   </mat-toolbar>
 
   <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
-    <form autocomplete="off" [formGroup]="DialogueFormGroup">
-      <mat-form-field fxFlex style="font-size: 14px;" appearance="outline">
-        <mat-label>Remarks</mat-label>
-        <textarea matInput type="text" formControlName="Remarks" fxFlex></textarea>
-        <mat-error *ngIf="DialogueFormGroup.get('Remarks').touched && DialogueFormGroup.get('Remarks').hasError('required')">
-          RFQ Title is required
-        </mat-error>
-      </mat-form-field>
-    </form>
+      <form autocomplete="off" [formGroup]="DialogueFormGroup">
+        <mat-form-field fxFlex style="font-size: 14px;" appearance="outline">
+          <mat-label>Remarks</mat-label>
+          <textarea matInput type="text" formControlName="Remarks" fxFlex></textarea>
+          <mat-error *ngIf="DialogueFormGroup.get('Remarks').touched && DialogueFormGroup.get('Remarks').hasError('required')">
+            RFQ Title is required
+          </mat-error>
+        </mat-form-field>
+      </form>
   </mat-dialog-content>
-  <mat-dialog-actions class="m-0 p-16" fxLayoutAlign="center center">
-    <button mat-button type="button" class="cl_button1" (click)="YesClicked()">Foreclose</button>
+  <mat-dialog-actions class="m-0 p-16 footer" fxLayoutAlign="center center">
+      <button mat-button type="button" class="savebtn"  (click)="YesClicked()">Foreclose</button>
   </mat-dialog-actions>
 </div>
