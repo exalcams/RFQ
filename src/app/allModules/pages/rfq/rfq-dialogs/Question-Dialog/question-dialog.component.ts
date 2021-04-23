@@ -1,4 +1,4 @@
-import { Component, OnInit , Optional, Inject} from '@angular/core';
+import { Component, OnInit , Optional, Inject, ViewEncapsulation} from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RFxHeader, RFxOD } from 'app/models/RFx';
@@ -6,15 +6,16 @@ import { EventEmitterService } from 'app/services/event-emitter.service';
 import { RFxService } from 'app/services/rfx.service';
 
 @Component({
-  selector: 'app-dialog-content-example-dialog5',
-  templateUrl: './dialog-content-example-dialog5.component.html',
-  styleUrls: ['./dialog-content-example-dialog5.component.css']
+  selector: 'app-question-dialog',
+  templateUrl: './question-dialog.component.html',
+  styleUrls: ['./question-dialog.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
-export class DialogContentExampleDialog5Component implements OnInit {
+export class QuestionDialogComponent implements OnInit {
   DialogueFormGroup: FormGroup;
   rfx = new RFxOD;
   constructor(  
-    private _formBuilder: FormBuilder,public dialogRef: MatDialogRef<DialogContentExampleDialog5Component>,
+    private _formBuilder: FormBuilder,public dialogRef: MatDialogRef<QuestionDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {  this.rfx = data.data;}
   ngOnInit(): void {
     this.InitializeDialogueFormGroup();

@@ -1,20 +1,13 @@
-<div>
-    <mat-toolbar class="toolbar1">
-        <p class="add_criteria">Add Vendor</p>
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
-            <img (click)="dialogRef.close()" style="cursor: pointer;" src="assets/images/cancel1.png">
-            <!-- <img (click)="dialogRef.close()" src="assets/images/cancel1.png"> -->
-        </div>
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+        <p class="title">Add vendor</p>
+        <img (click)="dialogRef.close()" src="assets/images/cancel1.png" style="cursor: pointer;">
     </mat-toolbar>
-</div>
-<mat-dialog-content [formGroup]="DialogueFormGroup">
-    <div style="padding: 2rem 2rem 0rem;">
-        <div fxLayout="column" fxFlex="100">
+
+    <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <form autocomplete="off" [formGroup]="DialogueFormGroup" fxLayout=column>
             <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
                 <mat-label>Vendor</mat-label>
-                <!-- <mat-select *ngIf="!isNewVendor" formControlName="Vendor" fxFlex (selectionChange)="VendorSelected($event.value)">
-                    <mat-option *ngFor="let item of VendorMaster" [value]="item.PatnerID">{{item.PatnerID}}</mat-option>
-                </mat-select> -->
                 <input matInput formControlName="Vendor" fxFlex>
                 <mat-error
                     *ngIf="DialogueFormGroup.get('Vendor').touched && DialogueFormGroup.get('Vendor').hasError('required')">
@@ -47,10 +40,6 @@
             <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
                 <mat-label>GST no.</mat-label>
                 <input matInput maxlength="15" size="15" formControlName="GST" fxFlex>
-                <!-- <mat-error
-                    *ngIf="DialogueFormGroup.get('GST').touched && DialogueFormGroup.get('GST').hasError('required')">
-                    GST number is required
-                </mat-error> -->
             </mat-form-field>
 
             <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
@@ -101,10 +90,9 @@
                     Invalid mobile number
                 </mat-error>
             </mat-form-field>
-        </div>
-    </div>
-</mat-dialog-content>
-<mat-dialog-actions fxLayoutAlign="center">
-    <button mat-button class="cl_button1" (click)="Save()"><span class="add">Create</span>
-    </button>
-</mat-dialog-actions>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions class="m-0 p-16 footer" fxLayoutAlign="center center">
+        <button mat-button type="button" class="savebtn" (click)="Save()">{{data.isCreate?'Add':'Save'}}</button>
+    </mat-dialog-actions>
+</div>

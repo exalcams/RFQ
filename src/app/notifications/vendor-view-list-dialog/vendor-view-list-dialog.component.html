@@ -1,14 +1,11 @@
 <div class="dialog-content-wrapper">
-  <div>
-    <mat-toolbar class="toolbar1">
-        <p class="add_criteria">Vendors</p>
-        <img (click)="matDialogRef.close()" src="assets/images/cancel1.png" style="cursor: pointer;">
-    </mat-toolbar>
-</div>
+  <mat-toolbar class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+      <p class="title">Vendors</p>
+      <img (click)="matDialogRef.close()" src="assets/images/cancel1.png" style="cursor: pointer;">
+  </mat-toolbar>
 
-  <div mat-dialog-content>
-
-    <div fxLayout fxLayoutAlign="start" class="p-8">
+  <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <div fxLayout fxLayoutAlign="start">
       <div fxFlex *ngIf="ofVendors?.length === 0" class="no-results-message">
         <span class="pl-12 pt-4"> No Vendors..</span>
       </div>
@@ -19,17 +16,8 @@
         </ul>
       </div>
     </div>
-  </div>
-
-  <mat-dialog-actions class="m-0 p-8">
-    <div fxLayout fxLayoutAlign="space-between center" style="width: 100%;">
-      <div fxFlex fxLayoutAlign="end">
-        <button mat-button type="button" (click)="matDialogRef.close()" class="cl_button1">Close</button>
-      </div>
-    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="m-0 p-16 footer" fxLayoutAlign="end center">
+      <button mat-button type="button" class="savebtn" (click)="matDialogRef.close()">Close</button>
   </mat-dialog-actions>
-  <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
-  </mat-progress-spinner>
-  <div id="overlay" *ngIf="isProgressBarVisibile"></div>
-
 </div>

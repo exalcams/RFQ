@@ -1,4 +1,4 @@
-import { Component, OnInit, Optional, Inject } from '@angular/core';
+import { Component, OnInit, Optional, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MMaterial, RFxItem } from 'app/models/RFx';
@@ -7,11 +7,12 @@ import { round } from 'lodash';
 
 
 @Component({
-  selector: 'app-dialog-content-example-dialog2',
-  templateUrl: './dialog-content-example-dialog2.component.html',
-  styleUrls: ['./dialog-content-example-dialog2.component.css']
+  selector: 'app-item-dialog',
+  templateUrl: './item-dialog.component.html',
+  styleUrls: ['./item-dialog.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
-export class DialogContentExampleDialog2Component implements OnInit {
+export class ItemDialogComponent implements OnInit {
   SelectedFileName:string;
   DialogueFormGroup: FormGroup;
   rfxitem = new RFxItem;
@@ -28,7 +29,7 @@ export class DialogContentExampleDialog2Component implements OnInit {
   MaterialMaster:MMaterial[]=[];
   FileError:boolean=false;
   TotalQty:boolean=false;
-  constructor(private _formBuilder: FormBuilder, private _RFxService: RFxService,public dialogRef: MatDialogRef<DialogContentExampleDialog2Component>,
+  constructor(private _formBuilder: FormBuilder, private _RFxService: RFxService,public dialogRef: MatDialogRef<ItemDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
       this.rfxitem = data.data;
      }    
@@ -97,6 +98,9 @@ onSelect(event) {
   this.files[0]=event.addedFiles[0];
   this.SelectedFileName=this.files[0].name;
   this.FileError=false;
+}
+onRemove(event) {
+  this.files.splice(this.files.indexOf(event), 1);
 }
 
 MaterialSelected(material:string){

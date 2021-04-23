@@ -1,0 +1,32 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+        <p class="title">Add document</p>
+        <img (click)="dialogRef.close()" src="assets/images/cancel1.png" style="cursor: pointer;">
+    </mat-toolbar>
+
+    <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <form autocomplete="off" [formGroup]="DialogueFormGroup" fxLayout="column">
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>Document title</mat-label>
+                <input matInput maxlength="40" size="40" formControlName="Documenttitle" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('Documenttitle').touched && DialogueFormGroup.get('Documenttitle').hasError('required')">
+                    Document Title is required
+                </mat-error>
+            </mat-form-field>
+        </form>
+        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem">
+            <span class="title">Attachement</span>
+                <ngx-dropzone #drop (change)="onSelect($event)" [multiple]="false" [disableClick]="true" class="dropzone">
+                    <ngx-dropzone-label><span class="label">Drop here to upload or <a class="fileselect" (click)="drop.showFileSelector()">choose file</a></span></ngx-dropzone-label>
+                      <ngx-dropzone-preview class="preview" *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                        <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+                      </ngx-dropzone-preview>
+                </ngx-dropzone>
+            <p style="color: #f44336;font-size: 12px;" *ngIf="FileError">Attachement is required</p>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="m-0 p-16 footer" fxLayoutAlign="center center">
+        <button mat-button type="button" class="savebtn" (click)="Save()">{{data.isCreate?'Add':'Save'}}</button>
+    </mat-dialog-actions>
+</div>

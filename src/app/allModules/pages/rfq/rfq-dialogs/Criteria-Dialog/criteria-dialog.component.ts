@@ -1,20 +1,21 @@
-import { Component, OnInit, Optional, Inject } from '@angular/core';
+import { Component, OnInit, Optional, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RFxHC, RFxHeader } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 
 @Component({
-  selector: 'app-dialog-content-example-dialog',
-  templateUrl: './dialog-content-example-dialog.component.html',
-  styleUrls: ['./dialog-content-example-dialog.component.css']
+  selector: 'app-criteria-dialog',
+  templateUrl: './criteria-dialog.component.html',
+  styleUrls: ['./criteria-dialog.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
-export class DialogContentExampleDialogComponent implements OnInit {
+export class CriteriaDialogComponent implements OnInit {
   DialogueFormGroup: FormGroup;
   rfxHC:RFxHC;
   constructor(
-    private _formBuilder: FormBuilder, public dialogRef: MatDialogRef<DialogContentExampleDialogComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+    private _formBuilder: FormBuilder, public dialogRef: MatDialogRef<CriteriaDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.rfxHC = data.data;
   }   

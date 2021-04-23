@@ -1,5 +1,5 @@
 @import "src/@fuse/scss/fuse";
-.foreclose-dialog {
+.foreclose-dialog{
   @include media-breakpoint("xs") {
     width: 100%;
   }
@@ -7,12 +7,13 @@
   @include media-breakpoint-up("sm") {
     width: 560px;
   }
-  .mat-radio-button {
-    margin: 0 5px;
+  .poppins{
+      font-family: Poppins;
+      font-weight: 600;
   }
   .mat-dialog-container {
     padding: 0;
-    border-radius: 0px;
+    border-radius: 4px;
   }
 
   .dialog-content-wrapper {
@@ -20,51 +21,33 @@
     display: flex;
     flex-direction: column;
   }
-  .toolBg {
-    background-color: #121214 !important;
-    color: white !important;
+  .toolbar{
+    background-color: #f4f4fb;
+    height: 56px;
   }
-  .btclose{  
-    background-color:#068dd0 !important;
-    color:  white !important;
-}
-.toolbar1{
-    /* width: 449px; */
-    height: 46px;
-    box-shadow: 0 3px 6px 0 #0000001a;
-    padding: 0 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .title{
+      @extend .poppins;
+      font-size: 12px;
+      color: #2c2c2e;
   }
-  .add_criteria{
-    /* width: 1px; */ 
-    /* height: 23px; */
-    font-size: 16px;
+  .footer{
+    box-shadow: 0 2px 18px 0 rgba(74, 122, 255, 0.38);
+    background-color: #fdfdfd;
+    height: 56px;
+  }
+  .savebtn{
+    background-color: #5f2cff !important;
+    @extend .poppins;
+    color: #ffffff !important;
+    font-size: 12px;
+  }
+  .mat-form-field {
+    font-family: Poppins;
     font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.56;
-    letter-spacing: normal;
-    text-align: center;
-    color: #595d6e;
-    /* margin-top: 7px; */
-    /* margin-left: 146px; */
-  }
-  .cl_button1.mat-button {
-      color: white !important;
-      background: #068dd0 !important;
+    font-size: 13px !important;
     }
-    .cl_button1{
-        width: 85px;
-        height: 29px;
-        border-radius: 2px;
-        background-color: #068dd0;
-        border: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* margin-left: 161px;
-        margin-top: 42px; */
-      }
+    .mat-select{
+        font-family: Poppins;
+        font-weight: 500;
+    }
 }

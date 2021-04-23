@@ -147,14 +147,8 @@ export class RFxService {
             .pipe(catchError(this.errorHandler));
     }
 
-    DeleteRFx(RFx: RFxHeader): Observable<any> {
-        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/DeleteRFx`,
-            RFx,
-            {
-                headers: new HttpHeaders({
-                    'Content-Type': 'application/json'
-                })
-            })
+    DeleteRFx(RFx: string): Observable<any> {
+        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/DeleteRFx?RFxID=${RFx}`)
             .pipe(catchError(this.errorHandler));
     }
 

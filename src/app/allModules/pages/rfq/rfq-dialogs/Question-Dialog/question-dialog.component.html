@@ -1,0 +1,36 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+        <p class="title">Add question</p>
+        <img (click)="dialogRef.close()" src="assets/images/cancel1.png" style="cursor: pointer;">
+    </mat-toolbar>
+
+    <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <form autocomplete="off" [formGroup]="DialogueFormGroup" fxLayout="column">
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>Question</mat-label>
+                <input matInput maxlength="40" size="40" formControlName="Question" fxFlex>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('Question').touched && DialogueFormGroup.get('Question').hasError('required')">
+                    Question is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>Answer type</mat-label>
+                <mat-select formControlName="AnswerType" fxFlex>
+                    <mat-option value="1">Text box</mat-option>
+                    <mat-option value="2">Yes/No</mat-option>
+                    <mat-option value="3">Long text</mat-option>
+                    <mat-option value="4">Number only</mat-option>
+                </mat-select>
+                <mat-error
+                    *ngIf="DialogueFormGroup.get('AnswerType').touched && DialogueFormGroup.get('AnswerType').hasError('required')">
+                    Answer Type is required
+                </mat-error>
+            </mat-form-field>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions class="m-0 p-16 footer" fxLayoutAlign="center center">
+        <button mat-button type="button" class="savebtn" (click)="Save()">{{data.isCreate?'Add':'Save'}}</button>
+    </mat-dialog-actions>
+</div>
