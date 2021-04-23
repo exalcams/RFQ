@@ -11,22 +11,43 @@ import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
 import { MutedialogComponent } from './Dialogs/mutedialog/mutedialog.component';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { ApexDataLabels, ApexLegend, ApexPlotOptions, ChartComponent } from "ng-apexcharts";
+
+import {
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexChart
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  colors:string[];
+  dataLabels: ApexDataLabels;
+  plotOptions:ApexPlotOptions;
+  legend: ApexLegend;
+};
 
 @Component({
   selector: 'app-response-home',
-  templateUrl: './response-home.component.html',
+  templateUrl: './response-home-new.component.html',
   styleUrls: ['./response-home.component.scss']
 })
 export class ResponseHomeComponent implements OnInit {
   isProgressBarVisibile: boolean;
+  public chartOptions: Partial<ChartOptions>;
+  @ViewChild("overviewchart") chart: ChartComponent;
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
   @ViewChild(MatSort) RFQSort: MatSort;
   RFxTableAttachments: string[] = [];
   AllHeaderDetails: any[] = [];
+  ArrChart: any[] = [];
   DueToRespondHeaderDetails: any[] = [];
   RespondedHeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['RFxID', 'Title','RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['RFxID','RFxGroup', 'Title','RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   imgArray: any[] = [
     {
@@ -56,6 +77,83 @@ export class ResponseHomeComponent implements OnInit {
     private _route: ActivatedRoute,
     private dialog: MatDialog, public snackBar: MatSnackBar) {
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+    console.log(this.ArrChart,'series');
+    // chart start
+    this.chartOptions = {
+      series: this.ArrChart,
+      colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
+      chart: {
+        type: "donut",
+        width:280,
+        height:'auto'
+      },
+      labels: ["Yet to be Respond", "Responded"],
+      dataLabels: {
+        enabled: true,
+        distributed: true,
+        textAnchor:'middle',
+        style: {
+            fontSize: '10px',
+            fontFamily: 'Poppins',
+            fontWeight: '600',
+            colors: ['#083a6f', '#033283', '#1665f0','#0fb752']
+        },
+        dropShadow: {
+          enabled: false,
+      }
+      },
+      plotOptions: {
+        pie: {
+          dataLabels: {
+            offset: 25,
+          },
+          donut: {
+            size: '65%'
+          }
+        }
+      },
+      legend: {
+        show: true,
+        position: 'right',
+        horizontalAlign: 'center', 
+        floating: false,
+        fontSize: '11px',
+        fontFamily: 'Poppins',
+        fontWeight: 600,
+        width: undefined,
+        height: undefined,
+        tooltipHoverFormatter: undefined,
+        offsetX: 0,
+        offsetY: -8,
+        labels: {
+            colors: ["#2b3540","#2b3540","#2b3540","#2b3540"],
+            useSeriesColors: false
+        },
+        markers: {
+            width: 6,
+            height: 6,
+            strokeWidth: 0,
+            strokeColor: '#fff',
+            fillColors: undefined,
+            radius: 6,
+            customHTML: undefined,
+            onClick: undefined,
+            offsetX: 0,
+            offsetY: 0
+        },
+        itemMargin: {
+            horizontal: 8,
+            vertical: 4
+        },
+        onItemClick: {
+            toggleDataSeries: true
+        },
+        onItemHover: {
+            highlightDataSeries: true
+        },
+    }
+    };
+    // chart end
   }
 
   ngOnInit() {
@@ -75,8 +173,8 @@ export class ResponseHomeComponent implements OnInit {
     } else {
       this.route.navigate(['/auth/login']);
     }
-
     this.GetAllRFxs();
+    
   }
 
   Gotoheader(rfqid) {
@@ -101,17 +199,23 @@ export class ResponseHomeComponent implements OnInit {
         if (data) {
           this.DueToRespondHeaderDetails = data;
           this.isProgressBarVisibile = false;
+          this.ArrChart.push(this.DueToRespondHeaderDetails.length);
         }
       }
     );
+    
     this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '3').subscribe(
       (data) => {
         if (data) {
           this.RespondedHeaderDetails = data;
+          this.ArrChart.push(this.RespondedHeaderDetails.length);
           this.isProgressBarVisibile = false;
         }
       }
     );
+    // this._RFxService.GetResPeiData(this.currentUserName).subscribe(x=>{
+    //   this.chartOptions.series=this.ArrChart;
+    // });
   }
   LoadTableSource(DataArray: any[]) {
     this.HeaderDetailsDataSource = new MatTableDataSource(DataArray);
