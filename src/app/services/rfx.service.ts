@@ -464,4 +464,8 @@ export class RFxService {
         return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetRFxPieData`)
             .pipe(catchError(this.errorHandler));
     }
+    GetResPeiData(UserName:string): Observable<any> {
+        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetResPieData?UserName=${UserName}`)
+        .pipe(catchError(this.errorHandler));
+    }
 }
