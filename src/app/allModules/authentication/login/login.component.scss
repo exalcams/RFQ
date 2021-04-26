@@ -5,8 +5,7 @@ login {
     #login {
         width: 100%;
         overflow: hidden;
-        background: url(/assets/images/backgrounds/BPCloudBG.png) 0 0/72% 100% no-repeat;
-        background-color: #242424 !important;
+        background: url(/assets/images/rfq/Rfxbg.svg) 0 0/100% 100% no-repeat;
         #login-intro {
             padding: 128px;
 
@@ -21,8 +20,9 @@ login {
 
             .title {
                 font-size: 42px;
-                font-weight: 300;
+                font-weight: 600;
                 line-height: 1;
+                color: #2c2c2e;
             }
 
             .description {
@@ -33,13 +33,13 @@ login {
         }
 
         #login-form-wrapper {
+            background-color: #ffffff;
             width: 400px;
             min-width: 400px;
             max-width: 400px;
             overflow: auto;
             -webkit-overflow-scrolling: touch;
-
-            @include mat-elevation(16);
+            box-shadow: 0 2px 18px 0 rgba(74, 122, 255, 0.38);
 
             @include media-breakpoint('sm') {
                 width: 360px;
@@ -73,14 +73,14 @@ login {
                     line-height: 1.57;
                     letter-spacing: 2.28px;
                     text-align: left;
-                    color: #242424;
+                    color: #2c2c2e;
                     font-weight: 900;
                     margin-bottom: 15px;
                     margin-top: -35px;
                    
                 }
             .border{
-                border-bottom: #3a7be3;
+                border-bottom: #5f2cff;
                 border-bottom-style: solid;
                 margin-left: 20px;
                 margin-right: 212px;
@@ -94,7 +94,7 @@ login {
                     line-height: 1.33;
                     letter-spacing: 0.72px;
                     text-align: left;
-                    color: #454545;
+                    color: #2c2c2e;
                     margin-top: 20px !important;
                 }
                 .loginButton{
@@ -149,18 +149,21 @@ login {
                             line-height: 1.33;
                             letter-spacing: 0.72px;
                             text-align: left;
-                            color: #454545;
+                            color: #5f2cff;
                         }
                     }
 
-                    .mat-form-field-appearance-outline .mat-form-field-outline{
-                        color: rgba(67, 132, 255, 0.4) !important
+                    .mat-form-field {
+                        font-family: Poppins;
+                        font-weight: 500;
+                        font-size: 13px !important;
                     }
 
                     .submit-button {
                         width: 100%;
                         margin: 16px auto;
                         display: block;
+                        background-color: #5f2cff !important;
 
                         @include media-breakpoint('xs') {
                             width: 80%;

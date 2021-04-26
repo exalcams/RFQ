@@ -4,7 +4,7 @@
 
   </div>
 
-  <div id="login-form-wrapper" [style.background-color]="'white'" fusePerfectScrollbar
+  <div id="login-form-wrapper" fusePerfectScrollbar
     [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
 
     <div id="login-form">
@@ -15,7 +15,7 @@
 
       <form name="loginForm" [formGroup]="loginForm" novalidate>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>User Name</mat-label>
           <input matInput  formControlName="userName">
           <mat-error *ngIf="loginForm.get('userName').hasError('required')">
@@ -23,7 +23,7 @@
           </mat-error>
         </mat-form-field>
         
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
           <input matInput type="password"  formControlName="password">
           <mat-error>
@@ -38,7 +38,7 @@
         </div>
 
         <button  mat-raised-button color="accent" class="submit-button" aria-label="LOGIN" (click)="LoginClicked()">
-          <span class="loginButton">LOG IN ></span>
+          <span class="loginButton">Log In</span>
         </button>
 
       </form>

@@ -383,19 +383,19 @@
 
                                 <ng-container matColumnDef="TotalQty">
                                     <th mat-header-cell mat-sort-header *matHeaderCellDef> Total qty </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.TotalQty}}
+                                    <td mat-cell *matCellDef="let element" class="qty"> {{element.TotalQty}}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="PerScheduleQty">
                                     <th mat-header-cell mat-sort-header *matHeaderCellDef> Per schedule qty </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.PerScheduleQty}}
+                                    <td mat-cell *matCellDef="let element" class="qty"> {{element.PerScheduleQty}}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="TotalSchedules">
                                     <th mat-header-cell mat-sort-header *matHeaderCellDef> No. of schedules </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.TotalSchedules}}</td>
+                                    <td mat-cell *matCellDef="let element" class="qty"> {{element.TotalSchedules}}</td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="UOM">
@@ -617,11 +617,11 @@
                                     <tr mat-row *matRowDef="let row; columns: ODAttachDetailsDisplayedColumns;"></tr>
                                 </table>
                             </div>
-                            <div fxLayout="column" class="my-24" style="height: 100px;" fxLayoutGap="1rem">
+                            <div fxLayout="column" class="my-24" fxLayoutGap="1rem">
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
                                     <label class="tab-title">Remarks</label>
                                 </div>
-                                <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
+                                <mat-form-field style="font-size: 14px;" appearance="outline">
                                     <textarea matInput fxFlex
                                         [(ngModel)]="RFxRemark.Remark" [disabled]="Rfxheader.Status!='1'"></textarea>
                                 </mat-form-field>
@@ -633,10 +633,11 @@
         </div>
         <div class="footer" fxLayout="column" fxLayoutAlign="space-between"
             *ngIf="Rfxheader.Status=='1' || !Rfxheader.Status">
-            <div fxLayout="row" fxLayoutAlign="space-between center" class="px-8 pt-8" *ngIf="!IsComplete()">
-                <button *ngIf="index!=0" (click)="PreviousClicked(selectedIndex)" mat-button
+            <div fxLayout="row" fxLayoutAlign="start center" class="px-8 pt-8" *ngIf="!IsComplete()">
+                <button *ngIf="selectedIndex!=0" (click)="PreviousClicked(selectedIndex)" mat-button
                     class="prevnxtbtn">Previous</button>
-                <button *ngIf="index!=6" (click)="NextClicked(selectedIndex)" mat-button
+                    <div fxFlex></div>
+                <button *ngIf="selectedIndex!=6" (click)="NextClicked(selectedIndex)" mat-button
                     class="prevnxtbtn">Next</button>
             </div>
             <div *ngIf="Rfxheader.Status=='1' && IsComplete()" fxLayout="row" fxLayoutAlign="space-between center"

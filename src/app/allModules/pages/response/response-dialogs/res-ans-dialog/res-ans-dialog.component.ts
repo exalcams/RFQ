@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ResOD, RFxOD } from 'app/models/RFx';
@@ -7,7 +7,8 @@ import { RFxService } from 'app/services/rfx.service';
 @Component({
   selector: 'app-res-ans-dialog',
   templateUrl: './res-ans-dialog.component.html',
-  styleUrls: ['./res-ans-dialog.component.scss']
+  styleUrls: ['./res-ans-dialog.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
 export class ResAnsDialogComponent implements OnInit {
   Question:RFxOD;

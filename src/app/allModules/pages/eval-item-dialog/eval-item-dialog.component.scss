@@ -1,5 +1,5 @@
 @import "src/@fuse/scss/fuse";
-.item-dialog{
+.eval-item-dialog{
   @include media-breakpoint("xs") {
     width: 100%;
   }
@@ -66,6 +66,15 @@
     max-width: 500px !important;
     min-height: 50px !important;
     margin: 0px 10px !important;
+  }
+  .attachment{
+    @extend .poppins;
+      font-size: 12px;
+      color: #5f2cff;
+  }
+  .attachment1{
+      font-size: 12px;
+      color: #2c2c2e;
   }
   .mat-form-field {
     font-family: Poppins;

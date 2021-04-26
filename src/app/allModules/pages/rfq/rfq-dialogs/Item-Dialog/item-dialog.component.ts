@@ -46,11 +46,9 @@ export class ItemDialogComponent implements OnInit {
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      // Item: [this.rfxitem.Item, Validators.required],
       Uom: [this.rfxitem.UOM, Validators.required],
       LowPrice: [this.rfxitem.BiddingPriceLow, Validators.required],
       HighPrice: [this.rfxitem.BiddingPriceHigh, Validators.required],
-      //rating: [this.rfxitem.Rating, Validators.required],
       material: [this.rfxitem.Material, Validators.required],
       TotalQty: [this.rfxitem.TotalQty, [Validators.required]],//,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')
       Interval: [this.rfxitem.Interval, Validators.required],
@@ -122,7 +120,6 @@ CalculateTotalSchedules(){
 Save(){
   console.log(this.DialogueFormGroup);
   if(this.DialogueFormGroup.valid){
-    // this.rfxitem.Item=this.DialogueFormGroup.get("Item").value;
     this.rfxitem.UOM=this.DialogueFormGroup.get("Uom").value;
     this.rfxitem.BiddingPriceLow=this.DialogueFormGroup.get("LowPrice").value;
     this.rfxitem.BiddingPriceHigh=this.DialogueFormGroup.get("HighPrice").value;
@@ -132,7 +129,6 @@ Save(){
     this.rfxitem.Interval=this.DialogueFormGroup.get("Interval").value;
     this.rfxitem.PerScheduleQty=this.DialogueFormGroup.get("per_schedule_qty").value;
     this.rfxitem.IncoTerm=this.DialogueFormGroup.get("incoterm").value;
-    //this.rfxitem.Rating=this.DialogueFormGroup.get("rating").value;
     this.rfxitem.Notes=this.DialogueFormGroup.get("Notes").value;
     this.rfxitem.TotalSchedules=this.DialogueFormGroup.get("totalSchedules").value;
     this.rfxitem.LeadTime=this.DialogueFormGroup.get("LeadTime").value;

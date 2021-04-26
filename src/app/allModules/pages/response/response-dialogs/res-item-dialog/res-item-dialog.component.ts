@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ResItem,MMaterial,RFxItem, ResODAttachment } from 'app/models/RFx';
@@ -9,12 +9,14 @@ import { parseInt, round } from 'lodash';
 @Component({
   selector: 'app-res-item-dialog',
   templateUrl: './res-item-dialog.component.html',
-  styleUrls: ['./res-item-dialog.component.scss']
+  styleUrls: ['./res-item-dialog.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
 export class ResItemDialogComponent implements OnInit {
   RFxID:string;
   SelectedFileName:string[]=[];
   DialogueFormGroup: FormGroup;
+  ResItemFormGroup: FormGroup;
   rfxitem = new RFxItem;
   files: File[] = [];
   MaterialMaster:MMaterial[]=[];
@@ -37,10 +39,10 @@ export class ResItemDialogComponent implements OnInit {
     this.InitializeDialogueFormGroup();
     this.DisableRFxItem();
     if(this.ResItem.LeadTimeRemark){
-      this.DialogueFormGroup.get('LeadTimeAccept').setValue('No');
+      this.ResItemFormGroup.get('LeadTimeAccept').setValue('No');
     }
     else{
-      this.DialogueFormGroup.get('LeadTimeAccept').setValue('Yes');
+      this.ResItemFormGroup.get('LeadTimeAccept').setValue('Yes');
     }
     this._RFxService.GetAllRFxMaterialM().subscribe(master=>{
       this.MaterialMaster=master as MMaterial[];
@@ -56,41 +58,31 @@ export class ResItemDialogComponent implements OnInit {
   ];
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Item: [this.rfxitem.Item, Validators.required],
-      Uom: [this.rfxitem.UOM, Validators.required],
-      LowPrice: [this.rfxitem.BiddingPriceLow, Validators.required],
-      HighPrice: [this.rfxitem.BiddingPriceHigh, Validators.required],
-      //rating: [this.rfxitem.Rating, Validators.required],
-      material: [this.rfxitem.Material, Validators.required],
-      TotalQty: [this.rfxitem.TotalQty, [Validators.required,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]],
-      Interval: [this.rfxitem.Interval, Validators.required],
-      Notes: [this.rfxitem.Notes, Validators.required],
-      material_text: [this.rfxitem.MaterialText, Validators.required],
-      per_schedule_qty: [this.rfxitem.PerScheduleQty, [Validators.required,Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]],
+      Item: [this.rfxitem.Item],
+      Uom: [this.rfxitem.UOM],
+      LowPrice: [this.rfxitem.BiddingPriceLow],
+      HighPrice: [this.rfxitem.BiddingPriceHigh],
+      material: [this.rfxitem.Material],
+      TotalQty: [this.rfxitem.TotalQty],
+      Interval: [this.rfxitem.Interval],
+      Notes: [this.rfxitem.Notes],
+      material_text: [this.rfxitem.MaterialText],
+      per_schedule_qty: [this.rfxitem.PerScheduleQty],
       totalSchedules: [this.rfxitem.TotalSchedules],
-      incoterm: [this.rfxitem.IncoTerm, [Validators.required,Validators.pattern('^([a-zA-Z]){1,2}?$')]], 
-      LeadTime:[this.rfxitem.LeadTime,[Validators.required]], 
+      incoterm: [this.rfxitem.IncoTerm], 
+      LeadTime:[this.rfxitem.LeadTime], 
+    });
+    this.ResItemFormGroup=this._formBuilder.group({
       Price:[this.ResItem.Price,[Validators.required,Validators.min(parseInt(this.rfxitem.BiddingPriceLow)),Validators.max(parseInt(this.rfxitem.BiddingPriceHigh))]],
       USPRemark:[this.ResItem.USPRemark,Validators.required],
       PriceRating:[this.ResItem.PriceRating,[Validators.required,Validators.pattern('^([0-9]{1})?$')]],
       LeadTimeRating:[this.ResItem.LeadTimeRating,Validators.required],
-      LeadTimeAccept:[this.ResItem.LeadTimeAccept,Validators.required],
+      LeadTimeAccept:[null,Validators.required],
       LeadTimeRemark:[this.ResItem.LeadTimeRemark]
     });
   }
   DisableRFxItem(){
-    this.DialogueFormGroup.get('Item').disable();
-    this.DialogueFormGroup.get('material_text').disable();
-    this.DialogueFormGroup.get('Uom').disable();
-    this.DialogueFormGroup.get('TotalQty').disable();
-    this.DialogueFormGroup.get('per_schedule_qty').disable();
-    this.DialogueFormGroup.get('totalSchedules').disable();
-    this.DialogueFormGroup.get('LowPrice').disable();
-    this.DialogueFormGroup.get('HighPrice').disable();
-    this.DialogueFormGroup.get('Interval').disable();
-    this.DialogueFormGroup.get('incoterm').disable();
-    this.DialogueFormGroup.get('Notes').disable();
-    this.DialogueFormGroup.get('LeadTime').disable();
+    this.DialogueFormGroup.disable();
   }
   
   openAttachmentViewDialog(RFxID:string,Ataachments:string[]): void {
@@ -137,12 +129,8 @@ onRemove(event) {
 }
 
 ValueSelected(type:string){
-    if(this.DialogueFormGroup.get('LeadTimeAccept').value == "Yes"){
-      this.accept=false;
-    } 
-    else if(this.DialogueFormGroup.get('LeadTimeAccept').value == "No"){
-      this.accept=true;
-      this.DialogueFormGroup.get('LeadTimeAccept').setValidators(Validators.required);
+    if(type == "No"){
+      this.DialogueFormGroup.get('LeadTimeRemark').setValidators(Validators.required);
     }
 }
 Save(){
@@ -150,18 +138,18 @@ Save(){
     this.ResItem.Client=this.rfxitem.Client;
     this.ResItem.Company=this.rfxitem.Company;
     this.ResItem.RFxID=this.rfxitem.RFxID;
-    this.ResItem.Price=this.DialogueFormGroup.get('Price').value;
+    this.ResItem.Price=this.ResItemFormGroup.get('Price').value;
     this.ResItem.LeadTime=this.DialogueFormGroup.get('LeadTime').value;
-    this.ResItem.USPRemark=this.DialogueFormGroup.get('USPRemark').value;
-    this.ResItem.PriceRating=this.DialogueFormGroup.get('PriceRating').value;
-    this.ResItem.LeadTimeRating=this.DialogueFormGroup.get('LeadTimeRating').value;
-    this.ResItem.LeadTimeRemark=this.DialogueFormGroup.get('LeadTimeRemark').value;
+    this.ResItem.USPRemark=this.ResItemFormGroup.get('USPRemark').value;
+    this.ResItem.PriceRating=this.ResItemFormGroup.get('PriceRating').value;
+    this.ResItem.LeadTimeRating=this.ResItemFormGroup.get('LeadTimeRating').value;
+    this.ResItem.LeadTimeRemark=this.ResItemFormGroup.get('LeadTimeRemark').value;
     var Result={data:this.ResItem,Attachments:this.files,Docs:this.ResODAttachments};
     // console.log(Result);
     this.dialogRef.close(Result);
   }
   else{
-    this.ShowValidationErrors(this.DialogueFormGroup);
+    this.ShowValidationErrors(this.ResItemFormGroup);
   }
 }
 ShowValidationErrors(formGroup:FormGroup): void {

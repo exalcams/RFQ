@@ -1,58 +1,53 @@
-.toolbar1{
-    /* width: 449px; */
-    height: 46px;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
-    padding: 0 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.add_criteria{
-    /* width: 1px; */ 
-    /* height: 23px; */
-    font-size: 16px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.56;
-    letter-spacing: normal;
-    text-align: center;
-    color: #595d6e;
-    /* margin-top: 7px; */
-    /* margin-left: 146px; */
-}
-.cl_button1.mat-button {
-    color: white !important;
-    background: #068dd0 !important;
+@import "src/@fuse/scss/fuse";
+.res-answer-dialog{
+  @include media-breakpoint("xs") {
+    width: 100%;
   }
-  .cl_button1{
-      width: 85px;
-      height: 29px;
-      border-radius: 2px;
-      background-color: #068dd0;
-      border: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      /* margin-left: 161px;
-      margin-top: 42px; */
-    }
-  
-  .add{
-    width: 51px;
-    height: -8px;
-    font-size: 12px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    text-align: start;
-    color: #ffffff;
-    /* position: absolute;
-    margin-left: -10px; */
-    line-height: 0.2;
+
+  @include media-breakpoint-up("sm") {
+    width: 560px;
   }
-  .mat-dialog-content {
-    margin: 0;
+  .poppins{
+      font-family: Poppins;
+      font-weight: 600;
+  }
+  .mat-dialog-container {
     padding: 0;
+    border-radius: 4px;
+  }
+
+  .dialog-content-wrapper {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .toolbar{
+    background-color: #f4f4fb;
+    height: 56px;
+  }
+  .title{
+      @extend .poppins;
+      font-size: 14px;
+      color: #2c2c2e;
+  }
+  .footer{
+    box-shadow: 0 2px 18px 0 rgba(74, 122, 255, 0.38);
+    background-color: #fdfdfd;
+    height: 56px;
+  }
+  .savebtn{
+    background-color: #5f2cff !important;
+    @extend .poppins;
+    color: #ffffff !important;
+    font-size: 12px;
+  }
+  .mat-form-field {
+    font-family: Poppins;
+    font-weight: 500;
+    font-size: 13px !important;
+    }
+    .mat-select{
+        font-family: Poppins;
+        font-weight: 500;
+    }
 }

@@ -1,24 +1,15 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
 import { EvalCriteriaView, EvalHC, EvalIC, EvaluatedICs, MMaterial, ResItem, ResODAttachment, RespondedItems, RFxItem } from 'app/models/RFx';
 import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { RFxService } from 'app/services/rfx.service';
-export interface PeriodicElement {
-  position: number;
-  Criteria: number;
-  Description: string;
-  Action: string;
-}
-const ElementSource: PeriodicElement[] = [
-  {position: 1,  Criteria: 1,Description: 'Hydrogen', Action: 'H'},
-  {position: 2,  Criteria:67, Description: 'Helium',Action: 'He'},
-];
 
 @Component({
   selector: 'app-eva-item-dialog',
-  templateUrl: './eva-item-dialog.component.html',
-  styleUrls: ['./eva-item-dialog.component.scss']
+  templateUrl: './eval-item-dialog.component.html',
+  styleUrls: ['./eval-item-dialog.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
 
 
@@ -26,12 +17,11 @@ export class EvaItemDialogComponent implements OnInit {
   EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description','ItemRating'];
   EvaluationDetailsDataSource: MatTableDataSource<EvalCriteriaView>;
   ResODAttachment:ResODAttachment[]=[];
-  EvalHcViews:EvalCriteriaView[]=[];
-  EvalICs:EvalIC[]=[];
   RFxItemAttachment:string[]=[];
   ResItemAttachment:string[]=[];
   RespondedI: EvaluatedICs[] = [];
   DialogueFormGroup: FormGroup;
+  ResItemFormGroup:FormGroup;
   rfxitem = new RFxItem();
   MaterialMaster:MMaterial[]=[];
   ResItem:ResItem = new ResItem();
@@ -44,8 +34,6 @@ export class EvaItemDialogComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
       this.rfxitem=data.RFxItem;
       this.ResItem=data.ResItem;
-      this.EvalHcViews=data.EvalHCs;
-      this.EvalICs=data.EvalIC;
       this.IsReadOnly=data.IsReadOnly;
      }
 
@@ -56,16 +44,6 @@ export class EvaItemDialogComponent implements OnInit {
       this.MaterialMaster=master as MMaterial[];
     });
     this.GetResODAttachments(this.ResItem.RESID);
-    if(this.ResItem.LeadTimeRemark){
-      this.DialogueFormGroup.get('LeadTimeAccept').setValue('No');
-    }
-    else{
-      this.DialogueFormGroup.get('LeadTimeAccept').setValue('Yes');
-    }
-    this.EvaluationDetailsDataSource=new MatTableDataSource(this.EvalHcViews);
-    if(this.EvalICs.length==0){
-      this.LoadEvalIcs();
-    }
     this.DialogueFormGroup.disable();
   }
   InitializeDialogueFormGroup(): void {
@@ -83,13 +61,23 @@ export class EvaItemDialogComponent implements OnInit {
       totalSchedules: [this.rfxitem.TotalSchedules],
       incoterm: [this.rfxitem.IncoTerm], 
       LeadTime:[this.rfxitem.LeadTime], 
+    });
+    this.ResItemFormGroup=this._formBuilder.group({
       Price:[this.ResItem.Price],
       USPRemark:[this.ResItem.USPRemark],
       PriceRating:[this.ResItem.PriceRating],
       LeadTimeRating:[this.ResItem.LeadTimeRating],
-      LeadTimeAccept:["No"],
+      LeadTimeAccept:[null],
       LeadTimeRemark:[this.ResItem.LeadTimeRemark]
     });
+    if(this.ResItem.LeadTimeRemark){
+      this.ResItemFormGroup.get('LeadTimeAccept').setValue('No');
+    }
+    else{
+      this.ResItemFormGroup.get('LeadTimeAccept').setValue('Yes');
+    }
+    this.DialogueFormGroup.disable();
+    this.ResItemFormGroup.disable();
     this.RFxItemAttachment.push(this.rfxitem.Attachment);
   }
   GetResODAttachments(ResID: string) {
@@ -99,27 +87,7 @@ export class EvaItemDialogComponent implements OnInit {
         this.ResItemAttachment.push(element.DocumentName);
       });
     });
-  }
-
-  LoadEvalIcs(){
-    this.EvalHcViews.forEach(element => {
-      var evalIC=new EvalIC();
-      evalIC.Client=this.rfxitem.Client;
-      evalIC.Company=this.rfxitem.Company;
-      evalIC.Item=this.rfxitem.Item;
-      evalIC.Criteria=element.CriteriaID;
-      evalIC.Rating="0";
-      this.EvalICs.push(evalIC);
-    });
-    if(this.data.IsReadOnly){
-      this.IsReadOnly=true;
-    }
-  }
-
-  OnItemRating($event:{oldValue:number, newValue:number},index:any) {
-    this.EvalICs[index].Rating=$event.newValue.toString();
-  }
-  
+  }  
   openAttachmentViewDialog(RFxID:string,Ataachments:string[],isResponse:boolean): void {
     const dialogConfig: MatDialogConfig = {
         data: {Documents:Ataachments,RFxID:RFxID,isResponse:isResponse},
@@ -131,7 +99,6 @@ export class EvaItemDialogComponent implements OnInit {
     );
   }
   Save(){
-    var Result=this.EvalICs;
-    this.dialogRef.close(Result);
+    this.dialogRef.close();
   }
 }
