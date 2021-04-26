@@ -1,41 +1,37 @@
-<div>
-  <mat-toolbar class="toolbar1">
-    <p class="add_criteria">Add Item</p>
-    <img (click)="dialogRef.close()" style="cursor: pointer;" src="assets/images/cancel1.png">
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <p class="title">Response for question</p>
+    <img (click)="dialogRef.close()" src="assets/images/cancel1.png" style="cursor: pointer;">
   </mat-toolbar>
-</div>
-<mat-dialog-content [formGroup]="DialogueFormGroup">
-  <div style="padding: 2rem;" fxLayout="column">
-    <div  fxLayout="column" fxFlex="100">
- 
+
+  <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <form autocomplete="off" [formGroup]="DialogueFormGroup" fxLayout="column">
       <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
         <mat-label>Question</mat-label>
         <input matInput maxlength="40" size="40" formControlName="Question" fxFlex>
         <mat-error
-            *ngIf="DialogueFormGroup.get('Question').touched && DialogueFormGroup.get('Question').hasError('required')">
-            Question is required
+          *ngIf="DialogueFormGroup.get('Question').touched && DialogueFormGroup.get('Question').hasError('required')">
+          Question is required
         </mat-error>
-    </mat-form-field>
+      </mat-form-field>
 
-    <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+      <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
         <mat-label>Answer</mat-label>
         <mat-select formControlName="Answer" fxFlex *ngIf="this.Question.AnswerType=='2'">
-            <mat-option value="Yes">Yes</mat-option>
-            <mat-option value="No">No</mat-option>
+          <mat-option value="Yes">Yes</mat-option>
+          <mat-option value="No">No</mat-option>
         </mat-select>
         <input matInput formControlName="Answer" fxFlex *ngIf="this.Question.AnswerType=='1'">
         <textarea matInput formControlName="Answer" fxFlex *ngIf="this.Question.AnswerType=='3'"></textarea>
         <input matInput type="number" formControlName="Answer" fxFlex *ngIf="this.Question.AnswerType=='4'">
         <mat-error
-            *ngIf="DialogueFormGroup.get('Answer').touched && DialogueFormGroup.get('Answer').hasError('required')">
-            Answer is required
+          *ngIf="DialogueFormGroup.get('Answer').touched && DialogueFormGroup.get('Answer').hasError('required')">
+          Answer is required
         </mat-error>
-    </mat-form-field>
-    </div>
-  </div>
-
-</mat-dialog-content>
-<mat-dialog-actions fxLayoutAlign="center">
-  <button mat-button class="cl_button1" (click)="SaveClicked()"><span class="add">Save</span>
-  </button>
-</mat-dialog-actions>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions class="m-0 p-16 footer" fxLayoutAlign="center center">
+    <button mat-button type="button" class="savebtn" (click)="SaveClicked()">Save</button>
+  </mat-dialog-actions>
+</div>

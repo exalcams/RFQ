@@ -70,7 +70,7 @@ import { RemoveLeadingZeroPipe } from 'app/shared/remove-leading-zero';
 import { EvaluationHomeComponent } from './evaluation-home/evaluation-home.component';
 import { EvaluationComponent } from './evaluation/evaluation.component';
 import { EvaluationResponseComponent } from './evaluation-response/evaluation-response.component';
-import { EvaItemDialogComponent } from './eva-item-dialog/eva-item-dialog.component';
+import { EvaItemDialogComponent } from './eval-item-dialog/eval-item-dialog.component';
 import { AwardHomeComponent } from './award-home/award-home.component';
 import { AwardResponseComponent } from './award-response/award-response.component';
 import { AwardComponent } from './award/award.component';

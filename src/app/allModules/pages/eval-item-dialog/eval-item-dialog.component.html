@@ -1,6 +1,6 @@
 <div class="dialog-content-wrapper">
   <mat-toolbar class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
-      <p class="title">Response for item</p>
+      <p class="title">Item</p>
       <img (click)="dialogRef.close()" src="assets/images/cancel1.png" style="cursor: pointer;">
   </mat-toolbar>
 
@@ -88,48 +88,22 @@
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Price</mat-label>
                       <input matInput formControlName="Price" fxFlex autocomplete="off" type="number">
-                      <mat-error
-                          *ngIf="ResItemFormGroup.get('Price').touched && ResItemFormGroup.get('Price').hasError('required')">
-                          price is required
-                      </mat-error>
-                      <mat-error
-                          *ngIf="ResItemFormGroup.get('Price').touched && ResItemFormGroup.get('Price').hasError('min')">
-                          price do not exceed minimum bidding
-                      </mat-error>
-                      <mat-error
-                          *ngIf="ResItemFormGroup.get('Price').touched && ResItemFormGroup.get('Price').hasError('max')">
-                          price do not exceed maximum bidding
-                      </mat-error>
                   </mat-form-field>
 
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>USP Remark</mat-label>
                       <input matInput formControlName="USPRemark" fxFlex autocomplete="off">
-                      <mat-error
-                          *ngIf="ResItemFormGroup.get('USPRemark').touched && ResItemFormGroup.get('USPRemark').hasError('required')">
-                          USP Remark is required
-                      </mat-error>
                   </mat-form-field>
 
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Price Rating</mat-label>
                       <input matInput maxlength="1" max="5" min="1" formControlName="PriceRating" fxFlex
                           autocomplete="off" type="number">
-                      <mat-error
-                          *ngIf="ResItemFormGroup.get('PriceRating').touched && ResItemFormGroup.get('PriceRating').hasError('required')">
-                          Price Rating is required
-                      </mat-error>
-                      <mat-error *ngIf="ResItemFormGroup.get('PriceRating').hasError('pattern')">Enter
-                          only 1 digits</mat-error>
                   </mat-form-field>
 
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Lead Time Rating</mat-label>
-                      <input matInput type="number" formControlName="LeadTimeRating" fxFlex autocomplete="off">
-                      <mat-error
-                          *ngIf="ResItemFormGroup.get('LeadTimeRating').touched && ResItemFormGroup.get('LeadTimeRating').hasError('required')">
-                          Lead Time Rating is required
-                      </mat-error>
+                      <input matInput type="number" formControlName="LeadTimeRating" fxFlex autocomplete="off">                        
                   </mat-form-field>
 
                   <mat-form-field fxFlex=30 appearance="outline">
@@ -138,49 +112,35 @@
                           (selectionChange)="ValueSelected($event.value)">
                           <mat-option *ngFor="let type of types" [value]="type">{{type}}</mat-option>
                       </mat-select>
-                      <mat-error
-                          *ngIf="ResItemFormGroup.get('LeadTimeAccept').touched && ResItemFormGroup.get('LeadTimeAccept').hasError('required')">
-                          Lead time is required
-                      </mat-error>
                   </mat-form-field>
 
                   <mat-form-field *ngIf="ResItemFormGroup.get('LeadTimeAccept').value=='No'" fxFlex=30
                       appearance="outline">
                       <mat-label>Remarks</mat-label>
                       <input matInput formControlName="LeadTimeRemark" fxFlex autocomplete="off">
-                      <mat-error
-                          *ngIf="ResItemFormGroup.get('LeadTimeRemark').touched && ResItemFormGroup.get('LeadTimeRemark').hasError('required')">
-                          Lead Time Remark is required
-                      </mat-error>
                   </mat-form-field>
               </div>
           </form>
 
-          <div fxLayout="row">
+          <div fxLayout="row" fxLayout="start center" fxLayoutGap="4rem"> 
               <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
                   <p class="attachment">RFx Attachment</p>
                   <span matBadgeSize="small" matBadgeColor="accent" matBadgeOverlap="false"
-                      [matBadge]="SelectedFileName.length">
-                          <img (click)="openAttachmentViewDialog(RFxID,SelectedFileName)" style="width: 20px;cursor: pointer;" src="assets/images/rfq/attachment.svg">
+                      [matBadge]="RFxItemAttachment.length">
+                          <img (click)="openAttachmentViewDialog(rfxitem.RFxID,RFxItemAttachment,false)" style="width: 20px;cursor: pointer;" src="assets/images/rfq/attachment.svg">
                       </span>
               </div>
-          </div>
-
-          <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem">
-              <span class="attachment1">Attachements</span>
-              <ngx-dropzone #drop (change)="onSelect($event)" [disableClick]="true" class="dropzone">
-                  <ngx-dropzone-label><span class="label">Drop here to upload or <a class="fileselect"
-                              (click)="drop.showFileSelector()">choose file</a></span></ngx-dropzone-label>
-                  <ngx-dropzone-preview class="preview" *ngFor="let f of files" [removable]="true"
-                      (removed)="onRemove(f)">
-                      <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
-                  </ngx-dropzone-preview>
-              </ngx-dropzone>
-              <p style="color: #f44336;font-size: 12px;" *ngIf="FileError">Attachement is required</p>
+              <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                  <p class="attachment">Response Attachment</p>
+                  <span matBadgeSize="small" matBadgeColor="accent" matBadgeOverlap="false"
+                      [matBadge]="ResItemAttachment.length">
+                          <img (click)="openAttachmentViewDialog(rfxitem.RFxID,ResItemAttachment,true)" style="width: 20px;cursor: pointer;" src="assets/images/rfq/attachment.svg">
+                      </span>
+              </div>
           </div>
       </div>
   </mat-dialog-content>
   <mat-dialog-actions class="m-0 p-16 footer" fxLayoutAlign="center center">
-      <button mat-button type="button" class="savebtn" (click)="Save()">Save</button>
+      <button mat-button type="button" class="savebtn" (click)="Save()">Close</button>
   </mat-dialog-actions>
 </div>

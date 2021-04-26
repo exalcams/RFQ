@@ -7,7 +7,6 @@ import { NotificationSnackBarComponent } from 'app/notifications/notification-sn
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
-import { EvaItemDialogComponent } from '../eva-item-dialog/eva-item-dialog.component';
 import { ApexDataLabels, ApexLegend, ApexPlotOptions, ChartComponent } from "ng-apexcharts";
 
 import {

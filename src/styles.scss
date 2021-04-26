@@ -26,9 +26,9 @@ body { margin: 0; font-family: "Poppins", "Helvetica Neue", sans-serif; }
 }
 .ProgressBarPostion {
   position: absolute !important;
-  top: 43%;
+  top: 31%;
   z-index: 1;
-  left: 55%;
+  left: 37%;
 }
 
 .mat-step-header .mat-step-icon {
@@ -70,6 +70,9 @@ body { margin: 0; font-family: "Poppins", "Helvetica Neue", sans-serif; }
 // }
 .mat-form-field-appearance-outline .mat-form-field-outline-thick {
   color: #5f2cffaf !important;
+}
+.mat-progress-spinner.mat-accent circle{
+  stroke:#5f2cff !important;
 }
 .mat-form-field-label-wrapper {
   top: -1.7rem !important;

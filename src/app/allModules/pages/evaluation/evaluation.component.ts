@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
+import { MatTableDataSource, MatDialog, MatSnackBar, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationDetails } from 'app/models/master';
-import { RFxHeader, MRFxType, MRFxGroup, RFxHC, RFxItem, ResItem, RFxRemark, RFxPartner, RFxVendorView, RFxODAttachment, EvalHC, EvalIC, EvaluatedICs, EvalHeader, ResODView, EvaluationView, EvalCriteriaView } from 'app/models/RFx';
+import { RFxHeader, MRFxType, MRFxGroup, RFxHC, RFxItem, ResItem, RFxRemark, RFxPartner, RFxVendorView, RFxODAttachment, EvalHC, EvalIC, EvaluatedICs, EvalHeader, ResODView, EvaluationView, EvalCriteriaView, RFxIC, ResHeader } from 'app/models/RFx';
+import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
-import { EvaItemDialogComponent } from '../eva-item-dialog/eva-item-dialog.component';
-import { ResItemDialogComponent } from '../response/response-dialogs/res-item-dialog/res-item-dialog.component';
-
+import { EvaItemDialogComponent } from '../eval-item-dialog/eval-item-dialog.component';
+import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-evaluation',
   templateUrl: './evaluation.component.html',
@@ -27,30 +27,32 @@ export class EvaluationComponent implements OnInit {
   isProgressBarVisibile: boolean;
 
   EvalView: EvaluationView = new EvaluationView();
-  EvalHCViews:EvalCriteriaView[]=[];
   RFxFormGroup: FormGroup;
   IsProgressBarVisibile: boolean;
   Rfxheader: RFxHeader = new RFxHeader();
+  ResH:ResHeader=new ResHeader();
   EvalHeader:EvalHeader=new EvalHeader();
   RFxTypeMasters: MRFxType[] = [];
   RFxGroupMasters: MRFxGroup[] = [];
   HeaderDetails: RFxHeader[] = [];
   EvaluationDetails: RFxHC[] = [];
+  RatingDetails:RFxIC[]=[];
   EvalHcs:EvalHC[]=[];
   EvalIcs:EvalIC[]=[];
   ResItem:ResItem[]=[];
-  EvaluatedICs:EvaluatedICs[]=[];
   ItemDetails: RFxItem[] = [];
   ODDetails: ResODView[] = [];
   ODAttachDetails:RFxODAttachment[]=[];
   RFxRemark: RFxRemark = new RFxRemark();
-  EvaluationDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'Description','Action'];
-  ItemsDetailsDisplayedColumns: string[] = ['position', 'Item', 'Material', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm', 'Action'];
-  ODDetailsDisplayedColumns: string[] = ['position', 'Question', 'Answer'];
-  ODAttachDetailsDisplayedColumns: string[] = ['position', 'Documenttitle', 'Remark'];
+  RatingDetailsDisplayedColumns:string[]=['Criteria','Weightage','Consider'];
+  EvaluationDetailsDisplayedColumns: string[] = ['Description','Rating'];
+  ItemsDetailsDisplayedColumns: string[] = ['Material','MaterialText', 'TotalQty', 'PerScheduleQty', 'TotalSchedules', 'UOM', 'IncoTerm', 'Action'];
+  ODDetailsDisplayedColumns: string[] = ['Question', 'Answer'];
+  ODAttachDetailsDisplayedColumns: string[] = ['DocumentTitle', 'DocumentName','Action'];
+  CurrencyList: string[] = ["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LVL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STD", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "USS", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XFU", "XOF", "XPD", "XPF", "XPT", "XTS", "XXX", "YER", "ZAR", "ZMW"];
   EvaluationDetailsDataSource: MatTableDataSource<RFxHC>;
+  RatingDetailsDataSource:MatTableDataSource<RFxIC>;
   ItemDetailsDataSource: MatTableDataSource<RFxItem>;
-  PartnerDetailsDataSource: MatTableDataSource<RFxPartner>;
   VendorDetailsDataSource: MatTableDataSource<RFxVendorView>;
   ODDetailsDataSource: MatTableDataSource<ResODView>;
   ODAttachDetailsDataSource:MatTableDataSource<RFxODAttachment>;
@@ -110,6 +112,7 @@ export class EvaluationComponent implements OnInit {
     this.GetRFxHsByRFxID(this.RFxID);
     this.GetRFxHCsByRFxID(this.RFxID);
     this.GetRFxItemsByRFxID(this.RFxID);
+    this.GetResHeader(this.RESID);
     this.GetResItem(this.RESID);
     this.GetResODViewsByRESID(this.RESID);
     this.GetRFxODAttachmentsByRFxID(this.RFxID);
@@ -120,8 +123,8 @@ export class EvaluationComponent implements OnInit {
     this._RFxService.GetRFxByRFxID(RFxID).subscribe(
       (data) => {
         if (data) {
-          //console.log("header",data);
-          this.Rfxheader = data as RFxHeader;
+          // console.log("header",data);
+          this.Rfxheader=<RFxHeader>data;
           this.RFxFormGroup.get("RfqType").setValue(this.Rfxheader.RFxType);
           this.RFxFormGroup.get("RfqGroup").setValue(this.Rfxheader.RFxGroup);
           this.RFxFormGroup.get("RfqTitle").setValue(this.Rfxheader.Title);
@@ -130,6 +133,14 @@ export class EvaluationComponent implements OnInit {
           this.RFxFormGroup.get("ResponseStartDate").setValue(this.Rfxheader.ResponseStartDate);
           this.RFxFormGroup.get("ResponseEndDate").setValue(this.Rfxheader.ResponseEndDate);
           this.RFxFormGroup.get("Currency").setValue(this.Rfxheader.Currency);
+          this.RFxFormGroup.get("ValidityStartTime").setValue(this.Rfxheader.ValidityStartTime);
+          this.RFxFormGroup.get("ValidityEndTime").setValue(this.Rfxheader.ValidityEndTime);
+          this.RFxFormGroup.get("ResponseStartTime").setValue(this.Rfxheader.ResponseStartTime);
+          this.RFxFormGroup.get("ResponseEndTime").setValue(this.Rfxheader.ResponseEndTime);
+          this.RFxFormGroup.get("EvaluationEndDate").setValue(this.Rfxheader.EvalEndDate);
+          this.RFxFormGroup.get("EvaluationEndTime").setValue(this.Rfxheader.EvalEndTime);
+          this.RFxFormGroup.get("Evaluator").setValue(this.Rfxheader.MinEvaluator);
+          this.RFxFormGroup.get("Site").setValue(this.Rfxheader.Site);
         }
       }
     );
@@ -144,13 +155,8 @@ export class EvaluationComponent implements OnInit {
             criteria.Client=element.Client;
             criteria.Company=element.Company;
             criteria.Criteria=element.CriteriaID;
-            criteria.Rating="0";
+            criteria.Rating=null;
             this.EvalHcs.push(criteria);
-            var hcview=new EvalCriteriaView();
-            hcview.CriteriaID=element.CriteriaID;
-            hcview.Text=element.Text;
-            hcview.Rating="0";
-            this.EvalHCViews.push(hcview);
           });
           this.EvaluationDetailsDataSource = new MatTableDataSource(this.EvaluationDetails);
         }
@@ -163,15 +169,15 @@ export class EvaluationComponent implements OnInit {
         if (data) {
           this.ItemDetails = <RFxItem[]>data;
           this.ItemDetailsDataSource = new MatTableDataSource(this.ItemDetails);
-          this.ItemDetails.forEach(item => {
-            var EIC=new EvaluatedICs();
-            EIC.isEvaluated=false;
-            EIC.IC=[];
-            this.EvaluatedICs.push(EIC);
-          });
         }
       }
     );
+  }
+
+  GetResHeader(RESID:string):void{
+    this._RFxService.GetResponseByResponseID(RESID).subscribe(data=>{
+      this.ResH=<ResHeader>data;
+    });
   }
 
   GetResODViewsByRESID(RESID: string): void {
@@ -241,9 +247,6 @@ export class EvaluationComponent implements OnInit {
     this._RFxService.GetEvalHCsByID(EvalID).subscribe(data=>{
       if(data){
         this.EvalHcs=<EvalHC[]>data;
-        for (let index = 0; index < this.EvalHcs.length; index++) {
-          this.EvalHCViews[index].Rating=this.EvalHcs[index].Rating;
-        }
       }
     });
   }
@@ -251,32 +254,33 @@ export class EvaluationComponent implements OnInit {
     this._RFxService.GetEvalICsByID(EvalID).subscribe(data=>{
       if(data){
         this.EvalIcs=<EvalIC[]>data;
-        this.EvaluatedICs=[];
-        this.ItemDetails.forEach(evalIC => {
-          var EItem=new EvaluatedICs();
-          EItem.IC=this.EvalIcs.filter(x=>x.Item==evalIC.Item);
-          EItem.isEvaluated=true;
-          this.EvaluatedICs.push(EItem);
-        });
       }
     });
   }
 
   InitializeRFxFormGroup(): void {
     this.RFxFormGroup = this._formBuilder.group({
-      RfqType: ['', [Validators.required]],
-      RfqGroup: ['', [Validators.required]],
-      RfqTitle: ['', [Validators.required]],
-      ValidityStartDate: ['', [Validators.required]],
-      ValidityEndDate: ['', [Validators.required]],
-      ResponseStartDate: ['', [Validators.required]],
-      ResponseEndDate: ['', [Validators.required]],
-      Currency: ['', [Validators.required]],
+      RfqType: [''],
+      RfqGroup: [''],
+      RfqTitle: [''],
+      ValidityStartDate: [''],
+      ValidityStartTime:[''],
+      ValidityEndDate: [''],
+      ValidityEndTime:[''],
+      ResponseStartDate: [''],
+      ResponseStartTime:[''],
+      ResponseEndDate: [''],
+      ResponseEndTime:[''],
+      EvaluationEndDate:[''],
+      EvaluationEndTime:[''],
+      Evaluator:[''],
+      Currency: [''],
+      Site:['']
     });
   }
   
   tabClick(tab: any) {
-    this.index = parseInt(tab.index);
+    this.selectedIndex = parseInt(tab.index);
   }
 
   ShowValidationErrors(formGroup: FormGroup): void {
@@ -314,11 +318,6 @@ export class EvaluationComponent implements OnInit {
     this.EvalView.EvalRemarks=null;
     this.EvalView.EvalHCs=this.EvalHcs;
     this.EvalView.EvalICs=[];
-    this.EvaluatedICs.forEach(EICs => {
-      if(EICs.isEvaluated){
-        this.EvalView.EvalICs=this.EvalView.EvalICs.concat(EICs.IC);
-      }
-    });
     console.log(this.EvalView);
     this._RFxService.CreateEvaluation(this.EvalView).subscribe((response)=>{
       console.log("response",response);
@@ -358,11 +357,6 @@ export class EvaluationComponent implements OnInit {
     this.EvalView.EvalRemarks=null;
     this.EvalView.EvalHCs=this.EvalHcs;
     this.EvalView.EvalICs=[];
-    this.EvaluatedICs.forEach(EICs => {
-      if(EICs.isEvaluated){
-        this.EvalView.EvalICs=this.EvalView.EvalICs.concat(EICs.IC);
-      }
-    });
     console.log(this.EvalView);
     this._RFxService.UpdateEvaluation(this.EvalView).subscribe((response)=>{
       console.log("response",response);
@@ -402,29 +396,66 @@ export class EvaluationComponent implements OnInit {
     }
   }
 
-  OpenEvaItemDialog(item:RFxItem, index) {
+  OpenEvaItemDialog(item:RFxItem) {
     var resItem=this.ResItem.filter(x=>x.Item==item.Item && x.Client==item.Client && x.Company==item.Company);
-    var EvalICs=this.EvaluatedICs[index].IC;
-    console.log("opening",this.EvaluatedICs);
     const dialogRef = this.dialog.open(EvaItemDialogComponent, {
-      data: { RFxItem:item,ResItem:resItem[0],EvalHCs:this.EvalHCViews,EvalIC:EvalICs}, height: '90%',
-      width: '82%'
-    });
-    dialogRef.disableClose = true;
-    dialogRef.afterClosed().subscribe(res => {
-      if(res){
-        this.EvaluatedICs[index].IC=<EvalIC[]>res;
-        this.EvaluatedICs[index].isEvaluated=true;
-      }
+      data: { RFxItem:item,ResItem:resItem[0]}, panelClass:"eval-item-dialog"
     });
   }
 
   onRate($event:{oldValue:number, newValue:number},index:any) {
     this.EvalHcs[index].Rating=$event.newValue.toString();
-    this.EvalHCViews[index].Rating=$event.newValue.toString();
   }
 
   CancelClicked(){
     this._router.navigate(['pages/evaluationresponse']);
+  }
+  DownloadRFxAttachment(RFxID: string,fileName: string): void {
+    this.isProgressBarVisibile = true;
+    this._RFxService.DowloandAttachment(RFxID, fileName).subscribe(
+      data => {
+        if (data) {
+          let fileType = 'image/jpg';
+          fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+            fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+              fileName.toLowerCase().includes('.png') ? 'image/png' :
+                fileName.toLowerCase().includes('.gif') ? 'image/gif' :
+                  fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
+          const blob = new Blob([data], { type: fileType });
+          if(fileType=='image/jpg' || fileType=='image/jpeg' || fileType=='image/png' || fileType=='image/gif' || fileType=='application/pdf'){
+            this.openAttachmentDialog(fileName, blob);
+          }
+          else{
+            saveAs(blob,fileName);
+          }
+        }
+        this.isProgressBarVisibile = false;
+      },
+      error => {
+        console.error(error);
+        this.isProgressBarVisibile = false;
+      }
+    );
+  }
+  openAttachmentDialog(FileName: string, blob: Blob): void {
+    const attachmentDetails: any = {
+      FileName: FileName,
+      blob: blob
+    };
+    const dialogConfig: MatDialogConfig = {
+      data: attachmentDetails,
+      panelClass: 'attachment-dialog'
+    };
+    const dialogRef = this.dialog.open(AttachmentDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
+    });
+  }
+  IsComplete():boolean{
+    if(this.EvalHcs.filter(x=>x.Rating==null).length>0){
+      return false;
+    }
+    return true;
   }
 }

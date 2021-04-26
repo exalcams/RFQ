@@ -181,13 +181,11 @@ export class RfqComponent implements OnInit {
     this.GetRFxRemarkByRFxID(this.RFxID);
     this.CompletedSteps=[true,true,true,true,true,true,true,true];
   }
-  public IsComplete():boolean{
+  IsComplete():boolean{
     if(this.CompletedSteps.includes(false)){
       return false;
     }
-    else{
-      return true;
-    }
+    return true;
   }
   GetRFxHsByRFxID(RFxID: string): void {
     this.isProgressBarVisibile = true;
@@ -814,7 +812,7 @@ export class RfqComponent implements OnInit {
     this.OpenConfirmationDialog("Delete","RFx")
   }
   CancelClicked(){
-    this._router.navigate(['pages/home'])
+    this._router.navigate(['pages/home']);
   }
   AddRowToIC(Row:RFxIC){
     this.ItemCriteriaFormArray.push(this._formBuilder.group({

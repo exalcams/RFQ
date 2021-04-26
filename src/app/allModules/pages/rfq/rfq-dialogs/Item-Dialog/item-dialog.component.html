@@ -8,7 +8,7 @@
         <form autocomplete="off" [formGroup]="DialogueFormGroup">
             <div fxLayout="column">
                 <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="3%">
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Material</mat-label>
                         <mat-select formControlName="material" fxFlex (selectionChange)="MaterialSelected($event.value)"
                             disableOptionCentering panelClass="myPanelClass">
@@ -21,7 +21,7 @@
                         </mat-error>
                     </mat-form-field>
         
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Material Text</mat-label>
                         <input matInput formControlName="material_text" fxFlex autocomplete="off">
                         <mat-error
@@ -30,7 +30,7 @@
                         </mat-error>
                     </mat-form-field>
         
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>UOM</mat-label>
                         <input matInput maxlength="3" size="3" formControlName="Uom" fxFlex autocomplete="off">
                         <mat-error
@@ -39,7 +39,7 @@
                         </mat-error>
                     </mat-form-field>
         
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Total Qty</mat-label>
                         <input  matInput type="number"  formControlName="TotalQty" min="0" (keyup)="CalculateTotalQTy()"
                             oninput="this.value = Math.abs(this.value)" fxFlex autocomplete="off">
@@ -47,12 +47,10 @@
                             *ngIf="DialogueFormGroup.get('TotalQty').touched && DialogueFormGroup.get('TotalQty').hasError('required')">
                             Total Quantity is required
                         </mat-error>
-                        <!-- <mat-error *ngIf="DialogueFormGroup.get('TotalQty').hasError('pattern')">Enter
-                            only 3 decimal digits</mat-error> -->
                        <mat-error *ngIf="DialogueFormGroup.get('TotalQty').touched && DialogueFormGroup.get('TotalQty').hasError('min')">Total Qty should not be less than per schedule qty</mat-error>
                     </mat-form-field>
         
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Per Schedule Qty</mat-label>
                         <input matInput formControlName="per_schedule_qty" type="number"  fxFlex autocomplete="off" min="0"
                             oninput="this.value = Math.abs(this.value)" (keyup)="CalculateTotalSchedules()">
@@ -60,18 +58,16 @@
                             *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('required')">
                             Per Schedule Quantity is required
                         </mat-error>
-                        <!-- <mat-error *ngIf="DialogueFormGroup.get('per_schedule_qty').hasError('pattern')">Enter
-                            only 3 decimal digits</mat-error> -->
                             <mat-error *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('max')">Per schedule qty should be less than TotalQty</mat-error>
                     </mat-form-field>
         
         
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Total Schedules</mat-label>
                         <input matInput type="number" formControlName="totalSchedules" fxFlex autocomplete="off">
                     </mat-form-field>
         
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Bidding Price Low</mat-label>
                         <input matInput formControlName="LowPrice" type="number" fxFlex autocomplete="off" min="0"
                             oninput="this.value = Math.abs(this.value)">
@@ -81,7 +77,7 @@
                         </mat-error>
                     </mat-form-field>
         
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Bidding Price High</mat-label>
                         <input matInput formControlName="HighPrice" type="number" fxFlex autocomplete="off" min="0"
                             oninput="this.value = Math.abs(this.value)">
@@ -95,7 +91,7 @@
                         </mat-error>
                     </mat-form-field>
         
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Interval</mat-label>
                         <input matInput formControlName="Interval" type="number" fxFlex autocomplete="off" min="0"
                             oninput="this.value = Math.abs(this.value)">
@@ -105,7 +101,7 @@
                         </mat-error>
                     </mat-form-field>
         
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Incoterm</mat-label>
                         <input matInput formControlName="incoterm" max="2" size="2" fxFlex autocomplete="off">
                         <mat-error
@@ -118,7 +114,7 @@
                         </mat-error>
                     </mat-form-field>
         
-                    <mat-form-field fxFlex=30 style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>First Schedule Start (In days)</mat-label>
                         <input matInput formControlName="LeadTime" type="number" fxFlex autocomplete="off" min="0"
                             oninput="this.value = Math.abs(this.value)">
@@ -130,7 +126,7 @@
                 </div>
         
                 <div fxFlex>
-                    <mat-form-field fxFlex style="font-size: 14px;" appearance="outline">
+                    <mat-form-field fxFlex appearance="outline">
                         <mat-label>Notes</mat-label>
                         <textarea matInput formControlName="Notes" max="2" size="2" fxFlex autocomplete="off"></textarea>
                         <mat-error

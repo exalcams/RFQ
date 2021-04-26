@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { RFxHeader, RFxHC, RFxItem, RFxPartner, RFxOD, RFxVendorView, MRFxGroup, MRFxType, ResponseView, RespondedItems, ResItem, RespondedODs, ResOD, ResHC, ResHeader, ResODAttachment, RespondedODAttachments, RFxRemark, RFxODAttachment } from 'app/models/RFx';
+import { RFxHeader, RFxHC, RFxItem, RFxPartner, RFxOD, RFxVendorView, MRFxGroup, MRFxType, ResponseView, RespondedItems, ResItem, RespondedODs, ResOD, ResHC, ResHeader, ResODAttachment, RespondedODAttachments, RFxRemark, RFxODAttachment, RFxIC } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { MatSnackBar } from '@angular/material';
@@ -12,6 +12,8 @@ import { ResItemDialogComponent } from './response-dialogs/res-item-dialog/res-i
 import { ResAnsDialogComponent } from './response-dialogs/res-ans-dialog/res-ans-dialog.component';
 import { AuthenticationDetails } from 'app/models/master';
 import { Guid } from 'guid-typescript';
+import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
+import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-response',
   templateUrl: './response.component.html',
@@ -34,6 +36,7 @@ export class ResponseComponent implements OnInit {
   RFxTypeMasters: MRFxType[] = [];
   RFxGroupMasters: MRFxGroup[] = [];
   HeaderDetails: RFxHeader[] = [];
+  RatingDetails:RFxIC[]=[];
   EvaluationDetails: RFxHC[] = [];
   ItemDetails: RFxItem[] = [];
   ODDetails: RFxOD[] = [];
@@ -47,12 +50,14 @@ export class ResponseComponent implements OnInit {
   RespondedI: RespondedItems[] = [];
   RespondedOD: RespondedODs[] = [];
   RespondedAttachment: RespondedODAttachments[] = [];
+  RatingDetailsDisplayedColumns:string[]=['Criteria','Weightage','Consider'];
   EvaluationDetailsDisplayedColumns: string[] = ['Description'];
-  ItemsDetailsDisplayedColumns: string[] = ['position', 'Item', 'Material', 'TotalQty', 'PerScheduleQty', 'Noofschedules', 'Uom', 'Incoterm', 'Action'];
-  ODDetailsDisplayedColumns: string[] = ['position', 'Question', 'Answertype', 'Action'];
-  ODAttachDetailsDisplayedColumns: string[] = ['position', 'Documenttitle', 'Remark'];
+  ItemsDetailsDisplayedColumns: string[] = ['Material','MaterialText', 'TotalQty', 'PerScheduleQty', 'TotalSchedules', 'UOM', 'IncoTerm', 'Action'];
+  ODDetailsDisplayedColumns: string[] = ['Question', 'AnswerType', 'Action'];
+  ODAttachDetailsDisplayedColumns: string[] = ['DocumentTitle', 'DocumentName','Action'];
   CurrencyList: string[] = ["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LVL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STD", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "USS", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XFU", "XOF", "XPD", "XPF", "XPT", "XTS", "XXX", "YER", "ZAR", "ZMW"];
   EvaluationDetailsDataSource: MatTableDataSource<RFxHC>;
+  RatingDetailsDataSource:MatTableDataSource<RFxIC>;
   ItemDetailsDataSource: MatTableDataSource<RFxItem>;
   PartnerDetailsDataSource: MatTableDataSource<RFxPartner>;
   VendorDetailsDataSource: MatTableDataSource<RFxVendorView>;
@@ -60,12 +65,10 @@ export class ResponseComponent implements OnInit {
   ODAttachDetailsDataSource:MatTableDataSource<RFxODAttachment>;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   RFxID: string = null;
-  index: number = 0;
   selectedIndex: number = 0;
   FilesToUpload: File[] = [];
   ResItemFiles:File[]=[];
   ODAttachDetails: RFxODAttachment[] = [];
-  IsComplete:boolean=false;
 
   constructor(
     public dialog: MatDialog,
@@ -183,6 +186,16 @@ export class ResponseComponent implements OnInit {
             this.ResHC.push(res);
           });
           this.EvaluationDetailsDataSource = new MatTableDataSource(this.EvaluationDetails);
+        }
+      }
+    );
+  }
+  GetRFxICsByRFxID(RFxID: string): void {
+    this._RFxService.GetRFxICsByRFxID(RFxID).subscribe(
+      (data) => {
+        if (data) {
+          this.RatingDetails = <RFxIC[]>data;
+          this.RatingDetailsDataSource = new MatTableDataSource(this.RatingDetails);
         }
       }
     );
@@ -413,7 +426,7 @@ export class ResponseComponent implements OnInit {
   }
 
   tabClick(tab: any) {
-    this.index = parseInt(tab.index);
+    this.selectedIndex = parseInt(tab.index);
   }
 
   ShowValidationErrors(formGroup: FormGroup): void {
@@ -452,8 +465,7 @@ export class ResponseComponent implements OnInit {
     console.log("rfxitem",RFxItem);
     console.log("res",this.RespondedI[index].Item);
     const dialogRef = this.dialog.open(ResItemDialogComponent, {
-      data: { data: RFxItem,Res:this.RespondedI[index].Item,Docs:this.ResODAttachment,DocFiles:this.ResItemFiles }, height: '90%',
-      width: '82%'
+      data: { data: RFxItem,Res:this.RespondedI[index].Item,Docs:this.ResODAttachment,DocFiles:this.ResItemFiles },panelClass:"res-item-dialog"
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res => {
@@ -468,8 +480,7 @@ export class ResponseComponent implements OnInit {
   }
   OpenResAnsDialog(item, index) {
     const dialogRef = this.dialog.open(ResAnsDialogComponent, {
-      data: { data: item, data1: this.RespondedOD[index] }, height: '44%',
-      width: '44%'
+      data: { data: item, data1: this.RespondedOD[index] }, panelClass:"res-answer-dialog"
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res => {
@@ -480,4 +491,62 @@ export class ResponseComponent implements OnInit {
       }
     });
   }
+  CancelClicked(){
+    this._router.navigate(['pages/responsehome']);
+  }
+  IsItemComplete():boolean{
+    if(this.RespondedI.filter(x=>x.isResponded==false).length>0){
+      return false;
+    }
+    return true;
+  }
+  IsODComplete():boolean{
+    if(this.RespondedOD.filter(x=>x.isResponded==false).length>0){
+      return false;
+    }
+    return true;
+  }
+  DownloadRFxAttachment(RFxID: string,fileName: string): void {
+    this.isProgressBarVisibile = true;
+    this._RFxService.DowloandAttachment(RFxID, fileName).subscribe(
+      data => {
+        if (data) {
+          let fileType = 'image/jpg';
+          fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+            fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+              fileName.toLowerCase().includes('.png') ? 'image/png' :
+                fileName.toLowerCase().includes('.gif') ? 'image/gif' :
+                  fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
+          const blob = new Blob([data], { type: fileType });
+          if(fileType=='image/jpg' || fileType=='image/jpeg' || fileType=='image/png' || fileType=='image/gif' || fileType=='application/pdf'){
+            this.openAttachmentDialog(fileName, blob);
+          }
+          else{
+            saveAs(blob,fileName);
+          }
+        }
+        this.isProgressBarVisibile = false;
+      },
+      error => {
+        console.error(error);
+        this.isProgressBarVisibile = false;
+      }
+    );
+  }
+  openAttachmentDialog(FileName: string, blob: Blob): void {
+    const attachmentDetails: any = {
+      FileName: FileName,
+      blob: blob
+    };
+    const dialogConfig: MatDialogConfig = {
+      data: attachmentDetails,
+      panelClass: 'attachment-dialog'
+    };
+    const dialogRef = this.dialog.open(AttachmentDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
+    });
+  }
 }
+
