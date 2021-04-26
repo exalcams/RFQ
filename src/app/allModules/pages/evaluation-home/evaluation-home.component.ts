@@ -8,33 +8,56 @@ import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { RFxService } from 'app/services/rfx.service';
 import { Guid } from 'guid-typescript';
 import { EvaItemDialogComponent } from '../eva-item-dialog/eva-item-dialog.component';
+import { ApexDataLabels, ApexLegend, ApexPlotOptions, ChartComponent } from "ng-apexcharts";
 
+import {
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexChart
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  colors:string[];
+  dataLabels: ApexDataLabels;
+  plotOptions:ApexPlotOptions;
+  legend: ApexLegend;
+};
 
 @Component({
   selector: 'app-evaluation-home',
-  templateUrl: './evaluation-home.component.html',
+  templateUrl: './evaluation-home-new.component.html',
   styleUrls: ['./evaluation-home.component.scss']
 })
 export class EvaluationHomeComponent implements OnInit {
+  public chartOptions: Partial<ChartOptions>;
+  @ViewChild("overviewchart") chart: ChartComponent;
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
   @ViewChild(MatSort) RFQSort: MatSort;
   AllHeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'RFxID','Title', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType','RFxGroup', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   isProgressBarVisibile:boolean;
   authenticationDetails: AuthenticationDetails;
   currentUserID: Guid;
   CurrentUserName:string;
+  ArrChart: any[] = [];
   currentUserRole: string;
   EvaluatedHeaderDetails: any[] = [];
   ClosedHeaderDetails: any[] = [];
   MenuItems: string[];
+  SelectedTab:string="1";
   notificationSnackBarComponent: NotificationSnackBarComponent;
+
   constructor(private route: Router,
     private _RFxService: RFxService,
     private dialog: MatDialog,public snackBar: MatSnackBar) { 
       this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+    
     }
 
   ngOnInit() {
@@ -54,6 +77,83 @@ export class EvaluationHomeComponent implements OnInit {
       this.route.navigate(['/auth/login']);
     }
     this.GetAllRFxs();
+    console.log(this.ArrChart,'series');
+    // chart start
+ this.chartOptions = {
+   series: this.ArrChart,
+   colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
+   chart: {
+     type: "donut",
+     width:280,
+     height:'auto'
+   },
+   labels: ["Evaluated", " Yet to be Evaluated"],
+   dataLabels: {
+     enabled: true,
+     distributed: true,
+     textAnchor:'middle',
+     style: {
+         fontSize: '10px',
+         fontFamily: 'Poppins',
+         fontWeight: '600',
+         colors: ['#083a6f', '#033283', '#1665f0','#0fb752']
+     },
+     dropShadow: {
+       enabled: false,
+   }
+   },
+   plotOptions: {
+     pie: {
+       dataLabels: {
+         offset: 25,
+       },
+       donut: {
+         size: '65%'
+       }
+     }
+   },
+   legend: {
+     show: true,
+     position: 'right',
+     horizontalAlign: 'center', 
+     floating: false,
+     fontSize: '11px',
+     fontFamily: 'Poppins',
+     fontWeight: 600,
+     width: undefined,
+     height: undefined,
+     tooltipHoverFormatter: undefined,
+     offsetX: 0,
+     offsetY: -8,
+     labels: {
+         colors: ["#2b3540","#2b3540","#2b3540","#2b3540"],
+         useSeriesColors: false
+     },
+     markers: {
+         width: 6,
+         height: 6,
+         strokeWidth: 0,
+         strokeColor: '#fff',
+         fillColors: undefined,
+         radius: 6,
+         customHTML: undefined,
+         onClick: undefined,
+         offsetX: 0,
+         offsetY: 0
+     },
+     itemMargin: {
+         horizontal: 8,
+         vertical: 4
+     },
+     onItemClick: {
+         toggleDataSeries: true
+     },
+     onItemHover: {
+         highlightDataSeries: true
+     },
+ }
+ };
+ // chart end
   }
   Gotoheader(rfqid) {
     this.route.navigate(['pages/evaluationresponse']);
@@ -67,30 +167,33 @@ export class EvaluationHomeComponent implements OnInit {
         if (data) {
           this.AllHeaderDetails =data;
           this.isProgressBarVisibile=false;
-          this.LoadTableSource(this.AllHeaderDetails);
+          this.LoadTableSource(this.AllHeaderDetails,"1");
         }
       }
     );
-    this._RFxService.GetAllRFxHDocumets('3').subscribe(
+    this._RFxService.GetAllEvalRFxH(this.CurrentUserName,'4').subscribe(
       (data) => {
         if (data) {
           this.EvaluatedHeaderDetails = data;
           this.isProgressBarVisibile = false;
-          this.LoadTableSource(this.EvaluatedHeaderDetails);
+          this.ArrChart.push(this.EvaluatedHeaderDetails.length);
+          // this.LoadTableSource(this.EvaluatedHeaderDetails);
         }
       }
     );
-    this._RFxService.GetAllRFxHDocumets('5').subscribe(
+    this._RFxService.GetAllEvalRFxH(this.CurrentUserName,'5').subscribe(
       (data) => {
         if (data) {
           this.ClosedHeaderDetails = data;
           this.isProgressBarVisibile = false;
-          this.LoadTableSource(this.ClosedHeaderDetails);
+          this.ArrChart.push(this.ClosedHeaderDetails.length);
+          // this.LoadTableSource(this.ClosedHeaderDetails);
         }
       }
     );
   }
-  LoadTableSource(DataArray:any[]){
+  LoadTableSource(DataArray:any[],Tab:string){
+    this.SelectedTab=Tab;
     this.HeaderDetailsDataSource = new MatTableDataSource(DataArray);
     this.HeaderDetailsDataSource.paginator=this.RFQPaginator;
     this.HeaderDetailsDataSource.sort=this.RFQSort;

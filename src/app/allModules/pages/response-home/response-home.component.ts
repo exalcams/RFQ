@@ -47,7 +47,8 @@ export class ResponseHomeComponent implements OnInit {
   DueToRespondHeaderDetails: any[] = [];
   RespondedHeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['RFxID','RFxGroup', 'Title','RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','Action'];
+  SelectedTab:string="1";
+  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title','RFxType','RFxGroup', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   imgArray: any[] = [
     {
@@ -77,10 +78,157 @@ export class ResponseHomeComponent implements OnInit {
     private _route: ActivatedRoute,
     private dialog: MatDialog, public snackBar: MatSnackBar) {
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
-    console.log(this.ArrChart,'series');
+   
+   
+   
+  }
+
+  ngOnInit() {
+    const retrievedObject = localStorage.getItem("authorizationData");
+    if (retrievedObject) {
+      this.authenticationDetails = JSON.parse(
+        retrievedObject
+      ) as AuthenticationDetails;
+      this.currentUserID = this.authenticationDetails.UserID;
+      this.currentUserName = this.authenticationDetails.UserName;
+      this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
+      if (this.MenuItems.indexOf('RFQ_ResponseHome') < 0) {
+        this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
+        );
+        this.route.navigate(['/auth/login']);
+      }
+    } else {
+      this.route.navigate(['/auth/login']);
+    }
+    this.GetAllRFxs();
+    console.log(this.ArrChart,"series");
+    // if(this.ArrChart.length > 0)
+    // {
+      // this.Chart();
+    // }
+    this.chartOptions = {
+      series:this.ArrChart,
+      colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
+      chart: {
+        type: "donut",
+        width:280,
+        height:'auto'
+      },
+      labels: ["Yet to be Respond", "Responded"],
+      dataLabels: {
+        enabled: true,
+        distributed: true,
+        textAnchor:'middle',
+        style: {
+            fontSize: '10px',
+            fontFamily: 'Poppins',
+            fontWeight: '600',
+            colors: ['#083a6f', '#033283', '#1665f0','#0fb752']
+        },
+        dropShadow: {
+          enabled: false,
+      }
+      },
+      plotOptions: {
+        pie: {
+          dataLabels: {
+            offset: 25,
+          },
+          donut: {
+            size: '65%'
+          }
+        }
+      },
+      legend: {
+        show: true,
+        position: 'right',
+        horizontalAlign: 'center', 
+        floating: false,
+        fontSize: '11px',
+        fontFamily: 'Poppins',
+        fontWeight: 600,
+        width: undefined,
+        height: undefined,
+        tooltipHoverFormatter: undefined,
+        offsetX: 0,
+        offsetY: -8,
+        labels: {
+            colors: ["#2b3540","#2b3540","#2b3540","#2b3540"],
+            useSeriesColors: false
+        },
+        markers: {
+            width: 6,
+            height: 6,
+            strokeWidth: 0,
+            strokeColor: '#fff',
+            fillColors: undefined,
+            radius: 6,
+            customHTML: undefined,
+            onClick: undefined,
+            offsetX: 0,
+            offsetY: 0
+        },
+        itemMargin: {
+            horizontal: 8,
+            vertical: 4
+        },
+        onItemClick: {
+            toggleDataSeries: true
+        },
+        onItemHover: {
+            highlightDataSeries: true
+        },
+    }
+    };
+  }
+
+  Gotoheader(rfqid) {
+    this.route.navigate(['pages/response']);
+    // { queryParams: { id: rfqid } }
+    localStorage.setItem('RRFxID', rfqid);
+
+  }
+  GetAllRFxs(): void {
+    this.isProgressBarVisibile = true;
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName).subscribe(
+      (data) => {
+        if (data) {
+          this.AllHeaderDetails = data;
+          this.isProgressBarVisibile = false;
+          this.LoadTableSource(this.AllHeaderDetails,"1");
+        }
+      }
+    );
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '2').subscribe(
+      (data) => {
+        if (data) {
+          this.DueToRespondHeaderDetails = data;
+          this.ArrChart.push(this.DueToRespondHeaderDetails.length);
+          this.isProgressBarVisibile = false;
+        
+        }
+      }
+    );
+    
+    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '3').subscribe(
+      (data) => {
+        if (data) {
+          this.RespondedHeaderDetails = data;
+          this.ArrChart.push(this.RespondedHeaderDetails.length);
+          this.isProgressBarVisibile = false;
+        }
+      }
+    );
+    // this._RFxService.GetResPeiData(this.currentUserName).subscribe(x=>{
+    //    this.chartOptions.series=x;
+    // });
+    //  this.chartOptions.series=this.ArrChart;
+  }
+  Chart(){
+   // console.log(this.ArrChart,'series');
     // chart start
     this.chartOptions = {
-      series: this.ArrChart,
+      series:this.ArrChart,
       colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
       chart: {
         type: "donut",
@@ -155,69 +303,8 @@ export class ResponseHomeComponent implements OnInit {
     };
     // chart end
   }
-
-  ngOnInit() {
-    const retrievedObject = localStorage.getItem("authorizationData");
-    if (retrievedObject) {
-      this.authenticationDetails = JSON.parse(
-        retrievedObject
-      ) as AuthenticationDetails;
-      this.currentUserID = this.authenticationDetails.UserID;
-      this.currentUserName = this.authenticationDetails.UserName;
-      this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
-      if (this.MenuItems.indexOf('RFQ_ResponseHome') < 0) {
-        this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
-        );
-        this.route.navigate(['/auth/login']);
-      }
-    } else {
-      this.route.navigate(['/auth/login']);
-    }
-    this.GetAllRFxs();
-    
-  }
-
-  Gotoheader(rfqid) {
-    this.route.navigate(['pages/response']);
-    // { queryParams: { id: rfqid } }
-    localStorage.setItem('RRFxID', rfqid);
-
-  }
-  GetAllRFxs(): void {
-    this.isProgressBarVisibile = true;
-    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName).subscribe(
-      (data) => {
-        if (data) {
-          this.AllHeaderDetails = data;
-          this.isProgressBarVisibile = false;
-          this.LoadTableSource(this.AllHeaderDetails);
-        }
-      }
-    );
-    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '2').subscribe(
-      (data) => {
-        if (data) {
-          this.DueToRespondHeaderDetails = data;
-          this.isProgressBarVisibile = false;
-          this.ArrChart.push(this.DueToRespondHeaderDetails.length);
-        }
-      }
-    );
-    
-    this._RFxService.GetAllRFxHDocumetsByVendorName(this.currentUserName, '3').subscribe(
-      (data) => {
-        if (data) {
-          this.RespondedHeaderDetails = data;
-          this.ArrChart.push(this.RespondedHeaderDetails.length);
-          this.isProgressBarVisibile = false;
-        }
-      }
-    );
-    // this._RFxService.GetResPeiData(this.currentUserName).subscribe(x=>{
-    //   this.chartOptions.series=this.ArrChart;
-    // });
-  }
-  LoadTableSource(DataArray: any[]) {
+  LoadTableSource(DataArray: any[],Tab:string) {
+    this.SelectedTab=Tab;
     this.HeaderDetailsDataSource = new MatTableDataSource(DataArray);
     this.HeaderDetailsDataSource.paginator = this.RFQPaginator;
     this.HeaderDetailsDataSource.sort = this.RFQSort;
