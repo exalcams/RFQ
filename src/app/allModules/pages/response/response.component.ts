@@ -69,6 +69,7 @@ export class ResponseComponent implements OnInit {
   FilesToUpload: File[] = [];
   ResItemFiles:File[]=[];
   ODAttachDetails: RFxODAttachment[] = [];
+  minDate=new Date();
 
   constructor(
     public dialog: MatDialog,

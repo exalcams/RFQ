@@ -199,5 +199,8 @@ export class AwardReportComponent implements OnInit {
         return "";
     }
   }
-
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.HeaderDetailsDataSource.filter = filterValue.trim().toLowerCase();
+  }
 }

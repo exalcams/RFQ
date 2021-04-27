@@ -321,7 +321,7 @@ export class RfqComponent implements OnInit {
     }
     this.RatingDetails[0].Text="Price";
     this.RatingDetails[1].Text="LeadTime";
-    this.RatingDetails[2].Text="Lorenipsum";
+    this.RatingDetails[2].Text="Payment";
     this.RatingDetails.forEach(ic => {
       this.AddRowToIC(ic);
     });
