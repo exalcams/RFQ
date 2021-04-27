@@ -1,5 +1,5 @@
 <div id="dashboard" fxFlex fusePerfectScrollbar>
-    <div fxLayout="column" class="px-16">
+    <div fxLayout="column" class="px-16" fxLayoutGap="1rem">
         <div fxLayut="row" fxLayoutAlign="start start">
             <div fxFlex=75 class="container1 px-16">
                 <div fxLayout="row" fxLayout="start center" class="py-24">
@@ -63,7 +63,7 @@
                 </div>
             </div>
         </div>
-        <table mat-table [dataSource]="HeaderDetailsDataSource" matSort class="py-10">
+        <table mat-table [dataSource]="HeaderDetailsDataSource" matSort>
             <ng-container matColumnDef="RFxID">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> RFQ ID </th>
                 <td mat-cell *matCellDef="let element" (click)="Gotoheader(element.RFxID)" style="cursor: pointer;"> {{element.RFxID | removeLeadingZero}} </td>

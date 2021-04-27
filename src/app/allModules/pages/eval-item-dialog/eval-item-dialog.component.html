@@ -10,8 +10,7 @@
               <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="3%">
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Material</mat-label>
-                      <mat-select formControlName="material" fxFlex (selectionChange)="MaterialSelected($event.value)"
-                          disableOptionCentering panelClass="myPanelClass">
+                      <mat-select formControlName="material" fxFlex disableOptionCentering panelClass="myPanelClass">
                           <mat-option *ngFor="let item of MaterialMaster" [value]="item.Material">{{item.Material}}
                           </mat-option>
                       </mat-select>
@@ -29,14 +28,12 @@
 
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Total Qty</mat-label>
-                      <input matInput type="number" formControlName="TotalQty" min="0" (keyup)="CalculateTotalQTy()"
-                          oninput="this.value = Math.abs(this.value)" fxFlex autocomplete="off">
+                      <input matInput type="number" formControlName="TotalQty" fxFlex autocomplete="off">
                   </mat-form-field>
 
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Per Schedule Qty</mat-label>
-                      <input matInput formControlName="per_schedule_qty" type="number" fxFlex autocomplete="off"
-                          min="0" oninput="this.value = Math.abs(this.value)" (keyup)="CalculateTotalSchedules()">
+                      <input matInput formControlName="per_schedule_qty" type="number" fxFlex autocomplete="off">
                   </mat-form-field>
 
 
@@ -108,8 +105,7 @@
 
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Lead Time is acceptable</mat-label>
-                      <mat-select formControlName="LeadTimeAccept" fxFlex
-                          (selectionChange)="ValueSelected($event.value)">
+                      <mat-select formControlName="LeadTimeAccept" fxFlex>
                           <mat-option *ngFor="let type of types" [value]="type">{{type}}</mat-option>
                       </mat-select>
                   </mat-form-field>

@@ -378,4 +378,8 @@ MuteRFx(header:ResHeader){
   }
   );
 }
+applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.HeaderDetailsDataSource.filter = filterValue.trim().toLowerCase();
+}
 }

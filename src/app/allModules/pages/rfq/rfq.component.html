@@ -7,12 +7,12 @@
             <label class="title">Create RFx</label>
             <div fxFlex></div>
             <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="4px" fxFlex>
-                <button *ngIf="RFxID!=-1 && RFxID" mat-button (click)="ForecloseClicked()"
+                <button *ngIf="RFxID!='-1' && RFxID" mat-button (click)="ForecloseClicked()"
                     style="background-color: transparent;">
                     <img src="/assets/images/foreclose1.png">
                     <span class="foreclose">Foreclose</span>
                 </button>
-                <button *ngIf="RFxID!=-1 && RFxID" mat-button (click)="DeleteClicked()"
+                <button *ngIf="RFxID!='-1' && RFxID" mat-button (click)="DeleteClicked()"
                     style="background-color: transparent;">
                     <img src="/assets/images/delete.png">
                     <span class="delete">Delete</span>
