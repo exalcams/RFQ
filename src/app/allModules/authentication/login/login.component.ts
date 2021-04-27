@@ -234,7 +234,7 @@ export class LoginComponent implements OnInit {
           title: 'RFQ Creation',
           translate: 'NAV.SAMPLE.TITLE',
           type: 'item',
-          icon: 'payment',
+          icon: 'library_add',
           isSvgIcon: false,
           // icon: 'dashboard',
           url: '/pages/rfq',
@@ -290,8 +290,8 @@ export class LoginComponent implements OnInit {
           title: 'Awarded',
           translate: 'NAV.SAMPLE.TITLE',
           type: 'item',
-          icon: 'reportIcon',
-          isSvgIcon: true,
+          icon: 'library_books',
+          isSvgIcon: false,
           url: '/pages/awardreport',
         }
       );

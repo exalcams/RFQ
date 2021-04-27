@@ -354,6 +354,7 @@ export class ResponseView {
 export class RespondedItems{
     isResponded:boolean;
     Item:ResItem;
+    Attachments:File[];
 }
 export class RespondedODs{
     isResponded:boolean;

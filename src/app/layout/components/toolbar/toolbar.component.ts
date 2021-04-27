@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation, Compiler, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, Compiler, SimpleChanges, OnChanges, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,7 +8,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { navigation } from 'app/navigation/navigation';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
-import { MatSnackBar, MatDialogConfig, MatDialog } from '@angular/material';
+import { MatSnackBar, MatDialogConfig, MatDialog, MatMenuTrigger } from '@angular/material';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { MasterService } from 'app/services/master.service';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
@@ -23,6 +23,7 @@ import { ChangePassDialogComponent } from './change-pass-dialog/change-pass-dial
 })
 
 export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
+    @ViewChild('clickMenuTrigger') trigger: MatMenuTrigger;
     horizontalNavbar: boolean;
     rightNavbar: boolean;
     hiddenNavbar: boolean;
@@ -286,5 +287,21 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
                 }
             }
         );
+    }
+    OpenUserMenu(){
+        this.trigger.openMenu();
+    }
+    /**
+     * Toggle sidebar opened status
+     */
+     toggleSidebarOpened(): void {
+        this._fuseSidebarService.getSidebar('navbar').toggleOpen();
+    }
+
+    /**
+     * Toggle sidebar folded status
+     */
+    toggleSidebarFolded(): void {
+        this._fuseSidebarService.getSidebar('navbar').toggleFold();
     }
 }

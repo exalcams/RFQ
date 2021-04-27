@@ -171,7 +171,7 @@
               <ngx-dropzone #drop (change)="onSelect($event)" [disableClick]="true" class="dropzone">
                   <ngx-dropzone-label><span class="label">Drop here to upload or <a class="fileselect"
                               (click)="drop.showFileSelector()">choose file</a></span></ngx-dropzone-label>
-                  <ngx-dropzone-preview class="preview" *ngFor="let f of files" [removable]="true"
+                  <ngx-dropzone-preview class="preview" *ngFor="let f of ResItemFiles" [removable]="true"
                       (removed)="onRemove(f)">
                       <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
                   </ngx-dropzone-preview>
