@@ -17,7 +17,7 @@ export class AwardDetailComponent implements OnInit {
   RFxFormGroup: FormGroup;
   RFxID: string = null;
   AwardedTo:string=null;
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'PartnerID', 'RESID', 'EvaluatedOn', 'ItemResponded', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['EvalID', 'Evaluator', 'EvaluatedOn', 'Action'];
   AllHeaderDetails: any = [];
   AllResponseDetails: any = [];
   isProgressBarVisibile: boolean;
@@ -28,16 +28,8 @@ export class AwardDetailComponent implements OnInit {
   ngOnInit() {
     this.RFxID = localStorage.getItem('ARFXID');
     this.AwardedTo=localStorage.getItem('AwardedTo');
-    this.InitializeRFxFormGroup();
     this.GetEvalHeaderByResponse();
     this.GetRFxByRFxID();
-  }
-  InitializeRFxFormGroup(): void {
-    this.RFxFormGroup = this._formBuilder.group({
-      RFXID:[''],
-      RfqTitle: [''],
-      ValidityEndDate: ['']
-    });
   }
 
   GetEvalHeaderByResponse(): void {
@@ -57,10 +49,6 @@ export class AwardDetailComponent implements OnInit {
       (data) => {
         if (data) {
           this.Rfxheader = data as RFxHeader;
-          this.RFxFormGroup.get("RFXID").setValue(this.Rfxheader.RFxID);
-          this.RFxFormGroup.get("RfqTitle").setValue(this.Rfxheader.Title);
-          this.RFxFormGroup.get("ValidityEndDate").setValue(this.Rfxheader.ValidityEndDate);
-          this.RFxFormGroup.disable();
         }
         this.isProgressBarVisibile = false;
       }
@@ -188,6 +176,10 @@ export class AwardDetailComponent implements OnInit {
     localStorage.setItem("AE_EvalID",EvalID);
     localStorage.setItem("AE_RESID",RESID);
     this.route.navigate(['pages/award-evaluation']);
+  }
+
+  BackClicked(){
+    this.route.navigate(['pages/awardreport']);
   }
 
 }

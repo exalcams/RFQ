@@ -16,7 +16,7 @@ export class EvaluationResponseComponent implements OnInit {
   Rfxheader: RFxHeader = new RFxHeader();
   RFxFormGroup: FormGroup;
   RFxID: string = null;
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'PartnerID', 'RESID', 'ModifiedOn', 'ItemResponded', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['PartnerID', 'RESID', 'ModifiedOn', 'ItemResponded', 'Action'];
   AllHeaderDetails: any = [];
   AllResponseDetails: any = [];
   isProgressBarVisibile: boolean;
@@ -29,20 +29,6 @@ export class EvaluationResponseComponent implements OnInit {
     this.GetAllRFxs();
     this.GetAllResponses();
     this.GetRFxHsByRFxID(this.RFxID);
-    this.InitializeRFxFormGroup();
-  }
-  InitializeRFxFormGroup(): void {
-    this.RFxFormGroup = this._formBuilder.group({
-      RFXID:['',[Validators.required]],
-      RfqType:  ['', [Validators.required]],
-      RfqGroup: ['', [Validators.required]],
-      RfqTitle: ['', [Validators.required]],
-      ValidityStartDate: ['',[ Validators.required]],
-      ValidityEndDate: ['', [Validators.required]],
-      ResponseStartDate: ['',[ Validators.required]],
-      ResponseEndDate: ['', [Validators.required]],
-      Currency: ['', [Validators.required]],
-    });
   }
 
   GetAllRFxs(): void {
@@ -69,20 +55,10 @@ export class EvaluationResponseComponent implements OnInit {
   }
   GetRFxHsByRFxID(RFxID: string): void {
     this.isProgressBarVisibile = true;
-    this._RFxService.GetRFxByRFxID(this.RFxID).subscribe(
+    this._RFxService.GetRFxByRFxID(RFxID).subscribe(
       (data) => {
         if (data) {
           this.Rfxheader = data as RFxHeader;
-          this.RFxFormGroup.get("RFXID").setValue(this.Rfxheader.RFxID);
-          this.RFxFormGroup.get("RfqType").setValue(this.Rfxheader.RFxType);
-          this.RFxFormGroup.get("RfqGroup").setValue(this.Rfxheader.RFxGroup);
-          this.RFxFormGroup.get("RfqTitle").setValue(this.Rfxheader.Title);
-          this.RFxFormGroup.get("ValidityStartDate").setValue(this.Rfxheader.ValidityStartDate);
-          this.RFxFormGroup.get("ValidityEndDate").setValue(this.Rfxheader.ValidityEndDate);
-          this.RFxFormGroup.get("ResponseStartDate").setValue(this.Rfxheader.ResponseStartDate);
-          this.RFxFormGroup.get("ResponseEndDate").setValue(this.Rfxheader.ResponseEndDate);
-          this.RFxFormGroup.get("Currency").setValue(this.Rfxheader.Currency);
-          this.RFxFormGroup.disable();
         }
         this.isProgressBarVisibile = false;
       }
@@ -209,5 +185,8 @@ export class EvaluationResponseComponent implements OnInit {
   Gotoheader(RESID:string) {
     localStorage.setItem("E_RESID",RESID);
     this.route.navigate(['pages/evaluation']);
+  }
+  BackClicked(){
+    this.route.navigate(['pages/evaluationhome']);
   }
 }

@@ -18,7 +18,6 @@ export class ResItemDialogComponent implements OnInit {
   DialogueFormGroup: FormGroup;
   ResItemFormGroup: FormGroup;
   rfxitem = new RFxItem;
-  files: File[] = [];
   MaterialMaster:MMaterial[]=[];
   ResItem:ResItem=new ResItem();
   accept:boolean=false;
@@ -50,7 +49,6 @@ export class ResItemDialogComponent implements OnInit {
     if(this.rfxitem.Attachment){
       this.SelectedFileName.push(this.rfxitem.Attachment);
     }
-    this.files=this.ResItemFiles;
   }
   types: any = [
     'Yes',
@@ -98,34 +96,35 @@ export class ResItemDialogComponent implements OnInit {
 onSelect(event) {
   if(event.addedFiles.length<=3){
     if(event.addedFiles.length>1){
-      this.ResODAttachments=[];
-      this.files=[];
+      this.ResItemFiles=[];
       event.addedFiles.forEach(doc => {
         var resodAttach=new ResODAttachment;
         resodAttach.Client=this.rfxitem.Client;
         resodAttach.Company=this.rfxitem.Company;
         resodAttach.RFxID=this.rfxitem.RFxID;
+        resodAttach.DocumentTitle=this.rfxitem.Item;
         resodAttach.DocumentName=doc.name;
         this.ResODAttachments.push(resodAttach);
-        this.files.push(doc);
+        this.ResItemFiles.push(doc);
       });
     }
     else{
-      if(this.files.length<3){
+      if(this.ResItemFiles.length<3){
         var resodAttach=new ResODAttachment;
         resodAttach.Client=this.rfxitem.Client;
         resodAttach.Company=this.rfxitem.Company;
         resodAttach.RFxID=this.rfxitem.RFxID;
+        resodAttach.DocumentTitle=this.rfxitem.Item;
         resodAttach.DocumentName=event.addedFiles[0].name;
         this.ResODAttachments.push(resodAttach);
-        this.files.push(event.addedFiles[0]);
+        this.ResItemFiles.push(event.addedFiles[0]);
       }
     }
   }
 }
 onRemove(event) {
-  this.ResODAttachments.splice(this.files.indexOf(event),1);
-  this.files.splice(this.files.indexOf(event), 1);
+  this.ResODAttachments.splice(this.ResItemFiles.indexOf(event),1);
+  this.ResItemFiles.splice(this.ResItemFiles.indexOf(event), 1);
 }
 
 ValueSelected(type:string){
@@ -134,7 +133,7 @@ ValueSelected(type:string){
     }
 }
 Save(){
-  if(this.DialogueFormGroup.valid){
+  if(this.ResItemFormGroup.valid){
     this.ResItem.Client=this.rfxitem.Client;
     this.ResItem.Company=this.rfxitem.Company;
     this.ResItem.RFxID=this.rfxitem.RFxID;
@@ -144,7 +143,7 @@ Save(){
     this.ResItem.PriceRating=this.ResItemFormGroup.get('PriceRating').value;
     this.ResItem.LeadTimeRating=this.ResItemFormGroup.get('LeadTimeRating').value;
     this.ResItem.LeadTimeRemark=this.ResItemFormGroup.get('LeadTimeRemark').value;
-    var Result={data:this.ResItem,Attachments:this.files,Docs:this.ResODAttachments};
+    var Result={data:this.ResItem,Attachments:this.ResItemFiles,Docs:this.ResODAttachments};
     // console.log(Result);
     this.dialogRef.close(Result);
   }

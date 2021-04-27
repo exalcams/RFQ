@@ -1,6 +1,13 @@
 <mat-toolbar class="p-0 toolbar">
 
     <div fxFlex=33.3 fxLayout="row" fxLayoutAlign="start center">
+        <button style="margin-left: 15px;" mat-icon-button class="toggle-sidebar-folded" (click)="toggleSidebarFolded()" fxHide.lt-lg>
+            <mat-icon>menu</mat-icon>
+        </button>
+
+        <button style="margin-left: 15px;" mat-icon-button class="toggle-sidebar-opened" (click)="toggleSidebarOpened()" fxHide.gt-md>
+            <mat-icon>menu</mat-icon>
+        </button>
         <img src="assets/images/rfq/Exalca_Logo.jpg" class="logo">
     </div>
     <div fxFlex=33.3 fxLayoutAlign="center center">
@@ -12,10 +19,20 @@
         <img src="assets/images/rfq/Settings.svg" style="width: 16px;">
         <img src="assets/images/rfq/Email.svg" style="width: 22px;">
         <div class="vdivider"></div>
-        <div fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="row" fxLayoutAlign="start center" [matMenuTriggerFor]="usermenu" style="cursor: pointer;">
             <img src="assets/images/rfq/User.jpg" style="width: 36px;margin-right: 4px;">
             <img src="assets/images/rfq/down_arrow.svg">
         </div>
+        <mat-menu #usermenu="matMenu">
+            <button mat-menu-item (click)="logOutClick()">
+                <mat-icon style="color: #2c2c2e;">power_settings_new</mat-icon>
+                <span class="menu">Logout</span>
+            </button>
+            <button mat-menu-item (click)="ChangePasswordClick()">
+                <mat-icon style="color: #2c2c2e;">perm_identity</mat-icon>
+                <span class="menu">Change password</span>
+            </button>
+          </mat-menu>
     </div>
 
 </mat-toolbar>

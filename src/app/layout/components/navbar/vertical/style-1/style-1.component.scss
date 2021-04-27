@@ -4,6 +4,8 @@ fuse-sidebar {
 
     &.navbar-fuse-sidebar {
         overflow: hidden;
+        background-color: #ffffff;
+        box-shadow: 2px 0 6px 0 rgba(246, 246, 248, 0.4);
 
         &.folded:not(.unfolded) {
 
@@ -34,7 +36,8 @@ fuse-sidebar {
                     }
 
                     .navbar-scroll-container {
-
+                        // box-shadow: 2px 0 6px 0 rgba(246, 246, 248, 0.4);
+                        background-color: #ffffff;
                         .user {
                             padding: 12px 0;
                             height: 64px;
@@ -83,7 +86,7 @@ navbar {
         flex: 1 1 auto;
         width: 100%;
         height: 100%;
-
+        background-color: #ffffff;
         &.right-navbar {
 
             .toggle-sidebar-opened {
@@ -147,13 +150,6 @@ navbar {
             flex: 1 1 auto;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-
-            background: linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 30%),
-            linear-gradient(rgba(0, 0, 0, 0.25) 0, rgba(0, 0, 0, 0) 40%);
-
-            background-repeat: no-repeat;
-            background-size: 100% 40px, 100% 10px;
-            background-attachment: local, scroll;
 
             .user {
                 position: relative;

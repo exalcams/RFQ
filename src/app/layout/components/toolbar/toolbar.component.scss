@@ -1,5 +1,9 @@
 @import "src/@fuse/scss/fuse";
-
+.menu{
+  font-family: Poppins;
+  font-weight: 600;
+  font-size: 12px;
+}
 toolbar {
   // background: url("/assets/images/backgrounds/header 2.png") no-repeat;
   // background-repeat: no-repeat;
@@ -10,6 +14,7 @@ toolbar {
   flex: 0 0 auto;
   z-index: 4;
   background-color: white;
+  box-shadow: 0 2px 6px 0 rgba(141, 167, 255, 0.1);
   &.below {
     z-index: 2;
   }
@@ -54,7 +59,6 @@ toolbar {
     min-width: 40px;
     height: 40px;
   }
-
   .toolbar-separator {
     height: 25px;
     width: 2px;

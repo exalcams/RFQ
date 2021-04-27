@@ -213,6 +213,7 @@ export class ResponseComponent implements OnInit {
             res.Item.RFxID = this.RFxID;
             res.Item.Item = element.Item;
             res.isResponded = false;
+            res.Attachments=[];
             this.RespondedI.push(res);
           });
           this.ItemDetailsDataSource = new MatTableDataSource(this.ItemDetails);
@@ -280,6 +281,7 @@ export class ResponseComponent implements OnInit {
           if(res.length>0){
             res[0].isResponded=true;
             res[0].Item=element;
+            res[0].Attachments=[];
           }
         });
       }
@@ -461,20 +463,27 @@ export class ResponseComponent implements OnInit {
       return "Long text"
     }
   }
-  OpenResItemDialog(index, RFxItem) {
-    console.log("rfxitem",RFxItem);
-    console.log("res",this.RespondedI[index].Item);
+  OpenResItemDialog(index, RFxItem:RFxItem) {
+    var resDocs=this.ResODAttachment.filter(x=>x.Client==RFxItem.Client && x.Company==RFxItem.Company && x.DocumentTitle==RFxItem.Item);
+    this.ResItemFiles.forEach(element => {
+      if(resDocs.filter(x=>x.DocumentName==element.name).length>0){
+        this.RespondedI[index].Attachments.push(element);
+      }
+    });
     const dialogRef = this.dialog.open(ResItemDialogComponent, {
-      data: { data: RFxItem,Res:this.RespondedI[index].Item,Docs:this.ResODAttachment,DocFiles:this.ResItemFiles },panelClass:"res-item-dialog"
+      data: { data: RFxItem,Res:this.RespondedI[index].Item,Docs:this.ResODAttachment,DocFiles:this.RespondedI[index].Attachments },panelClass:"res-item-dialog"
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
         this.RespondedI[index].isResponded = true;
         this.RespondedI[index].Item = res.data;
-        this.ResODAttachment=res.Docs;
-        this.FilesToUpload=res.Attachments;
-        this.ResItemFiles=this.FilesToUpload;
+        this.RespondedI[index].Attachments=res.Attachments;
+        this.RespondedI[index].Attachments.forEach(file => {
+          if(this.FilesToUpload.filter(t=>t.name==file.name).length==0){
+            this.FilesToUpload.push(file);
+          }
+        });
       }
     });
   }
