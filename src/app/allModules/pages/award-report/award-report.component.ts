@@ -11,13 +11,13 @@ import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-award-report',
-  templateUrl: './award-report.component.html',
+  templateUrl: './award-report-new.component.html',
   styleUrls: ['./award-report.component.scss']
 })
 export class AwardReportComponent implements OnInit {
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
   @ViewChild(MatSort) RFQSort: MatSort;
-  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','AwardedTo', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType', 'RFxGroup','ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','AwardedTo', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<any>;
   AllHeaderDetails:any[]=[];
   isProgressBarVisibile: boolean;

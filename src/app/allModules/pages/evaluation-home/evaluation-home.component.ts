@@ -79,7 +79,7 @@ export class EvaluationHomeComponent implements OnInit {
     console.log(this.ArrChart,'series');
     // chart start
  this.chartOptions = {
-   series: this.ArrChart,
+   series:[],
    colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
    chart: {
      type: "donut",
@@ -190,6 +190,9 @@ export class EvaluationHomeComponent implements OnInit {
         }
       }
     );
+    this._RFxService.GetEvalPieData().subscribe(x=>{
+      this.chartOptions.series=x;
+    });
   }
   LoadTableSource(DataArray:any[],Tab:string){
     this.SelectedTab=Tab;

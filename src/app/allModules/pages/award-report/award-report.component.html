@@ -34,6 +34,13 @@
             </td>
           </ng-container>
 
+           <!-- Group Column -->
+           <ng-container matColumnDef="RFx">
+            <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Type </th>
+            <td mat-cell class="td-cell" *matCellDef="let element"> {{element.RFxType}}
+            </td>
+          </ng-container>
+
           <!-- Date Column -->
           <ng-container matColumnDef="ValidityStartDate">
             <th mat-header-cell class="header-cell" mat-sort-header *matHeaderCellDef> Date </th>
