@@ -72,14 +72,14 @@ export class AwardHomeComponent implements OnInit {
     }
     this.GetAllRFxs();
     this.chartOptions = {
-      series: this.ArrChart,
+      series:[],
       colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
       chart: {
         type: "donut",
         width:280,
         height:'auto'
       },
-      labels: ["Evaluated", " Yet to be Evaluated"],
+      labels: ["Awarded", " Yet to be Awarded"],
       dataLabels: {
         enabled: true,
         distributed: true,
@@ -184,6 +184,9 @@ export class AwardHomeComponent implements OnInit {
         }
       }
     );
+    this._RFxService.GetAwardPieData().subscribe(x=>{
+      this.chartOptions.series=x;
+    });
   }
   LoadTableSource(DataArray:any[],Tab:string){
     this.SelectedTab=Tab;

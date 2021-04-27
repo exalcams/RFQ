@@ -1,68 +1,14 @@
 <div id="dashboard" fxFlex fusePerfectScrollbar>
     <div fxLayout="column" class="px-16">
-        <div fxLayut="row" fxLayoutAlign="start start">
+        <!-- <div fxLayut="row" fxLayoutAlign="start start"> -->
             <div fxFlex=75 class="container1 px-16">
                 <div fxLayout="row" fxLayout="start center" class="py-24">
-                    <span class="title">Dashboard</span>
+                    <span class="title">Awarded RFQs</span>
                 </div>
-                <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="2rem">
-                        <div fxLayout="row" fxLayoutAlign="start end" class="ipcontainer" fxLayoutGap="0.5rem" style="width:400px">
-                            <img src="assets/images/rfq/search.svg" style="width: 30px;">
-                            <input (keyup)="applyFilter($event)" placeholder="Search" class="search"/>
-                        </div>
-                        <img src="assets/images/rfq/filter.svg" style="width: 20px;">
-                    </div>
-                    <!-- <button mat-button color="primary" class="createbtn" (click)="Gotoheader(-1)">
-                        <img src="assets/images/rfq/add.png" style="width: 10px;">
-                        Create RFx
-                    </button> -->
-                </div>
-                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem" style="margin-top: 2rem;">
-                    <div [ngClass]="{'tab-highlight1':SelectedTab=='1'}" fxLayout="column" fxLayoutAlign="space-evenly start" class="tab px-16 pointer" (click)="LoadTableSource(AllHeaderDetails,'1')">
-                        <span class="all">All</span>
-                        <span class="count">{{AllHeaderDetails.length}}</span>
-                    </div>
-                    <div [ngClass]="{'tab-highlight2':SelectedTab=='2'}" fxLayout="column" fxLayoutAlign="space-evenly start" class="tab px-16 pointer" (click)="LoadTableSource(RespondedHeaderDetails,'2')">
-                        <!-- <span [style.color]="SelectedTab=='2'?'#3ab8d5':'#acacac'" class="duefor">Yet to be</span> -->
-                        <span class="all">Responded</span>
-                        <span class="count">{{RespondedHeaderDetails.length}}</span>
-                    </div>
-                    <div [ngClass]="{'tab-highlight3':SelectedTab=='3'}" fxLayout="column" fxLayoutAlign="space-evenly start" class="tab px-16 pointer" (click)="LoadTableSource(DueToRespondHeaderDetails,'3')">
-                        <span [style.color]="SelectedTab=='3'?'#7cbc70':'#acacac'" class="duefor">Yet to be</span>
-                        <span class="status">Responded</span>
-                        <span class="count">{{DueToRespondHeaderDetails.length}}</span>
-                    </div>
-                    <!-- <div [ngClass]="{'tab-highlight4':SelectedTab=='4'}" fxLayout="column" fxLayoutAlign="space-evenly start" class="tab px-16 pointer" (click)="LoadTableSource(EvaluatedHeaderDetails,'4')">
-                        <span [style.color]="SelectedTab=='4'?'#f6c875':'#acacac'" class="duefor">Yet to be</span>
-                        <span class="status">Evaluated</span>
-                        <span class="count">{{EvaluatedHeaderDetails.length}}</span>
-                    </div>
-                    <div [ngClass]="{'tab-highlight5':SelectedTab=='5'}" fxLayout="column" fxLayoutAlign="space-evenly start" class="tab px-16 pointer" (click)="LoadTableSource(ClosedHeaderDetails,'5')">
-                        <span [style.color]="SelectedTab=='5'?'#f2b3cb':'#acacac'" class="duefor">Yet to be</span>
-                        <span class="status">Awarded</span>
-                        <span class="count">{{ClosedHeaderDetails.length}}</span>
-                    </div> -->
-                </div>
+               
             </div>
-            <div fxFlex=35 fxLayout="column" class="container2 p-16 pr-4">
-                <span class="status">Overview</span>
-                <div fxFlex=100 fxLayout="row" fxLayoutAlign="space-between center">
-                    <div id="overviewchart" style="margin-top: 20px;">
-                        <apx-chart
-                          [series]="chartOptions.series"
-                          [chart]="chartOptions.chart"
-                          [labels]="chartOptions.labels"
-                          [colors]="chartOptions.colors"
-                          [dataLabels]="chartOptions.dataLabels"
-                          [plotOptions]="chartOptions.plotOptions"
-                          [legend]="chartOptions.legend"
-                        ></apx-chart>
-                      </div>
-                      <img fxHide.md src="assets/images/rfq/graph_support.png" style="width: 130px;margin-left: -29px;">
-                </div>
-            </div>
-        </div>
+         
+        <!-- </div> -->
         <table mat-table [dataSource]="HeaderDetailsDataSource" matSort class="py-10">
             <ng-container matColumnDef="RFxID">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> RFQ ID </th>
@@ -152,6 +98,10 @@
                 </td>
             </ng-container>
 
+            <ng-container matColumnDef="AwardedTo">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef> Awarded to</th>
+                <td mat-cell *matCellDef="let element"> {{element.Vendor}} </td>
+              </ng-container>
 
             <ng-container matColumnDef="Action">
                 <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Action
@@ -161,8 +111,8 @@
                         <mat-icon>more_vert</mat-icon>
                       </button>
                       <mat-menu #menu="matMenu">
-                        <button mat-menu-item (click)=Gotoheader(element.RFxID)>
-                          <span class="menu-item">Process</span>
+                        <button mat-menu-item (click)="GotoAwardDetails(element.RFxID,element.AwardedTo)">
+                          <span class="menu-item">View Details</span>
                         </button>
                       </mat-menu>
                 </td>

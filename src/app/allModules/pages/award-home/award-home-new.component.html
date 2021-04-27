@@ -30,7 +30,7 @@
                     </div>
                     <div [ngClass]="{'tab-highlight3':SelectedTab=='3'}" fxLayout="column" fxLayoutAlign="space-evenly start" class="tab px-16 pointer" (click)="LoadTableSource(AwardedDetails,'3')">
                         <span [style.color]="SelectedTab=='3'?'#7cbc70':'#acacac'" class="duefor">Yet to be</span>
-                        <span class="status">Evaluated</span>
+                        <span class="status">Awarded</span>
                         <span class="count">{{AwardedDetails.length}}</span>
                     </div>
                 </div>

@@ -21,7 +21,7 @@
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem" style="margin-top: 2rem;">
                     <div [ngClass]="{'tab-highlight1':SelectedTab=='1'}" fxLayout="column" fxLayoutAlign="space-evenly start" class="tab px-16 pointer" (click)="LoadTableSource(AllHeaderDetails,'1')">
                         <span class="all">All</span>
-                        <span class="count">{{AllHeaderDetails.length}}</span>
+                        <span class="count">{{AllHeaderDetails.length - 1}}</span>
                     </div>
                     <div [ngClass]="{'tab-highlight2':SelectedTab=='2'}" fxLayout="column" fxLayoutAlign="space-evenly start" class="tab px-16 pointer" (click)="LoadTableSource(ClosedHeaderDetails,'2')">
                         <!-- <span [style.color]="SelectedTab=='3'?'#7cbc70':'#acacac'" class="duefor"></span> -->
