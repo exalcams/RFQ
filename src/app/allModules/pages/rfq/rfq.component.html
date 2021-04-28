@@ -238,7 +238,7 @@
 
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                         <mat-label>Minimum no. of evaluators</mat-label>
-                                        <input matInput formControlName="Evaluator" fxFlex type="number">
+                                        <input matInput formControlName="Evaluator"   oninput="this.value = Math.abs(this.value)" fxFlex type="number">
                                         <mat-error
                                             *ngIf="RFxFormGroup.get('Evaluator').touched && RFxFormGroup.get('Evaluator').hasError('required')">
                                             Minimum no. of evaluators is required
@@ -286,7 +286,7 @@
                                         <th mat-header-cell *matHeaderCellDef>Weightage</th>
                                         <td mat-cell *matCellDef="let element;index as i;" [formGroupName]="i">
                                             <mat-form-field class="tb_formfield" style="width: 40%;">
-                                                <input matInput formControlName="Weightage" type="number">
+                                                <input matInput   oninput="this.value = Math.abs(this.value)" formControlName="Weightage" type="number">
                                             </mat-form-field>
                                         </td>
                                     </ng-container>

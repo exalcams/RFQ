@@ -42,11 +42,11 @@
                       <input matInput type="number" formControlName="totalSchedules" fxFlex autocomplete="off">
                   </mat-form-field>
 
-                  <mat-form-field fxFlex=30 appearance="outline">
+                  <!-- <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Bidding Price Low</mat-label>
                       <input matInput formControlName="LowPrice" type="number" fxFlex autocomplete="off" min="0"
                           oninput="this.value = Math.abs(this.value)">
-                  </mat-form-field>
+                  </mat-form-field> -->
 
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Bidding Price High</mat-label>
@@ -89,10 +89,10 @@
                           *ngIf="ResItemFormGroup.get('Price').touched && ResItemFormGroup.get('Price').hasError('required')">
                           price is required
                       </mat-error>
-                      <mat-error
+                      <!-- <mat-error
                           *ngIf="ResItemFormGroup.get('Price').touched && ResItemFormGroup.get('Price').hasError('min')">
                           price do not exceed minimum bidding
-                      </mat-error>
+                      </mat-error> -->
                       <mat-error
                           *ngIf="ResItemFormGroup.get('Price').touched && ResItemFormGroup.get('Price').hasError('max')">
                           price do not exceed maximum bidding
