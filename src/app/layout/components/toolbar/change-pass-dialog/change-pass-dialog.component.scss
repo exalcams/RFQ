@@ -21,6 +21,10 @@
     display: flex;
     flex-direction: column;
   }
+  .toolbar{
+    background-color: #f4f4fb;
+    height: 56px;
+  }
   .toolBg {
     background-color: #121214 !important;
     color: white !important;
@@ -28,5 +32,11 @@
   .btnBg{
     background-color: #efb577 !important;
     color: white !important;
+  }
+  .savebtn{
+    background-color: #5f2cff !important;
+    // @extend .poppins;
+    color: #ffffff !important;
+    font-size: 12px;
   }
 }

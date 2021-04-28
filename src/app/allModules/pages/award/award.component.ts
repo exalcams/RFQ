@@ -11,7 +11,7 @@ import { AuthenticationDetails } from 'app/models/master';
 
 @Component({
   selector: 'app-award',
-  templateUrl: './award.component.html',
+  templateUrl: './award-new.component.html',
   styleUrls: ['./award.component.scss']
 })
 export class AwardComponent implements OnInit {
@@ -20,9 +20,9 @@ export class AwardComponent implements OnInit {
   RFxID: string = null;
   EvaluationRating: EvaluationRating[] = [];
   AwardFormGroup: FormGroup;
-  HeaderDetailsDisplayedColumns: string[] = ['position', 'PartnerID', 'Rating'];
-  MaterialDetailsDisplayedColumns: string[] = ['position', 'Material', 'BestSupplier'];
-  CriteriaDetailsDisplayedColumns: string[] = ['position', 'Criteria', 'BestSupplier'];
+  HeaderDetailsDisplayedColumns: string[] = [ 'PartnerID', 'Rating'];
+  MaterialDetailsDisplayedColumns: string[] = [ 'Material', 'BestSupplier'];
+  CriteriaDetailsDisplayedColumns: string[] = [ 'Criteria', 'BestSupplier'];
   authenticationDetails: AuthenticationDetails;
   HeaderDetailsDataSource: MatTableDataSource<EvaluationRating>;
   MaterialDetailsDataSource: MatTableDataSource<ByMaterial>;
@@ -111,7 +111,9 @@ export class AwardComponent implements OnInit {
       this.ShowValidationErrors(this.AwardFormGroup);
     }
   }
-
+  CancelClicked(){
+    this._router.navigate(['pages/awardhome']);
+  }
   CreateAward() {
     this.isProgressBarVisibile = true;
     this.RFxAward.Client = this.Rfxheader.Client;
@@ -127,7 +129,7 @@ export class AwardComponent implements OnInit {
       this._RFxService.UpdateHeaderStatus(this.RFxID, "6").subscribe(x => {
         this.isProgressBarVisibile = false;
         this.notificationSnackBarComponent.openSnackBar(' Awarded successfully', SnackBarStatus.success);
-        this._router.navigate(['pages/awardhome']);
+        this._router.navigate(['pages/awardresponse']);
       },
         error => {
           console.log(error);
