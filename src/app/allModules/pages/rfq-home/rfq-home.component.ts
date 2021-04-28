@@ -22,9 +22,9 @@ export type ChartOptions = {
   chart: ApexChart;
   responsive: ApexResponsive[];
   labels: any;
-  colors:string[];
+  colors: string[];
   dataLabels: ApexDataLabels;
-  plotOptions:ApexPlotOptions;
+  plotOptions: ApexPlotOptions;
   legend: ApexLegend;
 };
 
@@ -33,7 +33,7 @@ export type ChartOptions = {
   templateUrl: './rfq-home.component.html',
   styleUrls: ['./rfq-home.component.scss']
 })
-export class RfqHomeComponent implements OnInit,OnDestroy {
+export class RfqHomeComponent implements OnInit, OnDestroy {
   @ViewChild("overviewchart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;
@@ -45,7 +45,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
   EvaluatedHeaderDetails: any[] = [];
   ClosedHeaderDetails: any[] = [];
   HeaderStatus: any[];
-  HeaderDetailsDisplayedColumns: string[] = ['RFxID','Title', 'RFxType','RFxGroup', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment','Vendor', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['RFxID', 'Title', 'RFxType', 'RFxGroup', 'ValidityStartDate', 'ValidityEndDate', 'Fulfilment', 'Attachment', 'Vendor', 'Action'];
   HeaderDetailsDataSource: MatTableDataSource<RFxHeader>;
   isProgressBarVisibile: boolean;
   authenticationDetails: AuthenticationDetails;
@@ -53,89 +53,14 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
   currentUserRole: string;
   MenuItems: string[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
-  IsNewHeader:boolean=true;
-  SelectedTab:string="1";
-  
+  IsNewHeader: boolean = true;
+  SelectedTab: string = "1";
+
   constructor(private route: Router,
     private _RFxService: RFxService,
     private dialog: MatDialog, public snackBar: MatSnackBar) {
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
-    // chart begin
-    this.chartOptions = {
-      series: [],
-      colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
-      chart: {
-        type: "donut",
-        width:280,
-        height:'auto'
-      },
-      labels: ["Released", "Responded", "Evaluated", "Awarded"],
-      dataLabels: {
-        enabled: true,
-        distributed: true,
-        textAnchor:'middle',
-        style: {
-            fontSize: '10px',
-            fontFamily: 'Poppins',
-            fontWeight: '600',
-            colors: ['#083a6f', '#033283', '#1665f0','#0fb752']
-        },
-        dropShadow: {
-          enabled: false,
-      }
-      },
-      plotOptions: {
-        pie: {
-          dataLabels: {
-            offset: 25,
-          },
-          donut: {
-            size: '65%'
-          }
-        }
-      },
-      legend: {
-        show: true,
-        position: 'right',
-        horizontalAlign: 'center', 
-        floating: false,
-        fontSize: '11px',
-        fontFamily: 'Poppins',
-        fontWeight: 600,
-        width: undefined,
-        height: undefined,
-        tooltipHoverFormatter: undefined,
-        offsetX: 0,
-        offsetY: -16,
-        labels: {
-            colors: ["#2b3540","#2b3540","#2b3540","#2b3540"],
-            useSeriesColors: false
-        },
-        markers: {
-            width: 6,
-            height: 6,
-            strokeWidth: 0,
-            strokeColor: '#fff',
-            fillColors: undefined,
-            radius: 6,
-            customHTML: undefined,
-            onClick: undefined,
-            offsetX: 0,
-            offsetY: 0
-        },
-        itemMargin: {
-            horizontal: 8,
-            vertical: 4
-        },
-        onItemClick: {
-            toggleDataSeries: true
-        },
-        onItemHover: {
-            highlightDataSeries: true
-        },
-    }
-    };
-    // chart end
+
   }
 
   ngOnInit(): void {
@@ -155,9 +80,13 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
       this.route.navigate(['/auth/login']);
     }
     this.GetAllRFxs();
+    // chart begin
+    this.RenderDounghtChart();
+
+    // chart end
   }
   Gotoheader(rfqid) {
-    this.IsNewHeader=false;
+    this.IsNewHeader = false;
     this.route.navigate(['pages/rfq']);
     // { queryParams: { id: rfqid } }
     localStorage.setItem('RFXID', rfqid);
@@ -170,7 +99,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
         if (data) {
           this.AllHeaderDetails = data;
           this.isProgressBarVisibile = false;
-          this.LoadTableSource(this.AllHeaderDetails,"1");
+          this.LoadTableSource(this.AllHeaderDetails, "1");
         }
       }
     );
@@ -206,12 +135,116 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
         }
       }
     );
-    this._RFxService.GetRFxPieData().subscribe(x=>{
-      this.chartOptions.series=x;
+     this._RFxService.GetAllRFxHDocumets('5').subscribe(
+      (data) => {
+        if (data) {
+          this.ClosedHeaderDetails = data;
+          //this.isProgressBarVisibile = false;
+        }
+      }
+    );
+    this._RFxService.GetRFxPieData().subscribe(x => {
+      this.chartOptions.series = x;
     });
   }
-  LoadTableSource(DataArray: any[],Tab:string) {
-    this.SelectedTab=Tab;
+  RenderDounghtChart() {
+    this.chartOptions = {
+      series: [],
+      colors: ['#1764e8', '#74a2f1', '#c3d8fd', '#b5f9ff'],
+      chart: {
+        type: "donut",
+        width: 280,
+        height: 'auto',
+        events: {
+          dataPointSelection:(event, chartContext, config) => {
+            if (config.dataPointIndex == 0) {
+              console.log(config.dataPointIndex);
+              this.LoadTableSource(this.InitiatedHeaderDetails,"2");
+            }
+            if (config.dataPointIndex == 1) {
+              console.log(config.dataPointIndex);
+              this.LoadTableSource(this.RespondedHeaderDetails,"3");
+            }
+            if (config.dataPointIndex == 2) {
+              console.log(config.dataPointIndex);
+              this.LoadTableSource(this.EvaluatedHeaderDetails,"4");
+            }
+            if (config.dataPointIndex == 3) {
+              console.log(config.dataPointIndex);
+              this.LoadTableSource(this.ClosedHeaderDetails,"5");
+            }
+          }
+        }
+      },
+      labels: ["Released", "Responded", "Evaluated", "Awarded"],
+      dataLabels: {
+        enabled: true,
+        distributed: true,
+        textAnchor: 'middle',
+        style: {
+          fontSize: '10px',
+          fontFamily: 'Poppins',
+          fontWeight: '600',
+          colors: ['#083a6f', '#033283', '#1665f0', '#0fb752']
+        },
+        dropShadow: {
+          enabled: false,
+        }
+      },
+      plotOptions: {
+        pie: {
+          dataLabels: {
+            offset: 25,
+          },
+          donut: {
+            size: '65%'
+          }
+        }
+      },
+      legend: {
+        show: true,
+        position: 'right',
+        horizontalAlign: 'center',
+        floating: false,
+        fontSize: '11px',
+        fontFamily: 'Poppins',
+        fontWeight: 600,
+        width: undefined,
+        height: undefined,
+        tooltipHoverFormatter: undefined,
+        offsetX: 0,
+        offsetY: -16,
+        labels: {
+          colors: ["#2b3540", "#2b3540", "#2b3540", "#2b3540"],
+          useSeriesColors: false
+        },
+        markers: {
+          width: 6,
+          height: 6,
+          strokeWidth: 0,
+          strokeColor: '#fff',
+          fillColors: undefined,
+          radius: 6,
+          customHTML: undefined,
+          onClick: undefined,
+          offsetX: 0,
+          offsetY: 0
+        },
+        itemMargin: {
+          horizontal: 8,
+          vertical: 4
+        },
+        onItemClick: {
+          toggleDataSeries: true
+        },
+        onItemHover: {
+          highlightDataSeries: true
+        },
+      }
+    };
+  }
+  LoadTableSource(DataArray: any[], Tab: string) {
+    this.SelectedTab = Tab;
     this.HeaderDetailsDataSource = new MatTableDataSource(DataArray);
     this.HeaderDetailsDataSource.paginator = this.RFQPaginator;
     this.HeaderDetailsDataSource.sort = this.RFQSort;
@@ -226,7 +259,7 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
       dialogConfig
     );
   }
-  openVendorViewList(RFxID: string, Vendor: string[]):void{
+  openVendorViewList(RFxID: string, Vendor: string[]): void {
     const dialogConfig: MatDialogConfig = {
       data: { PartnerID: Vendor, RFxID: RFxID, isResponse: false },
       panelClass: "vendor-view-list-dialog",
@@ -350,13 +383,13 @@ export class RfqHomeComponent implements OnInit,OnDestroy {
         return "";
     }
   }
-ngOnDestroy(){
-  if(this.IsNewHeader){
-    localStorage.setItem('RFXID',"-1");
+  ngOnDestroy() {
+    if (this.IsNewHeader) {
+      localStorage.setItem('RFXID', "-1");
+    }
   }
-}
-applyFilter(event: Event) {
-  const filterValue = (event.target as HTMLInputElement).value;
-  this.HeaderDetailsDataSource.filter = filterValue.trim().toLowerCase();
-}
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.HeaderDetailsDataSource.filter = filterValue.trim().toLowerCase();
+  }
 }

@@ -80,13 +80,58 @@ export class ResponseHomeComponent implements OnInit {
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
    
     // chart start
+   
+    // chart end
+   
+  }
+
+  ngOnInit() {
+    const retrievedObject = localStorage.getItem("authorizationData");
+    if (retrievedObject) {
+      this.authenticationDetails = JSON.parse(
+        retrievedObject
+      ) as AuthenticationDetails;
+      this.currentUserID = this.authenticationDetails.UserID;
+      this.currentUserName = this.authenticationDetails.UserName;
+      this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
+      if (this.MenuItems.indexOf('RFQ_ResponseHome') < 0) {
+        this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
+        );
+        this.route.navigate(['/auth/login']);
+      }
+    } else {
+      this.route.navigate(['/auth/login']);
+    }
+    this.GetAllRFxs(); 
+    this.DoughnutChart();
+  }
+
+  Gotoheader(rfqid) {
+    this.route.navigate(['pages/response']);
+    // { queryParams: { id: rfqid } }
+    localStorage.setItem('RRFxID', rfqid);
+
+  }
+  DoughnutChart(){
     this.chartOptions = {
       series:[],
       colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
       chart: {
         type: "donut",
         width:280,
-        height:'auto'
+        height:'auto',
+        events: {
+          dataPointSelection:(event, chartContext, config) => {
+            if (config.dataPointIndex == 0) {
+              console.log(config.dataPointIndex);
+              this.LoadTableSource(this.DueToRespondHeaderDetails,"2");
+            }
+            if (config.dataPointIndex == 1) {
+              console.log(config.dataPointIndex);
+              this.LoadTableSource(this.RespondedHeaderDetails,"3");
+            }
+          }
+        }
       },
       labels: [" Respond", "Yet to be Responded"],
       dataLabels: {
@@ -154,35 +199,6 @@ export class ResponseHomeComponent implements OnInit {
         },
     }
     };
-    // chart end
-   
-  }
-
-  ngOnInit() {
-    const retrievedObject = localStorage.getItem("authorizationData");
-    if (retrievedObject) {
-      this.authenticationDetails = JSON.parse(
-        retrievedObject
-      ) as AuthenticationDetails;
-      this.currentUserID = this.authenticationDetails.UserID;
-      this.currentUserName = this.authenticationDetails.UserName;
-      this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
-      if (this.MenuItems.indexOf('RFQ_ResponseHome') < 0) {
-        this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
-        );
-        this.route.navigate(['/auth/login']);
-      }
-    } else {
-      this.route.navigate(['/auth/login']);
-    }
-    this.GetAllRFxs(); 
-  }
-
-  Gotoheader(rfqid) {
-    this.route.navigate(['pages/response']);
-    // { queryParams: { id: rfqid } }
-    localStorage.setItem('RRFxID', rfqid);
-
   }
   GetAllRFxs(): void {
     this.isProgressBarVisibile = true;

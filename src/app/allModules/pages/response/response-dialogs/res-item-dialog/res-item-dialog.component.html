@@ -84,7 +84,7 @@
               <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="3%">
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Price</mat-label>
-                      <input matInput formControlName="Price" fxFlex autocomplete="off" type="number">
+                      <input matInput oninput="this.value = Math.abs(this.value)" formControlName="Price" fxFlex autocomplete="off" type="number">
                       <mat-error
                           *ngIf="ResItemFormGroup.get('Price').touched && ResItemFormGroup.get('Price').hasError('required')">
                           price is required
@@ -110,7 +110,7 @@
 
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Price Rating</mat-label>
-                      <input matInput maxlength="1" max="5" min="1" formControlName="PriceRating" fxFlex
+                      <input matInput oninput="this.value = Math.abs(this.value)" maxlength="1" max="5" min="1" formControlName="PriceRating" fxFlex
                           autocomplete="off" type="number">
                       <mat-error
                           *ngIf="ResItemFormGroup.get('PriceRating').touched && ResItemFormGroup.get('PriceRating').hasError('required')">
@@ -122,7 +122,7 @@
 
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Lead Time Rating</mat-label>
-                      <input matInput type="number" formControlName="LeadTimeRating" fxFlex autocomplete="off">
+                      <input matInput oninput="this.value = Math.abs(this.value)" type="number" formControlName="LeadTimeRating" fxFlex autocomplete="off">
                       <mat-error
                           *ngIf="ResItemFormGroup.get('LeadTimeRating').touched && ResItemFormGroup.get('LeadTimeRating').hasError('required')">
                           Lead Time Rating is required
