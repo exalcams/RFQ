@@ -183,6 +183,7 @@ export class ResHeader extends CommonClass {
     Date: Date | string;
     ItemResponded: string;
     ResRemarks: string;
+    Status:string;
 }
 //mounika
 export class ResVendorRatingView {
@@ -272,6 +273,7 @@ export class EvalHeader extends CommonClass {
     Date: Date | string;
     ItemsResponsed: string;
     EvalRemarks: string;
+    Status:string;
 }
 
 export class EvalHC extends CommonClass {
@@ -350,6 +352,7 @@ export class ResponseView {
     ResICs: ResIC[];
     ResODs: ResOD[];
     ResODAttach : ResODAttachment[];
+    Status:string;
 }
 export class RespondedItems{
     isResponded:boolean;
@@ -380,6 +383,7 @@ export class EvaluationView {
     EvalRemarks: string;
     EvalHCs: EvalHC[];
     EvalICs: EvalIC[];
+    Status:string;
 }
 export class EvaluationRating extends ResHeader
 {

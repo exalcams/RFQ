@@ -366,14 +366,26 @@ export class ResponseComponent implements OnInit {
     this.ResView.ResHCs = this.ResHC;
     this.ResView.ResODs = this.ResOD;
     this.ResView.ResODAttach = this.ResODAttachment;
+    if(IsRelease){
+      this.ResView.Status="2";
+    }
+    else{
+      this.ResView.Status="1";
+    }
     console.log("resview", this.ResView);
     this._RFxService.CreateResponse(this.ResView)
       .subscribe(
         response => {
-          console.log("response", response);
-          this.isProgressBarVisibile = false;
-          this._router.navigate(['pages/responsehome']);
-          this.notificationSnackBarComponent.openSnackBar('Responded successfully', SnackBarStatus.success);
+          if(IsRelease){
+            this.isProgressBarVisibile = false;
+            this._router.navigate(['pages/responsehome']);
+            this.notificationSnackBarComponent.openSnackBar('Responded successfully', SnackBarStatus.success);
+          }
+          else{
+            this.isProgressBarVisibile = false;
+            this.notificationSnackBarComponent.openSnackBar('Response saved successfully', SnackBarStatus.success);
+          }
+          console.log("response", response);this.notificationSnackBarComponent.openSnackBar('Responded successfully', SnackBarStatus.success);
           this._RFxService.UploadResAttachment(response.RESID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
         },
         error => {
@@ -412,15 +424,27 @@ export class ResponseComponent implements OnInit {
     this.ResView.ResHCs = this.ResHC;
     this.ResView.ResODs = this.ResOD;
     this.ResView.ResODAttach = this.ResODAttachment;
+    if(IsRelease){
+      this.ResView.Status="2";
+    }
+    else{
+      this.ResView.Status="1";
+    }
     console.log("resview", this.ResView);
     this._RFxService.UpdateResponse(this.ResView)
       .subscribe(
         response => {
-          // console.log("response", response);
-          this.isProgressBarVisibile = false;
+          if(IsRelease){
+            this.isProgressBarVisibile = false;
+            this._router.navigate(['pages/responsehome']);
+            this.notificationSnackBarComponent.openSnackBar('Responded successfully', SnackBarStatus.success);
+          }
+          else{
+            this.isProgressBarVisibile = false;
+            this.notificationSnackBarComponent.openSnackBar('Response saved successfully', SnackBarStatus.success);
+          }
+          console.log("response", response);this.notificationSnackBarComponent.openSnackBar('Responded successfully', SnackBarStatus.success);
           this._RFxService.UploadResAttachment(response.RESID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
-          this.notificationSnackBarComponent.openSnackBar('Responded successfully', SnackBarStatus.success);
-          this._router.navigate(['pages/responsehome']);
         },
         error => {
           console.log(error);

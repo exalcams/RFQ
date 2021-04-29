@@ -24,9 +24,9 @@
             </div>
         </div>
         <div class="container mt-8 p-8">
-            <mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="tabClick($event)" color="accent"
+            <mat-tab-group [(selectedIndex)]="selectedIndex" color="accent"
                 backgroundColor="primary" class="tab-group">
-                <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
+                <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
                         <span>General data</span>
                         <mat-icon *ngIf="CompletedSteps[0]" style="margin-left: 1rem;"
@@ -261,7 +261,7 @@
                         </form>
                     </mat-card>
                 </mat-tab>
-                <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
+                <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
                         <span>Criteria</span>
                         <mat-icon *ngIf="CompletedSteps[1]" style="margin-left: 1rem;"
@@ -311,7 +311,7 @@
                         </div>
                     </mat-card>
                 </mat-tab>
-                <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
+                <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
                         <span>5Q Rating</span>
                         <!-- <mat-icon *ngIf="CompletedSteps[2]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==2?'white':'#18a421'}">check_circle</mat-icon> -->
@@ -353,7 +353,7 @@
                         </div>
                     </mat-card>
                 </mat-tab>
-                <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
+                <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
                         <span>Item</span>
                         <!-- <mat-icon *ngIf="CompletedSteps[3]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==3?'white':'#18a421'}">check_circle</mat-icon> -->
@@ -428,7 +428,7 @@
                         </div>
                     </mat-card>
                 </mat-tab>
-                <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
+                <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
                         <span>Partners</span>
                         <!-- <mat-icon *ngIf="CompletedSteps[4]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==4?'white':'#18a421'}">check_circle</mat-icon> -->
@@ -473,7 +473,7 @@
                         </div>
                     </mat-card>
                 </mat-tab>
-                <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
+                <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
                         <span>Vendors</span>
                         <!-- <mat-icon *ngIf="CompletedSteps[5]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==5?'white':'#18a421'}">check_circle</mat-icon> -->
@@ -540,10 +540,10 @@
                         </div>
                     </mat-card>
                 </mat-tab>
-                <mat-tab #tab [disabled]="!tab.isActive && !RFxID">
+                <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
                         <span>Others</span>
-                        <mat-icon *ngIf="CompletedSteps[6]" style="margin-left: 1rem;"
+                        <mat-icon *ngIf="CompletedSteps[6] && CompletedSteps[7]" style="margin-left: 1rem;"
                             [ngStyle]="{'color':selectedIndex==6?'white':'#18a421'}">check_circle</mat-icon>
                     </ng-template>
                     <mat-card>
@@ -645,7 +645,7 @@
                 <button mat-button class="savebtn" (click)="SaveRFxClicked(false)">Save</button>
                 <button mat-button class="releasebtn" (click)="SaveRFxClicked(true)">Release</button>
             </div>
-            <mat-progress-bar class="progressbar" mode="determinate" [value]="Progress" *ngIf="!RFxID">
+            <mat-progress-bar class="progressbar" mode="determinate" [value]="GetProgress()" *ngIf="!RFxID">
             </mat-progress-bar>
         </div>
     </div>

@@ -318,6 +318,12 @@ export class EvaluationComponent implements OnInit {
     this.EvalView.EvalRemarks=null;
     this.EvalView.EvalHCs=this.EvalHcs;
     this.EvalView.EvalICs=[];
+    if(isRelease){
+      this.EvalView.Status="2";
+    }
+    else{
+      this.EvalView.Status="1";
+    }
     console.log(this.EvalView);
     this._RFxService.CreateEvaluation(this.EvalView).subscribe((response)=>{
       console.log("response",response);
@@ -357,6 +363,12 @@ export class EvaluationComponent implements OnInit {
     this.EvalView.EvalRemarks=null;
     this.EvalView.EvalHCs=this.EvalHcs;
     this.EvalView.EvalICs=[];
+    if(isRelease){
+      this.EvalView.Status="2";
+    }
+    else{
+      this.EvalView.Status="1";
+    }
     console.log(this.EvalView);
     this._RFxService.UpdateEvaluation(this.EvalView).subscribe((response)=>{
       console.log("response",response);

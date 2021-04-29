@@ -459,13 +459,14 @@ export class RfqComponent implements OnInit {
       if (res && res.isCreate) {
         this.ODDetails.push(res.data);
         this.ODDetailsDataSource = new MatTableDataSource(this.ODDetails);
-        if(this.ODAttachDetails.length>0){
-          this.Progress=8*12.5;
+        if(this.ODAttachDetails.length>0 && this.ODDetails.length>0){
+          this.CompletedSteps[6]=true;
+        }
+        else if(this.ODDetails.length>0){
           this.CompletedSteps[6]=true;
         }
         else{
-          this.Progress=7*12.5;
-          this.CompletedSteps[6]=true;
+          this.CompletedSteps[6]=false;
         }
       }
     });
@@ -479,7 +480,6 @@ export class RfqComponent implements OnInit {
         this.ODAttachDetails.push(res.data);
         this.ODAttachDetailsDataSource = new MatTableDataSource(this.ODAttachDetails);
         this.CompletedSteps[7]=true;
-        this.Progress=8*12.5;
       }
       if (this.FilesToUpload.indexOf(res.Attachments) >= 0) {
         this.FilesToUpload[this.FilesToUpload.indexOf(res.Attachments)] = res.Attachments;
@@ -537,26 +537,44 @@ export class RfqComponent implements OnInit {
   DeleteCriteria(index) {
     this.EvaluationDetails.splice(index, 1);
     this.EvaluationDetailsDataSource = new MatTableDataSource(this.EvaluationDetails);
+    if(this.EvaluationDetails.length==0){
+      this.CompletedSteps[2]=false;
+    }
   }
   DeleteItem(index) {
     this.ItemDetails.splice(index, 1);
     this.ItemDetailsDataSource = new MatTableDataSource(this.ItemDetails);
+    if(this.ItemDetails.length==0){
+      this.CompletedSteps[3]=false;
+    }
   }
   DeletePartner(index) {
     this.PartnerDetails.splice(index, 1);
     this.PartnerDetailsDataSource = new MatTableDataSource(this.PartnerDetails);
+    if(this.PartnerDetails.length==0){
+      this.CompletedSteps[4]=false;
+    }
   }
   DeleteVendor(index) {
     this.VendorDetails.splice(index, 1);
     this.VendorDetailsDataSource = new MatTableDataSource(this.VendorDetails);
+    if(this.VendorDetails.length==0){
+      this.CompletedSteps[5]=false;
+    }
   }
   DeleteQuetion(index) {
     this.ODDetails.splice(index, 1);
     this.ODDetailsDataSource = new MatTableDataSource(this.ODDetails);
+    if(this.ODDetails.length==0){
+      this.CompletedSteps[6]=false;
+    }
   }
   DeleteAttachment(index) {
     this.ODAttachDetails.splice(index, 1);
     this.ODAttachDetailsDataSource = new MatTableDataSource(this.ODAttachDetails);
+    if(this.ODAttachDetails.length==0){
+      this.CompletedSteps[7]=false;
+    }
   }
   GetAnswerType(type) {
     if (type == 1) {
@@ -574,7 +592,6 @@ export class RfqComponent implements OnInit {
       if(this.RFxFormGroup.valid && (this.RFxID == null || this.RFxID=="-1")){
         this.Rfxheader.Status = "1";
         this.selectedIndex = index + 1;
-        this.Progress=12.5;
         this.CompletedSteps[index]=true;
       }
       else{
@@ -584,7 +601,6 @@ export class RfqComponent implements OnInit {
     if(index == 1){
       if(this.ICFormGroup.valid){
         this.selectedIndex = index + 1;
-        this.Progress=2*12.5;
         this.CompletedSteps[index]=true;
         this.CreateCriteria();
       }
@@ -596,7 +612,6 @@ export class RfqComponent implements OnInit {
     if(index == 2){
       if(this.EvaluationDetails.length > 0){
         this.selectedIndex = index + 1;
-        this.Progress=3*12.5;
         this.CompletedSteps[index]=true;
         this.CreateItem();
       }
@@ -607,7 +622,6 @@ export class RfqComponent implements OnInit {
     if(index == 3){
       if(this.ItemDetails.length >= 0){
         this.selectedIndex = index + 1;
-        this.Progress=4*12.5;
         this.CompletedSteps[index]=true;
         this.CreatePartner();
       }
@@ -628,13 +642,11 @@ export class RfqComponent implements OnInit {
       else {
         this.CompletedSteps[index]=true;
         this.selectedIndex = index + 1;
-        this.Progress=5*12.5;
       }
     }
     if(index == 5){
       if(this.VendorDetails.length >= 0){
         this.selectedIndex = index + 1;
-        this.Progress=6*12.5;
         this.CompletedSteps[index]=true;
       }
       else{
@@ -646,9 +658,6 @@ export class RfqComponent implements OnInit {
     this.selectedIndex = index - 1;
   }
     
-  tabClick(tab: any) {
-    this.selectedIndex = parseInt(tab.index);
-  }
   SaveRFxClicked(isRelease: boolean) {
     if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0) {
       if (this.NewVendorMaser.length > 0) {
@@ -852,5 +861,10 @@ DeleteRFx(RFxID:string){
     console.log(err);
     this.isProgressBarVisibile=false;
   });
+}
+GetProgress():number{
+  const oneStep=12.5;
+  const count=this.CompletedSteps.filter(x=>x==true).length;
+  return oneStep*count;
 }
 }

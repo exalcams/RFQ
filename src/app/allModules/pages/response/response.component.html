@@ -369,14 +369,14 @@
             </mat-tab-group>
         </div>
         <div class="footer" fxLayout="column" fxLayoutAlign="center">
-            <div fxLayout="row" fxLayoutAlign="start center" class="px-8" *ngIf="!(IsItemComplete() && IsODComplete())">
+            <div fxLayout="row" fxLayoutAlign="start center" class="px-8" *ngIf="!(IsItemComplete() && IsODComplete()) || ResH.Status=='2'">
                 <button *ngIf="selectedIndex!=0" (click)="PreviousClicked(selectedIndex)" mat-button
                     class="prevnxtbtn">Previous</button>
                     <div fxFlex></div>
                 <button *ngIf="selectedIndex!=4" (click)="NextClicked(selectedIndex)" mat-button
                     class="prevnxtbtn">Next</button>
             </div>
-            <div *ngIf="IsItemComplete() && IsODComplete()" fxLayout="row" fxLayoutAlign="space-between center"
+            <div *ngIf="(IsItemComplete() && IsODComplete()) && ResH.Status!='2'" fxLayout="row" fxLayoutAlign="space-between center"
                 fxFlex class="px-8">
                 <button mat-button class="savebtn" (click)="SaveResClicked(false)">Save</button>
                 <button mat-button class="releasebtn" (click)="SaveResClicked(true)">Release</button>
