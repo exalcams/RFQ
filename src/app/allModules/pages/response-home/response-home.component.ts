@@ -133,7 +133,7 @@ export class ResponseHomeComponent implements OnInit {
           }
         }
       },
-      labels: [" Respond", "Yet to be Responded"],
+      labels: [" Responded", "Yet to be Responded"],
       dataLabels: {
         enabled: true,
         distributed: true,
