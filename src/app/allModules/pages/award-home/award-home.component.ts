@@ -71,13 +71,35 @@ export class AwardHomeComponent implements OnInit {
       this.route.navigate(['/auth/login']);
     }
     this.GetAllRFxs();
+    this.DoughnutChart();
+    
+    // chart end
+  }
+  Gotoheader(rfqid) {
+    this.route.navigate(['pages/awardresponse']);
+    // { queryParams: { id: rfqid } }
+    localStorage.setItem('A_RFXID', rfqid);
+  }
+  DoughnutChart(){
     this.chartOptions = {
       series:[],
       colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
       chart: {
         type: "donut",
         width:280,
-        height:'auto'
+        height:'auto',
+        events: {
+          dataPointSelection:(event, chartContext, config) => {
+            if (config.dataPointIndex == 0) {
+              console.log(config.dataPointIndex);
+              this.LoadTableSource(this.AwardedDetails,"2");
+            }
+            if (config.dataPointIndex == 1) {
+              console.log(config.dataPointIndex);
+              this.LoadTableSource(this.ClosedHeaderDetails,"3");
+            }
+          }
+        }
       },
       labels: ["Awarded", " Yet to be Awarded"],
       dataLabels: {
@@ -145,12 +167,6 @@ export class AwardHomeComponent implements OnInit {
         },
     }
     };
-    // chart end
-  }
-  Gotoheader(rfqid) {
-    this.route.navigate(['pages/awardresponse']);
-    // { queryParams: { id: rfqid } }
-    localStorage.setItem('A_RFXID', rfqid);
   }
   GetAllRFxs(): void {
     this.isProgressBarVisibile=true;

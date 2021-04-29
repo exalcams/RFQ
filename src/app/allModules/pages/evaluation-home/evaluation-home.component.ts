@@ -76,88 +76,100 @@ export class EvaluationHomeComponent implements OnInit {
       this.route.navigate(['/auth/login']);
     }
     this.GetAllRFxs();
-    console.log(this.ArrChart,'series');
-    // chart start
- this.chartOptions = {
-   series:[],
-   colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
-   chart: {
-     type: "donut",
-     width:280,
-     height:'auto'
-   },
-   labels: ["Evaluated", " Yet to be Evaluated"],
-   dataLabels: {
-     enabled: true,
-     distributed: true,
-     textAnchor:'middle',
-     style: {
-         fontSize: '10px',
-         fontFamily: 'Poppins',
-         fontWeight: '600',
-         colors: ['#083a6f', '#033283', '#1665f0','#0fb752']
-     },
-     dropShadow: {
-       enabled: false,
-   }
-   },
-   plotOptions: {
-     pie: {
-       dataLabels: {
-         offset: 25,
-       },
-       donut: {
-         size: '65%'
-       }
-     }
-   },
-   legend: {
-     show: true,
-     position: 'right',
-     horizontalAlign: 'center', 
-     floating: false,
-     fontSize: '11px',
-     fontFamily: 'Poppins',
-     fontWeight: 600,
-     width: undefined,
-     height: undefined,
-     tooltipHoverFormatter: undefined,
-     offsetX: 0,
-     offsetY: -8,
-     labels: {
-         colors: ["#2b3540","#2b3540","#2b3540","#2b3540"],
-         useSeriesColors: false
-     },
-     markers: {
-         width: 6,
-         height: 6,
-         strokeWidth: 0,
-         strokeColor: '#fff',
-         fillColors: undefined,
-         radius: 6,
-         customHTML: undefined,
-         onClick: undefined,
-         offsetX: 0,
-         offsetY: 0
-     },
-     itemMargin: {
-         horizontal: 8,
-         vertical: 4
-     },
-     onItemClick: {
-         toggleDataSeries: true
-     },
-     onItemHover: {
-         highlightDataSeries: true
-     },
- }
- };
- // chart end
+    this.DoughnutChart();
   }
   Gotoheader(rfqid) {
     this.route.navigate(['pages/evaluationresponse']);
     // { queryParams: { id: rfqid } }
     localStorage.setItem('E_RFXID', rfqid);
+  }
+  DoughnutChart(){
+    this.chartOptions = {
+      series:[],
+      colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
+      chart: {
+        type: "donut",
+        width:280,
+        height:'auto',
+        events: {
+          dataPointSelection:(event, chartContext, config) => {
+            if (config.dataPointIndex == 0) {
+              console.log(config.dataPointIndex);
+              this.LoadTableSource(this.ClosedHeaderDetails,"2");
+            }
+            if (config.dataPointIndex == 1) {
+              console.log(config.dataPointIndex);
+              this.LoadTableSource(this.EvaluatedHeaderDetails,"3");
+            }
+          }
+        }
+      },
+      labels: ["Evaluated", " Yet to be Evaluated"],
+      dataLabels: {
+        enabled: true,
+        distributed: true,
+        textAnchor:'middle',
+        style: {
+            fontSize: '10px',
+            fontFamily: 'Poppins',
+            fontWeight: '600',
+            colors: ['#083a6f', '#033283', '#1665f0','#0fb752']
+        },
+        dropShadow: {
+          enabled: false,
+      }
+      },
+      plotOptions: {
+        pie: {
+          dataLabels: {
+            offset: 25,
+          },
+          donut: {
+            size: '65%'
+          }
+        }
+      },
+      legend: {
+        show: true,
+        position: 'right',
+        horizontalAlign: 'center', 
+        floating: false,
+        fontSize: '11px',
+        fontFamily: 'Poppins',
+        fontWeight: 600,
+        width: undefined,
+        height: undefined,
+        tooltipHoverFormatter: undefined,
+        offsetX: 0,
+        offsetY: -8,
+        labels: {
+            colors: ["#2b3540","#2b3540","#2b3540","#2b3540"],
+            useSeriesColors: false
+        },
+        markers: {
+            width: 6,
+            height: 6,
+            strokeWidth: 0,
+            strokeColor: '#fff',
+            fillColors: undefined,
+            radius: 6,
+            customHTML: undefined,
+            onClick: undefined,
+            offsetX: 0,
+            offsetY: 0
+        },
+        itemMargin: {
+            horizontal: 8,
+            vertical: 4
+        },
+        onItemClick: {
+            toggleDataSeries: true
+        },
+        onItemHover: {
+            highlightDataSeries: true
+        },
+    }
+    };
   }
   GetAllRFxs(): void {
     this.isProgressBarVisibile=true;
