@@ -1,30 +1,20 @@
 @import "src/@fuse/scss/fuse";
-#dashboard {
+#award {
+  .title{
+    @extend .poppins;
+    font-size: 18px;
+    color: #00061c;
+  }
     .poppins{
         font-family: Poppins;
         font-weight: 600;
     }
-  .mat-radio-button ~ .mat-radio-button {
-    margin-left: 16px;
-  }
-  .cl_card{
-    //   border-top: 4px solid #29abe2;
-      margin-top: 1.5rem;
-      padding-top: 10px;
-    }
-    .mat-elevation-z8 {
-      box-shadow: none;
-    }
-    .tab-title{
-      @extend .poppins;
-      font-size: 14px;
-      color: #5f2cff;
-  }
   .releasebtn{
     background-color: #5f2cff;
     @extend .poppins;
     color: #ffffff;
     font-size: 12px;
+    border-radius: 4px;
 }
     table {
       width: 100%;
@@ -69,7 +59,7 @@
       color:#333333;
   }
   .mat-row.highlighted .mat-cell  {
-    background-color: #03a9f4 !important;
+    background-color: #5f2cff20 !important;
   }
   .footer{
     width: 60%;
@@ -82,25 +72,21 @@
     z-index: 1;
     left: 20%;
 }
-    .cl_button4.mat-button {
-      color: white !important;
-      background: #2acb68 !important;
-      }
-      .cl_button4{
-        border-radius: 2px;
-        border: none;
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-      }
-      .cl_card3{
-        margin-top: 15px;
-        height: 140px;
-        margin: 20px;
-      }
-      .cl_divider_header{
-        height: 1px;
-        border-top: 1px solid #068dd0;
-        opacity: 0.6;
-    }
+.tb-container{
+  margin-bottom: 1rem;
+}
+.radiotxt{
+  @extend .poppins;
+  font-size: 12px;
+  color: #00061c;
+}
+.reaonremarks{
+  @extend .poppins;
+  font-size: 12px;
+}
+.container{
+    background-color: #ffffff;
+    border-radius: 4px;
+}
+    
   }

@@ -66,16 +66,16 @@
                       </div>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="space-evenly center" class="px-16">
-                      <div class="squarebox1" fxLayoutAlign="center center">10</div>
+                      <div class="squarebox1" fxLayoutAlign="center center">{{Rfxheader.Invited | removeLeadingZero}}</div>
                       <div fxLayout="column" fxLayoutGap="1rem">
                           <img src="assets/images/rfq/green_bar.svg" style="width: 36px;">
-                          <span class="saved">Saved</span>
+                          <span class="saved">Invited</span>
                       </div>
                       <div class="vertical-devider"></div>
-                      <div class="squarebox2" fxLayoutAlign="center center">5</div>
+                      <div class="squarebox2" fxLayoutAlign="center center">{{Rfxheader.Responded | removeLeadingZero}}</div>
                       <div fxLayout="column" fxLayoutGap="1rem">
                           <img src="assets/images/rfq/blue_bar.svg" style="width: 36px;">
-                          <span class="released">Released</span>
+                          <span class="released">Responded</span>
                       </div>
                   </div>
               </div>
@@ -110,7 +110,8 @@
                   <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Action
                   </th>
                   <td mat-cell *matCellDef="let element" style="text-align: center;">
-                      <button class="evalbtn" mat-button (click)="Gotoheader(element.RESID)">Evaluate</button>
+                      <button *ngIf="element.Status=='2'" class="evalbtn" mat-button (click)="Gotoheader(element.RESID)">Evaluate</button>
+                      <span *ngIf="element.Status!='2'">Evaluated</span>
                   </td>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>

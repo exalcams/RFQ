@@ -1,29 +1,20 @@
-<div id="dashboard" fxFlex fusePerfectScrollbar>
-    <div fxLayout="column" class="px-16">
-        <div fxFlex=75 class="container1 px-16">
-            <div fxLayout="row" fxLayout="start center" class="py-24">
-                <button mat-icon-button (click)="CancelClicked()">
-                    <img src="assets/images/rfq/backbutton.svg" style="width: 24px;">
-                </button>
-                <!-- <span class="title">Award</span> -->
-            </div>
+<div id="award" fxFlex fusePerfectScrollbar>
+    <div fxLayout="column" class="px-24">
+        <div fxLayout="row" fxLayoutAlign="start center" class="pt-24" fxLayoutGap="1rem">
+            <button mat-icon-button (click)="CancelClicked()">
+                <img src="assets/images/rfq/backbutton.svg" style="width: 24px;">
+            </button>
+            <label class="title">Award for {{Rfxheader.Title}}</label>
         </div>
-        <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
-            <mat-radio-group aria-label="Select an option">
-                <span class="space_left"></span>
-                <mat-radio-button [checked]="true" value="1" (click)="TableVendor()">By Vendor</mat-radio-button>
-                <span class="space_left"></span>
-                <mat-radio-button value="2" (click)="TableMaterial()">By Material</mat-radio-button>
-                <span class="space_left"></span>
-                <mat-radio-button value="3" (click)="TableEvaluation()">By Evaluation Parameter</mat-radio-button>
+        <div fxLayout="row" fxLayoutAlign="start center" class="py-20">
+            <mat-radio-group aria-label="Select an option" fxLayoutGap="2rem">
+                <mat-radio-button [checked]="true" value="1" (click)="TableVendor()" class="radiotxt">By Vendor</mat-radio-button>
+                <mat-radio-button value="2" (click)="TableMaterial()" class="radiotxt">By Material</mat-radio-button>
+                <mat-radio-button value="3" (click)="TableEvaluation()" class="radiotxt">By Evaluation Parameter</mat-radio-button>
             </mat-radio-group>
         </div>
-
-        <div *ngIf="value == 1" style="margin: 20px;">
-            <mat-card class="cl_card">
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
-                    <label class="tab-title">By Vendor Rating List</label>
-                </div>
+        <div fxLayout="column" class="container p-16">
+            <div *ngIf="value == 1" fxFlex class="tb-container">
 
                 <table mat-table [dataSource]="HeaderDetailsDataSource" matSort class="py-10">
 
@@ -40,7 +31,6 @@
                                 <star-rating [value]="AllEvalRatingDetails[i].Rating" checkedcolor="gold"
                                     uncheckedcolor="#b9bdbb" size="20px" readonly="true"></star-rating>
                             </div>
-                            <!-- {{element.Rating}} -->
                         </td>
                     </ng-container>
 
@@ -49,14 +39,9 @@
                     <tr mat-row (click)="TableHighlight(row,1)" [class.highlighted]="row.PartnerID==SelectedVendor"
                         *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
                 </table>
-            </mat-card>
-        </div>
+            </div>
 
-        <div *ngIf="value==2" fxFlex style="margin: 20px;">
-            <mat-card class="cl_card">
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
-                    <label class="tab-title">By Material Vendor List</label>
-                </div>
+            <div *ngIf="value==2" fxFlex>
 
                 <table mat-table [dataSource]="MaterialDetailsDataSource" matSort class="py-10">
 
@@ -78,15 +63,9 @@
                     <tr mat-row (click)="TableHighlight(row,2)" [class.highlighted]="row.BestSupplier==SelectedVendor"
                         *matRowDef="let row; columns: MaterialDetailsDisplayedColumns;"></tr>
                 </table>
-            </mat-card>
-        </div>
+            </div>
 
-        <div *ngIf="value==3" fxFlex style="margin: 20px;">
-            <mat-card class="cl_card">
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
-                    <label class="tab-title">By Evaluation Parameter List</label>
-                </div>
-
+            <div *ngIf="value==3" fxFlex>
                 <table mat-table [dataSource]="CriteriaDetailsDataSource" matSort class="py-10">
 
                     <ng-container matColumnDef="Criteria">
@@ -102,56 +81,43 @@
                         </td>
                     </ng-container>
 
-
                     <tr mat-header-row *matHeaderRowDef="CriteriaDetailsDisplayedColumns"></tr>
                     <tr mat-row (click)="TableHighlight(row,2)" [class.highlighted]="row.BestSupplier==SelectedVendor"
                         *matRowDef="let row; columns: CriteriaDetailsDisplayedColumns;"></tr>
                 </table>
-            </mat-card>
-        </div>
-
-        <form autocomplete="off" [formGroup]="AwardFormGroup">
-            <mat-card *ngIf="Click" class="cl_card3" fxLayout="column">
-                <div fxLayout="column" fxLayoutGap="1rem">
+            </div>
+            <form autocomplete="off" [formGroup]="AwardFormGroup" *ngIf="Click">
+                <div fxLayout="column" fxLayoutGap="1rem" class="py-16">
                     <div fxLayout="row" fxLayoutAlign="space-between center">
-                        <label class="tab-title">Reason</label>
+                        <label class="radiotxt">Reason</label>
                     </div>
-                    <mat-form-field style="font-size: 14px;" appearance="outline">
-                        <textarea matInput fxFlex formControlName="Reason"></textarea>
+
+                    <mat-form-field appearance="outline">
+                        <textarea matInput fxFlex formControlName="Reason" class="reaonremarks"></textarea>
                         <mat-error
                             *ngIf="AwardFormGroup.get('Reason').touched && AwardFormGroup.get('Reason').hasError('required')">
                             Reason is required
                         </mat-error>
                     </mat-form-field>
-                </div>
-            </mat-card>
 
-            <mat-card *ngIf="Click" class="cl_card3" fxLayout="column">
-                <div fxLayout="column" fxLayoutGap="1rem">
                     <div fxLayout="row" fxLayoutAlign="space-between center">
-                        <label class="tab-title">Remarks</label>
+                        <label class="radiotxt">Remarks</label>
                     </div>
-                    <mat-form-field style="font-size: 14px;" appearance="outline">
-                        <textarea matInput fxFlex formControlName="Remarks"></textarea>
+
+                    <mat-form-field appearance="outline">
+                        <textarea matInput fxFlex formControlName="Remarks" class="reaonremarks"></textarea>
                         <mat-error
                             *ngIf="AwardFormGroup.get('Remarks').touched && AwardFormGroup.get('Remarks').hasError('required')">
                             Remarks is required
                         </mat-error>
                     </mat-form-field>
+
+                    <div fxLayout="row" fxLayoutAlign="center center" fxFlex class="px-8">
+                        <button mat-button class="releasebtn" (click)="AwardClicked()">Award</button>
+                    </div>
                 </div>
-            </mat-card>
-
-            <div style="height: 50px !important;"></div>
-
-        </form>
-
-        <div *ngIf="Click" class="footer" fxLayout="column" fxLayoutAlign="center">
-            <div  fxLayout="row" fxLayoutAlign="space-between center" fxFlex class="px-8">
-                <div style="flex:1 auto"></div>
-                <button mat-button class="releasebtn" (click)="AwardClicked()">Award</button>
-            </div>
+            </form>
         </div>
-
 
     </div>
     <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">

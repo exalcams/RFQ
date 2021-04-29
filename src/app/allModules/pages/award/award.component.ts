@@ -112,7 +112,7 @@ export class AwardComponent implements OnInit {
     }
   }
   CancelClicked(){
-    this._router.navigate(['pages/awardhome']);
+    this._router.navigate(['pages/awardresponse']);
   }
   CreateAward() {
     this.isProgressBarVisibile = true;
