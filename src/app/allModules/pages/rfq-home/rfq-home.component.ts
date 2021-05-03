@@ -158,20 +158,16 @@ export class RfqHomeComponent implements OnInit, OnDestroy {
         events: {
           dataPointSelection:(event, chartContext, config) => {
             if (config.dataPointIndex == 0) {
-              console.log(config.dataPointIndex);
-              this.LoadTableSource(this.InitiatedHeaderDetails,"2");
-            }
-            if (config.dataPointIndex == 1) {
-              console.log(config.dataPointIndex);
               this.LoadTableSource(this.RespondedHeaderDetails,"3");
             }
-            if (config.dataPointIndex == 2) {
-              console.log(config.dataPointIndex);
+            if (config.dataPointIndex == 1) {
               this.LoadTableSource(this.EvaluatedHeaderDetails,"4");
             }
-            if (config.dataPointIndex == 3) {
-              console.log(config.dataPointIndex);
+            if (config.dataPointIndex == 2) {
               this.LoadTableSource(this.ClosedHeaderDetails,"5");
+            }
+            if (config.dataPointIndex == 3) {
+              this.route.navigate(['pages/awardreport']);
             }
           }
         }

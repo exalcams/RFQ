@@ -32,7 +32,7 @@ export type ChartOptions = {
 
 @Component({
   selector: 'app-response-home',
-  templateUrl: './response-home-new.component.html',
+  templateUrl: './response-home.component.html',
   styleUrls: ['./response-home.component.scss']
 })
 export class ResponseHomeComponent implements OnInit {
@@ -118,17 +118,17 @@ export class ResponseHomeComponent implements OnInit {
       colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
       chart: {
         type: "donut",
-        width:280,
+        width:'320px',
         height:'auto',
         events: {
           dataPointSelection:(event, chartContext, config) => {
             if (config.dataPointIndex == 0) {
               console.log(config.dataPointIndex);
-              this.LoadTableSource(this.DueToRespondHeaderDetails,"2");
+              this.LoadTableSource(this.RespondedHeaderDetails,"2");
             }
             if (config.dataPointIndex == 1) {
               console.log(config.dataPointIndex);
-              this.LoadTableSource(this.RespondedHeaderDetails,"3");
+              this.LoadTableSource(this.DueToRespondHeaderDetails,"3");
             }
           }
         }
@@ -368,8 +368,7 @@ export class ResponseHomeComponent implements OnInit {
   }
 OpenMuteDialog(RFxH:RFxHeader):void{
   const dialogRef = this.dialog.open(MutedialogComponent, {
-    data: {}, height: '30%',
-    width: '40%'
+    panelClass:"mute-dialog"
   });
   dialogRef.afterClosed().subscribe(res=>{
     if(res){
@@ -387,6 +386,7 @@ MuteRFx(header:ResHeader){
   this.isProgressBarVisibile=true;
   this._RFxService.MuteRFx(header).subscribe(res=>{
     Swal.fire('RFQ muted Successfully');
+    this.GetAllRFxs();
     this.isProgressBarVisibile=false;
   },err=>{
     this.isProgressBarVisibile=false;

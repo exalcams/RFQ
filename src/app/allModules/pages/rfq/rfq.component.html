@@ -208,7 +208,7 @@
 
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                         <mat-label>Evaluation end date</mat-label>
-                                        <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
+                                        <input matInput [min]="RFxFormGroup.get('ResponseEndDate').value"
                                             [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker5"
                                             formControlName="EvaluationEndDate" fxFlex>
                                         <mat-datepicker-toggle matSuffix [for]="picker5">
@@ -598,7 +598,9 @@
 
                                     <ng-container matColumnDef="DocumentName">
                                         <th mat-header-cell mat-sort-header *matHeaderCellDef> Document </th>
-                                        <td mat-cell *matCellDef="let element"> {{element.DocumentName}} </td>
+                                        <td mat-cell *matCellDef="let element"> 
+                                            <a (click)="OpenAttachment(element.DocumentName)" style="cursor: pointer;color: #5f2cff;">{{element.DocumentName}}</a>
+                                        </td>
                                     </ng-container>
 
                                     <ng-container matColumnDef="Action">

@@ -11,7 +11,7 @@ import { AuthenticationDetails } from 'app/models/master';
 
 @Component({
   selector: 'app-award',
-  templateUrl: './award-new.component.html',
+  templateUrl: './award.component.html',
   styleUrls: ['./award.component.scss']
 })
 export class AwardComponent implements OnInit {
@@ -241,14 +241,23 @@ export class AwardComponent implements OnInit {
 
   TableVendor(): void {
     this.value = 1;
+    this.Click=false;
+    this.selectedRESID=null;
+    this.SelectedVendor=null;
   }
 
   TableMaterial(): void {
     this.value = 2;
+    this.Click=false;
+    this.selectedRESID=null;
+    this.SelectedVendor=null;
   }
 
   TableEvaluation(): void {
     this.value = 3;
+    this.Click=false;
+    this.selectedRESID=null;
+    this.SelectedVendor=null;
   }
 
   ShowValidationErrors(formGroup: FormGroup): void {

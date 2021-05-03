@@ -29,7 +29,7 @@ export type ChartOptions = {
 
 @Component({
   selector: 'app-award-home',
-  templateUrl: './award-home-new.component.html',
+  templateUrl: './award-home.component.html',
   styleUrls: ['./award-home.component.scss']
 })
 export class AwardHomeComponent implements OnInit {
@@ -86,7 +86,7 @@ export class AwardHomeComponent implements OnInit {
       colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
       chart: {
         type: "donut",
-        width:280,
+        width:'320px',
         height:'auto',
         events: {
           dataPointSelection:(event, chartContext, config) => {

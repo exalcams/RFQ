@@ -28,7 +28,7 @@ export type ChartOptions = {
 
 @Component({
   selector: 'app-evaluation-home',
-  templateUrl: './evaluation-home-new.component.html',
+  templateUrl: './evaluation-home.component.html',
   styleUrls: ['./evaluation-home.component.scss']
 })
 export class EvaluationHomeComponent implements OnInit {
@@ -89,7 +89,7 @@ export class EvaluationHomeComponent implements OnInit {
       colors:['#1764e8', '#74a2f1', '#c3d8fd','#b5f9ff'],
       chart: {
         type: "donut",
-        width:280,
+        width:'320px',
         height:'auto',
         events: {
           dataPointSelection:(event, chartContext, config) => {
@@ -178,11 +178,11 @@ export class EvaluationHomeComponent implements OnInit {
         if (data) {
           this.AllHeaderDetails =data;
           this.isProgressBarVisibile=false;
-          this.LoadTableSource(this.AllHeaderDetails,"1");
+          this.LoadTableSource(this.AllHeaderDetails,"0");
         }
       }
     );
-    this._RFxService.GetAllEvalRFxH(this.CurrentUserName,'4').subscribe(
+    this._RFxService.GetAllEvalRFxH(this.CurrentUserName,'1').subscribe(
       (data) => {
         if (data) {
           this.EvaluatedHeaderDetails = data;
@@ -192,7 +192,7 @@ export class EvaluationHomeComponent implements OnInit {
         }
       }
     );
-    this._RFxService.GetAllEvalRFxH(this.CurrentUserName,'5').subscribe(
+    this._RFxService.GetAllEvalRFxH(this.CurrentUserName,'2').subscribe(
       (data) => {
         if (data) {
           this.ClosedHeaderDetails = data;
@@ -202,7 +202,7 @@ export class EvaluationHomeComponent implements OnInit {
         }
       }
     );
-    this._RFxService.GetEvalPieData().subscribe(x=>{
+    this._RFxService.GetEvalPieData(this.CurrentUserName).subscribe(x=>{
       this.chartOptions.series=x;
     });
   }

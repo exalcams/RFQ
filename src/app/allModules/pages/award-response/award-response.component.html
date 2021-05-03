@@ -85,7 +85,7 @@
           </div>
       </div>
       <div class="table-container p-12" fxFlex fxLayout="column" fxLayoutGap="1rem">
-          <div fxLayout="row" fxLayoutAlign="end center" fxFlex>
+          <div *ngIf="Rfxheader.Status!='6'" fxLayout="row" fxLayoutAlign="end center" fxFlex>
               <button mat-button (click)="Gotoheader(RFxID)" class="cmpbtn">Compare</button>
           </div>
           <table mat-table [dataSource]="HeaderDetailsDataSource" matSort class="py-10">

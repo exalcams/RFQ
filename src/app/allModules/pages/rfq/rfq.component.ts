@@ -23,7 +23,8 @@ import { AddVendorDialogComponent } from './rfq-dialogs/add-vendor-dialog/add-ve
 import { QuestionDialogComponent } from './rfq-dialogs/Question-Dialog/question-dialog.component';
 import { RFQAttachmentDialogComponent } from './rfq-dialogs/Attachment-Dialog/rfq-attachment-dialog.component';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
-
+import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-rfq',
@@ -398,7 +399,9 @@ export class RfqComponent implements OnInit {
 
         this.ItemDetailsDataSource = new MatTableDataSource(this.ItemDetails);
       }
-      this.FilesToUpload.push(res.Attachments);
+      if(this.FilesToUpload.filter(t=>t.name==res.Attachments.name).length==0){
+        this.FilesToUpload.push(res.Attachments);
+      }
     });
   }
   OpenPartnerDialog(Partner: RFxPartner, bool: boolean) {
@@ -866,5 +869,69 @@ GetProgress():number{
   const oneStep=12.5;
   const count=this.CompletedSteps.filter(x=>x==true).length;
   return oneStep*count;
+}
+OpenAttachment(fileName:string){
+  if(this.RFxID){
+    this.DownloadRFxAttachment(this.RFxID,fileName);
+  }
+  else{
+    var file=this.FilesToUpload.find(t=>t.name==fileName);
+    let fileType = 'image/jpg';
+        fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+          fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+            fileName.toLowerCase().includes('.png') ? 'image/png' :
+              fileName.toLowerCase().includes('.gif') ? 'image/gif' :
+                fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : 
+                  fileName.toLowerCase().includes('.svg') ? 'image/svg+xml' :'';
+        if(fileType=='image/jpg' || fileType=='image/jpeg' || fileType=='image/png' || fileType=='image/gif' || fileType=='application/pdf' || fileType=='image/svg+xml'){
+          this.openAttachmentDialog(fileName, file);
+        }
+        else{
+          saveAs(file,fileName);
+        }
+  }
+}
+DownloadRFxAttachment(RFxID: string,fileName: string): void {
+  this.isProgressBarVisibile = true;
+  this._RFxService.DowloandAttachment(RFxID, fileName).subscribe(
+    data => {
+      if (data) {
+        let fileType = 'image/jpg';
+        fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+          fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+            fileName.toLowerCase().includes('.png') ? 'image/png' :
+              fileName.toLowerCase().includes('.gif') ? 'image/gif' :
+                fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : 
+                  fileName.toLowerCase().includes('.svg') ? 'image/svg+xml' :'';
+        const blob = new Blob([data], { type: fileType });
+        if(fileType=='image/jpg' || fileType=='image/jpeg' || fileType=='image/png' || fileType=='image/gif' || fileType=='application/pdf' || fileType=='image/svg+xml'){
+          this.openAttachmentDialog(fileName, blob);
+        }
+        else{
+          saveAs(blob,fileName);
+        }
+      }
+      this.isProgressBarVisibile = false;
+    },
+    error => {
+      console.error(error);
+      this.isProgressBarVisibile = false;
+    }
+  );
+}
+openAttachmentDialog(FileName: string, blob: Blob): void {
+  const attachmentDetails: any = {
+    FileName: FileName,
+    blob: blob
+  };
+  const dialogConfig: MatDialogConfig = {
+    data: attachmentDetails,
+    panelClass: 'attachment-dialog'
+  };
+  const dialogRef = this.dialog.open(AttachmentDialogComponent, dialogConfig);
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+    }
+  });
 }
 }

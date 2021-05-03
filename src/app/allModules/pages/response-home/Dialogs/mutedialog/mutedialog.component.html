@@ -1,26 +1,22 @@
-<div>
-  <mat-toolbar class="toolbar1">
-      <p class="add_criteria">Reason for Mute</p>
-      <img mat-ripple (click)="matDialogRef.close()" style="cursor: pointer;" fxLayoutAlign="end"
-          src="assets/images/cancel1.png">
-  </mat-toolbar>
-</div>
-<form autocomplete="off" [formGroup]="MuteFormGroup">
-  <div style="padding: 2rem;">
-      <div fxLayout="column" fxFlex="100">
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+        <p class="title">Mute</p>
+        <img (click)="matDialogRef.close()" src="assets/images/cancel1.png" style="cursor: pointer;">
+    </mat-toolbar>
 
-          <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
-              <mat-label>Reason</mat-label>
-              <input matInput formControlName="Reason" fxFlex>
-              <mat-error
-                  *ngIf="MuteFormGroup.get('Reason').touched && MuteFormGroup.get('Reason').hasError('required')">
-                  Reason is required
-              </mat-error>
-          </mat-form-field>
-      </div>
-  </div>
-  <div fxLayoutAlign="center">
-      <button mat-button class="cl_button1" (click)="Save()"><span class="add">Save</span>
-      </button>
-  </div>
-</form>
+    <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <form autocomplete="off" [formGroup]="MuteFormGroup">
+            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+                <mat-label>Reason</mat-label>
+                <input matInput formControlName="Reason" fxFlex>
+                <mat-error
+                    *ngIf="MuteFormGroup.get('Reason').touched && MuteFormGroup.get('Reason').hasError('required')">
+                    Reason is required
+                </mat-error>
+            </mat-form-field>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions class="m-0 p-16 footer" fxLayoutAlign="center center">
+        <button mat-button type="button" class="savebtn" (click)="Save()">Mute</button>
+    </mat-dialog-actions>
+</div>

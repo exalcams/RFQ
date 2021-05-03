@@ -13,6 +13,11 @@
       min-width: 280px;
       background-image: linear-gradient(185deg, #faf9fd 92%, rgba(255, 255, 255, 0.39) -17%);
   }
+  .evalbtn{
+    @extend .poppins;
+    font-size: 12px !important;
+    color: #5f2cff !important;
+  }
   .title{
     @extend .poppins;
     font-size: 18px;

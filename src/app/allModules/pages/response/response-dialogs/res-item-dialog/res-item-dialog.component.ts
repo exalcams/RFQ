@@ -72,9 +72,9 @@ export class ResItemDialogComponent implements OnInit {
     });
     this.ResItemFormGroup=this._formBuilder.group({
       Price:[this.ResItem.Price,[Validators.required,Validators.max(parseInt(this.rfxitem.BiddingPriceHigh))]],
-      USPRemark:[this.ResItem.USPRemark,Validators.required],
-      PriceRating:[this.ResItem.PriceRating,[Validators.required,Validators.pattern('^([0-9]{1})?$')]],
-      LeadTimeRating:[this.ResItem.LeadTimeRating,Validators.required],
+      USPRemark:[this.ResItem.USPRemark],
+      PriceRating:[this.ResItem.PriceRating],
+      LeadTimeRating:[this.ResItem.LeadTimeRating],
       LeadTimeAccept:[null,Validators.required],
       LeadTimeRemark:[this.ResItem.LeadTimeRemark]
     });
