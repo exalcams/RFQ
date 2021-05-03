@@ -40,6 +40,7 @@ export class AwardDetailEvaluationComponent implements OnInit {
   EvalIcs:EvalIC[]=[];
   ResItem:ResItem[]=[];
   EvaluatedICs:EvaluatedICs[]=[];
+  RatingDetails:RFxIC[]=[];
   ItemDetails: RFxItem[] = [];
   ODDetails: ResODView[] = [];
   ODAttachDetails:RFxODAttachment[]=[];
@@ -114,12 +115,20 @@ export class AwardDetailEvaluationComponent implements OnInit {
   GetRFxs(): void {
     this.GetRFxHsByRFxID(this.RFxID);
     this.GetRFxHCsByRFxID(this.RFxID);
+    this.GetRFxICsByRFxID(this.RFxID);
     this.GetRFxItemsByRFxID(this.RFxID);
     this.GetResHeader(this.RESID);
     this.GetResItem(this.RESID);
     this.GetResODViewsByRESID(this.RESID);
     this.GetRFxODAttachmentsByRFxID(this.RFxID);
     this.GetRFxRemarkByRFxID(this.RFxID);
+  }
+
+  GetConsider(bit:string):string{
+    if(bit=="0"){
+      return "Low";
+    }
+    return "High";
   }
 
   GetRFxHsByRFxID(RFxID: string): void {
@@ -144,6 +153,16 @@ export class AwardDetailEvaluationComponent implements OnInit {
           this.RFxFormGroup.get("EvaluationEndTime").setValue(this.Rfxheader.EvalEndTime);
           this.RFxFormGroup.get("Evaluator").setValue(this.Rfxheader.MinEvaluator);
           this.RFxFormGroup.get("Site").setValue(this.Rfxheader.Site);
+        }
+      }
+    );
+  }
+  GetRFxICsByRFxID(RFxID: string): void {
+    this._RFxService.GetRFxICsByRFxID(RFxID).subscribe(
+      (data) => {
+        if (data) {
+          this.RatingDetails = <RFxIC[]>data;
+          this.RatingDetailsDataSource = new MatTableDataSource(this.RatingDetails);
         }
       }
     );

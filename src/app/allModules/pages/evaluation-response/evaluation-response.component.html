@@ -1,124 +1,128 @@
 <div id="evaluation-response" fxFlex fusePerfectScrollbar>
-  <div fxLayout="column" class="p-20" fxLayoutGap="1.5rem">
-      <div fxLayout="row" fxLayoutGap="20px" class="container-wrapper">
-          <div fxLayout="column" fxLayoutAlign="space-between start" fxFlex=35 style="height: 100%;">
-              <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-                  <button mat-icon-button (click)="BackClicked()">
-                      <img src="assets/images/rfq/backbutton.svg" style="width: 24px;">
-                  </button>
-                  <label class="title">Responses for {{Rfxheader.Title}}</label>
-              </div>
-              <div class="status-container px-24" fxLayoutAlign="center center">
-                  <div fxLayout="column" fxFlex fxLayoutGap="2rem">
-                      <div fxLayout="row" fxLayoutAlign="center center" class="mt-4 mx-8">
-                        <div fxFlex="30" fxLayout="row" fxLayoutAlign="end center">
-                          <div class="round" [style.border-color]="AllHeaderDetails.Status==='1'?'gray':'#34ad65'"></div>
-                          <div style="width: 10px;" [class]="AllHeaderDetails.Status==='1'?'white-timeline':'green-timeline'"></div>
-                          <div
-                            [class]="AllHeaderDetails.Status==='1'?'white-timeline':AllHeaderDetails.Status==='2'?'white-timeline':'green-timeline'"
-                            fxFlex></div>
+    <div fxLayout="column" class="p-20" fxLayoutGap="1.5rem">
+        <div fxLayout="row" fxLayoutGap="20px" class="container-wrapper">
+            <div fxLayout="column" fxLayoutAlign="space-between start" fxFlex=35 style="height: 100%;">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                    <button mat-icon-button (click)="BackClicked()">
+                        <img src="assets/images/rfq/backbutton.svg" style="width: 24px;">
+                    </button>
+                    <label class="title">Responses for {{Rfxheader.Title}}</label>
+                </div>
+                <div class="status-container px-24" fxLayoutAlign="center center">
+                    <div fxLayout="column" fxFlex fxLayoutGap="2rem">
+                        <div fxLayout="row" fxLayoutAlign="center center" class="mt-4 mx-8">
+                            <div fxFlex="30" fxLayout="row" fxLayoutAlign="end center">
+                                <div class="round"
+                                    [style.border-color]="AllHeaderDetails.Status==='1'?'gray':'#34ad65'"></div>
+                                <div style="width: 10px;"
+                                    [class]="AllHeaderDetails.Status==='1'?'white-timeline':'green-timeline'"></div>
+                                <div [class]="AllHeaderDetails.Status==='1'?'white-timeline':AllHeaderDetails.Status==='2'?'white-timeline':'green-timeline'"
+                                    fxFlex></div>
+                            </div>
+                            <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
+                                <div style="width: 10px;" [class]="getTimeline(AllHeaderDetails,'Responded')">
+                                </div>
+                                <div class="round" [style.border-color]="getStatusColor(AllHeaderDetails,'Responded')">
+                                </div>
+                                <div style="width: 10px;" [class]="getTimeline(AllHeaderDetails,'Responded')">
+                                </div>
+                                <div [class]="getRestTimeline(AllHeaderDetails,'Responded')" fxFlex></div>
+                            </div>
+                            <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
+                                <div style="width: 10px;" [class]="getTimeline(AllHeaderDetails,'Evaluated')">
+                                </div>
+                                <div class="round" [style.border-color]="getStatusColor(AllHeaderDetails,'Evaluated')">
+                                </div>
+                                <div style="width: 10px;" [class]="getTimeline(AllHeaderDetails,'Evaluated')">
+                                </div>
+                                <div [class]="getRestTimeline(AllHeaderDetails,'Evaluated')" fxFlex></div>
+                            </div>
+                            <div fxFlex="10" fxLayout="row" fxLayoutAlign="start center">
+                                <div style="width: 10px;" [class]="getTimeline(AllHeaderDetails,'Closed')">
+                                </div>
+                                <div class="round" [style.border-color]="getStatusColor(AllHeaderDetails,'Closed')">
+                                </div>
+                            </div>
                         </div>
-                        <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
-                          <div style="width: 10px;" [class]="getTimeline(AllHeaderDetails,'Responded')">
-                          </div>
-                          <div class="round" [style.border-color]="getStatusColor(AllHeaderDetails,'Responded')"></div>
-                          <div style="width: 10px;" [class]="getTimeline(AllHeaderDetails,'Responded')">
-                          </div>
-                          <div [class]="getRestTimeline(AllHeaderDetails,'Responded')" fxFlex></div>
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <div fxFlex="30" class="timelineItem">Initiated</div>
+                            <div fxFlex="30" class="timelineItem">Responded</div>
+                            <div fxFlex="30" class="timelineItem">Evaluated</div>
+                            <div fxFlex="10" class="timelineItem">Closed</div>
                         </div>
-                        <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
-                          <div style="width: 10px;" [class]="getTimeline(AllHeaderDetails,'Evaluated')">
-                          </div>
-                          <div class="round" [style.border-color]="getStatusColor(AllHeaderDetails,'Evaluated')"></div>
-                          <div style="width: 10px;" [class]="getTimeline(AllHeaderDetails,'Evaluated')">
-                          </div>
-                          <div [class]="getRestTimeline(AllHeaderDetails,'Evaluated')" fxFlex></div>
-                        </div>
-                        <div fxFlex="10" fxLayout="row" fxLayoutAlign="start center">
-                          <div style="width: 10px;" [class]="getTimeline(AllHeaderDetails,'Closed')">
-                          </div>
-                          <div class="round" [style.border-color]="getStatusColor(AllHeaderDetails,'Closed')"></div>
-                        </div>
-                      </div>
-                      <div fxLayout="row" fxLayoutAlign="space-between center">
-                        <div fxFlex="30" class="timelineItem">Initiated</div>
-                        <div fxFlex="30" class="timelineItem">Responded</div>
-                        <div fxFlex="30" class="timelineItem">Evaluated</div>
-                        <div fxFlex="10" class="timelineItem">Closed</div>
-                      </div>
                     </div>
-              </div>
-          </div>
-          <div fxLayout="row" class="main-container">
-              <div fxLayout="column" fxLayoutAlign="space-evenly" fx fxFlex=65>
-                  <div fxLayout="row" fxLayoutAlign="space-between center" class="px-20">
-                      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1.5rem">
-                          <label class="rfxtitles">RFx ID</label>
-                          <label class="timelineItem">{{Rfxheader.RFxID | removeLeadingZero}}</label>
-                      </div>
-                      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1.5rem">
-                          <label class="rfxtitles">RFQ Title</label>
-                          <label class="timelineItem">{{Rfxheader.Title}}</label>
-                      </div>
-                      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1.5rem">
-                          <label class="rfxtitles">RFQ Date</label>
-                          <label class="timelineItem">{{Rfxheader.ValidityStartDate | date :'dd/MM/yyyy'}}</label>
-                      </div>
-                  </div>
-                  <div fxLayout="row" fxLayoutAlign="space-evenly center" class="px-16">
-                      <div class="squarebox1" fxLayoutAlign="center center">{{Rfxheader.Invited | removeLeadingZero}}</div>
-                      <div fxLayout="column" fxLayoutGap="1rem">
-                          <img src="assets/images/rfq/green_bar.svg" style="width: 36px;">
-                          <span class="saved">Invited</span>
-                      </div>
-                      <div class="vertical-devider"></div>
-                      <div class="squarebox2" fxLayoutAlign="center center">{{Rfxheader.Responded | removeLeadingZero}}</div>
-                      <div fxLayout="column" fxLayoutGap="1rem">
-                          <img src="assets/images/rfq/blue_bar.svg" style="width: 36px;">
-                          <span class="released">Responded</span>
-                      </div>
-                  </div>
-              </div>
-              <div fxLayotAlign="center center" fxFlex>
-                  <img src="assets/images/rfq/bar_support.jpg">
-              </div>
-          </div>
-      </div>
-      <div class="table-container p-12" fxFlex>
-          <table mat-table [dataSource]="HeaderDetailsDataSource" matSort class="py-10">
-              <ng-container matColumnDef="PartnerID">
-                  <th mat-header-cell mat-sort-header *matHeaderCellDef> Vendor </th>
-                  <td mat-cell *matCellDef="let element"> {{element.PartnerID}} </td>
-              </ng-container>
+                </div>
+            </div>
+            <div fxLayout="row" class="main-container">
+                <div fxLayout="column" fxLayoutAlign="space-evenly" fx fxFlex=65>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="px-20">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1.5rem">
+                            <label class="rfxtitles">RFx ID</label>
+                            <label class="timelineItem">{{Rfxheader.RFxID | removeLeadingZero}}</label>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1.5rem">
+                            <label class="rfxtitles">RFQ Title</label>
+                            <label class="timelineItem">{{Rfxheader.Title}}</label>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1.5rem">
+                            <label class="rfxtitles">RFQ Date</label>
+                            <label class="timelineItem">{{Rfxheader.ValidityStartDate | date :'dd/MM/yyyy'}}</label>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" class="px-16">
+                        <div class="squarebox1" fxLayoutAlign="center center">{{EvalResponseCount}}</div>
+                        <div fxLayout="column" fxLayoutGap="1rem">
+                            <img src="assets/images/rfq/green_bar.svg" style="width: 36px;">
+                            <span class="saved">Evaluated</span>
+                        </div>
+                        <div class="vertical-devider"></div>
+                        <div class="squarebox2" fxLayoutAlign="center center">{{YetEvalResponsCount}}</div>
+                        <div fxLayout="column" fxLayoutGap="1rem">
+                            <img src="assets/images/rfq/blue_bar.svg" style="width: 36px;">
+                            <span class="released">Yet to be Evaluated</span>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayotAlign="center center" fxFlex>
+                    <img src="assets/images/rfq/bar_support.jpg">
+                </div>
+            </div>
+        </div>
+        <div class="table-container p-12" fxFlex>
+            <table mat-table [dataSource]="HeaderDetailsDataSource" matSort class="py-10">
+                <ng-container matColumnDef="PartnerID">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Vendor </th>
+                    <td mat-cell *matCellDef="let element"> {{element.PartnerID}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="RESID">
-                  <th mat-header-cell mat-sort-header *matHeaderCellDef> Response ID </th>
-                  <td mat-cell *matCellDef="let element"> {{element.RESID | removeLeadingZero}} </td>
-              </ng-container>
+                <ng-container matColumnDef="RESID">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Response ID </th>
+                    <td mat-cell *matCellDef="let element"> {{element.RESID | removeLeadingZero}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="ModifiedOn">
-                  <th mat-header-cell mat-sort-header *matHeaderCellDef> Responded On </th>
-                  <td mat-cell *matCellDef="let element"> {{element.Date | date :'dd/MM/yyyy'}} </td>
-              </ng-container>
+                <ng-container matColumnDef="ModifiedOn">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Responded On </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Date | date :'dd/MM/yyyy'}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="ItemResponded">
-                  <th mat-header-cell mat-sort-header *matHeaderCellDef> Responded Items </th>
-                  <td mat-cell *matCellDef="let element"> {{element.ItemResponded}} </td>
-              </ng-container>
+                <ng-container matColumnDef="ItemResponded">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Responded Items </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ItemResponded}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="Action">
-                  <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Action
-                  </th>
-                  <td mat-cell *matCellDef="let element" style="text-align: center;">
-                      <button *ngIf="element.Status=='2'" class="evalbtn" mat-button (click)="Gotoheader(element.RESID)">Evaluate</button>
-                      <span *ngIf="element.Status!='2'">Evaluated</span>
-                  </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
-          </table>
-          <div *ngIf="AllHeaderDetails.length==0" style="text-align: center;padding: 16px;width: 100%;color:rgba(0, 0, 0, 0.54);">No records found</div>
-          <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
-      </div>
-  </div>
+                <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Action
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: center;">
+                        <button class="evalbtn" mat-button (click)="Gotoheader(element.RESID)">{{element.EvalStatus=='2'?'View':'Evaluate'}}</button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
+            </table>
+            <div *ngIf="AllHeaderDetails.length==0"
+                style="text-align: center;padding: 16px;width: 100%;color:rgba(0, 0, 0, 0.54);">No records found</div>
+            <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+        </div>
+    </div>
 </div>

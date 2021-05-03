@@ -65,22 +65,19 @@ export class DateTimeValidator{
         if (!control.parent || !control) {
             return null;
         }
-        const startDate = control.parent.get('ValidityStartDate').value;
-        const startTime = control.parent.get('ValidityStartTime').value;
-        const resDate=control.parent.get('ResponseStartDate').value;
-        const resTime=control.parent.get('ResponseStartTime').value;
+        const resDate=control.parent.get('ResponseEndDate').value;
+        const resTime=control.parent.get('ResponseEndTime').value;
         const endDate=control.parent.get('EvaluationEndDate').value;
         const endTime=control.parent.get('EvaluationEndTime').value;
         const valendDate=control.parent.get('ValidityEndDate').value;
         const valendTime=control.parent.get('ValidityEndTime').value;
-        if (!startDate || !startTime || !endDate || !endTime || !valendDate || !valendTime || !resDate || !resTime) {
+        if (!endDate || !endTime || !valendDate || !valendTime || !resDate || !resTime) {
             return null;
         }
-        var StartDateTime=DateTimeValidator.ConvertToDateTime(startDate,startTime);
         var EndDateTime=DateTimeValidator.ConvertToDateTime(endDate,endTime);
         var valEndDateTime=DateTimeValidator.ConvertToDateTime(valendDate,valendTime);
-        var resStartDateTime=DateTimeValidator.ConvertToDateTime(resDate,resTime);
-        if(StartDateTime<EndDateTime && EndDateTime<valEndDateTime && resStartDateTime<EndDateTime){
+        var resEndDateTime=DateTimeValidator.ConvertToDateTime(resDate,resTime);
+        if(EndDateTime<valEndDateTime && resEndDateTime<EndDateTime){
             return null;
         }
         return { 'EvalEndTimeValidator': true };

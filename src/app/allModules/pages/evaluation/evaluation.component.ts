@@ -111,12 +111,19 @@ export class EvaluationComponent implements OnInit {
   GetRFxs(): void {
     this.GetRFxHsByRFxID(this.RFxID);
     this.GetRFxHCsByRFxID(this.RFxID);
+    this.GetRFxICsByRFxID(this.RFxID);
     this.GetRFxItemsByRFxID(this.RFxID);
     this.GetResHeader(this.RESID);
     this.GetResItem(this.RESID);
     this.GetResODViewsByRESID(this.RESID);
     this.GetRFxODAttachmentsByRFxID(this.RFxID);
     this.GetRFxRemarkByRFxID(this.RFxID);
+  }
+  GetConsider(bit:string):string{
+    if(bit=="0"){
+      return "Low";
+    }
+    return "High";
   }
 
   GetRFxHsByRFxID(RFxID: string): void {
@@ -141,6 +148,16 @@ export class EvaluationComponent implements OnInit {
           this.RFxFormGroup.get("EvaluationEndTime").setValue(this.Rfxheader.EvalEndTime);
           this.RFxFormGroup.get("Evaluator").setValue(this.Rfxheader.MinEvaluator);
           this.RFxFormGroup.get("Site").setValue(this.Rfxheader.Site);
+        }
+      }
+    );
+  }
+  GetRFxICsByRFxID(RFxID: string): void {
+    this._RFxService.GetRFxICsByRFxID(RFxID).subscribe(
+      (data) => {
+        if (data) {
+          this.RatingDetails = <RFxIC[]>data;
+          this.RatingDetailsDataSource = new MatTableDataSource(this.RatingDetails);
         }
       }
     );
@@ -327,20 +344,12 @@ export class EvaluationComponent implements OnInit {
     console.log(this.EvalView);
     this._RFxService.CreateEvaluation(this.EvalView).subscribe((response)=>{
       console.log("response",response);
+      this.isProgressBarVisibile = false;
       if(isRelease){
-        this._RFxService.UpdateHeaderStatus(this.RFxID,"5").subscribe(x=>{
-          this.isProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar('Evaluation Released successfully', SnackBarStatus.success);
-          this._router.navigate(['pages/evaluationresponse']);
-        },
-        error => {
-          console.log(error);
-          this.isProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
-        });
+        this.notificationSnackBarComponent.openSnackBar('Evaluation released successfully', SnackBarStatus.success);
+        this._router.navigate(['pages/evaluationresponse']);
       }
       else{
-        this.isProgressBarVisibile = false;
         this.notificationSnackBarComponent.openSnackBar('Evaluation saved successfully', SnackBarStatus.success);
       }
     },
@@ -372,20 +381,12 @@ export class EvaluationComponent implements OnInit {
     console.log(this.EvalView);
     this._RFxService.UpdateEvaluation(this.EvalView).subscribe((response)=>{
       console.log("response",response);
+      this.isProgressBarVisibile = false;
       if(isRelease){
-        this._RFxService.UpdateHeaderStatus(this.RFxID,"5").subscribe(x=>{
-          this.isProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar('Evaluation Released successfully', SnackBarStatus.success);
-          this._router.navigate(['pages/evaluationresponse']);
-        },
-        error => {
-          console.log(error);
-          this.isProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
-        });
+        this.notificationSnackBarComponent.openSnackBar('Evaluation Released successfully', SnackBarStatus.success);
+        this._router.navigate(['pages/evaluationresponse']);
       }
       else{
-        this.isProgressBarVisibile = false;
         this.notificationSnackBarComponent.openSnackBar('Evaluation saved successfully', SnackBarStatus.success);
       }
     },

@@ -11,7 +11,7 @@ import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-award-report',
-  templateUrl: './award-report-new.component.html',
+  templateUrl: './award-report.component.html',
   styleUrls: ['./award-report.component.scss']
 })
 export class AwardReportComponent implements OnInit {

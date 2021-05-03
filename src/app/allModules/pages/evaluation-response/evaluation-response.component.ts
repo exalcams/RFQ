@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
+import { AuthenticationDetails } from 'app/models/master';
 import { ResHeader, RFxHeader } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 
@@ -16,15 +17,26 @@ export class EvaluationResponseComponent implements OnInit {
   Rfxheader: RFxHeader = new RFxHeader();
   RFxFormGroup: FormGroup;
   RFxID: string = null;
-  HeaderDetailsDisplayedColumns: string[] = ['PartnerID', 'RESID', 'ModifiedOn', 'ItemResponded', 'Action'];
+  HeaderDetailsDisplayedColumns: string[] = ['RESID','PartnerID', 'ModifiedOn', 'ItemResponded', 'Action'];
   AllHeaderDetails: any = [];
-  AllResponseDetails: any = [];
+  AllResponseDetails: any[] = [];
+  EvalResponseCount: number = 0;
+  YetEvalResponsCount: number = 0;
   isProgressBarVisibile: boolean;
   HeaderDetailsDataSource: MatTableDataSource<ResHeader>;
+  authenticationDetails: AuthenticationDetails;
+  CurrentUserName:string;
   constructor(private _RFxService: RFxService,
     private _formBuilder: FormBuilder,private route:Router) { }
 
   ngOnInit() {
+    const retrievedObject = localStorage.getItem('authorizationData');
+    if (retrievedObject) {
+      this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
+      this.CurrentUserName=this.authenticationDetails.UserName;
+    } else {
+      this.route.navigate(['/auth/login']);
+    }
     this.RFxID = localStorage.getItem('E_RFXID');
     this.GetAllRFxs();
     this.GetAllResponses();
@@ -43,15 +55,17 @@ export class EvaluationResponseComponent implements OnInit {
   }
 
   GetAllResponses(): void {
-    this._RFxService.GetResponseByRFxID(this.RFxID).subscribe(
+    this._RFxService.GetResWithEvalStatus(this.RFxID,this.CurrentUserName).subscribe(
       (data) => {
         if (data) {
           this.AllResponseDetails = data;      
           this.isProgressBarVisibile = false;
           this.LoadTableSource(this.AllResponseDetails);
+          this.EvalResponseCount=this.AllResponseDetails.filter(x=>x.EvalStatus=='2').length;
+          this.YetEvalResponsCount=this.AllResponseDetails.filter(x=>x.EvalStatus!='2').length;
         }
       }
-    )
+    );
   }
   GetRFxHsByRFxID(RFxID: string): void {
     this.isProgressBarVisibile = true;

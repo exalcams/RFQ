@@ -53,7 +53,7 @@ export class ResponseComponent implements OnInit {
   RatingDetailsDisplayedColumns:string[]=['Criteria','Weightage','Consider'];
   EvaluationDetailsDisplayedColumns: string[] = ['Description'];
   ItemsDetailsDisplayedColumns: string[] = ['Material','MaterialText', 'TotalQty', 'PerScheduleQty', 'TotalSchedules', 'UOM', 'IncoTerm', 'Action'];
-  ODDetailsDisplayedColumns: string[] = ['Question', 'AnswerType', 'Action'];
+  ODDetailsDisplayedColumns: string[] = ['Question', 'AnswerType','Answer', 'Action'];
   ODAttachDetailsDisplayedColumns: string[] = ['DocumentTitle', 'DocumentName','Action'];
   CurrencyList: string[] = ["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LVL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STD", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "USS", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XFU", "XOF", "XPD", "XPF", "XPT", "XTS", "XXX", "YER", "ZAR", "ZMW"];
   EvaluationDetailsDataSource: MatTableDataSource<RFxHC>;
@@ -138,10 +138,17 @@ export class ResponseComponent implements OnInit {
   GetRFxs(): void {
     this.GetRFxHsByRFxID(this.RFxID);
     this.GetRFxHCsByRFxID(this.RFxID);
+    this.GetRFxICsByRFxID(this.RFxID);
     this.GetRFxItemsByRFxID(this.RFxID);
     this.GetRFxODsByRFxID(this.RFxID);
     this.GetRFxODAttachmentsByRFxID(this.RFxID);
     this.GetRFxRemarkByRFxID(this.RFxID);
+  }
+  GetConsider(bit:string):string{
+    if(bit=="0"){
+      return "Low";
+    }
+    return "High";
   }
 
   GetRFxHsByRFxID(RFxID: string): void {

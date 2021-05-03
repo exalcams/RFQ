@@ -99,7 +99,7 @@
                       </mat-error>
                   </mat-form-field>
 
-                  <mat-form-field fxFlex=30 appearance="outline">
+                  <!-- <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>USP Remark</mat-label>
                       <input matInput formControlName="USPRemark" fxFlex autocomplete="off">
                       <mat-error
@@ -127,7 +127,7 @@
                           *ngIf="ResItemFormGroup.get('LeadTimeRating').touched && ResItemFormGroup.get('LeadTimeRating').hasError('required')">
                           Lead Time Rating is required
                       </mat-error>
-                  </mat-form-field>
+                  </mat-form-field> -->
 
                   <mat-form-field fxFlex=30 appearance="outline">
                       <mat-label>Lead Time is acceptable</mat-label>
@@ -143,8 +143,8 @@
 
                   <mat-form-field *ngIf="ResItemFormGroup.get('LeadTimeAccept').value=='No'" fxFlex=30
                       appearance="outline">
-                      <mat-label>Remarks</mat-label>
-                      <input matInput formControlName="LeadTimeRemark" fxFlex autocomplete="off">
+                      <mat-label>Proposed LeadTime</mat-label>
+                      <input matInput formControlName="LeadTimeRemark" type="number" min=0 fxFlex autocomplete="off">
                       <mat-error
                           *ngIf="ResItemFormGroup.get('LeadTimeRemark').touched && ResItemFormGroup.get('LeadTimeRemark').hasError('required')">
                           Lead Time Remark is required
