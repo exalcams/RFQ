@@ -24,14 +24,24 @@ export class CriteriaDialogComponent implements OnInit {
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Description: [this.rfxHC.Text, Validators.compose([Validators.required,Validators.maxLength(20)])]
+      Description: [this.rfxHC.Text, Validators.compose([Validators.required,Validators.maxLength(60)])]
     });
   }
 
 Save(){
   if(this.DialogueFormGroup.valid){
     this.rfxHC.Text =this.DialogueFormGroup.get("Description").value;
-    var Result={data:this.rfxHC,isCreate:this.data.isCreate};
+    var Result={data:this.rfxHC};
+    this.dialogRef.close(Result);
+  }
+  else{
+    this.ShowValidationErrors(this.DialogueFormGroup);
+  }
+}
+AddAndNew(){
+  if(this.DialogueFormGroup.valid){
+    this.rfxHC.Text =this.DialogueFormGroup.get("Description").value;
+    var Result={data:this.rfxHC,isNew:true};
     this.dialogRef.close(Result);
   }
   else{

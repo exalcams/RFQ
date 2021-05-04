@@ -51,7 +51,7 @@ export class RfqComponent implements OnInit {
   ItemsDetailsDisplayedColumns: string[] = ['Material','MaterialText', 'TotalQty', 'PerScheduleQty', 'TotalSchedules', 'UOM', 'IncoTerm', 'Action'];
   RatingDetailsDisplayedColumns: string[] = ['Criteria', 'Weightage', 'Consider'];
   PartnerDetailsDisplayedColumns: string[] = ['Type', 'Usertables', 'Action'];
-  VendorDetailsDisplayedColumns: string[] = ['Vendor', 'Type', 'VendorName', 'GSTNumber', 'City', 'Action'];
+  VendorDetailsDisplayedColumns: string[] = [ 'VendorName', 'Type', 'GSTNumber', 'City', 'Action'];
   ODDetailsDisplayedColumns: string[] = ['Question', 'AnswerType', 'Action'];
   ODAttachDetailsDisplayedColumns: string[] = ['DocumentTitle', 'DocumentName', 'Action'];
   EvaluationDetailsDataSource: MatTableDataSource<RFxHC>;
@@ -131,9 +131,9 @@ export class RfqComponent implements OnInit {
       RfqGroup: ['', [Validators.required]],
       RfqTitle: ['', [Validators.required]],
       ValidityStartDate: ['', [Validators.required]],
-      ValidityStartTime: ['', [Validators.required]],
+      ValidityStartTime: ['10:00 am', [Validators.required]],
       ValidityEndDate: ['', [Validators.required]],
-      ValidityEndTime: ['', [Validators.required,DateTimeValidator.EndTimeValidator]],
+      ValidityEndTime: ['5:00 pm', [Validators.required,DateTimeValidator.EndTimeValidator]],
       ResponseStartDate: ['', [Validators.required]],
       ResponseStartTime: ['', [Validators.required,DateTimeValidator.ResStartTimeValidator]],
       ResponseEndDate: ['', [Validators.required]],
@@ -383,9 +383,12 @@ export class RfqComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(CriteriaDialogComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(res => {
-      if (res && res.isCreate) {
+      if (res && bool) {
         this.EvaluationDetails.push(res.data);
         this.EvaluationDetailsDataSource = new MatTableDataSource(this.EvaluationDetails);
+        if(res.isNew){
+          this.CreateCriteria();
+        }
       }
     });
   }
@@ -589,6 +592,9 @@ export class RfqComponent implements OnInit {
     else if (type == 3) {
       return "Long text"
     }
+    else if(type==4){
+      return "Number only"
+    }
   }
   NextClicked(index: number): void {
     if(index == 0){
@@ -663,11 +669,6 @@ export class RfqComponent implements OnInit {
     
   SaveRFxClicked(isRelease: boolean) {
     if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0) {
-      if (this.NewVendorMaser.length > 0) {
-        this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res => {
-          //console.log("vendor created");
-        }, err => { console.log("vendor master not created!;") });
-      }
       const ICFormArray = this.ICFormGroup.get('ItemCriterias') as FormArray;
       ICFormArray.controls.forEach((x, i) => {
                 this.RatingDetails[i].Consider=x.get('Consider').value;
@@ -727,6 +728,14 @@ export class RfqComponent implements OnInit {
         response => {
           localStorage.setItem("RFxID", response.RFxID);
           this.RFxID = response.RFxID;
+          if (this.NewVendorMaser.length > 0) {
+            this.NewVendorMaser.forEach((vendor,i) => {
+              vendor.PatnerID=this.RFxID+"V"+i;
+            });
+            this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res => {
+              //console.log("vendor created");
+            }, err => { console.log("vendor master not created!;") });
+          }
           //console.log("response",response);
           this._RFxService.UploadRFxAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
           if (isRelease) {
@@ -796,6 +805,14 @@ export class RfqComponent implements OnInit {
       .subscribe(
         response => {
           //console.log("response",response);
+          if (this.NewVendorMaser.length > 0) {
+            this.NewVendorMaser.forEach((vendor,i) => {
+              vendor.PatnerID=this.RFxID+"V"+i;
+            });
+            this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res => {
+              //console.log("vendor created");
+            }, err => { console.log("vendor master not created!;") });
+          }
           this._RFxService.UploadRFxAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
           if (isRelease) {
             this.isProgressBarVisibile = false;

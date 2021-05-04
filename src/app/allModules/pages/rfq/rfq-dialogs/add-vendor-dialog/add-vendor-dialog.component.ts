@@ -29,7 +29,7 @@ export class AddVendorDialogComponent implements OnInit {
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
-      Vendor: ['', Validators.required],
+      Vendor: [''],
       Type: ['', Validators.required],
       v_name: ['', Validators.required],
       GST: [''],

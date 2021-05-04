@@ -494,6 +494,9 @@ export class ResponseComponent implements OnInit {
     else if (type == 3) {
       return "Long text"
     }
+    else if(type==4){
+      return "Number only"
+    }
   }
   OpenResItemDialog(index, RFxItem:RFxItem) {
     var resDocs=this.ResODAttachment.filter(x=>x.Client==RFxItem.Client && x.Company==RFxItem.Company && x.DocumentTitle==RFxItem.Item);
