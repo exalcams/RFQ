@@ -6,14 +6,14 @@
 
     <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
         <form autocomplete="off" [formGroup]="DialogueFormGroup" fxLayout=column>
-            <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
+            <!-- <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
                 <mat-label>Vendor</mat-label>
                 <input matInput formControlName="Vendor" fxFlex>
                 <mat-error
                     *ngIf="DialogueFormGroup.get('Vendor').touched && DialogueFormGroup.get('Vendor').hasError('required')">
                     Vendor is required
                 </mat-error>
-            </mat-form-field>
+            </mat-form-field> -->
 
             <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
                 <mat-label>Type</mat-label>

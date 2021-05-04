@@ -15,12 +15,13 @@
                 </mat-error>
                 <mat-error
                     *ngIf="DialogueFormGroup.get('Description').touched && DialogueFormGroup.get('Description').hasError('maxlength')">
-                    Description do not exceed 20 characters
+                    Description do not exceed 60 characters
                 </mat-error>
             </mat-form-field>
         </form>
     </mat-dialog-content>
     <mat-dialog-actions class="m-0 p-16 footer" fxLayoutAlign="center center">
         <button mat-button type="button" class="savebtn" (click)="Save()">{{data.isCreate?'Add':'Save'}}</button>
+        <button *ngIf="data.isCreate" mat-button type="button" class="savebtn" (click)="AddAndNew()">Add & New</button>
     </mat-dialog-actions>
 </div>

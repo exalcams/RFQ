@@ -38,7 +38,7 @@
                                 <div fxLayout="row" fxLayoutAlign="space-between center"
                                     style="padding: 2.5rem 2rem 0 2rem;">
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>RFQ type</mat-label>
+                                        <mat-label>RFx type</mat-label>
                                         <mat-select formControlName="RfqType" fxFlex disableOptionCentering
                                             panelClass="myPanelClass">
                                             <mat-option *ngFor="let type of RFxTypeMasters" [value]="type.RFQType">
@@ -47,12 +47,12 @@
                                         </mat-select>
                                         <mat-error
                                             *ngIf="RFxFormGroup.get('RfqType').touched && RFxFormGroup.get('RfqType').hasError('required')">
-                                            RFQ Type is required
+                                            RFx Type is required
                                         </mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>RFQ group</mat-label>
+                                        <mat-label>Group</mat-label>
                                         <mat-select formControlName="RfqGroup" fxFlex disableOptionCentering
                                             panelClass="myPanelClass">
                                             <mat-option *ngFor="let group of RFxGroupMasters" [value]="group.RFQGroup">
@@ -60,16 +60,16 @@
                                         </mat-select>
                                         <mat-error
                                             *ngIf="RFxFormGroup.get('RfqGroup').touched && RFxFormGroup.get('RfqGroup').hasError('required')">
-                                            RFQ Group is required
+                                            Group is required
                                         </mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field fxFlex=34.125 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>RFQ title</mat-label>
+                                        <mat-label>Title</mat-label>
                                         <input matInput type="text" formControlName="RfqTitle" fxFlex>
                                         <mat-error
                                             *ngIf="RFxFormGroup.get('RfqTitle').touched && RFxFormGroup.get('RfqTitle').hasError('required')">
-                                            RFQ Title is required
+                                            Title is required
                                         </mat-error>
                                     </mat-form-field>
                                     <mat-form-field fxFlex=11.375 style="font-size: 14px;" appearance="outline">
@@ -498,10 +498,6 @@
                                 </div>
                             </div>
                             <table mat-table [dataSource]="VendorDetailsDataSource" matSort class="py-10">
-                                <ng-container matColumnDef="Vendor">
-                                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Vendor </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.PatnerID}} </td>
-                                </ng-container>
 
                                 <ng-container matColumnDef="Type">
                                     <th mat-header-cell mat-sort-header *matHeaderCellDef> Type </th>
