@@ -92,7 +92,7 @@
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                         <mat-label>Validity start date</mat-label>
                                         <input [min]="minDate" matInput [matDatepicker]="picker1"
-                                            formControlName="ValidityStartDate" fxFlex>
+                                            formControlName="ValidityStartDate" fxFlex >
                                         <mat-datepicker-toggle matSuffix [for]="picker1">
                                             <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                         </mat-datepicker-toggle>
@@ -106,7 +106,7 @@
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                         <mat-label>Validity start time</mat-label>
                                         <input matInput [ngxTimepicker]="picker9" formControlName="ValidityStartTime"
-                                            fxFlex>
+                                            fxFlex (click)="DefaultStartTimeValue()">
                                         <ngx-material-timepicker #picker9></ngx-material-timepicker>
                                         <mat-error
                                             *ngIf="RFxFormGroup.get('ValidityStartTime').touched && RFxFormGroup.get('ValidityStartTime').hasError('required')">
@@ -131,7 +131,7 @@
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                         <mat-label>Validity end time</mat-label>
                                         <input matInput [ngxTimepicker]="picker10" formControlName="ValidityEndTime"
-                                            fxFlex>
+                                            fxFlex (click)="DefaultEndTimeValue()">
                                         <ngx-material-timepicker #picker10></ngx-material-timepicker>
                                         <mat-error
                                             *ngIf="RFxFormGroup.get('ValidityEndTime').touched && RFxFormGroup.get('ValidityEndTime').hasError('required')">
