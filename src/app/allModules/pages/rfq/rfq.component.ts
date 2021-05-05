@@ -148,7 +148,17 @@ export class RfqComponent implements OnInit {
       ItemCriterias:this.ItemCriteriaFormArray
     });
   }
-
+  DefaultStartTimeValue(){
+    let validity=this.RFxFormGroup.get('ValidityStartTime').value;
+    this.RFxFormGroup.get('ResponseStartTime').setValue(validity);
+    console.log(this.RFxFormGroup.get('ResponseStartTime').value);  
+  }
+  DefaultEndTimeValue(){
+    let validity=this.RFxFormGroup.get('ValidityEndTime').value;
+    this.RFxFormGroup.get('ResponseEndTime').setValue(validity);
+    this.RFxFormGroup.get('EvaluationEndTime').setValue(validity);
+    console.log(this.RFxFormGroup.get('EvaluationEndTime').value);
+  }
   GetRFQMasters() {
     this.GetRFQTypeMaster();
     this.GetRFQGroupMaster();
@@ -629,10 +639,13 @@ export class RfqComponent implements OnInit {
       }
     }
     if(index == 3){
-      if(this.ItemDetails.length >= 0){
+      if(this.ItemDetails.length > 0){
         this.selectedIndex = index + 1;
         this.CompletedSteps[index]=true;
         this.CreatePartner();
+      }
+      else if(this.ItemDetails.length == 0){
+        this.notificationSnackBarComponent.openSnackBar('Item is required', SnackBarStatus.danger);
       }
       else{
         this.notificationSnackBarComponent.openSnackBar('Item is required', SnackBarStatus.danger);
