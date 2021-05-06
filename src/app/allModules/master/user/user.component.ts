@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { MatSnackBar, MatDialogConfig, MatDialog, MatTableDataSource, MatPaginator, MatMenuTrigger, MatSort } from '@angular/material';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
-import { UserWithRole, AuthenticationDetails, RoleWithApp, AppUsage, AppUsageView } from 'app/models/master';
+import { UserWithRole, AuthenticationDetails, RoleWithApp, AppUsage, AppUsageView, Plant, UserWithRP } from 'app/models/master';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Guid } from 'guid-typescript';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
@@ -20,9 +20,10 @@ import { ExcelService } from 'app/services/excel.service';
   animations: fuseAnimations
 })
 export class UserComponent implements OnInit {
-  AllUsers: UserWithRole[] = [];
+  AllUsers: UserWithRP[] = [];
   AllRoles: RoleWithApp[] = [];
-  selectedUser: UserWithRole;
+  AllPlants:Plant[]=[];
+  selectedUser: UserWithRP;
   menuItems: string[];
   authenticationDetails: AuthenticationDetails;
   notificationSnackBarComponent: NotificationSnackBarComponent;
@@ -33,6 +34,7 @@ export class UserComponent implements OnInit {
   SelectValue: string;
   isExpanded: boolean;
   AppUsages: AppUsageView[] = [];
+  BuyerRoleID:Guid;
 
   tableDisplayedColumns: string[] = [
     'AppName',
@@ -51,7 +53,7 @@ export class UserComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _datePipe: DatePipe,
     private _excelService: ExcelService,) {
-    this.selectedUser = new UserWithRole();
+    this.selectedUser = new UserWithRP();
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.isProgressBarVisibile = true;
@@ -76,9 +78,18 @@ export class UserComponent implements OnInit {
         email: ['', [Validators.required, Validators.email]],
         contactNumber: ['', [Validators.required, Validators.pattern]],
         displayName: ['', Validators.required],
-        profile: ['']
+        profile: [''],
+        plant:[''],
+        permission:['']
+      });
+      this.userMainFormGroup.get("roleID").valueChanges.subscribe(x => {
+        if(x==this.BuyerRoleID){
+          this.userMainFormGroup.get("plant").setValidators(Validators.required);
+          this.userMainFormGroup.get("permission").setValidators(Validators.required);
+        }
       });
       this.GetAllRoles();
+      this.GetAllPlants();
       this.GetAllUsers();
     } else {
       this._router.navigate(['/auth/login']);
@@ -87,7 +98,7 @@ export class UserComponent implements OnInit {
   }
 
   ResetControl(): void {
-    this.selectedUser = new UserWithRole();
+    this.selectedUser = new UserWithRP();
     this.selectID = Guid.createEmpty();
     this.userMainFormGroup.reset();
     Object.keys(this.userMainFormGroup.controls).forEach(key => {
@@ -101,7 +112,17 @@ export class UserComponent implements OnInit {
     this._masterService.GetAllRoles().subscribe(
       (data) => {
         this.AllRoles = <RoleWithApp[]>data;
-        // console.log(this.AllMenuApps);
+        this.BuyerRoleID=this.AllRoles.find(x=>x.RoleName=="Buyer").RoleID;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+  GetAllPlants(): void {
+    this._masterService.GetAllPlants().subscribe(
+      (data) => {
+        this.AllPlants = <Plant[]>data;
       },
       (err) => {
         console.log(err);
@@ -114,7 +135,7 @@ export class UserComponent implements OnInit {
     this._masterService.GetAllUsers().subscribe(
       (data) => {
         this.isProgressBarVisibile = false;
-        this.AllUsers = <UserWithRole[]>data;
+        this.AllUsers = <UserWithRP[]>data;
         if (this.AllUsers && this.AllUsers.length) {
           this.loadSelectedUser(this.AllUsers[0]);
         }
@@ -127,7 +148,11 @@ export class UserComponent implements OnInit {
     );
   }
 
-  loadSelectedUser(selectedUser: UserWithRole): void {
+  loadSelectedUser(selectedUser: UserWithRP): void {
+    this.userMainFormGroup.reset();
+    Object.keys(this.userMainFormGroup.controls).forEach(key => {
+      this.userMainFormGroup.get(key).markAsUntouched();
+    });
     this.selectID = selectedUser.UserID;
     this.selectedUser = selectedUser;
     this.SetUserValues();
@@ -140,6 +165,8 @@ export class UserComponent implements OnInit {
     this.userMainFormGroup.get('roleID').patchValue(this.selectedUser.RoleID);
     this.userMainFormGroup.get('email').patchValue(this.selectedUser.Email);
     this.userMainFormGroup.get('contactNumber').patchValue(this.selectedUser.ContactNumber);
+    this.userMainFormGroup.get('plant').patchValue(this.selectedUser.Plants);
+    this.userMainFormGroup.get('permission').patchValue(this.selectedUser.Permission);
   }
 
   GetAppUsagesByUser(): void {
@@ -188,6 +215,8 @@ export class UserComponent implements OnInit {
     this.selectedUser.RoleID = <Guid>this.userMainFormGroup.get('roleID').value;
     this.selectedUser.Email = this.userMainFormGroup.get('email').value;
     this.selectedUser.ContactNumber = this.userMainFormGroup.get('contactNumber').value;
+    this.selectedUser.Plants=this.userMainFormGroup.get('plant').value;
+    this.selectedUser.Permission=this.userMainFormGroup.get('permission').value;
   }
 
   CreateUser(): void {

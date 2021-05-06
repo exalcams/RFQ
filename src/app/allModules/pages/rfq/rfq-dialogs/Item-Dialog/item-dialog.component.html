@@ -10,17 +10,24 @@
                 <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="3%">
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Material</mat-label>
-                        <mat-select formControlName="material" fxFlex (selectionChange)="MaterialSelected($event.value)"
+                        <input type="text" matInput formControlName="material"
+                            [matAutocomplete]="auto">
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.Material">
+                                {{option.Material}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <!-- <mat-select formControlName="material" fxFlex (selectionChange)="MaterialSelected($event.value)"
                             disableOptionCentering panelClass="myPanelClass">
                             <mat-option *ngFor="let item of MaterialMaster" [value]="item.Material">{{item.Material}}
                             </mat-option>
-                        </mat-select>
+                        </mat-select> -->
                         <mat-error
                             *ngIf="DialogueFormGroup.get('material').touched && DialogueFormGroup.get('material').hasError('required')">
                             Material is required
                         </mat-error>
                     </mat-form-field>
-        
+
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Material Text</mat-label>
                         <input matInput formControlName="material_text" fxFlex autocomplete="off">
@@ -29,7 +36,7 @@
                             Material Text is required
                         </mat-error>
                     </mat-form-field>
-        
+
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>UOM</mat-label>
                         <input matInput maxlength="3" size="3" formControlName="Uom" fxFlex autocomplete="off">
@@ -38,35 +45,39 @@
                             UOM is required
                         </mat-error>
                     </mat-form-field>
-        
+
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Total Qty</mat-label>
-                        <input  matInput type="number"  formControlName="TotalQty" min="0" (keyup)="CalculateTotalQTy()"
+                        <input matInput type="number" formControlName="TotalQty" min="0" (keyup)="CalculateTotalQTy()"
                             oninput="this.value = Math.abs(this.value)" fxFlex autocomplete="off">
                         <mat-error
                             *ngIf="DialogueFormGroup.get('TotalQty').touched && DialogueFormGroup.get('TotalQty').hasError('required')">
                             Total Quantity is required
                         </mat-error>
-                       <mat-error *ngIf="DialogueFormGroup.get('TotalQty').touched && DialogueFormGroup.get('TotalQty').hasError('min')">Total Qty should not be less than per schedule qty</mat-error>
+                        <mat-error
+                            *ngIf="DialogueFormGroup.get('TotalQty').touched && DialogueFormGroup.get('TotalQty').hasError('min')">
+                            Total Qty should not be less than per schedule qty</mat-error>
                     </mat-form-field>
-        
+
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Per Schedule Qty</mat-label>
-                        <input matInput formControlName="per_schedule_qty" type="number"  fxFlex autocomplete="off" min="0"
-                            oninput="this.value = Math.abs(this.value)" (keyup)="CalculateTotalSchedules()">
+                        <input matInput formControlName="per_schedule_qty" type="number" fxFlex autocomplete="off"
+                            min="0" oninput="this.value = Math.abs(this.value)" (keyup)="CalculateTotalSchedules()">
                         <mat-error
                             *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('required')">
                             Per Schedule Quantity is required
                         </mat-error>
-                            <mat-error *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('max')">Per schedule qty should be less than TotalQty</mat-error>
+                        <mat-error
+                            *ngIf="DialogueFormGroup.get('per_schedule_qty').touched && DialogueFormGroup.get('per_schedule_qty').hasError('max')">
+                            Per schedule qty should be less than TotalQty</mat-error>
                     </mat-form-field>
-        
-        
+
+
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Total Schedules</mat-label>
                         <input matInput type="number" formControlName="totalSchedules" fxFlex autocomplete="off">
                     </mat-form-field>
-        
+
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Bidding Price Low</mat-label>
                         <input matInput formControlName="LowPrice" type="number" fxFlex autocomplete="off" min="0"
@@ -76,7 +87,7 @@
                             Bidding price low is required
                         </mat-error>
                     </mat-form-field>
-        
+
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Bidding Price High</mat-label>
                         <input matInput formControlName="HighPrice" type="number" fxFlex autocomplete="off" min="0"
@@ -90,7 +101,7 @@
                             Bidding Price High should be greater than bidding price low
                         </mat-error>
                     </mat-form-field>
-        
+
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Interval</mat-label>
                         <input matInput formControlName="Interval" type="number" fxFlex autocomplete="off" min="0"
@@ -100,7 +111,7 @@
                             Interval is required
                         </mat-error>
                     </mat-form-field>
-        
+
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>Incoterm</mat-label>
                         <input matInput formControlName="incoterm" max="2" size="2" fxFlex autocomplete="off">
@@ -113,7 +124,7 @@
                             Incoterm should be less than 2 characters
                         </mat-error>
                     </mat-form-field>
-        
+
                     <mat-form-field fxFlex=30 appearance="outline">
                         <mat-label>First Schedule Start (In days)</mat-label>
                         <input matInput formControlName="LeadTime" type="number" fxFlex autocomplete="off" min="0"
@@ -124,11 +135,12 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-        
+
                 <div fxFlex>
                     <mat-form-field fxFlex appearance="outline">
                         <mat-label>Notes</mat-label>
-                        <textarea matInput formControlName="Notes" max="2" size="2" fxFlex autocomplete="off"></textarea>
+                        <textarea matInput formControlName="Notes" max="2" size="2" fxFlex
+                            autocomplete="off"></textarea>
                         <mat-error
                             *ngIf="DialogueFormGroup.get('Notes').touched && DialogueFormGroup.get('Notes').hasError('required')">
                             Notes is required
@@ -137,12 +149,15 @@
                 </div>
                 <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem">
                     <span class="title">Attachement</span>
-                        <ngx-dropzone #drop (change)="onSelect($event)" [multiple]="false" [disableClick]="true" class="dropzone">
-                            <ngx-dropzone-label><span class="label">Drop here to upload or <a class="fileselect" (click)="drop.showFileSelector()">choose file</a></span></ngx-dropzone-label>
-                              <ngx-dropzone-preview class="preview" *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
-                                <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
-                              </ngx-dropzone-preview>
-                        </ngx-dropzone>
+                    <ngx-dropzone #drop (change)="onSelect($event)" [multiple]="true" [disableClick]="true"
+                        class="dropzone">
+                        <ngx-dropzone-label><span class="label">Drop here to upload or <a class="fileselect"
+                                    (click)="drop.showFileSelector()">choose file</a></span></ngx-dropzone-label>
+                        <ngx-dropzone-preview class="preview" *ngFor="let f of files" [removable]="true"
+                            (removed)="onRemove(f)">
+                            <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+                        </ngx-dropzone-preview>
+                    </ngx-dropzone>
                     <p style="color: #f44336;font-size: 12px;" *ngIf="FileError">Attachement is required</p>
                 </div>
             </div>

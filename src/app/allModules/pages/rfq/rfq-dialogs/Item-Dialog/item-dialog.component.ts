@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MMaterial, RFxItem } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 import { round } from 'lodash';
+import { map, startWith } from 'rxjs/operators';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { round } from 'lodash';
   encapsulation:ViewEncapsulation.None
 })
 export class ItemDialogComponent implements OnInit {
-  SelectedFileName:string;
+  SelectedFiles:string="";
   DialogueFormGroup: FormGroup;
   rfxitem = new RFxItem;
   files: File[] = [];
@@ -29,6 +30,7 @@ export class ItemDialogComponent implements OnInit {
   MaterialMaster:MMaterial[]=[];
   FileError:boolean=false;
   TotalQty:boolean=false;
+  filteredOptions:any;
   constructor(private _formBuilder: FormBuilder, private _RFxService: RFxService,public dialogRef: MatDialogRef<ItemDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
       this.rfxitem = data.data;
@@ -39,10 +41,13 @@ export class ItemDialogComponent implements OnInit {
       this.MaterialMaster=master as MMaterial[];
     });
     if(this.rfxitem.Attachment){
-      this.SelectedFileName=this.rfxitem.Attachment;
+      this.SelectedFiles=this.rfxitem.Attachment;
       this.FileError=false;
     }
-
+    this.filteredOptions = this.DialogueFormGroup.get('material').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
@@ -93,12 +98,29 @@ export class ItemDialogComponent implements OnInit {
     this.DialogueFormGroup.get("TotalQty").setValidators(Validators.min(this.DialogueFormGroup.get("per_schedule_qty").value));
   }
 onSelect(event) {
-  this.files[0]=event.addedFiles[0];
-  this.SelectedFileName=this.files[0].name;
+  event.addedFiles.forEach(file => {
+    if(this.SelectedFiles==""){
+      this.SelectedFiles=file.name;
+    }
+    else{
+      this.SelectedFiles+=","+file.name;
+    }
+    this.files.push(file);
+  });
   this.FileError=false;
+  console.log(this.SelectedFiles);
 }
 onRemove(event) {
   this.files.splice(this.files.indexOf(event), 1);
+  var index=this.SelectedFiles.indexOf(event.name);
+  if(index!=0){
+    this.SelectedFiles=this.SelectedFiles.slice(0,index-1)+this.SelectedFiles.slice(index);
+  }
+  else{
+    this.SelectedFiles=this.SelectedFiles.slice(event.name.length+1);
+  }
+  this.SelectedFiles=this.SelectedFiles.replace(event.name,'');
+  console.log(this.SelectedFiles);
 }
 
 MaterialSelected(material:string){
@@ -132,14 +154,14 @@ Save(){
     this.rfxitem.Notes=this.DialogueFormGroup.get("Notes").value;
     this.rfxitem.TotalSchedules=this.DialogueFormGroup.get("totalSchedules").value;
     this.rfxitem.LeadTime=this.DialogueFormGroup.get("LeadTime").value;
-    this.rfxitem.Attachment=this.SelectedFileName;
-    var Result={data:this.rfxitem,isCreate:this.data.isCreate,Attachments:this.files[0]};
+    this.rfxitem.Attachment=this.SelectedFiles;
+    var Result={data:this.rfxitem,isCreate:this.data.isCreate,Attachments:this.files};
     this.dialogRef.close(Result);
   }
   else{
     this.ShowValidationErrors(this.DialogueFormGroup);
   }
-  if(!this.SelectedFileName){
+  if(this.SelectedFiles==""){
     this.FileError=true;
   }
 }
@@ -148,5 +170,9 @@ ShowValidationErrors(formGroup:FormGroup): void {
     formGroup.get(key).markAsTouched();
     formGroup.get(key).markAsDirty();
   });
+}
+private _filter(value: string): any[] {
+  const filterValue = value.toLowerCase();
+  return this.MaterialMaster.filter(option => option.Material.toLowerCase().indexOf(filterValue) === 0);
 }
 }

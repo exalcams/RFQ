@@ -15,6 +15,22 @@ export class UserWithRole {
     ModifiedBy: string;
     DisplayName: string;
 }
+export class UserWithRP {
+    UserID: Guid;
+    RoleID: Guid;
+    Plants:string[];
+    Permission:string;
+    UserName: string;
+    Email: string;
+    Password: string;
+    ContactNumber: string;
+    IsActive: boolean;
+    CreatedOn: Date;
+    CreatedBy: string;
+    ModifiedOn?: Date;
+    ModifiedBy: string;
+    DisplayName: string;
+}
 export class UserPreference {
     ID: number;
     UserID: Guid;
@@ -48,6 +64,21 @@ export class MenuApp {
     CreatedOn: Date;
     CreatedBy: string;
     ModifiedOn?: Date;
+    ModifiedBy: string;
+}
+export class Plant{
+    PlantID:string;
+    PlantText:string;
+    AddressLine1:string;
+    AddressLine2:string;
+    City:string;
+    State:string;
+    Country:string;
+    PinCode:string;
+    IsActive: boolean;
+    CreatedOn: Date | string;
+    CreatedBy: string;
+    ModifiedOn: Date | string | null;
     ModifiedBy: string;
 }
 export class AppUsage {
