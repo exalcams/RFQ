@@ -68,6 +68,8 @@ export class RFxHeader extends CommonClass {
     ResponseStartTime: string;
     ResponseEndDate: Date;
     ResponseEndTime: string;
+    EvalStartDate:string;
+    EvalStartTime:string;
     EvalEndDate: Date;
     EvalEndTime:string;
     Currency: string;
@@ -318,6 +320,8 @@ export class RFxView {
     ResponseStartTime: string;
     ResponseEndDate: Date | string | null;
     ResponseEndTime: string;
+    EvalStartTime:string;
+    EvalStartDate: Date | string | null;
     EvalEndDate: Date | string | null;
     EvalEndTime:string;
     Currency: string;

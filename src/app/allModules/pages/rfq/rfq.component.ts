@@ -25,6 +25,7 @@ import { RFQAttachmentDialogComponent } from './rfq-dialogs/Attachment-Dialog/rf
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { saveAs } from 'file-saver';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 @Component({
   selector: 'app-rfq',
@@ -138,6 +139,8 @@ export class RfqComponent implements OnInit {
       ResponseStartTime: ['', [Validators.required,DateTimeValidator.ResStartTimeValidator]],
       ResponseEndDate: ['', [Validators.required]],
       ResponseEndTime: ['', [Validators.required,DateTimeValidator.ResEndTimeValidator]],
+      EvaluationStartDate:['',[Validators.required]],
+      EvaluationStartTime:['',[Validators.required,DateTimeValidator.EvalStartTimeValidator]],
       EvaluationEndDate: ['', [Validators.required]],
       EvaluationEndTime: ['', [Validators.required,DateTimeValidator.EvalEndTimeValidator]],
       Evaluator: [null, [Validators.required]],
@@ -151,6 +154,7 @@ export class RfqComponent implements OnInit {
   DefaultStartTimeValue(){
     let validity=this.RFxFormGroup.get('ValidityStartTime').value;
     this.RFxFormGroup.get('ResponseStartTime').setValue(validity);
+    this.RFxFormGroup.get('EvaluationStartTime').setValue(validity);
     console.log(this.RFxFormGroup.get('ResponseStartTime').value);  
   }
   DefaultEndTimeValue(){
@@ -215,7 +219,9 @@ export class RfqComponent implements OnInit {
           this.RFxFormGroup.get("ResponseStartTime").setValue(this.Rfxheader.ResponseStartTime);
           this.RFxFormGroup.get("ResponseEndDate").setValue(this.Rfxheader.ResponseEndDate);
           this.RFxFormGroup.get("ResponseEndTime").setValue(this.Rfxheader.ResponseEndTime);
+          this.RFxFormGroup.get("EvaluationStartDate").setValue(this.Rfxheader.EvalStartDate);
           this.RFxFormGroup.get("EvaluationEndDate").setValue(this.Rfxheader.EvalEndDate);
+          this.RFxFormGroup.get("EvaluationStartTime").setValue(this.Rfxheader.EvalStartTime);
           this.RFxFormGroup.get("EvaluationEndTime").setValue(this.Rfxheader.EvalEndTime);
           this.RFxFormGroup.get("Evaluator").setValue(this.Rfxheader.MinEvaluator);
           this.RFxFormGroup.get("Currency").setValue(this.Rfxheader.Currency);
@@ -714,6 +720,8 @@ export class RfqComponent implements OnInit {
     this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
     this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
     this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
+    this.RFxView.EvalStartDate = this.RFxFormGroup.get('EvaluationStartDate').value;
+    this.RFxView.EvalStartTime = this.RFxFormGroup.get('EvaluationStartTime').value;
     this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
     this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
     this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
@@ -793,6 +801,8 @@ export class RfqComponent implements OnInit {
     this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
     this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
     this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
+    this.RFxView.EvalStartDate = this.RFxFormGroup.get('EvaluationStartDate').value;
+    this.RFxView.EvalStartTime = this.RFxFormGroup.get('EvaluationStartTime').value;
     this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
     this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
     this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
@@ -867,6 +877,29 @@ export class RfqComponent implements OnInit {
     while (formArray.length !== 0) {
         formArray.removeAt(0);
     }
+}
+ItemPriority(){
+ if(this.ICFormGroup.value.ItemCriterias[0].Weightage == 100){
+  this.ICFormGroup.get('ItemCriterias').setValue([
+		{ Criteria:"Price",Weightage: 100, Consider: "1"},
+		{ Criteria:"LeadTime",Weightage: 0, Consider: "0"},
+    { Criteria:"Payment	",Weightage: 0, Consider: "0"}		
+	]);  
+ }
+ if(this.ICFormGroup.value.ItemCriterias[1].Weightage == 100){
+  this.ICFormGroup.get('ItemCriterias').setValue([
+		{ Criteria:"Price",Weightage: 0, Consider: "0"},
+		{ Criteria:"LeadTime",Weightage: 100, Consider: "1"},
+    { Criteria:"Payment	",Weightage: 0, Consider: "0"}		
+	]); 
+ }
+ if(this.ICFormGroup.value.ItemCriterias[2].Weightage == 100){
+  this.ICFormGroup.get('ItemCriterias').setValue([
+		{ Criteria:"Price",Weightage: 0, Consider: "0"},
+		{ Criteria:"LeadTime",Weightage: 0, Consider: "0"},
+    { Criteria:"Payment	",Weightage: 100, Consider: "1"}		
+	]); 
+ }
 }
 OpenConfirmationDialog(Actiontype: string, Catagory: string): void {
   const dialogConfig: MatDialogConfig = {

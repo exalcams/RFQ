@@ -61,6 +61,28 @@ export class DateTimeValidator{
         }
         return { 'ResEndTimeValidator': true };
     }
+    static EvalStartTimeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+        if (!control.parent || !control){
+            return null;
+        }
+        const resDate=control.parent.get('ResponseStartDate').value;
+        const resTime=control.parent.get('ResponseStartTime').value;
+        const startDate=control.parent.get('EvaluationStartDate').value;
+        const startTime=control.parent.get('EvaluationStartTime').value;
+        const valendDate=control.parent.get('ValidityEndDate').value;
+        const valendTime=control.parent.get('ValidityEndTime').value;
+        if(!startDate || !startTime || !valendDate || !valendTime || !resDate || !resTime){
+            return null;
+        }
+        var EndStartTime=DateTimeValidator.ConvertToDateTime(startDate,startTime);
+        var valEndDateTime=DateTimeValidator.ConvertToDateTime(valendDate,valendTime);
+        var resStartDateTime=DateTimeValidator.ConvertToDateTime(resDate,resTime);
+        if(EndStartTime<valEndDateTime && resStartDateTime<EndStartTime){
+            return null;
+        }
+        return { 'EvalStartTimeValidator': true };
+
+    }
     static EvalEndTimeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
         if (!control.parent || !control) {
             return null;
