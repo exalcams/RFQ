@@ -203,12 +203,12 @@
                                     </mat-form-field>
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="3%"
-                                    style="padding: 2rem;">
+                                    style="padding: 2rem 2rem 0px;">
 
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                         <mat-label>Evaluation start date</mat-label>
                                         <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
-                                            [max]="RFxFormGroup.get('ResponseEndDate').value"
+                                            [max]="RFxFormGroup.get('ValidityEndDate').value"
                                             [matDatepicker]="picker13" formControlName="EvaluationStartDate" fxFlex>
                                         <mat-datepicker-toggle matSuffix [for]="picker13">
                                             <img src="assets/images/calendar.png" matDatePickerToggleIcon>
@@ -284,10 +284,15 @@
                                         </mat-error>
                                     </mat-form-field>
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Site</mat-label>
-                                        <input matInput formControlName="Site" fxFlex>
+                                        <mat-label>Plant</mat-label>
+                                        <mat-select formControlName="Plant" fxFlex disableOptionCentering
+                                            panelClass="myPanelClass">
+                                            <mat-option *ngFor="let plant of Plants" [value]="plant">
+                                                {{plant}}
+                                            </mat-option>
+                                        </mat-select>
                                         <mat-error
-                                            *ngIf="RFxFormGroup.get('Site').touched && RFxFormGroup.get('Site').hasError('required')">
+                                            *ngIf="RFxFormGroup.get('Plant').touched && RFxFormGroup.get('Plant').hasError('required')">
                                             Site is required
                                         </mat-error>
                                     </mat-form-field>
@@ -677,8 +682,8 @@
             </div>
             <div *ngIf="Rfxheader.Status=='1' && IsComplete()" fxLayout="row" fxLayoutAlign="space-between center"
                 fxFlex class="px-8">
-                <button mat-button class="savebtn" (click)="SaveRFxClicked(false)">Save</button>
-                <button mat-button class="releasebtn" (click)="SaveRFxClicked(true)">Release</button>
+                <button *ngIf="Permission=='3' || Permission=='1'" mat-button class="savebtn" (click)="SaveRFxClicked(false)">Save</button>
+                <button *ngIf="Permission=='3' || Permission=='2'" mat-button class="releasebtn" (click)="SaveRFxClicked(true)">Release</button>
             </div>
             <mat-progress-bar class="progressbar" mode="determinate" [value]="GetProgress()" *ngIf="!RFxID">
             </mat-progress-bar>

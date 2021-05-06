@@ -4,7 +4,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 // import { _MatChipListMixinBase } from '@angular/material';
 // import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, EvaluationRating, ByMaterial, ByCriteria, RFxAward, RFxCEPartner, RFxCEMaterial, RFxCECriteria, ResVendorRatingView } from '../models/RFx';
+import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, EvaluationRating, ByMaterial, ByCriteria, RFxAward, RFxCEPartner, RFxCEMaterial, RFxCECriteria, ResVendorRatingView, MIncoTerm } from '../models/RFx';
 import { environment } from '../../environments/environment';
 
 
@@ -52,6 +52,10 @@ export class RFxService {
     }
     GetAllRFxMaterialM(): Observable<MMaterial[] | string> {
         return this._httpClient.get<MMaterial[]>(`${this.baseAddress}rfxapi/RFx/GetAllRFxMaterialM`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetAllRFxIncoTermM(): Observable<MIncoTerm[] | string> {
+        return this._httpClient.get<MIncoTerm[]>(`${this.baseAddress}rfxapi/RFx/GetAllRFxIncoTermM`)
             .pipe(catchError(this.errorHandler));
     }
     GetAllRFxVendorM(): Observable<MVendor[] | string> {
