@@ -141,13 +141,13 @@
     margin-right: 7px;
   }
   .SaveBtn {
-    background-color: #efb577;
+    background-color: #5f2cff;
     color: white;
     margin-bottom: 8px;
   }
   .DeleteBtn {
     background-color: white;
-    color: #efb577;
+    color: #5f2cff;
   }
   .calendarImg {
     height: 20px;
@@ -182,7 +182,7 @@
   .leftCard {
     @include mat-elevation(2);
     background: white;
-    border-left: 5px solid #efb577;
+    border-left: 5px solid #5f2cff;
     margin-left: 20px;
     cursor: pointer !important;
   }

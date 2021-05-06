@@ -27,7 +27,7 @@
                     <div *ngFor="let role  of AllRoles  | filter: searchText">
                         <div>
                             <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="loadSelectedRole(role)"
-                                [style.border-left-color]="selectID ==role.RoleID?'#efb577':'#cccccc'">
+                                [style.border-left-color]="selectID ==role.RoleID?'#5f2cff':'#cccccc'">
                                 <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
                                     <div fxFlex><strong>{{role.RoleName}}</strong></div>
                                     <div fxFlex align="end">{{role .CreatedOn | date :'dd/MM/yyyy'}}</div>
@@ -88,7 +88,7 @@
                             </form>
                             <div fxLayout>
                                 <div fxFlex fxLayoutAlign="end">
-                                    <button class="floatBtn" mat-fab style="background-color: #f6b570"
+                                    <button class="floatBtn" mat-fab style="background-color: #5f2cff"
                                         (click)="ResetControl()">
                                         <mat-icon style="color: white;">add</mat-icon>
                                     </button>

@@ -27,7 +27,7 @@
                     <div *ngFor="let user  of AllUsers  | filter: searchText">
                         <div>
                             <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="loadSelectedUser(user )"
-                                [style.border-left-color]="selectID ==user.UserID?'#efb577':'#cccccc'">
+                                [style.border-left-color]="selectID ==user.UserID?'#5f2cff':'#cccccc'">
                                 <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
                                     <div fxFlex><strong>{{user .UserName}}</strong></div>
                                     <div fxFlex align="end">{{user .CreatedOn | date :'dd/MM/yyyy'}}</div>
@@ -132,15 +132,38 @@
                                     </div>
 
                                     <div fxFlex="50">
-
+                                        <mat-form-field class="pl-8 pr-12" style="width: 100%;" *ngIf="userMainFormGroup.get('roleID').value==BuyerRoleID">
+                                            <mat-select placeholder="Plant" formControlName="plant" multiple>
+                                                <mat-option *ngFor="let plant of AllPlants" [value]="plant.PlantID">
+                                                    {{plant.PlantID}} - {{plant.PlantText}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="userMainFormGroup.get('plant').touched &&  userMainFormGroup.get('plant').hasError('required')">
+                                                Plant required</mat-error>
+                                        </mat-form-field>
                                     </div>
 
+                                </div>
+                                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+                                    <div fxFlex="50">
+                                        <mat-form-field class="pl-8 pr-12" style="width: 100%;" *ngIf="userMainFormGroup.get('roleID').value==BuyerRoleID">
+                                            <mat-select placeholder="Permission" formControlName="permission">
+                                                <mat-option value="1">Create</mat-option>
+                                                <mat-option value="2">Release</mat-option>
+                                                <mat-option value="3">Create & Release</mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="userMainFormGroup.get('permission').touched &&  userMainFormGroup.get('permission').hasError('required')">
+                                                Permission required</mat-error>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
 
                             </form>
                             <div fxLayout>
                                 <div fxFlex fxLayoutAlign="end">
-                                    <button class="floatBtn" mat-fab style="background-color: #f6b570"
+                                    <button class="floatBtn" mat-fab style="background-color: #5f2cff"
                                         (click)="ResetControl()">
                                         <mat-icon style="color: white;">add</mat-icon>
                                     </button>

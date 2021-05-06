@@ -22,6 +22,8 @@ import {
     AppUsage,
     AppUsageView,
     UserPreference,
+    Plant,
+    UserWithRP,
 } from "app/models/master";
 
 import { Guid } from "guid-typescript";
@@ -249,6 +251,13 @@ export class MasterService {
             )
             .pipe(catchError(this.errorHandler));
     }
+    GetAllPlants(): Observable<Plant[] | string> {
+        return this._httpClient
+            .get<Plant[]>(
+                `${this.baseAddress}authenticationapi/Master/GetAllPlants`
+            )
+            .pipe(catchError(this.errorHandler));
+    }
 
     UpdateRole(role: RoleWithApp): Observable<any> {
         return this._httpClient
@@ -298,7 +307,7 @@ export class MasterService {
             .pipe(catchError(this.errorHandler));
     }
 
-    CreateUser(user: UserWithRole): Observable<any> {
+    CreateUser(user: UserWithRP): Observable<any> {
         return this._httpClient
             .post<any>(
                 `${this.baseAddress}authenticationapi/Master/CreateUser`,
@@ -325,9 +334,9 @@ export class MasterService {
             .pipe(catchError(this.errorHandler));
     }
 
-    GetAllUsers(): Observable<UserWithRole[] | string> {
+    GetAllUsers(): Observable<UserWithRP[] | string> {
         return this._httpClient
-            .get<UserWithRole[]>(
+            .get<UserWithRP[]>(
                 `${this.baseAddress}authenticationapi/Master/GetAllUsers`
             )
             .pipe(catchError(this.errorHandler));
@@ -349,7 +358,7 @@ export class MasterService {
             .pipe(catchError(this.errorHandler));
     }
 
-    UpdateUser(user: UserWithRole): Observable<any> {
+    UpdateUser(user: UserWithRP): Observable<any> {
         return this._httpClient
             .post<any>(
                 `${this.baseAddress}authenticationapi/Master/UpdateUser`,
@@ -363,7 +372,7 @@ export class MasterService {
             .pipe(catchError(this.errorHandler));
     }
 
-    DeleteUser(user: UserWithRole): Observable<any> {
+    DeleteUser(user: any): Observable<any> {
         return this._httpClient
             .post<any>(
                 `${this.baseAddress}authenticationapi/Master/DeleteUser`,

@@ -43,9 +43,8 @@
   }
   
   a:not(.accent1) {
-    color: gray !important;
-    mat-icon {
-      opacity: 0.3;
-    }
+    color: #3e485a !important;
+    font-size: 12px;
+    font-weight: 600;
   }
   
