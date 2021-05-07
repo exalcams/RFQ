@@ -82,6 +82,8 @@ export class RfqComponent implements OnInit {
   CurrencyList: string[] = ["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LVL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STD", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "USS", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XFU", "XOF", "XPD", "XPF", "XPT", "XTS", "XXX", "YER", "ZAR", "ZMW"];
   CompletedSteps:boolean[]=[false,false,false,false,false,false,false,false];
   Progress:number=0;
+  Plants:string[]=[];
+  Permission:string;
   constructor(
     public dialog: MatDialog,
     private _formBuilder: FormBuilder,
@@ -101,6 +103,8 @@ export class RfqComponent implements OnInit {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
       this.currentUserRole = this.authenticationDetails.UserRole;
+      this.Permission=this.authenticationDetails.Permission;
+      this.Plants=this.authenticationDetails.Plants;
       this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
       if (this.MenuItems.indexOf('RFQ_Dashboard') < 0) {
         this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
@@ -145,7 +149,7 @@ export class RfqComponent implements OnInit {
       EvaluationEndTime: ['', [Validators.required,DateTimeValidator.EvalEndTimeValidator]],
       Evaluator: [null, [Validators.required]],
       Currency: ['INR', [Validators.required]],
-      Site: ['', [Validators.required]],
+      Plant: ['', [Validators.required]],
     });
     this.ICFormGroup=this._formBuilder.group({
       ItemCriterias:this.ItemCriteriaFormArray
@@ -225,7 +229,7 @@ export class RfqComponent implements OnInit {
           this.RFxFormGroup.get("EvaluationEndTime").setValue(this.Rfxheader.EvalEndTime);
           this.RFxFormGroup.get("Evaluator").setValue(this.Rfxheader.MinEvaluator);
           this.RFxFormGroup.get("Currency").setValue(this.Rfxheader.Currency);
-          this.RFxFormGroup.get("Site").setValue(this.Rfxheader.Site);
+          this.RFxFormGroup.get("Plant").setValue(this.Rfxheader.Plant);
           if (this.Rfxheader.Status == "2") {
             this.RFxFormGroup.disable();
           }
@@ -361,6 +365,7 @@ export class RfqComponent implements OnInit {
     var len=this.ItemDetails.length;
     Item.Item=(len+10).toString();
     Item.Interval="1";
+    Item.Attachment="";
     this.OpenItemDialog(Item, true);
   }
   CreatePartner() {
@@ -410,16 +415,22 @@ export class RfqComponent implements OnInit {
   }
   OpenItemDialog(Item: RFxItem, bool: boolean) {
     const dialogRef = this.dialog.open(ItemDialogComponent, {
-      data: { data: Item, isCreate: bool }, panelClass:"item-dialog"
+      data: { data: Item, isCreate: bool,RFxType:this.RFxFormGroup.get('RfqType').value,Attachments:this.FilesToUpload }, panelClass:"item-dialog"
     });
     dialogRef.afterClosed().subscribe(res => {
       if (res && res.isCreate) {
         this.ItemDetails.push(res.data);
-
         this.ItemDetailsDataSource = new MatTableDataSource(this.ItemDetails);
       }
-      if(this.FilesToUpload.filter(t=>t.name==res.Attachments.name).length==0){
-        this.FilesToUpload.push(res.Attachments);
+      if(res){
+        res.Attachments.forEach(doc => {
+          if (this.FilesToUpload.indexOf(doc) >= 0) {
+            this.FilesToUpload[this.FilesToUpload.indexOf(doc)] = doc;
+          }
+          else {
+            this.FilesToUpload.push(doc);
+          }
+        });
       }
     });
   }
@@ -709,24 +720,7 @@ export class RfqComponent implements OnInit {
     this.isProgressBarVisibile = true;
     this.RFxView.Client = this.Rfxheader.Client;
     this.RFxView.Company = this.Rfxheader.Company;
-    this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
-    this.RFxView.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
-    this.RFxView.Title = this.RFxFormGroup.get("RfqTitle").value;
-    this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
-    this.RFxView.ValidityStartTime = this.RFxFormGroup.get("ValidityStartTime").value;
-    this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
-    this.RFxView.ValidityEndTime = this.RFxFormGroup.get("ValidityEndTime").value;
-    this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
-    this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
-    this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
-    this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
-    this.RFxView.EvalStartDate = this.RFxFormGroup.get('EvaluationStartDate').value;
-    this.RFxView.EvalStartTime = this.RFxFormGroup.get('EvaluationStartTime').value;
-    this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
-    this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
-    this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
-    this.RFxView.MinEvaluator=this.RFxFormGroup.get("Evaluator").value;
-    this.RFxView.Site=this.RFxFormGroup.get("Site").value;
+    this.GetRFxValues();
     if (isRelease) {
       this.RFxView.Status = "2";
     }
@@ -780,9 +774,7 @@ export class RfqComponent implements OnInit {
     this.RFxView.Client = this.Rfxheader.Client;
     this.RFxView.Company = this.Rfxheader.Company;
     this.RFxView.RFxID = this.RFxID;
-    this.RFxView.Plant = this.Rfxheader.Plant;
-    this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
-    this.RFxView.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
+    this.GetRFxValues();
     if (isRelease) {
       this.RFxView.Status = "2";
     }
@@ -792,22 +784,6 @@ export class RfqComponent implements OnInit {
     else {
       this.RFxView.Status = "1";
     }
-    this.RFxView.Title = this.RFxFormGroup.get("RfqTitle").value;
-    this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
-    this.RFxView.ValidityStartTime = this.RFxFormGroup.get("ValidityStartTime").value;
-    this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
-    this.RFxView.ValidityEndTime = this.RFxFormGroup.get("ValidityEndTime").value;
-    this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
-    this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
-    this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
-    this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
-    this.RFxView.EvalStartDate = this.RFxFormGroup.get('EvaluationStartDate').value;
-    this.RFxView.EvalStartTime = this.RFxFormGroup.get('EvaluationStartTime').value;
-    this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
-    this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
-    this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
-    this.RFxView.MinEvaluator=this.RFxFormGroup.get("Evaluator").value;
-    this.RFxView.Site=this.RFxFormGroup.get("Site").value;
     this.RFxView.Invited = this.Rfxheader.Invited;
     this.RFxView.Responded = this.Rfxheader.Responded;
     this.RFxView.Evaluated = this.Rfxheader.Evaluated;
@@ -856,6 +832,26 @@ export class RfqComponent implements OnInit {
           this.isProgressBarVisibile = false;
           this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
         });
+  }
+  GetRFxValues(){
+    this.RFxView.RFxType = this.RFxFormGroup.get("RfqType").value;
+    this.RFxView.RFxGroup = this.RFxFormGroup.get("RfqGroup").value;
+    this.RFxView.Title = this.RFxFormGroup.get("RfqTitle").value;
+    this.RFxView.ValidityStartDate = this.RFxFormGroup.get("ValidityStartDate").value;
+    this.RFxView.ValidityStartTime = this.RFxFormGroup.get("ValidityStartTime").value;
+    this.RFxView.ValidityEndDate = this.RFxFormGroup.get("ValidityEndDate").value;
+    this.RFxView.ValidityEndTime = this.RFxFormGroup.get("ValidityEndTime").value;
+    this.RFxView.ResponseStartDate = this.RFxFormGroup.get("ResponseStartDate").value;
+    this.RFxView.ResponseStartTime = this.RFxFormGroup.get("ResponseStartTime").value;
+    this.RFxView.ResponseEndDate = this.RFxFormGroup.get("ResponseEndDate").value;
+    this.RFxView.ResponseEndTime = this.RFxFormGroup.get("ResponseEndTime").value;
+    this.RFxView.EvalStartDate = this.RFxFormGroup.get('EvaluationStartDate').value;
+    this.RFxView.EvalStartTime = this.RFxFormGroup.get('EvaluationStartTime').value;
+    this.RFxView.EvalEndDate = this.RFxFormGroup.get("EvaluationEndDate").value;
+    this.RFxView.EvalEndTime = this.RFxFormGroup.get("EvaluationEndTime").value;
+    this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
+    this.RFxView.MinEvaluator=this.RFxFormGroup.get("Evaluator").value;
+    this.RFxView.Plant=this.RFxFormGroup.get("Plant").value;
   }
   ForecloseClicked(){
     this.OpenForecloseDialog();
@@ -934,11 +930,11 @@ GetProgress():number{
   return oneStep*count;
 }
 OpenAttachment(fileName:string){
-  if(this.RFxID){
+  var file=this.FilesToUpload.find(t=>t.name==fileName);
+  if(file==undefined){
     this.DownloadRFxAttachment(this.RFxID,fileName);
   }
   else{
-    var file=this.FilesToUpload.find(t=>t.name==fileName);
     let fileType = 'image/jpg';
         fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
           fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :

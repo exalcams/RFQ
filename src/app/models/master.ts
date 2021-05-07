@@ -132,6 +132,8 @@ export class AuthenticationDetails {
     Issued: string;
     Expiresin: string;
     TourStatus: boolean;
+    Plants:string[];
+    Permission:string;
 }
 export class ChangePassword {
     UserID: Guid;

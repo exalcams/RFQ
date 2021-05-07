@@ -12,6 +12,10 @@ export class MVendor extends CommonClass {
     ContactPersonMobile: string;
     Type:string;
     City:string;
+    State:string;
+    IncoTerm:string;
+    IncoTermText:string;
+    MobileNumber:string;
 }
 export class MVendorView extends CommonClass {
     Client: string;
@@ -34,6 +38,15 @@ export class MMaterial extends CommonClass {
     Material: string;
     MaterialText: string;
     UOM: string;
+    EAN:string;
+    Category:string;
+    Type:string;
+}
+export class MIncoTerm extends CommonClass{
+    Client: string;
+    Company: string;
+    IncoTerm:string;
+    Text:string;
 }
 
 export class MRFxType extends CommonClass {
@@ -101,6 +114,7 @@ export class RFxItem extends CommonClass {
     Rating:string;
     Notes:string;
     Attachment:string;
+    ActualPrice:string;
 }
 
 export class RFxHC extends CommonClass {
