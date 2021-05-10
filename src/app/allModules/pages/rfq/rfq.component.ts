@@ -10,7 +10,7 @@ import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notific
 import { MatSnackBar } from '@angular/material';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SelectVendorDialogComponent } from './rfq-dialogs/select-vendor-dialog/select-vendor-dialog.component';
-import { AuthenticationDetails } from 'app/models/master';
+import { AuthenticationDetails, VendorUser } from 'app/models/master';
 import { Guid } from 'guid-typescript';
 import { MasterService } from 'app/services/master.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
@@ -72,6 +72,7 @@ export class RfqComponent implements OnInit {
   FilesToUpload: File[] = [];
   RFxTypeMasters: MRFxType[] = [];
   RFxGroupMasters: MRFxGroup[] = [];
+  RFxNewVendors:number=0;
   isProgressBarVisibile: boolean;
   NewVendorMaser: MVendor[] = [];
   authenticationDetails: AuthenticationDetails;
@@ -140,13 +141,13 @@ export class RfqComponent implements OnInit {
       ValidityEndDate: ['', [Validators.required]],
       ValidityEndTime: ['5:00 pm', [Validators.required,DateTimeValidator.EndTimeValidator]],
       ResponseStartDate: ['', [Validators.required]],
-      ResponseStartTime: ['', [Validators.required,DateTimeValidator.ResStartTimeValidator]],
+      ResponseStartTime: ['10:00 am', [Validators.required,DateTimeValidator.ResStartTimeValidator]],
       ResponseEndDate: ['', [Validators.required]],
-      ResponseEndTime: ['', [Validators.required,DateTimeValidator.ResEndTimeValidator]],
+      ResponseEndTime: ['5:00 pm', [Validators.required,DateTimeValidator.ResEndTimeValidator]],
       EvaluationStartDate:['',[Validators.required]],
-      EvaluationStartTime:['',[Validators.required,DateTimeValidator.EvalStartTimeValidator]],
+      EvaluationStartTime:['10:00 am',[Validators.required,DateTimeValidator.EvalStartTimeValidator]],
       EvaluationEndDate: ['', [Validators.required]],
-      EvaluationEndTime: ['', [Validators.required,DateTimeValidator.EvalEndTimeValidator]],
+      EvaluationEndTime: ['5:00 pm', [Validators.required,DateTimeValidator.EvalEndTimeValidator]],
       Evaluator: [null, [Validators.required]],
       Currency: ['INR', [Validators.required]],
       Plant: ['', [Validators.required]],
@@ -154,18 +155,20 @@ export class RfqComponent implements OnInit {
     this.ICFormGroup=this._formBuilder.group({
       ItemCriterias:this.ItemCriteriaFormArray
     });
+    this.RFxFormGroup.get('ValidityStartTime').valueChanges.subscribe(x=>{
+      this.DefaultStartTimeValue(x);
+    });
+    this.RFxFormGroup.get('ValidityEndTime').valueChanges.subscribe(x=>{
+      this.DefaultEndTimeValue(x);
+    });
   }
-  DefaultStartTimeValue(){
-    let validity=this.RFxFormGroup.get('ValidityStartTime').value;
+  DefaultStartTimeValue(validity){
     this.RFxFormGroup.get('ResponseStartTime').setValue(validity);
     this.RFxFormGroup.get('EvaluationStartTime').setValue(validity);
-    console.log(this.RFxFormGroup.get('ResponseStartTime').value);  
   }
-  DefaultEndTimeValue(){
-    let validity=this.RFxFormGroup.get('ValidityEndTime').value;
+  DefaultEndTimeValue(validity){
     this.RFxFormGroup.get('ResponseEndTime').setValue(validity);
     this.RFxFormGroup.get('EvaluationEndTime').setValue(validity);
-    console.log(this.RFxFormGroup.get('EvaluationEndTime').value);
   }
   GetRFQMasters() {
     this.GetRFQTypeMaster();
@@ -185,7 +188,7 @@ export class RfqComponent implements OnInit {
   GetRFQGroupMaster() {
     this._RFxService.GetAllRFxGroupM().subscribe(res => {
       this.RFxGroupMasters = res as MRFxGroup[];
-    })
+    });
   }
 
   GetRFxs(): void {
@@ -290,6 +293,9 @@ export class RfqComponent implements OnInit {
           this.Vendors = <RFxVendor[]>data;
           this.Vendors.forEach(element => {
             this.GetRFxVendorViewsByRFxID(element.PatnerID);
+            if(element.PatnerID.indexOf(RFxID)>=0){
+              this.RFxNewVendors++;
+            }
           });
           //console.log("vendors",this.VendorDetails);
         }
@@ -745,10 +751,25 @@ export class RfqComponent implements OnInit {
           this.RFxID = response.RFxID;
           if (this.NewVendorMaser.length > 0) {
             this.NewVendorMaser.forEach((vendor,i) => {
-              vendor.PatnerID=this.RFxID+"V"+i;
+              if(vendor.PatnerID==''){
+                vendor.PatnerID=this.RFxID+"V"+(this.RFxNewVendors+i);
+              }
             });
             this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res => {
               //console.log("vendor created");
+              var vendors=<MVendor[]>res;
+              var vendorUsers=[];
+              vendors.forEach(vendor => {
+                var vendorUser=new VendorUser();
+                vendorUser.UserName=vendor.PatnerID;
+                vendorUser.DisplayName=vendor.VendorName;
+                vendorUser.Email=vendor.EmailID1;
+                vendorUser.Phone=vendor.ContactPersonMobile;
+                vendorUsers.push(vendorUser)
+              });
+              this._RFxService.CreateVendorUser(vendorUsers).subscribe(x=>{
+                console.log("vendors created");
+              })
             }, err => { console.log("vendor master not created!;") });
           }
           //console.log("response",response);
@@ -806,10 +827,25 @@ export class RfqComponent implements OnInit {
           //console.log("response",response);
           if (this.NewVendorMaser.length > 0) {
             this.NewVendorMaser.forEach((vendor,i) => {
-              vendor.PatnerID=this.RFxID+"V"+i;
+              if(vendor.PatnerID==''){
+                vendor.PatnerID=this.RFxID+"V"+(this.RFxNewVendors+i);
+              }
             });
             this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res => {
               //console.log("vendor created");
+              var vendors=<MVendor[]>res;
+              var vendorUsers=[];
+              vendors.forEach(vendor => {
+                var vendorUser=new VendorUser();
+                vendorUser.UserName=vendor.PatnerID;
+                vendorUser.DisplayName=vendor.VendorName;
+                vendorUser.Email=vendor.EmailID1;
+                vendorUser.Phone=vendor.ContactPersonMobile;
+                vendorUsers.push(vendorUser)
+              });
+              this._RFxService.CreateVendorUser(vendorUsers).subscribe(x=>{
+                console.log("vendors created");
+              })
             }, err => { console.log("vendor master not created!;") });
           }
           this._RFxService.UploadRFxAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
@@ -992,5 +1028,15 @@ openAttachmentDialog(FileName: string, blob: Blob): void {
     if (result) {
     }
   });
+}
+IsNewVendor(vendor:RFxVendorView):boolean{
+  var new_vendor=this.NewVendorMaser.find(x=>x.VendorName==vendor.VendorName && x.Type==vendor.Type && x.PatnerID=='');
+  if(new_vendor!=undefined){
+    return true;
+  }
+  if(vendor.PatnerID.indexOf(vendor.RFxID)>=0){
+    return true;
+  }
+  return false;
 }
 }

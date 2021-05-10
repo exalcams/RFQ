@@ -105,7 +105,7 @@
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                         <mat-label>Validity start time</mat-label>
                                         <input matInput [ngxTimepicker]="picker9" formControlName="ValidityStartTime"
-                                            fxFlex (change)="DefaultStartTimeValue()">
+                                            fxFlex>
                                         <ngx-material-timepicker #picker9></ngx-material-timepicker>
                                         <mat-error
                                             *ngIf="RFxFormGroup.get('ValidityStartTime').touched && RFxFormGroup.get('ValidityStartTime').hasError('required')">
@@ -130,7 +130,7 @@
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                         <mat-label>Validity end time</mat-label>
                                         <input matInput [ngxTimepicker]="picker10" formControlName="ValidityEndTime"
-                                            fxFlex (change)="DefaultEndTimeValue()">
+                                            fxFlex>
                                         <ngx-material-timepicker #picker10></ngx-material-timepicker>
                                         <mat-error
                                             *ngIf="RFxFormGroup.get('ValidityEndTime').touched && RFxFormGroup.get('ValidityEndTime').hasError('required')">
@@ -378,7 +378,7 @@
                                 <ng-container matColumnDef="Action">
                                     <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Action
                                     </th>
-                                    <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                    <td mat-cell *matCellDef="let element;index as i;" style="text-align: right;">
                                         <div *ngIf="Rfxheader.Status=='1'">
                                             <img src="assets/images/edit_blue.png" (click)="OpenCriteriaDialog(element)"
                                                 class="clickable">
@@ -452,7 +452,7 @@
                                 <ng-container matColumnDef="Action">
                                     <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Action
                                     </th>
-                                    <td mat-cell *matCellDef="let element" style="text-align: center;">
+                                    <td mat-cell *matCellDef="let element;index as i;" style="text-align: center;">
                                         <div *ngIf="Rfxheader.Status=='1'">
                                             <img src="assets/images/edit_blue.png" (click)="OpenItemDialog(element)"
                                                 class="clickable">
@@ -500,7 +500,7 @@
                                 <ng-container matColumnDef="Action">
                                     <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Action
                                     </th>
-                                    <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                    <td mat-cell *matCellDef="let element;index as i;" style="text-align: right;">
                                         <div *ngIf="Rfxheader.Status=='1'">
                                             <img (click)="DeletePartner(i)" class="clickable"
                                                 src="assets/images/delete1.png">
@@ -547,7 +547,9 @@
 
                                 <ng-container matColumnDef="VendorName">
                                     <th mat-header-cell mat-sort-header *matHeaderCellDef> Vendor name </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.VendorName}} </td>
+                                    <td mat-cell *matCellDef="let element"> {{element.VendorName}}
+                                        <mat-icon class="flag" *ngIf="IsNewVendor(element)">flag</mat-icon>  
+                                    </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="GSTNumber">
@@ -563,7 +565,7 @@
                                 <ng-container matColumnDef="Action">
                                     <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Action
                                     </th>
-                                    <td mat-cell *matCellDef="let element" style="text-align: center;">
+                                    <td mat-cell *matCellDef="let element;index as i;" style="text-align: center;">
                                         <div *ngIf="Rfxheader.Status=='1'">
                                             <img (click)="DeleteVendor(i)" class="clickable"
                                                 src="assets/images/delete1.png">
@@ -606,7 +608,7 @@
                                     <ng-container matColumnDef="Action">
                                         <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Action
                                         </th>
-                                        <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                        <td mat-cell *matCellDef="let element;index as i;" style="text-align: right;">
                                             <div *ngIf="Rfxheader.Status=='1'">
                                                 <img src="assets/images/edit_blue.png"
                                                     (click)="OpenQuestionDialog(element)" class="clickable">
@@ -644,7 +646,7 @@
                                     <ng-container matColumnDef="Action">
                                         <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Action
                                         </th>
-                                        <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                        <td mat-cell *matCellDef="let element;index as i;" style="text-align: right;">
                                             <div *ngIf="Rfxheader.Status=='1'">
                                                 <img (click)="DeleteAttachment(i)" class="clickable"
                                                     src="assets/images/delete1.png">

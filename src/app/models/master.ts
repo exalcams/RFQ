@@ -165,8 +165,10 @@ export class UserNotification {
     ModifiedOn?: Date;
 }
 export class VendorUser {
+    UserName:string;
     Email: string;
     Phone: string;
+    DisplayName:string;
 }
 export class SessionMaster {
     ID: number;

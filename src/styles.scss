@@ -63,11 +63,8 @@ body { margin: 0; font-family: "Poppins", "Helvetica Neue", sans-serif; }
   color: #5f2cff !important;
 }
 .mat-form-field.mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: .7rem 0 .9rem 0 !important;
+  padding: 6px 0 12px 0 !important;
 }
-// .mat-form-field.mat-form-field-appearance-outline:hover{
-//   outline: #068dd0 !important;
-// }
 .mat-form-field-appearance-outline .mat-form-field-outline-thick {
   color: #5f2cffaf !important;
 }
@@ -75,11 +72,15 @@ body { margin: 0; font-family: "Poppins", "Helvetica Neue", sans-serif; }
   stroke:#5f2cff !important;
 }
 .mat-form-field-label-wrapper {
-  top: -1.7rem !important;
+  top: -16px !important;
+  padding-top: 16px !important;
 }
 .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
   color: #f44336 !important;
 }
+// .mat-form-field-appearance-outline .mat-form-field-flex {
+//   height: 42px !important;
+// }
 #overlay {
   position: fixed;
   width: 100%;

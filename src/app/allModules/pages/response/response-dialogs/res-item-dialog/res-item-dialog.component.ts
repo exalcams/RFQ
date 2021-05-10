@@ -46,8 +46,11 @@ export class ResItemDialogComponent implements OnInit {
     this._RFxService.GetAllRFxMaterialM().subscribe(master=>{
       this.MaterialMaster=master as MMaterial[];
     });
-    if(this.rfxitem.Attachment){
-      this.SelectedFileName.push(this.rfxitem.Attachment);
+    if(this.rfxitem.Attachment!=''){
+      var filenames=this.rfxitem.Attachment.split(',');
+      filenames.forEach(name => {
+      this.SelectedFileName.push(name);
+      });
     }
   }
   types: any = [

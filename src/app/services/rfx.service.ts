@@ -6,6 +6,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, EvaluationRating, ByMaterial, ByCriteria, RFxAward, RFxCEPartner, RFxCEMaterial, RFxCECriteria, ResVendorRatingView, MIncoTerm } from '../models/RFx';
 import { environment } from '../../environments/environment';
+import { VendorUser } from 'app/models/master';
 
 
 @Injectable({
@@ -278,7 +279,7 @@ export class RFxService {
               })
       }
       AddtoVendorTable(RFx){
-            return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/AddToMVendor`,RFx,
+            return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateMVendors`,RFx,
               {
                 headers:new HttpHeaders({
                   'Content-Type':'application/json'
@@ -479,6 +480,14 @@ export class RFxService {
     }
     GetResWithEvalStatus(RFxID:string,User:string):Observable<any>{
         return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetResWithEvalStatus?RFxID=${RFxID}&User=${User}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    CreateVendorUser(vendorUser: VendorUser[]): Observable<any> {
+        return this._httpClient
+            .post<any>(
+                `${this.baseAddress}authenticationapi/Master/CreateRFxVendorUsers`,
+                vendorUser
+            )
             .pipe(catchError(this.errorHandler));
     }
 }
