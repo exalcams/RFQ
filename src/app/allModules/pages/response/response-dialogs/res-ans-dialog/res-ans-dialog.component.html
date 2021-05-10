@@ -23,7 +23,7 @@
         </mat-select>
         <input matInput formControlName="Answer" fxFlex *ngIf="this.Question.AnswerType=='1'">
         <textarea matInput formControlName="Answer" fxFlex *ngIf="this.Question.AnswerType=='3'"></textarea>
-        <input matInput type="number" formControlName="Answer" fxFlex *ngIf="this.Question.AnswerType=='4'">
+        <input matInput type="number" oninput="this.value = Math.abs(this.value)" formControlName="Answer" fxFlex *ngIf="this.Question.AnswerType=='4'">
         <mat-error
           *ngIf="DialogueFormGroup.get('Answer').touched && DialogueFormGroup.get('Answer').hasError('required')">
           Answer is required
