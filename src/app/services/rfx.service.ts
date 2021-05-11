@@ -160,6 +160,20 @@ export class RFxService {
             .pipe(catchError(this.errorHandler));
     }
 
+    UpdateRFxVendors(RFxVendors:RFxVendor[],RFxID:string){
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/UpdateRFxVendors`,
+            {
+                RFxVendors:RFxVendors,
+                RFxID:RFxID
+            },
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
+            .pipe(catchError(this.errorHandler));
+    }
+
 
     GetAllResponses(): Observable<ResHeader[] | string> {
         return this._httpClient.get<ResHeader[]>(`${this.baseAddress}rfxapi/RFx/GetAllResponses`)
@@ -482,11 +496,16 @@ export class RFxService {
         return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetResWithEvalStatus?RFxID=${RFxID}&User=${User}`)
             .pipe(catchError(this.errorHandler));
     }
-    CreateVendorUser(vendorUser: VendorUser[]): Observable<any> {
+    CreateVendorUser(vendorUsers: VendorUser[]): Observable<any> {
         return this._httpClient
             .post<any>(
                 `${this.baseAddress}authenticationapi/Master/CreateRFxVendorUsers`,
-                vendorUser
+                JSON.stringify(vendorUsers),
+                {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json'
+                    })
+                }
             )
             .pipe(catchError(this.errorHandler));
     }

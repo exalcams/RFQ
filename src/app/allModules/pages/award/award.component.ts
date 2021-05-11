@@ -126,16 +126,9 @@ export class AwardComponent implements OnInit {
     this.RFxAward.Remarks = this.AwardFormGroup.get('Remarks').value;
 
     this._RFxService.CreateAward(this.RFxAward).subscribe(x => {
-      this._RFxService.UpdateHeaderStatus(this.RFxID, "6").subscribe(x => {
-        this.isProgressBarVisibile = false;
+      this.isProgressBarVisibile = false;
         this.notificationSnackBarComponent.openSnackBar(' Awarded successfully', SnackBarStatus.success);
         this._router.navigate(['pages/awardresponse']);
-      },
-        error => {
-          console.log(error);
-          this.isProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
-        });
     },err=>{
       console.log(err);
       this.isProgressBarVisibile=false;

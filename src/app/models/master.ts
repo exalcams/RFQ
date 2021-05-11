@@ -169,6 +169,7 @@ export class VendorUser {
     Email: string;
     Phone: string;
     DisplayName:string;
+    IsBlocked:boolean;
 }
 export class SessionMaster {
     ID: number;
