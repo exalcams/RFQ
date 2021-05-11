@@ -291,9 +291,10 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.VendorDetails = [];
           this.Vendors = <RFxVendor[]>data;
+          this.RFxNewVendors=0;
           this.Vendors.forEach(element => {
             this.GetRFxVendorViewsByRFxID(element.PatnerID);
-            if(element.PatnerID.indexOf(RFxID)>=0){
+            if(element.PatnerID.indexOf(RFxID.replace(/^0+/, '')+'V')>=0){
               this.RFxNewVendors++;
             }
           });
@@ -595,6 +596,7 @@ export class RfqComponent implements OnInit {
     }
   }
   DeleteVendor(index) {
+    this.Vendors.splice(index, 1);
     this.VendorDetails.splice(index, 1);
     this.VendorDetailsDataSource = new MatTableDataSource(this.VendorDetails);
     if(this.VendorDetails.length==0){
@@ -737,6 +739,11 @@ export class RfqComponent implements OnInit {
     this.RFxView.RFxHCs = this.EvaluationDetails;
     this.RFxView.RFxICs = this.RatingDetails;
     this.RFxView.RFxPartners = this.PartnerDetails;
+    this.Vendors.forEach(vendor => {
+      if(vendor.PatnerID==''){
+        this.Vendors.splice(this.Vendors.indexOf(vendor),1);
+      }
+    });
     this.RFxView.RFxVendors = this.Vendors;
     this.RFxView.RFxODs = this.ODDetails;
     this.RFxView.RFxODAttachments = this.ODAttachDetails;
@@ -750,13 +757,17 @@ export class RfqComponent implements OnInit {
           localStorage.setItem("RFxID", response.RFxID);
           this.RFxID = response.RFxID;
           if (this.NewVendorMaser.length > 0) {
-            this.NewVendorMaser.forEach((vendor,i) => {
-              if(vendor.PatnerID==''){
-                vendor.PatnerID=this.RFxID+"V"+(this.RFxNewVendors+i);
-              }
+            this.UpdatePartnerID();
+            this._RFxService.UpdateRFxVendors(this.Vendors,response.RFxID).subscribe(x=>{
+              this.GetRFxVendorsByRFxID(response.RFxID);
+              console.log("vendors updated");
+            },
+            err=>{
+              console.log("vendors not updated");
             });
+            console.log(this.NewVendorMaser);
             this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res => {
-              //console.log("vendor created");
+              console.log(res);
               var vendors=<MVendor[]>res;
               var vendorUsers=[];
               vendors.forEach(vendor => {
@@ -767,9 +778,15 @@ export class RfqComponent implements OnInit {
                 vendorUser.Phone=vendor.ContactPersonMobile;
                 vendorUsers.push(vendorUser)
               });
-              this._RFxService.CreateVendorUser(vendorUsers).subscribe(x=>{
-                console.log("vendors created");
-              })
+              console.log("vendorUsers",vendorUsers);
+              if(isRelease){
+                this._RFxService.CreateVendorUser(vendorUsers).subscribe(x=>{
+                  console.log("vendor user created");
+                },
+                err=>{
+                  console.log("vendor user not created");
+                });
+              }
             }, err => { console.log("vendor master not created!;") });
           }
           //console.log("response",response);
@@ -814,6 +831,11 @@ export class RfqComponent implements OnInit {
     this.RFxView.RFxHCs = this.EvaluationDetails;
     this.RFxView.RFxICs = this.RatingDetails;
     this.RFxView.RFxPartners = this.PartnerDetails;
+    this.Vendors.forEach(vendor => {
+      if(vendor.PatnerID==''){
+        this.Vendors.splice(this.Vendors.indexOf(vendor),1);
+      }
+    });
     this.RFxView.RFxVendors = this.Vendors;
     this.RFxView.RFxODs = this.ODDetails;
     this.RFxView.RFxODAttachments = this.ODAttachDetails;
@@ -824,15 +846,19 @@ export class RfqComponent implements OnInit {
     this._RFxService.UpdateRFx(this.RFxView)
       .subscribe(
         response => {
-          //console.log("response",response);
           if (this.NewVendorMaser.length > 0) {
-            this.NewVendorMaser.forEach((vendor,i) => {
-              if(vendor.PatnerID==''){
-                vendor.PatnerID=this.RFxID+"V"+(this.RFxNewVendors+i);
-              }
+            this.UpdatePartnerID();
+            console.log(this.Vendors);
+            this._RFxService.UpdateRFxVendors(this.Vendors,response.RFxID).subscribe(x=>{
+              this.GetRFxVendorsByRFxID(this.RFxID);
+              console.log("vendors updated");
+            },
+            err=>{
+              console.log("vendors not updated");
             });
+            console.log(this.NewVendorMaser);
             this._RFxService.AddtoVendorTable(this.NewVendorMaser).subscribe(res => {
-              //console.log("vendor created");
+              console.log(res);
               var vendors=<MVendor[]>res;
               var vendorUsers=[];
               vendors.forEach(vendor => {
@@ -841,11 +867,18 @@ export class RfqComponent implements OnInit {
                 vendorUser.DisplayName=vendor.VendorName;
                 vendorUser.Email=vendor.EmailID1;
                 vendorUser.Phone=vendor.ContactPersonMobile;
-                vendorUsers.push(vendorUser)
+                vendorUser.IsBlocked=false;
+                vendorUsers.push(vendorUser);
               });
-              this._RFxService.CreateVendorUser(vendorUsers).subscribe(x=>{
-                console.log("vendors created");
-              })
+              console.log("vendorUsers",vendorUsers);
+              if(isRelease){
+                this._RFxService.CreateVendorUser(vendorUsers).subscribe(x=>{
+                  console.log("vendor user created");
+                },
+                err=>{
+                  console.log("vendor user not created");
+                });
+              }
             }, err => { console.log("vendor master not created!;") });
           }
           this._RFxService.UploadRFxAttachment(response.RFxID, this.FilesToUpload).subscribe(x => console.log("attachRes", x));
@@ -1034,9 +1067,22 @@ IsNewVendor(vendor:RFxVendorView):boolean{
   if(new_vendor!=undefined){
     return true;
   }
-  if(vendor.PatnerID.indexOf(vendor.RFxID)>=0){
+  if(vendor.PatnerID.indexOf(this.RFxID.replace(/^0+/, '')+'V')>=0){
     return true;
   }
   return false;
+}
+UpdatePartnerID(){
+  this.NewVendorMaser.forEach((vendor,i) => {
+    if(vendor.PatnerID==''){
+      vendor.PatnerID=this.RFxID+"V"+(this.RFxNewVendors+1);
+      vendor.PatnerID=vendor.PatnerID.replace(/^0+/, '');
+      var rfxVendor=new RFxVendor();
+      rfxVendor.Client=this.RFxView.Client;
+      rfxVendor.Company=this.RFxView.Company;
+      rfxVendor.PatnerID=vendor.PatnerID;
+      this.Vendors.push(rfxVendor);
+    }
+  });
 }
 }
