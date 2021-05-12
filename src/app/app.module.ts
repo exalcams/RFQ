@@ -44,7 +44,7 @@ const appRoutes: Routes = [
     {
         path: '**',
         redirectTo: 'auth/login'
-    }
+    },
 ];
 
 @NgModule({
@@ -54,7 +54,7 @@ const appRoutes: Routes = [
         NotificationDialogComponent,
         AttachmentViewDialogComponent,
         AttachmentDialogComponent,
-        VendorViewListDialogComponent       
+        VendorViewListDialogComponent,      
     ],
     imports: [
         BrowserModule,
