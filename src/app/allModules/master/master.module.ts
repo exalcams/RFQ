@@ -16,6 +16,8 @@ import { UserComponent } from './user/user.component';
 import { ReasonComponent } from './reason/reason.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { FuseMaterialColorPickerModule } from '@fuse/components';
+import { CriteriaComponent } from './criteria/criteria.component';
+import { QuestionComponent } from './question/question.component';
 
 
 const menuRoutes: Routes = [
@@ -38,6 +40,14 @@ const menuRoutes: Routes = [
     {
         path:'userpreferences',
         component:UserPreferencesComponent
+    },
+    {
+        path:'criteria',
+        component:CriteriaComponent
+    },
+    {
+        path:'question',
+        component:QuestionComponent
     }
 ];
 @NgModule({
@@ -46,7 +56,9 @@ const menuRoutes: Routes = [
         RoleComponent,
         MenuAppComponent,
         ReasonComponent,
-        UserPreferencesComponent
+        UserPreferencesComponent,
+        CriteriaComponent,
+        QuestionComponent
     ],
     imports: [
         MatButtonModule,
