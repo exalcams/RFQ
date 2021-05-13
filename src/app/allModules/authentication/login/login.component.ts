@@ -341,6 +341,40 @@ export class LoginComponent implements OnInit {
       }
       );
     }
+    this.subChildren=[];
+    if (this.MenuItems.indexOf('Criteria') >= 0) {
+      this.subChildren.push(
+        {
+          id: 'criteria',
+          title: 'Criteria',
+          type: 'item',
+          url: '/master/criteria'
+        },
+      );
+    }
+    if (this.MenuItems.indexOf('Question') >= 0) {
+      this.subChildren.push(
+        {
+          id: 'question',
+          title: 'Question',
+          type: 'item',
+          url: '/master/question'
+        },
+      );
+    }
+    if (this.MenuItems.indexOf('Criteria') >= 0 || this.MenuItems.indexOf('Question') >= 0 ) {
+      this.children.push({
+        id: 'template',
+        title: 'Template',
+        // translate: 'NAV.DASHBOARDS',
+        type: 'collapsable',
+        icon: 'book',
+        isSvgIcon: false,
+        // icon: 'view_list',
+        children: this.subChildren
+      }
+      );
+    }
     this.navigation.push({
       id: 'applications',
       title: '',

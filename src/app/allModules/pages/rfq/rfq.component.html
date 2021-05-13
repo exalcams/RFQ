@@ -366,8 +366,15 @@
                         <div fxLayout="column">
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                 <label class="tab-title">Evaluation Criterias</label>
-                                <button mat-button color="primary" class="createbtn" (click)="CreateCriteria()"
+                                <div fxLayout="row" fxLayoutGap="1rem">
+                                    <button *ngIf="Rfxheader.Status=='1'" mat-button [matMenuTriggerFor]="menu" class="createbtn">Choose from Template</button>
+                                      <mat-menu #menu="matMenu">
+                                        <button style="width: 170px;" *ngFor="let template of CriteriaTemplates" mat-menu-item class="menu-item" (click)="SetCriteriaTemplate(template)">{{template.Description}}</button>
+                                      </mat-menu>
+                                    <button mat-button color="primary" class="createbtn" (click)="CreateCriteria()"
                                     *ngIf="Rfxheader.Status=='1'">Add</button>
+                                </div>
+                                
                             </div>
                             <table mat-table [dataSource]="EvaluationDetailsDataSource" matSort class="py-10">
                                 <ng-container matColumnDef="Description">
@@ -590,8 +597,14 @@
                             <div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                     <label class="tab-title">Questions</label>
-                                    <button mat-button color="primary" class="createbtn" (click)="CreateQuestion()"
+                                    <div fxLayout="row" fxLayoutGap="1rem">
+                                        <button *ngIf="Rfxheader.Status=='1'" mat-button [matMenuTriggerFor]="menu1" class="createbtn">Choose from Template</button>
+                                          <mat-menu #menu1="matMenu">
+                                            <button style="width: 170px;" *ngFor="let template of QuestionTemplates" mat-menu-item class="menu-item" (click)="SetQuestionTemplate(template)">{{template.Description}}</button>
+                                          </mat-menu>
+                                        <button mat-button color="primary" class="createbtn" (click)="CreateQuestion()"
                                         *ngIf="Rfxheader.Status=='1'">Add</button>
+                                    </div>
                                 </div>
                                 <table mat-table [dataSource]="ODDetailsDataSource" matSort class="py-10">
                                     <ng-container matColumnDef="Question">

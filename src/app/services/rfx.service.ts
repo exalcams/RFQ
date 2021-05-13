@@ -4,7 +4,7 @@ import { Observable, throwError, Subject } from 'rxjs';
 // import { _MatChipListMixinBase } from '@angular/material';
 // import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, EvaluationRating, ByMaterial, ByCriteria, RFxAward, RFxCEPartner, RFxCEMaterial, RFxCECriteria, ResVendorRatingView, MIncoTerm } from '../models/RFx';
+import { ResHC, ResHeader, ResIC, ResItem, ResOD, ResponseView, RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD,RFxODAttachment,RFxRemark, RFxPartner, MVendor, RFxVendorView, RFxView, MMaterial, RFxVendor, MRFxType, MRFxGroup, ResODAttachment, ResODView, EvaluationView, EvalHC, EvalIC, EvalHeader, EvaluationRating, ByMaterial, ByCriteria, RFxAward, RFxCEPartner, RFxCEMaterial, RFxCECriteria, ResVendorRatingView, MIncoTerm, CriteriaTemplateView, QuestionTemplateView } from '../models/RFx';
 import { environment } from '../../environments/environment';
 import { VendorUser } from 'app/models/master';
 
@@ -507,6 +507,42 @@ export class RFxService {
                     })
                 }
             )
+            .pipe(catchError(this.errorHandler));
+    }
+    CreateCriteriaTemplate(Template : CriteriaTemplateView):Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateCriteriaTemplate`,
+        Template,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
+            .pipe(catchError(this.errorHandler));
+    }
+    CreateQuestionTemplate(Template : QuestionTemplateView):Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/CreateQuestionTemplate`,
+        Template,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
+            .pipe(catchError(this.errorHandler));
+    }
+    DeleteCriteriaTemplate(Group:number):Observable<any>{
+        return this._httpClient.delete<any>(`${this.baseAddress}rfxapi/RFx/DeleteCriteriaTemplate?Group=${Group}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    DeleteQuestionTemplate(Group:number):Observable<any>{
+        return this._httpClient.delete<any>(`${this.baseAddress}rfxapi/RFx/DeleteQuestionTemplate?Group=${Group}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetCriteriaTemplates(): Observable<any> {
+        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetCriteriaTemplates`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetQuestionTemplates(): Observable<any> {
+        return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetQuestionTemplates`)
             .pipe(catchError(this.errorHandler));
     }
 }

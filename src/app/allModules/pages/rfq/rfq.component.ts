@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { RFxHeader, RFxHC, RFxItem, RFxIC, RFxPartner, MVendor, RFxOD, RFxODAttachment, RFxVendor, RFxVendorView, RFxView, RFxRemark, MRFxType, MRFxGroup } from 'app/models/RFx';
+import { RFxHeader, RFxHC, RFxItem, RFxIC, RFxPartner, MVendor, RFxOD, RFxODAttachment, RFxVendor, RFxVendorView, RFxView, RFxRemark, MRFxType, MRFxGroup, CriteriaTemplateView, QuestionTemplateView } from 'app/models/RFx';
 import { RFxService } from 'app/services/rfx.service';
 import { CriteriaDialogComponent } from './rfq-dialogs/Criteria-Dialog/criteria-dialog.component';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
@@ -57,7 +57,7 @@ export class RfqComponent implements OnInit {
   ODAttachDetailsDisplayedColumns: string[] = ['DocumentTitle', 'DocumentName', 'Action'];
   EvaluationDetailsDataSource: MatTableDataSource<RFxHC>;
   ItemDetailsDataSource: MatTableDataSource<RFxItem>;
-  RatingDetailsDataSource=new BehaviorSubject<AbstractControl[]>([]);;
+  RatingDetailsDataSource=new BehaviorSubject<AbstractControl[]>([]);
   PartnerDetailsDataSource: MatTableDataSource<RFxPartner>;
   VendorDetailsDataSource: MatTableDataSource<RFxVendorView>;
   ODDetailsDataSource: MatTableDataSource<RFxOD>;
@@ -85,6 +85,8 @@ export class RfqComponent implements OnInit {
   Progress:number=0;
   Plants:string[]=[];
   Permission:string;
+  CriteriaTemplates:CriteriaTemplateView[]=[];
+  QuestionTemplates:QuestionTemplateView[]=[];
   constructor(
     public dialog: MatDialog,
     private _formBuilder: FormBuilder,
@@ -129,6 +131,7 @@ export class RfqComponent implements OnInit {
     }
     this.GetRFQMasters();
     this.GetItemCriterias();
+    this.GetAllTemplates();
   }
 
   InitializeRFxFormGroup(): void {
@@ -178,7 +181,14 @@ export class RfqComponent implements OnInit {
       this.RFxFormGroup.get('Evaluator').setValidators([Validators.max(this.Evaluators.length)]);
     });
   }
-
+  GetAllTemplates(){
+    this._RFxService.GetCriteriaTemplates().subscribe(res=>{
+      this.CriteriaTemplates=res;
+    });
+    this._RFxService.GetQuestionTemplates().subscribe(res=>{
+      this.QuestionTemplates=res;
+    });
+  }
   GetRFQTypeMaster() {
     this._RFxService.GetAllRFxTypeM().subscribe(res => {
       this.RFxTypeMasters = res as MRFxType[];
@@ -1084,5 +1094,29 @@ UpdatePartnerID(){
       this.Vendors.push(rfxVendor);
     }
   });
+}
+SetCriteriaTemplate(Template:CriteriaTemplateView){
+  this.EvaluationDetails=[];
+  Template.Criterias.forEach((x,i) => {
+    var criteria=new RFxHC();
+    criteria.Client=this.Rfxheader.Client;
+    criteria.Company=this.Rfxheader.Company;
+    criteria.CriteriaID=i.toString();
+    criteria.Text=x.Criteria;
+    this.EvaluationDetails.push(criteria);
+  });
+  this.EvaluationDetailsDataSource=new MatTableDataSource(this.EvaluationDetails);
+}
+SetQuestionTemplate(Template:QuestionTemplateView){
+  this.ODDetails=[];
+  Template.Questions.forEach((x) => {
+    var criteria=new RFxOD();
+    criteria.Client=this.Rfxheader.Client;
+    criteria.Company=this.Rfxheader.Company;
+    criteria.Qusetion=x.Question;
+    criteria.AnswerType=x.AnswerType;
+    this.ODDetails.push(criteria);
+  });
+  this.ODDetailsDataSource=new MatTableDataSource(this.ODDetails);
 }
 }
