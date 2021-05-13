@@ -455,3 +455,24 @@ export class RFxCECriteria extends CommonClass {
     Criteria : string;
     BestSupplier :string;
 }
+export class CriteriaTemplateView extends CommonClass{
+    Group:number;
+    Description:string;
+    Criterias:CriteriaTemplate[];
+}
+export class CriteriaTemplate extends CommonClass{
+    ID:number;
+    Group:number;
+    Criteria:string;
+}
+export class QuestionTemplateView extends CommonClass{
+    Group:number;
+    Description:string;
+    Questions:QuestionTemplate[];
+}
+export class QuestionTemplate extends CommonClass{
+    ID:number;
+    Group:number;
+    Question:string;
+    AnswerType:string;
+}

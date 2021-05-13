@@ -144,6 +144,10 @@
         color: #5f2cff;
         margin-left: 8px;
     }
+    .menu-item{
+        @extend .poppins;
+        color: #3e485a;
+    }
 }
 ::ng-deep .progressbar .mat-progress-bar-fill::after {
     background-color: #00ba53 !important;
@@ -178,6 +182,7 @@
     opacity: 1 !important;
     color: #ffffff !important;
 }
+
 $someColor:#5f2cff;
 ::ng-deep .timepicker {
 
