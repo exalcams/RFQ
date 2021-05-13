@@ -199,7 +199,7 @@ export class RfqHomeComponent implements OnInit, OnDestroy {
       },
       legend: {
         show: true,
-        position: 'right',
+        position: 'left',
         horizontalAlign: 'center',
         floating: false,
         fontSize: '11px',
