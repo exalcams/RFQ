@@ -34,12 +34,13 @@ login {
 
         #login-form-wrapper {
             background-color: #ffffff;
-            width: 400px;
-            min-width: 400px;
-            max-width: 400px;
+            min-width: 450px;
+            max-width: 450px;
             overflow: auto;
             -webkit-overflow-scrolling: touch;
-            box-shadow: 0 2px 18px 0 rgba(74, 122, 255, 0.38);
+            margin: 6% 8%;
+            border-radius: 4px;
+            box-shadow: 0 6px 26px 0 rgba(136,131,255,0.16);
 
             @include media-breakpoint('sm') {
                 width: 360px;
@@ -54,7 +55,7 @@ login {
             }
 
             #login-form {
-                padding: 128px 48px 48px 48px;
+                padding: 0px 48px 48px 48px;
 
                 @include media-breakpoint('xs') {
                     text-align: center;
@@ -62,21 +63,17 @@ login {
                 }
 
                 .logo {
-                    width: 128px;
-                    margin: 32px auto;
+                    width: 100%;
+                    margin: 36px auto;
                 }
 
                 .title {
                     font-size: 25px;
-                    line-height: 1;
-                    // font-family: Baloo;
-                    line-height: 1.57;
-                    letter-spacing: 2.28px;
+                    font-family: Poppins-Semibold;
                     text-align: left;
                     color: #2c2c2e;
-                    font-weight: 900;
+                    font-weight: 600;
                     margin-bottom: 15px;
-                    margin-top: -35px;
                    
                 }
             .border{

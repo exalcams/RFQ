@@ -25,7 +25,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     CurrentLoggedInUser: string;
     CurrentLoggedInUserProfile: string;
     CurrentLoggedInUserEmailAddress: string;
-
+    Folded:boolean=true;
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
     private _unsubscribeAll: Subject<any>;
@@ -54,6 +54,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
         this.CurrentLoggedInUserEmailAddress = 'support@exalca.com';
         this.CurrentLoggedInUserProfile = 'assets/images/avatars/support.png';
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+        this._fuseSidebarService.getSidebar('navbar').foldedChanged.subscribe((x:boolean)=>{
+            this.Folded=x;
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------

@@ -12,14 +12,41 @@
     </div>
 
 </div> -->
+<div class="px-16 pt-20 logo-wrapper" fxLayoutAlign="center center">
+    <div [ngStyle]="{'width':Folded ? '22px' : 'auto'}" class="logo" fxLayoutAlign="end center">
+        <img src="assets/images/rfq/FSC_Logo.png" style="width: 141px;max-width: none;">
+    </div>
+</div>
 
 
-<div class="navbar-scroll-container pt-16" fusePerfectScrollbar
-    [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+<div class="navbar-scroll-container pt-16" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
 
     <div class="navbar-content">
         <fuse-navigation layout="vertical"></fuse-navigation>
     </div>
 
 </div>
-
+<div fxLayout=column fxLayoutAlign="center center" fxLayoutGap="1.5rem" class="pb-8">
+    <div fxLayout="row" fxLayoutAlign="space-between center" [ngClass]="{
+        'login-wrapper-folded':Folded,
+        'login-wrapper-expanded':!Folded}">
+        <span fxLayoutAlign="start center" fxLayoutGap="20px">
+            <img src="assets/images/rfq/User.png" style="width: 28px;">
+            <span class="log-text" *ngIf="!Folded">{{CurrentLoggedInUser}}</span>
+        </span>
+        <img src="assets/images/rfq/Availability.svg" style="width: 8px;height: 8px;">
+    </div>
+    <div style="width: 100%;cursor: pointer;" [ngStyle]="{'padding-left':Folded ? '26px' : '30px'}" fxLayout="row"
+        fxLayoutAlign="start center" mat-ripple (click)="logOutClick()">
+        <img src="assets/images/rfq/Power.svg" style="width: 16px;margin-right: 26px;">
+        <span class="log-text" *ngIf="!Folded">Logout</span>
+    </div>
+</div>
+<div fxLayoutAlign="end center" class="py-16">
+    <div mat-ripple>
+        <img *ngIf="Folded" src="assets/images/rfq/Expand.svg" style="cursor: pointer;width: 12px;margin-right: 12px;"
+            (click)="toggleSidebarFolded()">
+        <img *ngIf="!Folded" src="assets/images/rfq/Close.svg" style="cursor: pointer;width: 12px;margin-right: 12px;"
+            (click)="toggleSidebarFolded()">
+    </div>
+</div>
