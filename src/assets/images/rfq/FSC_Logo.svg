@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="141" height="36" viewBox="0 0 141 36">
+    <defs>
+        <linearGradient id="linear-gradient" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#171891"/>
+            <stop offset="1" stop-color="#4fa94e"/>
+        </linearGradient>
+        <style>
+            .cls-4{fill:#1f009e}.cls-6{fill:#4db151}
+        </style>
+    </defs>
+    <g id="Group_8296" transform="translate(-178.333 -278.088)">
+        <text id="FSC" fill="#1f009e" font-family="Rockwell-BoldItalic, Rockwell" font-size="27px" font-style="italic" font-weight="700" transform="translate(207.333 305.088)">
+            <tspan x="-27.396" y="0">FSC</tspan>
+        </text>
+        <text id="_360" fill="#4db151" font-family="Rockwell-BoldItalic, Rockwell" font-size="26px" font-style="italic" font-weight="700" transform="translate(263.333 304.088)">
+            <tspan x="-24.565" y="0">360</tspan>
+        </text>
+        <text id="o" fill="#4db151" font-family="Rockwell-BoldItalic, Rockwell" font-size="15px" font-style="italic" font-weight="700" transform="translate(293.333 288.088)">
+            <tspan x="-4.471" y="0">o</tspan>
+        </text>
+        <g id="Group_8203" transform="translate(297.894 287.311)">
+            <path id="Rectangle_6027" d="M0 0H6V6H0z" class="cls-4" transform="translate(2.439 -6.223)"/>
+            <path id="Rectangle_6029" d="M0 0H6V6H0z" class="cls-4" transform="translate(8.439 -.223)"/>
+            <path id="Rectangle_6031" fill="url(#linear-gradient)" d="M0 0H6V6H0z" transform="translate(15.439 2.777)"/>
+            <path id="Rectangle_6028" d="M0 0H6V6H0z" class="cls-6" transform="translate(2.439 12.777)"/>
+            <path id="Rectangle_6030" d="M0 0H6V6H0z" class="cls-6" transform="translate(8.439 6.777)"/>
+        </g>
+    </g>
+</svg>

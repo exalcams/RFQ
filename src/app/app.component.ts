@@ -146,7 +146,7 @@ export class AppComponent implements OnInit, OnDestroy {
             .subscribe((config) => {
 
                 this.fuseConfig = config;
-                this.fuseConfig.layout.toolbar.position="above";
+                this.fuseConfig.layout.toolbar.hidden=true;
                 // Boxed
                 if (this.fuseConfig.layout.width === 'boxed') {
                     this.document.body.classList.add('boxed');

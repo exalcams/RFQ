@@ -6,7 +6,6 @@
        [routerLinkActiveOptions]="{exact: item.exactMatch || false}"
        [target]="item.openInNewTab ? '_blank' : '_self'" #rla="routerLinkActive">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
-        <div class="active_dot" *ngIf="rla.isActive"></div>
     </a>
 
     <!-- item.externalUrl -->
