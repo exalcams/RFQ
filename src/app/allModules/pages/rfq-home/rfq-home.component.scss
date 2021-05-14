@@ -41,6 +41,7 @@
     font-weight: 500;
     background-color: #5f2cff;
     color: white;
+    width: 19%;
   }
   .tab{
       height: 80px;
@@ -79,6 +80,11 @@
     // color: #00061c;
     font-size: 16px;
     width: 100%;
+  }
+  .view{
+    @extend .poppins;
+    color:#5f2cff;
+    font-size: 12px;
   }
    /*fulfilment status*/
 .image_all{
@@ -125,8 +131,8 @@
         width: 100%;
     
         th {
-          color: #00061c;
-          background-color: #ffffff;
+          color: #ffffff;
+          background-color: #5f2cff;
         //   box-shadow: 0 3px 6px 0 rgba(95, 44, 255, 0.12);
           @extend .poppins;
         }

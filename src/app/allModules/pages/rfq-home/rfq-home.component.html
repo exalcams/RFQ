@@ -184,11 +184,16 @@
                 <th mat-header-cell *matHeaderCellDef style="text-align: center;">Attachements</th>
                 <td mat-cell *matCellDef="let element;index as i" style="cursor: pointer;text-align: center;"
                     (click)="openAttachmentViewDialog(element.RFxID,element.Attachment)">
+                    <div fxLayout="row" fxLayoutAlign="center">
                     <div style="margin-top: 3px; margin-left: 15px;">
                         <span [matBadge]="element.Attachment.length" matBadgeSize="small" matBadgeOverlap="false"
-                            matBadgeColor="accent"></span>
+                            matBadgeColor="accent"></span>    
                     </div>
                     <img style="width: 20px;" src="assets/images/rfq/attachment.svg">
+                    <div>
+                        <p class="view pl-8">view</p>
+                    </div>
+                </div>
                 </td>
             </ng-container>
 
@@ -196,12 +201,15 @@
                 <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Vendors</th>
                 <td mat-cell *matCellDef="let element" style="cursor: pointer;text-align: center;"
                     (click)="openVendorViewList(element.RFxID,element.PartnerID)">
-                    <div>
+                    <div  fxLayout="row" fxLayoutAlign="center">
                         <div style="margin-top: 3px; margin-left: 8px;">
                             <span [matBadge]="element.PartnerID.length" matBadgeSize="small" matBadgeColor="accent"
                                 matBadgeOverlap="false"></span>
                         </div>
                         <img src="assets/images/rfq/vendor.svg" style="width: 16px;">
+                        <div>
+                            <p class="view pl-8">view</p>
+                        </div>
                     </div>
                 </td>
             </ng-container>

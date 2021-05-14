@@ -104,6 +104,10 @@ body { margin: 0; font-family: "Poppins", "Helvetica Neue", sans-serif; }
 .mat-badge-accent .mat-badge-content {
   background: #5f2cff !important;
   color: white;
+  position: relative;
+  left: 10px;
+  top: 4px;
+  // right: 10px;
 }
 .mat-accent .mat-input-element {
   caret-color: #5f2cff !important;
