@@ -21,6 +21,7 @@ login {
             .title {
                 font-size: 42px;
                 font-weight: 600;
+                font-family: Poppins-Semibold;
                 line-height: 1;
                 color: #2c2c2e;
             }
@@ -84,14 +85,11 @@ login {
                 margin-top: -15px !important;
             }
                 .subTitel{
-                    opacity: 0.8;
-                    // font-family: SegoeUI;
                     font-size: 12px;
                     font-weight: 600;
-                    line-height: 1.33;
-                    letter-spacing: 0.72px;
+                    font-family: Poppins-Semibold;
                     text-align: left;
-                    color: #2c2c2e;
+                    color: #acacac;
                     margin-top: 20px !important;
                 }
                 .loginButton{
@@ -130,7 +128,7 @@ login {
                     .remember-forgot-password {
                         font-size: 13px;
                         margin-top: 8px;
-
+                        font-family: Poppins-Semibold;
                         .remember-me {
                             margin-bottom: 16px
                         }

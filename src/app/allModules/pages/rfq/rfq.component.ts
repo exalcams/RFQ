@@ -25,7 +25,6 @@ import { RFQAttachmentDialogComponent } from './rfq-dialogs/Attachment-Dialog/rf
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { saveAs } from 'file-saver';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 @Component({
   selector: 'app-rfq',
@@ -81,12 +80,13 @@ export class RfqComponent implements OnInit {
   MenuItems: string[];
   Evaluators: string[] = [];
   CurrencyList: string[] = ["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LVL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STD", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "USS", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XFU", "XOF", "XPD", "XPF", "XPT", "XTS", "XXX", "YER", "ZAR", "ZMW"];
-  CompletedSteps:boolean[]=[false,false,false,false,false,false,false,false];
+  CompletedSteps:boolean[]=[false,false,false,false,false,false,false,false,false];
   Progress:number=0;
   Plants:string[]=[];
   Permission:string;
   CriteriaTemplates:CriteriaTemplateView[]=[];
   QuestionTemplates:QuestionTemplateView[]=[];
+  Remarks:FormControl=new FormControl('',Validators.required);
   constructor(
     public dialog: MatDialog,
     private _formBuilder: FormBuilder,
@@ -97,6 +97,15 @@ export class RfqComponent implements OnInit {
     private masterService: MasterService
   ) {
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+    this.Remarks.valueChanges.subscribe(value=>{
+      this.RFxRemark.Remark=value;
+      if(value!=''){
+        this.CompletedSteps[8]=true;
+      }
+      else{
+        this.CompletedSteps[8]=false;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -344,7 +353,7 @@ export class RfqComponent implements OnInit {
     this._RFxService.GetRFxRemarkByRFxID(RFxID).subscribe((data) => {
       if (data) {
         this.RFxRemark = <RFxRemark>data;
-        //console.log(this.RFxRemark);
+        this.Remarks.setValue(this.RFxRemark.Remark);
       }
     })
   }
@@ -679,9 +688,9 @@ export class RfqComponent implements OnInit {
         this.CompletedSteps[index]=true;
         this.CreatePartner();
       }
-      else if(this.ItemDetails.length == 0){
-        this.notificationSnackBarComponent.openSnackBar('Item is required', SnackBarStatus.danger);
-      }
+      // else if(this.ItemDetails.length == 0){
+      //   this.notificationSnackBarComponent.openSnackBar('Item is required', SnackBarStatus.danger);
+      // }
       else{
         this.notificationSnackBarComponent.openSnackBar('Item is required', SnackBarStatus.danger);
       }
@@ -702,12 +711,30 @@ export class RfqComponent implements OnInit {
       }
     }
     if(index == 5){
-      if(this.VendorDetails.length >= 0){
+      if(this.VendorDetails.length > 0){
         this.selectedIndex = index + 1;
         this.CompletedSteps[index]=true;
       }
       else{
         this.notificationSnackBarComponent.openSnackBar('Vendor is required', SnackBarStatus.danger);
+      }
+    }
+    if(index == 6){
+      if(this.ODDetails.length > 0){
+        this.selectedIndex = index + 1;
+        this.CompletedSteps[index]=true;
+      }
+      else{
+        this.notificationSnackBarComponent.openSnackBar('Question is required', SnackBarStatus.danger);
+      }
+    }
+    if(index == 7){
+      if(this.ODAttachDetails.length > 0){
+        this.selectedIndex = index + 1;
+        this.CompletedSteps[index]=true;
+      }
+      else{
+        this.notificationSnackBarComponent.openSnackBar('Document is required', SnackBarStatus.danger);
       }
     }
   }
@@ -931,6 +958,7 @@ export class RfqComponent implements OnInit {
     this.RFxView.Currency = this.RFxFormGroup.get("Currency").value;
     this.RFxView.MinEvaluator=this.RFxFormGroup.get("Evaluator").value;
     this.RFxView.Plant=this.RFxFormGroup.get("Plant").value;
+    this.RFxRemark.Remark=this.Remarks.value;
   }
   ForecloseClicked(){
     this.OpenForecloseDialog();
@@ -1077,8 +1105,10 @@ IsNewVendor(vendor:RFxVendorView):boolean{
   if(new_vendor!=undefined){
     return true;
   }
-  if(vendor.PatnerID.indexOf(this.RFxID.replace(/^0+/, '')+'V')>=0){
-    return true;
+  if(this.RFxID!=null){
+    if(vendor.PatnerID.indexOf(this.RFxID.replace(/^0+/, '')+'V')>=0){
+      return true;
+    }
   }
   return false;
 }

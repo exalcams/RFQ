@@ -27,11 +27,13 @@
             <mat-tab-group [(selectedIndex)]="selectedIndex" color="accent" backgroundColor="primary" class="tab-group">
                 <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
-                        <span>General data</span>
-                        <mat-icon *ngIf="CompletedSteps[0]" style="margin-left: 1rem;"
-                            [ngStyle]="{'color':selectedIndex==0?'white':'#18a421'}">check_circle</mat-icon>
+                        <div fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-icon style="margin-left: 1rem;"
+                            [ngStyle]="{'color':CompletedSteps[0]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                            <span>General data</span>
+                        </div>
                     </ng-template>
-                    <mat-card>
+                    <mat-card class="card">
                         <form autocomplete="off" [formGroup]="RFxFormGroup">
                             <div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center"
@@ -208,8 +210,8 @@
                                     <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
                                         <mat-label>Evaluation start date</mat-label>
                                         <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
-                                            [max]="RFxFormGroup.get('ValidityEndDate').value"
-                                            [matDatepicker]="picker13" formControlName="EvaluationStartDate" fxFlex>
+                                            [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker13"
+                                            formControlName="EvaluationStartDate" fxFlex>
                                         <mat-datepicker-toggle matSuffix [for]="picker13">
                                             <img src="assets/images/calendar.png" matDatePickerToggleIcon>
                                         </mat-datepicker-toggle>
@@ -303,11 +305,13 @@
                 </mat-tab>
                 <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
-                        <span>System Criteria</span>
-                        <mat-icon *ngIf="CompletedSteps[1]" style="margin-left: 1rem;"
-                            [ngStyle]="{'color':selectedIndex==1?'white':'#18a421'}">check_circle</mat-icon>
+                        <div fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-icon style="margin-left: 1rem;"
+                            [ngStyle]="{'color':CompletedSteps[1]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                            <span>System Criteria</span>
+                        </div>
                     </ng-template>
-                    <mat-card>
+                    <mat-card class="card">
                         <div fxLayout="column">
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                 <label class="tab-title">System Criterias</label>
@@ -327,7 +331,7 @@
                                         <td mat-cell *matCellDef="let element;index as i;" [formGroupName]="i">
                                             <mat-form-field class="tb_formfield" style="width: 40%;">
                                                 <input matInput oninput="this.value = Math.abs(this.value)"
-                                                    formControlName="Weightage"  type="number" (change)="ItemPriority()">
+                                                    formControlName="Weightage" type="number" (change)="ItemPriority()">
                                             </mat-form-field>
                                         </td>
                                     </ng-container>
@@ -354,27 +358,33 @@
                 </mat-tab>
                 <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
-                        <span>Evaluation Criteria</span>
-                        <!-- <mat-icon *ngIf="CompletedSteps[2]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==2?'white':'#18a421'}">check_circle</mat-icon> -->
+                        <div fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-icon style="margin-left: 1rem;"
+                            [ngStyle]="{'color':CompletedSteps[2]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                            <span>Evaluation Criteria</span>
+                        </div>
                         <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==2?'#ffffff':'#18a421'}"
                             fxLayoutAlign="center center" *ngIf="CompletedSteps[2]">
                             <span class="tbcount"
                                 [ngStyle]="{'color':selectedIndex==2?'#5f2cff':'#ffffff'}">{{EvaluationDetails.length}}</span>
                         </div>
                     </ng-template>
-                    <mat-card>
+                    <mat-card class="card">
                         <div fxLayout="column">
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                 <label class="tab-title">Evaluation Criterias</label>
                                 <div fxLayout="row" fxLayoutGap="1rem">
-                                    <button *ngIf="Rfxheader.Status=='1'" mat-button [matMenuTriggerFor]="menu" class="createbtn">Choose from Template</button>
-                                      <mat-menu #menu="matMenu">
-                                        <button style="width: 170px;" *ngFor="let template of CriteriaTemplates" mat-menu-item class="menu-item" (click)="SetCriteriaTemplate(template)">{{template.Description}}</button>
-                                      </mat-menu>
+                                    <button *ngIf="Rfxheader.Status=='1'" mat-button [matMenuTriggerFor]="menu"
+                                        class="createbtn">Choose from Template</button>
+                                    <mat-menu #menu="matMenu">
+                                        <button style="width: 170px;" *ngFor="let template of CriteriaTemplates"
+                                            mat-menu-item class="menu-item"
+                                            (click)="SetCriteriaTemplate(template)">{{template.Description}}</button>
+                                    </mat-menu>
                                     <button mat-button color="primary" class="createbtn" (click)="CreateCriteria()"
-                                    *ngIf="Rfxheader.Status=='1'">Add</button>
+                                        *ngIf="Rfxheader.Status=='1'">Add</button>
                                 </div>
-                                
+
                             </div>
                             <table mat-table [dataSource]="EvaluationDetailsDataSource" matSort class="py-10">
                                 <ng-container matColumnDef="Description">
@@ -403,15 +413,18 @@
                 </mat-tab>
                 <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
-                        <span>Item</span>
-                        <!-- <mat-icon *ngIf="CompletedSteps[3]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==3?'white':'#18a421'}">check_circle</mat-icon> -->
+                        <div fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-icon style="margin-left: 1rem;"
+                            [ngStyle]="{'color':CompletedSteps[3]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                            <span>Item</span>
+                        </div>
                         <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==3?'#ffffff':'#18a421'}"
                             fxLayoutAlign="center center" *ngIf="CompletedSteps[3]">
                             <span class="tbcount"
                                 [ngStyle]="{'color':selectedIndex==3?'#5f2cff':'#ffffff'}">{{ItemDetails.length}}</span>
                         </div>
                     </ng-template>
-                    <mat-card>
+                    <mat-card class="card">
                         <div fxLayout="column">
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                 <label class="tab-title">Items</label>
@@ -478,15 +491,18 @@
                 </mat-tab>
                 <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
-                        <span>Partners</span>
-                        <!-- <mat-icon *ngIf="CompletedSteps[4]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==4?'white':'#18a421'}">check_circle</mat-icon> -->
+                        <div fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-icon style="margin-left: 1rem;"
+                            [ngStyle]="{'color':CompletedSteps[4]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                            <span>Partners</span>
+                        </div>
                         <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==4?'#ffffff':'#18a421'}"
                             fxLayoutAlign="center center" *ngIf="CompletedSteps[4]">
                             <span class="tbcount"
                                 [ngStyle]="{'color':selectedIndex==4?'#5f2cff':'#ffffff'}">{{PartnerDetails.length}}</span>
                         </div>
                     </ng-template>
-                    <mat-card>
+                    <mat-card class="card">
                         <div fxLayout="column">
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                 <label class="tab-title">Partners</label>
@@ -523,15 +539,18 @@
                 </mat-tab>
                 <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
-                        <span>Vendors</span>
-                        <!-- <mat-icon *ngIf="CompletedSteps[5]" style="margin-left: 1rem;" [ngStyle]="{'color':selectedIndex==5?'white':'#18a421'}">check_circle</mat-icon> -->
+                        <div fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-icon style="margin-left: 1rem;"
+                            [ngStyle]="{'color':CompletedSteps[5]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                            <span>Vendors</span>
+                        </div>
                         <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==5?'#ffffff':'#18a421'}"
                             fxLayoutAlign="center center" *ngIf="CompletedSteps[5]">
                             <span class="tbcount"
                                 [ngStyle]="{'color':selectedIndex==5?'#5f2cff':'#ffffff'}">{{VendorDetails.length}}</span>
                         </div>
                     </ng-template>
-                    <mat-card>
+                    <mat-card class="card">
                         <div fxLayout="column">
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                 <div fxFlex=50>
@@ -554,8 +573,11 @@
 
                                 <ng-container matColumnDef="VendorName">
                                     <th mat-header-cell mat-sort-header *matHeaderCellDef> Vendor name </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.VendorName}}
-                                        <mat-icon class="flag" *ngIf="IsNewVendor(element)">flag</mat-icon>  
+                                    <td mat-cell *matCellDef="let element">
+                                        <div fxLayoutAlign="start center" style="width: 100%;">
+                                            <span>{{element.VendorName}}</span>
+                                            <mat-icon class="flag" *ngIf="IsNewVendor(element)">flag</mat-icon>
+                                        </div>
                                     </td>
                                 </ng-container>
 
@@ -588,22 +610,27 @@
                 </mat-tab>
                 <mat-tab [disabled]="!IsComplete()">
                     <ng-template mat-tab-label>
-                        <span>Others</span>
-                        <mat-icon *ngIf="CompletedSteps[6] && CompletedSteps[7]" style="margin-left: 1rem;"
-                            [ngStyle]="{'color':selectedIndex==6?'white':'#18a421'}">check_circle</mat-icon>
+                        <div fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-icon style="margin-left: 1rem;"
+                            [ngStyle]="{'color':CompletedSteps[6]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                            <span>Questions</span>
+                        </div>
                     </ng-template>
-                    <mat-card>
+                    <mat-card class="card">
                         <div fxLayout="column">
                             <div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-24">
                                     <label class="tab-title">Questions</label>
                                     <div fxLayout="row" fxLayoutGap="1rem">
-                                        <button *ngIf="Rfxheader.Status=='1'" mat-button [matMenuTriggerFor]="menu1" class="createbtn">Choose from Template</button>
-                                          <mat-menu #menu1="matMenu">
-                                            <button style="width: 170px;" *ngFor="let template of QuestionTemplates" mat-menu-item class="menu-item" (click)="SetQuestionTemplate(template)">{{template.Description}}</button>
-                                          </mat-menu>
+                                        <button *ngIf="Rfxheader.Status=='1'" mat-button [matMenuTriggerFor]="menu1"
+                                            class="createbtn">Choose from Template</button>
+                                        <mat-menu #menu1="matMenu">
+                                            <button style="width: 170px;" *ngFor="let template of QuestionTemplates"
+                                                mat-menu-item class="menu-item"
+                                                (click)="SetQuestionTemplate(template)">{{template.Description}}</button>
+                                        </mat-menu>
                                         <button mat-button color="primary" class="createbtn" (click)="CreateQuestion()"
-                                        *ngIf="Rfxheader.Status=='1'">Add</button>
+                                            *ngIf="Rfxheader.Status=='1'">Add</button>
                                     </div>
                                 </div>
                                 <table mat-table [dataSource]="ODDetailsDataSource" matSort class="py-10">
@@ -636,6 +663,20 @@
                                     <tr mat-row *matRowDef="let row; columns: ODDetailsDisplayedColumns;"></tr>
                                 </table>
                             </div>
+                        </div>
+                    </mat-card>
+                </mat-tab>
+
+                <mat-tab [disabled]="!IsComplete()">
+                    <ng-template mat-tab-label>
+                        <div fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-icon style="margin-left: 1rem;"
+                            [ngStyle]="{'color':CompletedSteps[7]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                            <span>Documents</span>
+                        </div>
+                    </ng-template>
+                    <mat-card class="card">
+                        <div fxLayout="column">
                             <div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center" class="py-24">
                                     <label class="tab-title">Documents</label>
@@ -672,13 +713,28 @@
                                     <tr mat-row *matRowDef="let row; columns: ODAttachDetailsDisplayedColumns;"></tr>
                                 </table>
                             </div>
+                        </div>
+                    </mat-card>
+                </mat-tab>
+
+                <mat-tab [disabled]="!IsComplete()">
+                    <ng-template mat-tab-label>
+                        <div fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-icon style="margin-left: 1rem;"
+                            [ngStyle]="{'color':CompletedSteps[8]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                            <span>Text</span>
+                        </div>
+                    </ng-template>
+                    <mat-card class="card">
+                        <div fxLayout="column">
                             <div fxLayout="column" class="my-24" fxLayoutGap="1rem">
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
                                     <label class="tab-title">Remarks</label>
                                 </div>
                                 <mat-form-field style="font-size: 14px;" appearance="outline">
-                                    <textarea matInput fxFlex [(ngModel)]="RFxRemark.Remark"
+                                    <textarea matInput fxFlex [formControl]="Remarks"
                                         [disabled]="Rfxheader.Status!='1'"></textarea>
+                                        <mat-error *ngIf="Remarks.touched && Remarks.hasError('required')">Please enter your remarks</mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -686,23 +742,25 @@
                 </mat-tab>
             </mat-tab-group>
         </div>
-        <div class="footer" fxLayout="column" fxLayoutAlign="space-between"
-            *ngIf="Rfxheader.Status=='1' || !Rfxheader.Status">
-            <div fxLayout="row" fxLayoutAlign="start center" class="px-8 pt-8" *ngIf="!IsComplete()">
-                <button *ngIf="selectedIndex!=0" (click)="PreviousClicked(selectedIndex)" mat-button
-                    class="prevnxtbtn">Previous</button>
-                <div fxFlex></div>
-                <button *ngIf="selectedIndex!=6" (click)="NextClicked(selectedIndex)" mat-button
-                    class="prevnxtbtn">Next</button>
-            </div>
-            <div *ngIf="Rfxheader.Status=='1' && IsComplete()" fxLayout="row" fxLayoutAlign="space-between center"
-                fxFlex class="px-8">
-                <button *ngIf="Permission=='3' || Permission=='1'" mat-button class="savebtn" (click)="SaveRFxClicked(false)">Save</button>
-                <button *ngIf="Permission=='3' || Permission=='2'" mat-button class="releasebtn" (click)="SaveRFxClicked(true)">Release</button>
-            </div>
-            <mat-progress-bar class="progressbar" mode="determinate" [value]="GetProgress()" *ngIf="!RFxID">
-            </mat-progress-bar>
+    </div>
+    <div class="footer" fxLayout="column" fxLayoutAlign="space-between"
+        *ngIf="Rfxheader.Status=='1' || !Rfxheader.Status">
+        <div fxLayout="row" fxLayoutAlign="start center" class="px-8 pt-8" *ngIf="!IsComplete()">
+            <button *ngIf="selectedIndex!=0" (click)="PreviousClicked(selectedIndex)" mat-button
+                class="prevnxtbtn">Previous</button>
+            <div fxFlex></div>
+            <button *ngIf="selectedIndex!=8" (click)="NextClicked(selectedIndex)" mat-button
+                class="prevnxtbtn">Next</button>
         </div>
+        <div *ngIf="Rfxheader.Status=='1' && IsComplete()" fxLayout="row" fxLayoutAlign="space-between center" fxFlex
+            class="px-8">
+            <button *ngIf="Permission=='3' || Permission=='1'" mat-button class="savebtn"
+                (click)="SaveRFxClicked(false)">Save</button>
+            <button *ngIf="Permission=='3' || Permission=='2'" mat-button class="releasebtn"
+                (click)="SaveRFxClicked(true)">Release</button>
+        </div>
+        <mat-progress-bar class="progressbar" mode="determinate" [value]="GetProgress()" *ngIf="!RFxID">
+        </mat-progress-bar>
     </div>
     <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
     </mat-progress-spinner>
