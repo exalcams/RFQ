@@ -37,13 +37,13 @@
         <img src="assets/images/rfq/Availability.svg" style="width: 8px;height: 8px;">
     </div>
     <div style="width: 100%;cursor: pointer;" [ngStyle]="{'padding-left':Folded ? '26px' : '30px'}" fxLayout="row"
-        fxLayoutAlign="start center" mat-ripple (click)="logOutClick()">
+        fxLayoutAlign="start center" (click)="logOutClick()">
         <img src="assets/images/rfq/Power.svg" style="width: 16px;margin-right: 26px;">
         <span class="log-text" *ngIf="!Folded">Logout</span>
     </div>
 </div>
 <div fxLayoutAlign="end center" class="py-16">
-    <div mat-ripple>
+    <div>
         <img *ngIf="Folded" src="assets/images/rfq/Expand.svg" style="cursor: pointer;width: 12px;margin-right: 12px;"
             (click)="toggleSidebarFolded()">
         <img *ngIf="!Folded" src="assets/images/rfq/Close.svg" style="cursor: pointer;width: 12px;margin-right: 12px;"
