@@ -69,6 +69,9 @@ body { margin: 0; font-family: "Poppins", "Helvetica Neue", sans-serif; }
 .mat-form-field.mat-form-field-appearance-outline .mat-form-field-infix {
   padding: 6px 0 12px 0 !important;
 }
+.mat-form-field-appearance-outline .mat-form-field-suffix {
+  top: 5px !important;
+}
 .mat-form-field-appearance-outline .mat-form-field-outline-thick {
   color: #5f2cffaf !important;
 }
@@ -81,6 +84,12 @@ body { margin: 0; font-family: "Poppins", "Helvetica Neue", sans-serif; }
 }
 .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
   color: #f44336 !important;
+}
+.mat-menu-item {
+  font-family: Poppins;
+  font-weight: 600;
+  color: #3e485a !important;
+  font-size: 13px;
 }
 // .mat-form-field-appearance-outline .mat-form-field-flex {
 //   height: 42px !important;

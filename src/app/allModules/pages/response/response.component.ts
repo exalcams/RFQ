@@ -119,6 +119,7 @@ export class ResponseComponent implements OnInit {
       RfqType: [''],
       RfqGroup: [''],
       RfqTitle: [''],
+      Plant:[''],
       ValidityStartDate: [''],
       ValidityStartTime:[''],
       ValidityEndDate: [''],
@@ -127,6 +128,8 @@ export class ResponseComponent implements OnInit {
       ResponseStartTime:[''],
       ResponseEndDate: [''],
       ResponseEndTime:[''],
+      EvaluationStartDate:[''],
+      EvaluationStartTime:[''],
       EvaluationEndDate:[''],
       EvaluationEndTime:[''],
       Evaluator:[''],
@@ -172,7 +175,7 @@ export class ResponseComponent implements OnInit {
           this.RFxFormGroup.get("EvaluationEndDate").setValue(this.Rfxheader.EvalEndDate);
           this.RFxFormGroup.get("EvaluationEndTime").setValue(this.Rfxheader.EvalEndTime);
           this.RFxFormGroup.get("Evaluator").setValue(this.Rfxheader.MinEvaluator);
-          this.RFxFormGroup.get("Site").setValue(this.Rfxheader.Site);
+          this.RFxFormGroup.get("Plant").setValue(this.Rfxheader.Plant);
           this.ResH.Client = this.Rfxheader.Client;
           this.ResH.Company = this.Rfxheader.Company;
           this.ResH.RFxID = this.Rfxheader.RFxID;

@@ -76,3 +76,6 @@
         font-weight: 500;
     }
 }
+::ng-deep .rfx-form-field .mat-form-field-flex {
+  height: 44px !important;
+}

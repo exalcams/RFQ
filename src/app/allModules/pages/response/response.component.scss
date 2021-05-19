@@ -1,33 +1,30 @@
 @import "src/@fuse/scss/fuse";
 #rfq-response{
+    background-color: #ffffff;
     .poppins{
         font-family: Poppins;
         font-weight: 600;
     }
     .title{
         @extend .poppins;
-        color: #00061c;
-        font-size: 16px;
+        color: #5f2cff;
+        font-size: 18px;
     }
     .container{
         width: 100%;
-        height: 78vh;
         background-color: white;
         border-radius: 4px;
-        overflow-y: scroll;
+        padding-right: 0 !important; 
     }
     .footer{
-        width: 60%;
-        height: 58px;
-        border-radius: 4px;
-        box-shadow: 0 2px 18px 0 rgba(74, 122, 255, 0.38);
-        background-color: #fdfdfd;
+        width: 100%;
+        height: 60px;
         position: absolute;
-        bottom: 12px;
-        z-index: 1;
+        bottom: 0;
+        z-index: 199;
+        background-color: #f4f4fb;
     }
     .prevnxtbtn{
-        background-color: #e3e3e5;
         @extend .poppins;
         color: #00061c;
         font-size: 12px;
@@ -142,37 +139,91 @@
         color:#2c2c2e;
         margin-left: 10px;
     }
+    .card{
+        box-shadow: none !important;
+        padding: 10px 0px 10px 24px !important;
+        max-height: 80vh;
+        overflow-y: scroll;
+    }
+    .datetime{
+        @extend .poppins;
+        color: #5f2cff;
+        font-size: 12px;
+    }
+    .saveAsDraft{
+        font-size: 10px;
+        @extend .poppins;
+        color:#00bb58 ;
+        margin-left: 10px;
+    }
 }
-::ng-deep .progressbar .mat-progress-bar-fill::after {
-    background-color: #00ba53 !important;
+::ng-deep .rfx-form-field .mat-form-field-flex {
+    height: 44px !important;
 }
 ::ng-deep .tab-group .mat-tab-header{
     background-color: #f4f4fb !important;
     border-radius: 4px;
+    padding: 8px;
 }
 ::ng-deep .mat-ink-bar{
     visibility: hidden !important;
 }
 ::ng-deep .mat-tab-label{
-    padding: 0 !important;
+    padding: 0 16px !important;
     opacity: 1 !important;
     font-family: Poppins;
     font-weight: 600;
     font-size: 12px;
     color: #00061c !important;
+    border-radius: 4px;
+    min-width: 220px !important;
 }
-// ::ng-deep .mat-tab-label:focus{
-//     background-color: #5f2cff;
-//     color: white !important;
-// }
+::ng-deep .mat-tab-label-content {
+    justify-content: space-between !important;
+    width: 100%;
+}
 ::ng-deep .mat-tab-header-pagination-chevron{
     border-color: #0c0c0c66 !important;
 }
 ::ng-deep .mat-tab-labels {
-    justify-content: space-between;
+    justify-content: start;
+    gap: 1rem;
 }
 ::ng-deep .tab-group .mat-tab-label-active{
     background-color: #5f2cff ;
     opacity: 1 !important;
     color: #ffffff !important;
 }
+
+ //Vertical MatTab
+ :host {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  :host ::ng-deep .mat-tab-labels {
+    flex-direction: column;
+  }
+  
+  mat-tab-group {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  :host ::ng-deep .mat-tab-body-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  mat-tab-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  :host ::ng-deep mat-ink-bar {
+    display: none;
+  }

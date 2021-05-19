@@ -152,7 +152,7 @@ export class AwardDetailEvaluationComponent implements OnInit {
           this.RFxFormGroup.get("EvaluationEndDate").setValue(this.Rfxheader.EvalEndDate);
           this.RFxFormGroup.get("EvaluationEndTime").setValue(this.Rfxheader.EvalEndTime);
           this.RFxFormGroup.get("Evaluator").setValue(this.Rfxheader.MinEvaluator);
-          this.RFxFormGroup.get("Site").setValue(this.Rfxheader.Site);
+          this.RFxFormGroup.get("Plant").setValue(this.Rfxheader.Plant);
         }
       }
     );
@@ -261,7 +261,6 @@ export class AwardDetailEvaluationComponent implements OnInit {
     this._RFxService.GetEvalHCsByID(EvalID).subscribe(data=>{
       if(data){
         this.EvalHcs=<EvalHC[]>data;
-        console.log(this.EvalHcs);
       }
     });
   }
@@ -271,6 +270,7 @@ export class AwardDetailEvaluationComponent implements OnInit {
       RfqType: [''],
       RfqGroup: [''],
       RfqTitle: [''],
+      Plant:[''],
       ValidityStartDate: [''],
       ValidityStartTime:[''],
       ValidityEndDate: [''],
@@ -279,6 +279,8 @@ export class AwardDetailEvaluationComponent implements OnInit {
       ResponseStartTime:[''],
       ResponseEndDate: [''],
       ResponseEndTime:[''],
+      EvaluationStartDate:[''],
+      EvaluationStartTime:[''],
       EvaluationEndDate:[''],
       EvaluationEndTime:[''],
       Evaluator:[''],

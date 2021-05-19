@@ -62,6 +62,7 @@ export class EvaluationComponent implements OnInit {
   index: number = 0;
   minDate = new Date();
   selectedIndex: number = 0;
+  EvalRemarks:string="";
 
   constructor(
     public dialog: MatDialog,
@@ -147,7 +148,7 @@ export class EvaluationComponent implements OnInit {
           this.RFxFormGroup.get("EvaluationEndDate").setValue(this.Rfxheader.EvalEndDate);
           this.RFxFormGroup.get("EvaluationEndTime").setValue(this.Rfxheader.EvalEndTime);
           this.RFxFormGroup.get("Evaluator").setValue(this.Rfxheader.MinEvaluator);
-          this.RFxFormGroup.get("Site").setValue(this.Rfxheader.Site);
+          this.RFxFormGroup.get("Plant").setValue(this.Rfxheader.Plant);
         }
       }
     );
@@ -254,6 +255,7 @@ export class EvaluationComponent implements OnInit {
     this._RFxService.GetEvalHeaderByID(RESID,User).subscribe(evalH=>{
       if(evalH){
         this.EvalHeader=<EvalHeader>evalH;
+        this.EvalRemarks=this.EvalHeader.EvalRemarks;
         this.GetEvalHCs(this.EvalHeader.EvalID);
         this.GetEvalICs(this.EvalHeader.EvalID);
       }
@@ -280,6 +282,7 @@ export class EvaluationComponent implements OnInit {
       RfqType: [''],
       RfqGroup: [''],
       RfqTitle: [''],
+      Plant:[''],
       ValidityStartDate: [''],
       ValidityStartTime:[''],
       ValidityEndDate: [''],
@@ -288,6 +291,8 @@ export class EvaluationComponent implements OnInit {
       ResponseStartTime:[''],
       ResponseEndDate: [''],
       ResponseEndTime:[''],
+      EvaluationStartDate:[''],
+      EvaluationStartTime:[''],
       EvaluationEndDate:[''],
       EvaluationEndTime:[''],
       Evaluator:[''],
@@ -332,7 +337,7 @@ export class EvaluationComponent implements OnInit {
     this.EvalView.User=this.currentUserName;
     this.EvalView.Date=new Date();
     this.EvalView.ItemResponded=null;
-    this.EvalView.EvalRemarks=null;
+    this.EvalView.EvalRemarks=this.EvalRemarks;
     this.EvalView.EvalHCs=this.EvalHcs;
     this.EvalView.EvalICs=[];
     if(isRelease){
@@ -369,7 +374,7 @@ export class EvaluationComponent implements OnInit {
     this.EvalView.User=this.currentUserName;
     this.EvalView.Date=new Date();
     this.EvalView.ItemResponded=null;
-    this.EvalView.EvalRemarks=null;
+    this.EvalView.EvalRemarks=this.EvalRemarks;
     this.EvalView.EvalHCs=this.EvalHcs;
     this.EvalView.EvalICs=[];
     if(isRelease){
