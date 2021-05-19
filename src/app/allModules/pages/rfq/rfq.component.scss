@@ -14,25 +14,25 @@
         width: 100%;
         background-color: white;
         border-radius: 4px;
-        overflow-y: scroll;
+        padding-right: 0 !important; 
     }
     .footer{
         width: 100%;
-        height: 70px;
+        height: 60px;
         position: absolute;
         bottom: 0;
+        z-index: 199;
         background-color: #f4f4fb;
     }
     .prevnxtbtn{
-        background-color: #e3e3e5;
         @extend .poppins;
         color: #00061c;
         font-size: 12px;
     }
     .progressbar{
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
+        border-radius: 4px;
         height: 6px;
+        width: 60%;
     }
     table {
         width: 100%;
@@ -46,7 +46,7 @@
     
         td {
           @extend .poppins;
-          font-size: 12px;
+          font-size: 11px;
           color: #3e485a;
           min-width: max-content !important;
         }
@@ -119,10 +119,10 @@
         font-size: 12px;
         color: white;
     }
-    .foreclose{
-        font-size: 12px;
+    .saveAsDraft{
+        font-size: 10px;
         @extend .poppins;
-        color:#10b1e8 ;
+        color:#00bb58 ;
         margin-left: 10px;
     }
     .delete{
@@ -132,7 +132,7 @@
         margin-left: 10px;
     }
     .cancel{
-        font-size: 12px;
+        font-size: 10px;
         @extend .poppins;
         color:#2c2c2e;
         margin-left: 10px;
@@ -148,16 +148,47 @@
     }
     .card{
         box-shadow: none !important;
+        padding: 10px 0px 10px 24px !important;
+        max-height: 80vh;
+        overflow-y: scroll;
+    }
+    .datetime{
+        @extend .poppins;
+        color: #5f2cff;
+        font-size: 12px;
+    }
+    .processtxt{
+        font-family: Poppins-Semibold;
+        font-weight: 500;
+        font-size: 12px;
+        color: #3e485a;
+    }
+    .processcount{
+        font-family: Poppins-Semibold;
+        font-weight: 600;
+        font-size: 12px;
+        color: #394256;
+    }
+    .count-box{
+        height: 26px;
+        width: 46px;
+        border-radius: 4px;
+        background-color: #b5ffb8;
+    }
+    .count-percentage{
+        color: #4db151;
+        @extend .poppins;
+        font-size: 12px;
     }
 }
-::ng-deep .mat-menu-item {
-    font-family: Poppins;
-    font-weight: 600;
-    color: #3e485a !important;
-    font-size: 13px;
+::ng-deep .rfx-form-field .mat-form-field-flex {
+    height: 44px !important;
 }
 ::ng-deep .progressbar .mat-progress-bar-fill::after {
-    background-color: #00ba53 !important;
+    background-color: #4db151 !important;
+}
+::ng-deep .progressbar .mat-progress-bar-buffer {
+    background-color: #b5ffb8 !important;
 }
 ::ng-deep .tab-group .mat-tab-header{
     background-color: #f4f4fb !important;

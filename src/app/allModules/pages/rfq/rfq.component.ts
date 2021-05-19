@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
@@ -31,7 +31,7 @@ import { saveAs } from 'file-saver';
   templateUrl: './rfq.component.html',
   styleUrls: ['./rfq.component.scss']
 })
-export class RfqComponent implements OnInit {
+export class RfqComponent implements OnInit,OnDestroy {
   RFxView: RFxView = new RFxView();
   RFxFormGroup: FormGroup;
   ICFormGroup:FormGroup;
@@ -128,6 +128,9 @@ export class RfqComponent implements OnInit {
     }
     this.Rfxheader.Client = "01";
     this.Rfxheader.Company = "Exa";
+    this.GetRFQMasters();
+    this.GetItemCriterias();
+    this.GetAllTemplates();
     this.InitializeRFxFormGroup();
     if (localStorage.getItem('RFXID') != "-1") {
       this.RFxID = localStorage.getItem('RFXID');
@@ -138,9 +141,6 @@ export class RfqComponent implements OnInit {
     if (this.RFxID) {
       this.GetRFxs();
     }
-    this.GetRFQMasters();
-    this.GetItemCriterias();
-    this.GetAllTemplates();
   }
 
   InitializeRFxFormGroup(): void {
@@ -220,7 +220,6 @@ export class RfqComponent implements OnInit {
     this.GetRFxODsByRFxID(this.RFxID);
     this.GetRFxODAttachmentsByRFxID(this.RFxID);
     this.GetRFxRemarkByRFxID(this.RFxID);
-    this.CompletedSteps=[true,true,true,true,true,true,true,true];
   }
   IsComplete():boolean{
     if(this.CompletedSteps.includes(false)){
@@ -255,6 +254,9 @@ export class RfqComponent implements OnInit {
           if (this.Rfxheader.Status == "2") {
             this.RFxFormGroup.disable();
           }
+          if(this.RFxFormGroup.valid){
+            this.CompletedSteps[0]=true;
+          }
         }
         this.isProgressBarVisibile = false;
       }
@@ -265,6 +267,9 @@ export class RfqComponent implements OnInit {
       (data) => {
         if (data) {
           this.EvaluationDetails = <RFxHC[]>data;
+          if(this.EvaluationDetails.length>0){
+            this.CompletedSteps[2]=true;
+          }
           this.EvaluationDetailsDataSource = new MatTableDataSource(this.EvaluationDetails);
         }
       }
@@ -275,6 +280,9 @@ export class RfqComponent implements OnInit {
       (data) => {
         if (data) {
           this.ItemDetails = <RFxItem[]>data;
+          if(this.ItemDetails.length>0){
+            this.CompletedSteps[3]=true;
+          }
           this.ItemDetailsDataSource = new MatTableDataSource(this.ItemDetails);
         }
       }
@@ -284,10 +292,17 @@ export class RfqComponent implements OnInit {
     this._RFxService.GetRFxICsByRFxID(RFxID).subscribe(
       (data) => {
         if (data) {
-          this.RatingDetails = <RFxIC[]>data;
-          this.ClearFormArray(this.ItemCriteriaFormArray);
-          this.RatingDetails.forEach(element => {
-            this.AddRowToIC(element);
+          const ICs=<RFxIC[]>data;
+          if(ICs.length>0){
+            this.CompletedSteps[1]=true;
+          }
+          this.ItemCriteriaFormArray.controls.forEach(x => {
+            var criteria=x.get("Criteria").value;
+            var ic=ICs.find(t=>t.Text==criteria);
+            if(ic!=undefined){
+              x.get("Weightage").setValue(ic.Weightage);
+              x.get("Consider").setValue(ic.Consider);
+            }
           });
           this.RatingDetailsDataSource.next(this.ItemCriteriaFormArray.controls);
         }
@@ -299,6 +314,9 @@ export class RfqComponent implements OnInit {
       (data) => {
         if (data) {
           this.PartnerDetails = <RFxPartner[]>data;
+          if(this.PartnerDetails.length>0){
+            this.CompletedSteps[4]=true;
+          }
           this.PartnerDetailsDataSource = new MatTableDataSource(this.PartnerDetails);
         }
       }
@@ -310,6 +328,9 @@ export class RfqComponent implements OnInit {
         if (data) {
           this.VendorDetails = [];
           this.Vendors = <RFxVendor[]>data;
+          if(this.Vendors.length>0){
+            this.CompletedSteps[5]=true;
+          }
           this.RFxNewVendors=0;
           this.Vendors.forEach(element => {
             this.GetRFxVendorViewsByRFxID(element.PatnerID);
@@ -334,6 +355,9 @@ export class RfqComponent implements OnInit {
       (data) => {
         if (data) {
           this.ODDetails = <RFxOD[]>data;
+          if(this.ODDetails.length>0){
+            this.CompletedSteps[6]=true;
+          }
           this.ODDetailsDataSource = new MatTableDataSource(this.ODDetails);
         }
       }
@@ -344,6 +368,9 @@ export class RfqComponent implements OnInit {
       (data) => {
         if (data) {
           this.ODAttachDetails = <RFxODAttachment[]>data;
+          if(this.ODAttachDetails.length>0){
+            this.CompletedSteps[7]=true;
+          }
           this.ODAttachDetailsDataSource = new MatTableDataSource(this.ODAttachDetails);
         }
       }
@@ -652,7 +679,7 @@ export class RfqComponent implements OnInit {
   }
   NextClicked(index: number): void {
     if(index == 0){
-      if(this.RFxFormGroup.valid && (this.RFxID == null || this.RFxID=="-1")){
+      if(this.RFxFormGroup.valid){
         this.Rfxheader.Status = "1";
         this.selectedIndex = index + 1;
         this.CompletedSteps[index]=true;
@@ -743,13 +770,15 @@ export class RfqComponent implements OnInit {
   }
     
   SaveRFxClicked(isRelease: boolean) {
-    if (this.Rfxheader.Status == "1" && this.EvaluationDetails.length > 0 && this.ItemDetails.length > 0 && this.PartnerDetails.length > 0 && this.VendorDetails.length > 0 && this.ODDetails.length > 0 && this.ODAttachDetails.length > 0) {
-      const ICFormArray = this.ICFormGroup.get('ItemCriterias') as FormArray;
-      ICFormArray.controls.forEach((x, i) => {
-                this.RatingDetails[i].Consider=x.get('Consider').value;
-                this.RatingDetails[i].Weightage=x.get('Weightage').value;
-      });
-      //console.log(this.RatingDetails);
+    if(!isRelease){
+      if (!this.RFxID || this.RFxID == "-1") {
+        this.CreateRfX(isRelease);
+      }
+      else {
+        this.UpdateRFx(isRelease);
+      }
+    }
+    else if (this.IsComplete()) {
       if (!this.RFxID || this.RFxID == "-1") {
         this.CreateRfX(isRelease);
       }
@@ -760,6 +789,13 @@ export class RfqComponent implements OnInit {
     else {
       this.notificationSnackBarComponent.openSnackBar('Please complete all steps', SnackBarStatus.danger);
     }
+  }
+  GetICValues(){
+    const ICFormArray = this.ICFormGroup.get('ItemCriterias') as FormArray;
+      ICFormArray.controls.forEach((x, i) => {
+                this.RatingDetails[i].Consider=x.get('Consider').value;
+                this.RatingDetails[i].Weightage=x.get('Weightage').value;
+      });
   }
   CreateRfX(isRelease: boolean) {
     this.isProgressBarVisibile = true;
@@ -774,7 +810,13 @@ export class RfqComponent implements OnInit {
     }
     this.RFxView.RFxItems = this.ItemDetails;
     this.RFxView.RFxHCs = this.EvaluationDetails;
-    this.RFxView.RFxICs = this.RatingDetails;
+    if(this.ICFormGroup.valid){
+      this.GetICValues();
+      this.RFxView.RFxICs = this.RatingDetails;
+    }
+    else{
+      this.RFxView.RFxICs = [];
+    }
     this.RFxView.RFxPartners = this.PartnerDetails;
     this.Vendors.forEach(vendor => {
       if(vendor.PatnerID==''){
@@ -866,7 +908,13 @@ export class RfqComponent implements OnInit {
     this.RFxView.ReleasedBy = this.Rfxheader.ReleasedBy;
     this.RFxView.RFxItems = this.ItemDetails;
     this.RFxView.RFxHCs = this.EvaluationDetails;
-    this.RFxView.RFxICs = this.RatingDetails;
+    if(this.ICFormGroup.valid){
+      this.GetICValues();
+      this.RFxView.RFxICs = this.RatingDetails;
+    }
+    else{
+      this.RFxView.RFxICs = [];
+    }
     this.RFxView.RFxPartners = this.PartnerDetails;
     this.Vendors.forEach(vendor => {
       if(vendor.PatnerID==''){
@@ -1032,9 +1080,13 @@ DeleteRFx(RFxID:string){
   });
 }
 GetProgress():number{
-  const oneStep=12.5;
+  const oneStep=11.111111;
   const count=this.CompletedSteps.filter(x=>x==true).length;
   return oneStep*count;
+}
+GetCompletedSteps():number{
+  const count=this.CompletedSteps.filter(x=>x==true).length;
+  return count;
 }
 OpenAttachment(fileName:string){
   var file=this.FilesToUpload.find(t=>t.name==fileName);
@@ -1148,5 +1200,8 @@ SetQuestionTemplate(Template:QuestionTemplateView){
     this.ODDetails.push(criteria);
   });
   this.ODDetailsDataSource=new MatTableDataSource(this.ODDetails);
+}
+ngOnDestroy(){
+  localStorage.removeItem('RFXID');
 }
 }

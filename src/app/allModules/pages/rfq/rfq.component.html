@@ -1,22 +1,21 @@
 <div id="rfq-creation" fxFlex fusePerfectScrollbar>
-    <div fxLayout="column" fxLayoutAlign="start center" class="py-8 px-24">
+    <div fxLayout="column" fxLayoutAlign="start center" class="py-8 pl-24">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem" style="width: 100%;">
             <button mat-icon-button (click)="CancelClicked()">
                 <img src="assets/images/rfq/backbutton.svg" style="width: 24px;">
             </button>
             <label class="title">Create RFx</label>
             <div fxFlex></div>
-            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="4px" fxFlex>
-                <button *ngIf="RFxID!='-1' && RFxID" mat-button (click)="ForecloseClicked()"
-                    style="background-color: transparent;">
-                    <img src="/assets/images/foreclose1.png">
-                    <span class="foreclose">Foreclose</span>
+            <div fxLayout="row" fxLayoutAlign="end center" fxFlex class="mr-16" *ngIf="Rfxheader.Status=='1' || RFxID==null">
+                <button *ngIf="Permission=='3' || Permission=='2'" mat-button style="background-color: transparent;" (click)="SaveRFxClicked(false)">
+                    <img src="/assets/images/rfq/saveAsDraft.svg">
+                    <span class="saveAsDraft">Save as Draft</span>
                 </button>
-                <button *ngIf="RFxID!='-1' && RFxID" mat-button (click)="DeleteClicked()"
+                <!-- <button *ngIf="RFxID!='-1' && RFxID" mat-button (click)="DeleteClicked()"
                     style="background-color: transparent;">
                     <img src="/assets/images/delete.png">
                     <span class="delete">Delete</span>
-                </button>
+                </button> -->
                 <button mat-button (click)="CancelClicked()" style="background-color: transparent;">
                     <img src="/assets/images/cancel.png">
                     <span class="cancel">Cancel</span>
@@ -29,16 +28,26 @@
                     <ng-template mat-tab-label>
                         <div fxLayoutAlign="start center" fxLayoutGap="1rem">
                             <mat-icon style="margin-left: 1rem;"
-                            [ngStyle]="{'color':CompletedSteps[0]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                                [ngStyle]="{'color':CompletedSteps[0]?'#18a421':'#acacac'}">check_circle</mat-icon>
                             <span>General data</span>
                         </div>
                     </ng-template>
                     <mat-card class="card">
                         <form autocomplete="off" [formGroup]="RFxFormGroup">
-                            <div>
-                                <div fxLayout="row" fxLayoutAlign="space-between center"
-                                    style="padding: 2.5rem 2rem 0 2rem;">
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
+                            <div fxLayout="column" fxLayoutGap="8px">
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                    <mat-form-field fxFlex="724px" class="rfx-form-field" appearance="outline">
+                                        <mat-label>Title</mat-label>
+                                        <input matInput type="text" formControlName="RfqTitle" fxFlex>
+                                        <mat-error
+                                            *ngIf="RFxFormGroup.get('RfqTitle').touched && RFxFormGroup.get('RfqTitle').hasError('required')">
+                                            Title is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                    <mat-form-field fxFlex="350px" appearance="outline" class="rfx-form-field">
                                         <mat-label>RFx type</mat-label>
                                         <mat-select formControlName="RfqType" fxFlex disableOptionCentering
                                             panelClass="myPanelClass">
@@ -52,7 +61,7 @@
                                         </mat-error>
                                     </mat-form-field>
 
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
+                                    <mat-form-field fxFlex="350px" appearance="outline" class="rfx-form-field">
                                         <mat-label>Group</mat-label>
                                         <mat-select formControlName="RfqGroup" fxFlex disableOptionCentering
                                             panelClass="myPanelClass">
@@ -64,215 +73,9 @@
                                             Group is required
                                         </mat-error>
                                     </mat-form-field>
-
-                                    <mat-form-field fxFlex=34.125 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Title</mat-label>
-                                        <input matInput type="text" formControlName="RfqTitle" fxFlex>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('RfqTitle').touched && RFxFormGroup.get('RfqTitle').hasError('required')">
-                                            Title is required
-                                        </mat-error>
-                                    </mat-form-field>
-                                    <mat-form-field fxFlex=11.375 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Currency</mat-label>
-                                        <mat-select formControlName="Currency" fxFlex disableOptionCentering
-                                            panelClass="myPanelClass">
-                                            <mat-option *ngFor="let currency of CurrencyList" [value]="currency">
-                                                {{currency}}
-                                            </mat-option>
-                                        </mat-select>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('Currency').touched && RFxFormGroup.get('Currency').hasError('required')">
-                                            Currency is required
-                                        </mat-error>
-                                    </mat-form-field>
-
                                 </div>
-                                <div fxLayout="row" fxLayoutAlign="space-between center"
-                                    style="padding: 2rem 2rem 0 2rem;">
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Validity start date</mat-label>
-                                        <input [min]="minDate" matInput [matDatepicker]="picker1"
-                                            formControlName="ValidityStartDate" fxFlex>
-                                        <mat-datepicker-toggle matSuffix [for]="picker1">
-                                            <img src="assets/images/calendar.png" matDatePickerToggleIcon>
-                                        </mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('ValidityStartDate').touched && RFxFormGroup.get('ValidityStartDate').hasError('required')">
-                                            Validity start date is required
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Validity start time</mat-label>
-                                        <input matInput [ngxTimepicker]="picker9" formControlName="ValidityStartTime"
-                                            fxFlex>
-                                        <ngx-material-timepicker #picker9></ngx-material-timepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('ValidityStartTime').touched && RFxFormGroup.get('ValidityStartTime').hasError('required')">
-                                            Validity start time is required
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Validity end date</mat-label>
-                                        <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
-                                            [matDatepicker]="picker2" formControlName="ValidityEndDate" fxFlex>
-                                        <mat-datepicker-toggle matSuffix [for]="picker2">
-                                            <img src="assets/images/calendar.png" matDatePickerToggleIcon>
-                                        </mat-datepicker-toggle>
-                                        <mat-datepicker #picker2></mat-datepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('ValidityEndDate').touched && RFxFormGroup.get('ValidityEndDate').hasError('required')">
-                                            Validity end date is required
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Validity end time</mat-label>
-                                        <input matInput [ngxTimepicker]="picker10" formControlName="ValidityEndTime"
-                                            fxFlex>
-                                        <ngx-material-timepicker #picker10></ngx-material-timepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('ValidityEndTime').touched && RFxFormGroup.get('ValidityEndTime').hasError('required')">
-                                            Validity end time is required
-                                        </mat-error>
-                                        <mat-error *ngIf="!RFxFormGroup.get('ValidityEndTime').hasError('required') &&
-                                        RFxFormGroup.get('ValidityEndTime').hasError('EndTimeValidator')">
-                                            Please enter valid time
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-
-                                <div fxLayout="row" fxLayoutAlign="space-between center"
-                                    style="padding: 2rem 2rem 0px;">
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Response start date</mat-label>
-                                        <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
-                                            [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker3"
-                                            formControlName="ResponseStartDate" fxFlex>
-                                        <mat-datepicker-toggle matSuffix [for]="picker3">
-                                            <img src="assets/images/calendar.png" matDatePickerToggleIcon>
-                                        </mat-datepicker-toggle>
-                                        <mat-datepicker #picker3></mat-datepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('ResponseStartDate').touched && RFxFormGroup.get('ResponseStartDate').hasError('required')">
-                                            Response Start Date is required
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Response start time</mat-label>
-                                        <input matInput [ngxTimepicker]="picker6" formControlName="ResponseStartTime"
-                                            fxFlex>
-                                        <ngx-material-timepicker #picker6></ngx-material-timepicker>
-                                        <mat-error *ngIf="!RFxFormGroup.get('ResponseStartTime').hasError('required') &&
-                                        RFxFormGroup.get('ResponseStartTime').hasError('ResStartTimeValidator')">
-                                            Please enter valid time
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Response end date</mat-label>
-                                        <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
-                                            [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker4"
-                                            formControlName="ResponseEndDate" fxFlex>
-                                        <mat-datepicker-toggle matSuffix [for]="picker4">
-                                            <img src="assets/images/calendar.png" matDatePickerToggleIcon>
-                                        </mat-datepicker-toggle>
-                                        <mat-datepicker #picker4></mat-datepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('ResponseEndDate').touched && RFxFormGroup.get('ResponseEndDate').hasError('required')">
-                                            Response End Date is required
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Response end time</mat-label>
-                                        <input matInput [ngxTimepicker]="picker7" formControlName="ResponseEndTime"
-                                            fxFlex>
-                                        <ngx-material-timepicker #picker7></ngx-material-timepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('ResponseEndTime').touched && RFxFormGroup.get('ResponseEndTime').hasError('required')">
-                                            Response End Time is required
-                                        </mat-error>
-                                        <mat-error *ngIf="!RFxFormGroup.get('ResponseEndTime').hasError('required') &&
-                                        RFxFormGroup.get('ResponseEndTime').hasError('ResEndTimeValidator')">
-                                            Please enter valid time
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="3%"
-                                    style="padding: 2rem 2rem 0px;">
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Evaluation start date</mat-label>
-                                        <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
-                                            [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker13"
-                                            formControlName="EvaluationStartDate" fxFlex>
-                                        <mat-datepicker-toggle matSuffix [for]="picker13">
-                                            <img src="assets/images/calendar.png" matDatePickerToggleIcon>
-                                        </mat-datepicker-toggle>
-                                        <mat-datepicker #picker13></mat-datepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('EvaluationStartDate').touched && RFxFormGroup.get('EvaluationStartDate').hasError('required')">
-                                            Evaluation Start Date is required
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Evaluation start time</mat-label>
-                                        <input matInput [ngxTimepicker]="picker12" formControlName="EvaluationStartTime"
-                                            fxFlex>
-                                        <ngx-material-timepicker #picker12></ngx-material-timepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('EvaluationStartTime').touched && RFxFormGroup.get('EvaluationStartTime').hasError('required')">
-                                            Evaluation Start Time is required
-                                        </mat-error>
-                                        <mat-error *ngIf="!RFxFormGroup.get('EvaluationStartTime').hasError('required') &&
-                                        RFxFormGroup.get('EvaluationStartTime').hasError('EvalStartTimeValidator')">
-                                            Please enter valid time
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Evaluation end date</mat-label>
-                                        <input matInput [min]="RFxFormGroup.get('ResponseEndDate').value"
-                                            [max]="RFxFormGroup.get('ValidityEndDate').value" [matDatepicker]="picker5"
-                                            formControlName="EvaluationEndDate" fxFlex>
-                                        <mat-datepicker-toggle matSuffix [for]="picker5">
-                                            <img src="assets/images/calendar.png" matDatePickerToggleIcon>
-                                        </mat-datepicker-toggle>
-                                        <mat-datepicker #picker5></mat-datepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('EvaluationEndDate').touched && RFxFormGroup.get('EvaluationEndDate').hasError('required')">
-                                            Evaluation End Date is required
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
-                                        <mat-label>Evaluation end time</mat-label>
-                                        <input matInput [ngxTimepicker]="picker8" formControlName="EvaluationEndTime"
-                                            fxFlex>
-                                        <ngx-material-timepicker #picker8></ngx-material-timepicker>
-                                        <mat-error
-                                            *ngIf="RFxFormGroup.get('EvaluationEndTime').touched && RFxFormGroup.get('EvaluationEndTime').hasError('required')">
-                                            Evaluation End Time is required
-                                        </mat-error>
-                                        <mat-error *ngIf="!RFxFormGroup.get('EvaluationEndTime').hasError('required') &&
-                                        RFxFormGroup.get('EvaluationEndTime').hasError('EvalEndTimeValidator')">
-                                            Please enter valid time
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                </div>
-
-                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="3%"
-                                    style="padding: 2rem;">
-
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                    <mat-form-field fxFlex="350px" appearance="outline" class="rfx-form-field">
                                         <mat-label>Minimum no. of evaluators</mat-label>
                                         <input matInput formControlName="Evaluator"
                                             oninput="this.value = Math.abs(this.value)" fxFlex type="number">
@@ -285,7 +88,22 @@
                                             Only {{Evaluators.length}} evaluators are there
                                         </mat-error>
                                     </mat-form-field>
-                                    <mat-form-field fxFlex=22.75 style="font-size: 14px;" appearance="outline">
+                                    <mat-form-field fxFlex="350px" appearance="outline" class="rfx-form-field">
+                                        <mat-label>Currency</mat-label>
+                                        <mat-select formControlName="Currency" fxFlex disableOptionCentering
+                                            panelClass="myPanelClass">
+                                            <mat-option *ngFor="let currency of CurrencyList" [value]="currency">
+                                                {{currency}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="RFxFormGroup.get('Currency').touched && RFxFormGroup.get('Currency').hasError('required')">
+                                            Currency is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                    <mat-form-field fxFlex="350px" appearance="outline" class="rfx-form-field">
                                         <mat-label>Plant</mat-label>
                                         <mat-select formControlName="Plant" fxFlex disableOptionCentering
                                             panelClass="myPanelClass">
@@ -299,6 +117,191 @@
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
+                                <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                    <div fxLayout="column" fxLayoutGap="8px">
+                                        <span class="datetime">Validity</span>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                            <mat-form-field fxFlex="163px" appearance="outline" class="rfx-form-field">
+                                                <input [min]="minDate" matInput [matDatepicker]="picker1"
+                                                    formControlName="ValidityStartDate" fxFlex placeholder="Sart Date">
+                                                <img src="assets/images/rfq/date_picker.svg" width="16px"
+                                                    class="clickable" (click)="picker1.open()">
+                                                <mat-datepicker #picker1></mat-datepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('ValidityStartDate').touched && RFxFormGroup.get('ValidityStartDate').hasError('required')">
+                                                    Validity start date is required
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [ngxTimepicker]="picker9"
+                                                    formControlName="ValidityStartTime" fxFlex placeholder="Start Time">
+                                                <img src="assets/images/rfq/time_picker.svg" width="16px">
+                                                <ngx-material-timepicker #picker9></ngx-material-timepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('ValidityStartTime').touched && RFxFormGroup.get('ValidityStartTime').hasError('required')">
+                                                    Validity start time is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
+                                                    [matDatepicker]="picker2" formControlName="ValidityEndDate" fxFlex
+                                                    placeholder="End Date">
+                                                <img src="assets/images/rfq/date_picker.svg" width="16px"
+                                                    class="clickable" (click)="picker2.open()">
+                                                <mat-datepicker #picker2></mat-datepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('ValidityEndDate').touched && RFxFormGroup.get('ValidityEndDate').hasError('required')">
+                                                    Validity end date is required
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [ngxTimepicker]="picker10"
+                                                    formControlName="ValidityEndTime" fxFlex placeholder="End Time">
+                                                <img src="assets/images/rfq/time_picker.svg" width="16px">
+                                                <ngx-material-timepicker #picker10></ngx-material-timepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('ValidityEndTime').touched && RFxFormGroup.get('ValidityEndTime').hasError('required')">
+                                                    Validity end time is required
+                                                </mat-error>
+                                                <mat-error *ngIf="!RFxFormGroup.get('ValidityEndTime').hasError('required') &&
+                                                RFxFormGroup.get('ValidityEndTime').hasError('EndTimeValidator')">
+                                                    Please enter valid time
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="8px">
+                                        <span class="datetime">Response</span>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [min]="RFxFormGroup.get('ValidityStartDate').value"
+                                                    [max]="RFxFormGroup.get('ValidityEndDate').value"
+                                                    [matDatepicker]="picker3" formControlName="ResponseStartDate" fxFlex
+                                                    placeholder="Start Date">
+                                                <img src="assets/images/rfq/date_picker.svg" width="16px"
+                                                    class="clickable" (click)="picker3.open()">
+                                                <mat-datepicker #picker3></mat-datepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('ResponseStartDate').touched && RFxFormGroup.get('ResponseStartDate').hasError('required')">
+                                                    Response Start Date is required
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [ngxTimepicker]="picker6"
+                                                    formControlName="ResponseStartTime" fxFlex placeholder="Start Time">
+                                                <img src="assets/images/rfq/time_picker.svg" width="16px">
+                                                <ngx-material-timepicker #picker6></ngx-material-timepicker>
+                                                <mat-error
+                                                    *ngIf="!RFxFormGroup.get('ResponseStartTime').hasError('required') &&
+                                                RFxFormGroup.get('ResponseStartTime').hasError('ResStartTimeValidator')">
+                                                    Please enter valid time
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
+                                                    [max]="RFxFormGroup.get('ValidityEndDate').value"
+                                                    [matDatepicker]="picker4" formControlName="ResponseEndDate" fxFlex
+                                                    placeholder="End Date">
+                                                <img src="assets/images/rfq/date_picker.svg" width="16px"
+                                                    class="clickable" (click)="picker4.open()">
+                                                <mat-datepicker #picker4></mat-datepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('ResponseEndDate').touched && RFxFormGroup.get('ResponseEndDate').hasError('required')">
+                                                    Response End Date is required
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [ngxTimepicker]="picker7"
+                                                    formControlName="ResponseEndTime" fxFlex placeholder="End Time">
+                                                <img src="assets/images/rfq/time_picker.svg" width="16px">
+                                                <ngx-material-timepicker #picker7></ngx-material-timepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('ResponseEndTime').touched && RFxFormGroup.get('ResponseEndTime').hasError('required')">
+                                                    Response End Time is required
+                                                </mat-error>
+                                                <mat-error *ngIf="!RFxFormGroup.get('ResponseEndTime').hasError('required') &&
+                                                RFxFormGroup.get('ResponseEndTime').hasError('ResEndTimeValidator')">
+                                                    Please enter valid time
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="8px">
+                                        <span class="datetime">Evaluation</span>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [min]="RFxFormGroup.get('ResponseStartDate').value"
+                                                    [max]="RFxFormGroup.get('ValidityEndDate').value"
+                                                    [matDatepicker]="picker13" formControlName="EvaluationStartDate"
+                                                    fxFlex placeholder="Start Date">
+                                                <img src="assets/images/rfq/date_picker.svg" width="16px"
+                                                    class="clickable" (click)="picker13.open()">
+                                                <mat-datepicker #picker13></mat-datepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('EvaluationStartDate').touched && RFxFormGroup.get('EvaluationStartDate').hasError('required')">
+                                                    Evaluation Start Date is required
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [ngxTimepicker]="picker12"
+                                                    formControlName="EvaluationStartTime" fxFlex
+                                                    placeholder="Start Time">
+                                                <img src="assets/images/rfq/time_picker.svg" width="16px">
+                                                <ngx-material-timepicker #picker12></ngx-material-timepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('EvaluationStartTime').touched && RFxFormGroup.get('EvaluationStartTime').hasError('required')">
+                                                    Evaluation Start Time is required
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="!RFxFormGroup.get('EvaluationStartTime').hasError('required') &&
+                                                RFxFormGroup.get('EvaluationStartTime').hasError('EvalStartTimeValidator')">
+                                                    Please enter valid time
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [min]="RFxFormGroup.get('ResponseEndDate').value"
+                                                    [max]="RFxFormGroup.get('ValidityEndDate').value"
+                                                    [matDatepicker]="picker5" formControlName="EvaluationEndDate" fxFlex
+                                                    placeholder="End Date">
+                                                <img src="assets/images/rfq/date_picker.svg" width="16px"
+                                                    class="clickable" (click)="picker5.open()">
+                                                <mat-datepicker #picker5></mat-datepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('EvaluationEndDate').touched && RFxFormGroup.get('EvaluationEndDate').hasError('required')">
+                                                    Evaluation End Date is required
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="163px" class="rfx-form-field">
+                                                <input matInput [ngxTimepicker]="picker8"
+                                                    formControlName="EvaluationEndTime" fxFlex placeholder="End Time">
+                                                <img src="assets/images/rfq/time_picker.svg" width="16px">
+                                                <ngx-material-timepicker #picker8></ngx-material-timepicker>
+                                                <mat-error
+                                                    *ngIf="RFxFormGroup.get('EvaluationEndTime').touched && RFxFormGroup.get('EvaluationEndTime').hasError('required')">
+                                                    Evaluation End Time is required
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="!RFxFormGroup.get('EvaluationEndTime').hasError('required') &&
+                                                RFxFormGroup.get('EvaluationEndTime').hasError('EvalEndTimeValidator')">
+                                                    Please enter valid time
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </form>
                     </mat-card>
@@ -307,7 +310,7 @@
                     <ng-template mat-tab-label>
                         <div fxLayoutAlign="start center" fxLayoutGap="1rem">
                             <mat-icon style="margin-left: 1rem;"
-                            [ngStyle]="{'color':CompletedSteps[1]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                                [ngStyle]="{'color':CompletedSteps[1]?'#18a421':'#acacac'}">check_circle</mat-icon>
                             <span>System Criteria</span>
                         </div>
                     </ng-template>
@@ -360,7 +363,7 @@
                     <ng-template mat-tab-label>
                         <div fxLayoutAlign="start center" fxLayoutGap="1rem">
                             <mat-icon style="margin-left: 1rem;"
-                            [ngStyle]="{'color':CompletedSteps[2]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                                [ngStyle]="{'color':CompletedSteps[2]?'#18a421':'#acacac'}">check_circle</mat-icon>
                             <span>Evaluation Criteria</span>
                         </div>
                         <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==2?'#ffffff':'#18a421'}"
@@ -415,7 +418,7 @@
                     <ng-template mat-tab-label>
                         <div fxLayoutAlign="start center" fxLayoutGap="1rem">
                             <mat-icon style="margin-left: 1rem;"
-                            [ngStyle]="{'color':CompletedSteps[3]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                                [ngStyle]="{'color':CompletedSteps[3]?'#18a421':'#acacac'}">check_circle</mat-icon>
                             <span>Item</span>
                         </div>
                         <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==3?'#ffffff':'#18a421'}"
@@ -493,7 +496,7 @@
                     <ng-template mat-tab-label>
                         <div fxLayoutAlign="start center" fxLayoutGap="1rem">
                             <mat-icon style="margin-left: 1rem;"
-                            [ngStyle]="{'color':CompletedSteps[4]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                                [ngStyle]="{'color':CompletedSteps[4]?'#18a421':'#acacac'}">check_circle</mat-icon>
                             <span>Partners</span>
                         </div>
                         <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==4?'#ffffff':'#18a421'}"
@@ -541,7 +544,7 @@
                     <ng-template mat-tab-label>
                         <div fxLayoutAlign="start center" fxLayoutGap="1rem">
                             <mat-icon style="margin-left: 1rem;"
-                            [ngStyle]="{'color':CompletedSteps[5]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                                [ngStyle]="{'color':CompletedSteps[5]?'#18a421':'#acacac'}">check_circle</mat-icon>
                             <span>Vendors</span>
                         </div>
                         <div class="square px-8" [ngStyle]="{'background-color':selectedIndex==5?'#ffffff':'#18a421'}"
@@ -612,7 +615,7 @@
                     <ng-template mat-tab-label>
                         <div fxLayoutAlign="start center" fxLayoutGap="1rem">
                             <mat-icon style="margin-left: 1rem;"
-                            [ngStyle]="{'color':CompletedSteps[6]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                                [ngStyle]="{'color':CompletedSteps[6]?'#18a421':'#acacac'}">check_circle</mat-icon>
                             <span>Questions</span>
                         </div>
                     </ng-template>
@@ -671,7 +674,7 @@
                     <ng-template mat-tab-label>
                         <div fxLayoutAlign="start center" fxLayoutGap="1rem">
                             <mat-icon style="margin-left: 1rem;"
-                            [ngStyle]="{'color':CompletedSteps[7]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                                [ngStyle]="{'color':CompletedSteps[7]?'#18a421':'#acacac'}">check_circle</mat-icon>
                             <span>Documents</span>
                         </div>
                     </ng-template>
@@ -721,7 +724,7 @@
                     <ng-template mat-tab-label>
                         <div fxLayoutAlign="start center" fxLayoutGap="1rem">
                             <mat-icon style="margin-left: 1rem;"
-                            [ngStyle]="{'color':CompletedSteps[8]?'#18a421':'#acacac'}">check_circle</mat-icon>
+                                [ngStyle]="{'color':CompletedSteps[8]?'#18a421':'#acacac'}">check_circle</mat-icon>
                             <span>Text</span>
                         </div>
                     </ng-template>
@@ -731,10 +734,11 @@
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
                                     <label class="tab-title">Remarks</label>
                                 </div>
-                                <mat-form-field style="font-size: 14px;" appearance="outline">
+                                <mat-form-field appearance="outline">
                                     <textarea matInput fxFlex [formControl]="Remarks"
                                         [disabled]="Rfxheader.Status!='1'"></textarea>
-                                        <mat-error *ngIf="Remarks.touched && Remarks.hasError('required')">Please enter your remarks</mat-error>
+                                    <mat-error *ngIf="Remarks.touched && Remarks.hasError('required')">Please enter your
+                                        remarks</mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -743,24 +747,40 @@
             </mat-tab-group>
         </div>
     </div>
-    <div class="footer" fxLayout="column" fxLayoutAlign="space-between"
-        *ngIf="Rfxheader.Status=='1' || !Rfxheader.Status">
-        <div fxLayout="row" fxLayoutAlign="start center" class="px-8 pt-8" *ngIf="!IsComplete()">
-            <button *ngIf="selectedIndex!=0" (click)="PreviousClicked(selectedIndex)" mat-button
-                class="prevnxtbtn">Previous</button>
+    <div class="footer px-24" fxLayout="row" fxLayoutAlign="space-between center"
+        *ngIf="Rfxheader.Status=='1' || RFxID==null">
+        <div fxFlex fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="24px">
+            <span>
+                <span class="processtxt">Process completed : </span>
+                <span class="processcount">{{GetCompletedSteps()}}</span>
+            </span>
+            <mat-progress-bar class="progressbar" mode="determinate" [value]="GetProgress()">
+            </mat-progress-bar>
+            <div fxLayoutAlign="center center" class="count-box">
+                <span class="count-percentage">{{GetProgress() | number: '1.0-0'}}%</span>
+            </div>
+        </div>
+        <div fxFlex="144px" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="24px" *ngIf="!IsComplete()">
+            <span fxLayoutAlign="start center" fxLayoutGap="8px" *ngIf="selectedIndex!=0" (click)="PreviousClicked(selectedIndex)"
+                class="prevnxtbtn clickable">
+                <img src="assets/images/rfq/nextprev.svg">
+                <span>Previous</span>
+            </span>
             <div fxFlex></div>
-            <button *ngIf="selectedIndex!=8" (click)="NextClicked(selectedIndex)" mat-button
-                class="prevnxtbtn">Next</button>
+            <span fxLayoutAlign="center center" fxLayoutGap="8px" *ngIf="selectedIndex!=8" (click)="NextClicked(selectedIndex)"
+                class="prevnxtbtn clickable">
+                <span>Next</span>
+                <img src="assets/images/rfq/nextprev.svg" style="transform: rotate(180deg);">
+            </span>
         </div>
-        <div *ngIf="Rfxheader.Status=='1' && IsComplete()" fxLayout="row" fxLayoutAlign="space-between center" fxFlex
-            class="px-8">
-            <button *ngIf="Permission=='3' || Permission=='1'" mat-button class="savebtn"
-                (click)="SaveRFxClicked(false)">Save</button>
-            <button *ngIf="Permission=='3' || Permission=='2'" mat-button class="releasebtn"
-                (click)="SaveRFxClicked(true)">Release</button>
+        <div fxFlex="144px" *ngIf="Rfxheader.Status=='1' && IsComplete()" fxLayout="row" fxLayoutAlign="end center">
+            <span fxLayoutAlign="center center" fxLayoutGap="8px" *ngIf="Permission=='3' || Permission=='2'" (click)="SaveRFxClicked(true)"
+                class="prevnxtbtn clickable">
+                <span>Release</span>
+                <img src="assets/images/rfq/releasetick.svg">
+            </span>
         </div>
-        <mat-progress-bar class="progressbar" mode="determinate" [value]="GetProgress()" *ngIf="!RFxID">
-        </mat-progress-bar>
+
     </div>
     <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
     </mat-progress-spinner>
