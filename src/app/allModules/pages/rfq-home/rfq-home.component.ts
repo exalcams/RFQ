@@ -1,3 +1,4 @@
+import { animate, animateChild, query, sequence, stagger, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
@@ -31,7 +32,30 @@ export type ChartOptions = {
 @Component({
   selector: 'app-rfq-home',
   templateUrl: './rfq-home.component.html',
-  styleUrls: ['./rfq-home.component.scss']
+  styleUrls: ['./rfq-home.component.scss'],
+  animations: [trigger('blub', [
+    transition(':leave', [
+      style({ background: 'pink' }),
+      query('*', stagger(-150, [animateChild()]), { optional: true })
+    ]),
+  ]),
+
+  trigger('fadeOut', [
+    state('void', style({ background: 'pink', borderBottomColor: 'pink', opacity: 0, transform: 'translateX(-550px)', 'box-shadow': 'none' })),
+    transition('void => *', sequence([
+      animate(".5s ease")
+    ])),
+    transition('* => void', [animate("5s ease")])
+  ]),
+
+  trigger('rotatedState', [
+    state('default', style({ transform: 'rotate(0)' })),
+    state('rotated', style({ transform: 'rotate(90deg)' })),
+    transition('rotated => default', animate('1500ms ease-out')),
+    transition('default => rotated', animate('400ms ease-in'))
+  ])
+
+  ],
 })
 export class RfqHomeComponent implements OnInit, OnDestroy {
   @ViewChild("overviewchart") chart: ChartComponent;
@@ -55,6 +79,8 @@ export class RfqHomeComponent implements OnInit, OnDestroy {
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsNewHeader: boolean = true;
   SelectedTab: string = "1";
+  state: string = 'default';
+  filter: boolean = true;
 
   constructor(private route: Router,
     private _RFxService: RFxService,
@@ -63,6 +89,14 @@ export class RfqHomeComponent implements OnInit, OnDestroy {
 
   }
 
+  rotate() {
+    this.filter = false;
+    this.state = (this.state === 'default' ? 'rotated' : 'default');
+  }
+  rotate1() {
+    this.filter = true;
+    this.state = (this.state === 'rotated' ? 'default' : 'rotated');
+  }
   ngOnInit(): void {
     const retrievedObject = localStorage.getItem('authorizationData');
     //console.log(retrievedObject);   
@@ -135,7 +169,7 @@ export class RfqHomeComponent implements OnInit, OnDestroy {
         }
       }
     );
-     this._RFxService.GetAllRFxHDocumets('5').subscribe(
+    this._RFxService.GetAllRFxHDocumets('5').subscribe(
       (data) => {
         if (data) {
           this.ClosedHeaderDetails = data;
@@ -156,15 +190,15 @@ export class RfqHomeComponent implements OnInit, OnDestroy {
         width: 280,
         height: 'auto',
         events: {
-          dataPointSelection:(event, chartContext, config) => {
+          dataPointSelection: (event, chartContext, config) => {
             if (config.dataPointIndex == 0) {
-              this.LoadTableSource(this.RespondedHeaderDetails,"3");
+              this.LoadTableSource(this.RespondedHeaderDetails, "3");
             }
             if (config.dataPointIndex == 1) {
-              this.LoadTableSource(this.EvaluatedHeaderDetails,"4");
+              this.LoadTableSource(this.EvaluatedHeaderDetails, "4");
             }
             if (config.dataPointIndex == 2) {
-              this.LoadTableSource(this.ClosedHeaderDetails,"5");
+              this.LoadTableSource(this.ClosedHeaderDetails, "5");
             }
             if (config.dataPointIndex == 3) {
               this.route.navigate(['pages/awardreport']);
@@ -181,7 +215,7 @@ export class RfqHomeComponent implements OnInit, OnDestroy {
           fontSize: '10px',
           fontFamily: 'Poppins',
           fontWeight: '600',
-          colors: ['#083a6f', '#033283', '#1665f0', '#0fb752']
+          colors: ['#083a6f', '#033283', '#1665f0', '#0fb752'],
         },
         dropShadow: {
           enabled: false,

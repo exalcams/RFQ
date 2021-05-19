@@ -105,6 +105,7 @@ body { margin: 0; font-family: "Poppins", "Helvetica Neue", sans-serif; }
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 200;
 }
+
 .progressBarPostion {
   position: absolute !important;
   top: 250px;
@@ -118,8 +119,8 @@ body { margin: 0; font-family: "Poppins", "Helvetica Neue", sans-serif; }
   background: #5f2cff !important;
   color: white;
   position: relative;
-  left: 10px;
-  top: 4px;
+  top: 5px !important;
+  left: 8px !important;
   // right: 10px;
 }
 .mat-accent .mat-input-element {

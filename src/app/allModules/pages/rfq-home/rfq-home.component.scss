@@ -34,6 +34,10 @@
     background-color:#f5f5f5;
     // color: #acacac;
   }
+  .search::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #acacac;
+    // opacity: 1; /* Firefox */
+  }
   .createbtn{
     border-radius: 4px;
     @extend .poppins;
@@ -48,7 +52,18 @@
       width: 160px;
     border-radius: 4px;
     background-color: #ffffff;
-    border: 2px solid #acacac;
+    border: 1px solid #acacac;
+  }
+  .tab1:hover{
+    background-color: #f9f7ff;
+    // border: 1px solid #5f2cff;
+  }
+  .filter
+  {
+    @extend .poppins;
+    font-size: 10px;
+     margin-left: -1.5em;
+    color: #acacac;
   }
   .duefor{
       @extend .poppins;
@@ -56,6 +71,14 @@
       font-size: 12px;
       width: 100%;
   }
+  .table-container {
+    height: 400px;
+    overflow: auto;
+    /*
+    other CSS properties
+     */
+  }
+  
   .status{
       @extend .poppins;
       color: #00061c;
@@ -80,6 +103,9 @@
     // color: #00061c;
     font-size: 16px;
     width: 100%;
+  }
+  .table-container::-webkit-scrollbar {
+    display: none;
   }
   .view{
     @extend .poppins;
@@ -127,6 +153,22 @@
     .pointer{
         cursor: pointer;
     }
+    .mat_th1{
+      color: #ffffff;
+      background-color: #5f2cff;
+       /* border-radius: 9px; */
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      // border-top-right-radius: 4px;
+      // border-bottom-right-radius: 4px;
+    }
+    .mat_th2{
+      color: #ffffff;
+      background-color: #5f2cff;
+       /* border-radius: 9px; */
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
     table {
         width: 100%;
     
@@ -150,6 +192,10 @@
     
         tr {
           height: 50px;
+          border-radius: 4px !important;
+        }
+        tr.mat-header-row {
+          border-radius: 4px;
         }
         th.mat-header-cell {
           border-bottom: 4px solid #f4f4fb;
@@ -157,8 +203,22 @@
     }
     .menu-item{
         @extend .poppins;
+        font-size: 11px;
         color: #3e485a;
     }
+    .mat-paginator-icon {
+      width: 28px;
+      fill: currentColor;
+      color: #5f2cff;
+  }
+  //   .mat-menu-item {
+  //     font-family: Poppins;
+  //     font-weight: 600;
+  //     color: #3e485a !important;
+  //     font-size: 13px;
+  //     height: 40px;
+  //     line-height: 30px;
+  // }
     .tab-highlight1{
       border: 2px solid #5f2cff;
       background-color: #e8e8ff;
