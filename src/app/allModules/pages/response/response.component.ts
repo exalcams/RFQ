@@ -502,6 +502,7 @@ export class ResponseComponent implements OnInit {
     }
   }
   OpenResItemDialog(index, RFxItem:RFxItem) {
+    this.RespondedI[index].Attachments=[];
     var resDocs=this.ResODAttachment.filter(x=>x.Client==RFxItem.Client && x.Company==RFxItem.Company && x.DocumentTitle==RFxItem.Item);
     this.ResItemFiles.forEach(element => {
       if(resDocs.filter(x=>x.DocumentName==element.name).length>0){

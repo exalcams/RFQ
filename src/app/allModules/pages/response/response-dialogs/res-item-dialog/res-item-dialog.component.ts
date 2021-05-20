@@ -37,7 +37,7 @@ export class ResItemDialogComponent implements OnInit {
   ngOnInit() {
     this.InitializeDialogueFormGroup();
     this.DisableRFxItem();
-    if(this.ResItem.LeadTimeRemark){
+    if(this.ResItem.LeadTime!=this.rfxitem.LeadTime){
       this.ResItemFormGroup.get('LeadTimeAccept').setValue('No');
     }
     else{
@@ -76,6 +76,7 @@ export class ResItemDialogComponent implements OnInit {
     this.ResItemFormGroup=this._formBuilder.group({
       Price:[this.ResItem.Price,[Validators.required,Validators.max(parseInt(this.rfxitem.BiddingPriceHigh))]],
       USPRemark:[this.ResItem.USPRemark],
+      LeadTime:[this.ResItem.LeadTime],
       PriceRating:[this.ResItem.PriceRating],
       LeadTimeRating:[this.ResItem.LeadTimeRating],
       LeadTimeAccept:[null,Validators.required],
@@ -132,7 +133,7 @@ onRemove(event) {
 
 ValueSelected(type:string){
     if(type == "No"){
-      this.DialogueFormGroup.get('LeadTimeRemark').setValidators(Validators.required);
+      this.DialogueFormGroup.get('LeadTime').setValidators(Validators.required);
     }
 }
 Save(){
@@ -141,13 +142,15 @@ Save(){
     this.ResItem.Company=this.rfxitem.Company;
     this.ResItem.RFxID=this.rfxitem.RFxID;
     this.ResItem.Price=this.ResItemFormGroup.get('Price').value;
-    this.ResItem.LeadTime=this.DialogueFormGroup.get('LeadTime').value;
+    this.ResItem.LeadTime=this.ResItemFormGroup.get('LeadTime').value;
+    if(this.ResItemFormGroup.get('LeadTimeAccept').value=="Yes"){
+      this.ResItem.LeadTime=this.rfxitem.LeadTime;
+    }
     this.ResItem.USPRemark=this.ResItemFormGroup.get('USPRemark').value;
     this.ResItem.PriceRating=this.ResItemFormGroup.get('PriceRating').value;
     this.ResItem.LeadTimeRating=this.ResItemFormGroup.get('LeadTimeRating').value;
     this.ResItem.LeadTimeRemark=this.ResItemFormGroup.get('LeadTimeRemark').value;
     var Result={data:this.ResItem,Attachments:this.ResItemFiles,Docs:this.ResODAttachments};
-    // console.log(Result);
     this.dialogRef.close(Result);
   }
   else{

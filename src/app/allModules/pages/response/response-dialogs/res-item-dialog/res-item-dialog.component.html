@@ -144,9 +144,9 @@
                   <mat-form-field *ngIf="ResItemFormGroup.get('LeadTimeAccept').value=='No'" fxFlex=30
                       appearance="outline">
                       <mat-label>Proposed LeadTime</mat-label>
-                      <input matInput formControlName="LeadTimeRemark" type="number" min=0 fxFlex autocomplete="off">
+                      <input matInput formControlName="LeadTime" type="number" oninput="this.value = Math.abs(this.value)" fxFlex autocomplete="off">
                       <mat-error
-                          *ngIf="ResItemFormGroup.get('LeadTimeRemark').touched && ResItemFormGroup.get('LeadTimeRemark').hasError('required')">
+                          *ngIf="ResItemFormGroup.get('LeadTime').touched && ResItemFormGroup.get('LeadTime').hasError('required')">
                           Lead Time Remark is required
                       </mat-error>
                   </mat-form-field>
