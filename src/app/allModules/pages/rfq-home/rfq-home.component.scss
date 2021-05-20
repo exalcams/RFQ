@@ -121,6 +121,9 @@
   width: 100%;
   mix-blend-mode: multiply !important;
 }
+.img{
+  filter: invert(100%) sepia(0%) saturate(7443%) hue-rotate(198deg) brightness(126%) contrast(112%);
+}
    .green-timeline {
     background-color: #34ad65;
     height: 5px;

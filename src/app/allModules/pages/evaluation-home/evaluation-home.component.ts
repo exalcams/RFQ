@@ -1,3 +1,4 @@
+import { animate, animateChild, query, sequence, stagger, state, style, transition, trigger } from '@angular/animations';
 import { Component,OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
@@ -29,7 +30,30 @@ export type ChartOptions = {
 @Component({
   selector: 'app-evaluation-home',
   templateUrl: './evaluation-home.component.html',
-  styleUrls: ['./evaluation-home.component.scss']
+  styleUrls: ['./evaluation-home.component.scss'],
+  animations: [trigger('blub', [
+    transition(':leave', [
+      style({ background: 'pink' }),
+      query('*', stagger(-150, [animateChild()]), { optional: true })
+    ]),
+  ]),
+
+  trigger('fadeOut', [
+    state('void', style({ background: 'pink', borderBottomColor: 'pink', opacity: 0, transform: 'translateX(-550px)', 'box-shadow': 'none' })),
+    transition('void => *', sequence([
+      animate(".5s ease")
+    ])),
+    transition('* => void', [animate("5s ease")])
+  ]),
+
+  trigger('rotatedState', [
+    state('default', style({ transform: 'rotate(0)' })),
+    state('rotated', style({ transform: 'rotate(90deg)' })),
+    transition('rotated => default', animate('1500ms ease-out')),
+    transition('default => rotated', animate('400ms ease-in'))
+  ])
+
+  ],
 })
 export class EvaluationHomeComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
@@ -51,6 +75,8 @@ export class EvaluationHomeComponent implements OnInit {
   MenuItems: string[];
   SelectedTab:string="1";
   notificationSnackBarComponent: NotificationSnackBarComponent;
+  state: string = 'default';
+  filter: boolean = true;
 
   constructor(private route: Router,
     private _RFxService: RFxService,
@@ -82,6 +108,14 @@ export class EvaluationHomeComponent implements OnInit {
     this.route.navigate(['pages/evaluationresponse']);
     // { queryParams: { id: rfqid } }
     localStorage.setItem('E_RFXID', rfqid);
+  }
+  rotate() {
+    this.filter = false;
+    this.state = (this.state === 'default' ? 'rotated' : 'default');
+  }
+  rotate1() {
+    this.filter = true;
+    this.state = (this.state === 'rotated' ? 'default' : 'rotated');
   }
   DoughnutChart(){
     this.chartOptions = {
@@ -131,7 +165,7 @@ export class EvaluationHomeComponent implements OnInit {
       },
       legend: {
         show: true,
-        position: 'right',
+        position: 'left',
         horizontalAlign: 'center', 
         floating: false,
         fontSize: '11px',

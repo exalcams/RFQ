@@ -1,3 +1,4 @@
+import { animate, animateChild, query, sequence, stagger, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
@@ -12,7 +13,23 @@ import { Guid } from 'guid-typescript';
 @Component({
   selector: 'app-award-report',
   templateUrl: './award-report.component.html',
-  styleUrls: ['./award-report.component.scss']
+  styleUrls: ['./award-report.component.scss'],
+  animations: [trigger('blub', [
+    transition(':leave', [
+      style({ background: 'pink' }),
+      query('*', stagger(-150, [animateChild()]), { optional: true })
+    ]),
+  ]),
+
+  trigger('fadeOut', [
+    state('void', style({ background: 'pink', borderBottomColor: 'pink', opacity: 0, transform: 'translateX(-550px)', 'box-shadow': 'none' })),
+    transition('void => *', sequence([
+      animate(".5s ease")
+    ])),
+    transition('* => void', [animate("5s ease")])
+  ]),
+
+  ],
 })
 export class AwardReportComponent implements OnInit {
   @ViewChild(MatPaginator) RFQPaginator: MatPaginator;

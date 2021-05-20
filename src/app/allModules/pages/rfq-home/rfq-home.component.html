@@ -77,7 +77,7 @@
                             <img src="assets/images/rfq/search.svg" style="width: 30px;">
                             <input (keyup)="applyFilter($event)" placeholder="Search to - do" class="search"/>
                         </div>
-                        <img  [@rotatedState]='state' (mouseover)="rotate()" (mouseout)="rotate1()" src="assets/images/rfq/filter.svg" style="width: 20px;margin-right: 1em;">
+                        <img  [@rotatedState]='state' [ngClass]="{'img':!filter}" (mouseover)="rotate()" (mouseout)="rotate1()" src="assets/images/rfq/filter.svg" style="width: 20px;margin-right: 1em;">
                          <span  *ngIf="!filter" class="filter"> Filter</span>
                     </div>
                     <button mat-button color="primary" class="createbtn" (click)="Gotoheader(-1)">
