@@ -1,9 +1,10 @@
 @import "src/@fuse/scss/fuse";
 #award {
+  background-color: #ffffff;
   .title{
     @extend .poppins;
     font-size: 18px;
-    color: #00061c;
+    color: #5f2cff;
   }
     .poppins{
         font-family: Poppins;
