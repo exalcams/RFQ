@@ -24,6 +24,7 @@ export class ResItemDialogComponent implements OnInit {
   ResODAttachments:ResODAttachment[]=[];
   ResItemFiles:File[]=[];
   isProgressBarVisibile:boolean;
+  RFxType:string;
 
   constructor(private _formBuilder: FormBuilder, private _RFxService: RFxService,public dialogRef: MatDialogRef<ResItemDialogComponent>,  private dialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -32,12 +33,13 @@ export class ResItemDialogComponent implements OnInit {
       this.RFxID=this.rfxitem.RFxID;
       this.ResODAttachments=data.Docs;
       this.ResItemFiles=data.DocFiles;
+      this.RFxType=data.RFxType;
      }    
 
   ngOnInit() {
     this.InitializeDialogueFormGroup();
     this.DisableRFxItem();
-    if(this.ResItem.LeadTime!=this.rfxitem.LeadTime){
+    if(this.ResItem.LeadTime!=this.rfxitem.LeadTime && this.rfxitem.LeadTime){
       this.ResItemFormGroup.get('LeadTimeAccept').setValue('No');
     }
     else{
@@ -74,7 +76,7 @@ export class ResItemDialogComponent implements OnInit {
       LeadTime:[this.rfxitem.LeadTime], 
     });
     this.ResItemFormGroup=this._formBuilder.group({
-      Price:[this.ResItem.Price,[Validators.required,Validators.max(parseInt(this.rfxitem.BiddingPriceHigh))]],
+      Price:[this.ResItem.Price,[Validators.required]],
       USPRemark:[this.ResItem.USPRemark],
       LeadTime:[this.ResItem.LeadTime],
       PriceRating:[this.ResItem.PriceRating],
@@ -82,6 +84,9 @@ export class ResItemDialogComponent implements OnInit {
       LeadTimeAccept:[null,Validators.required],
       LeadTimeRemark:[this.ResItem.LeadTimeRemark]
     });
+    if(this.RFxType=='5' || this.RFxType=='6'){
+      this.DialogueFormGroup.get('Price').setValidators(Validators.max(parseInt(this.rfxitem.BiddingPriceHigh)));
+    }
   }
   DisableRFxItem(){
     this.DialogueFormGroup.disable();
