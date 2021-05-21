@@ -24,9 +24,9 @@ import { Guid } from 'guid-typescript';
   trigger('fadeOut', [
     state('void', style({ background: 'pink', borderBottomColor: 'pink', opacity: 0, transform: 'translateX(-550px)', 'box-shadow': 'none' })),
     transition('void => *', sequence([
-      animate(".5s ease")
+      animate(".2s ease")
     ])),
-    transition('* => void', [animate("5s ease")])
+    transition('* => void', [animate("2s ease")])
   ]),
 
   ],

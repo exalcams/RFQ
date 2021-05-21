@@ -1,5 +1,6 @@
 @import "src/@fuse/scss/fuse";
 #evaluation-response {
+  background-color: #ffffff;
     .poppins{
         font-family: Poppins;
         font-weight: 600;
@@ -16,7 +17,7 @@
   .title{
     @extend .poppins;
     font-size: 18px;
-    color: #00061c;
+    color: #5f2cff;
   }
   .createbtn{
     border-radius: 4px;
@@ -44,6 +45,7 @@
       font-size: 12px;
       @extend .poppins;
       color:#00061c;
+      margin-right: 1.5rem;
     }
     .white-timeline {
       background-color: white;
