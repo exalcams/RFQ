@@ -48,7 +48,7 @@
                           oninput="this.value = Math.abs(this.value)">
                   </mat-form-field> -->
 
-                  <mat-form-field fxFlex=30 appearance="outline">
+                  <mat-form-field fxFlex=30 appearance="outline" *ngIf="RFxType=='5' || RFxType=='6'">
                       <mat-label>Bidding Price High</mat-label>
                       <input matInput formControlName="HighPrice" type="number" fxFlex autocomplete="off" min="0"
                           oninput="this.value = Math.abs(this.value)">
@@ -130,7 +130,7 @@
                   </mat-form-field> -->
 
                   <mat-form-field fxFlex=30 appearance="outline">
-                      <mat-label>Lead Time is acceptable</mat-label>
+                      <mat-label>Is LeadTime acceptable</mat-label>
                       <mat-select formControlName="LeadTimeAccept" fxFlex
                           (selectionChange)="ValueSelected($event.value)">
                           <mat-option *ngFor="let type of types" [value]="type">{{type}}</mat-option>

@@ -510,7 +510,7 @@ export class ResponseComponent implements OnInit {
       }
     });
     const dialogRef = this.dialog.open(ResItemDialogComponent, {
-      data: { data: RFxItem,Res:this.RespondedI[index].Item,Docs:this.ResODAttachment,DocFiles:this.RespondedI[index].Attachments },panelClass:"res-item-dialog"
+      data: { data: RFxItem,Res:this.RespondedI[index].Item,Docs:this.ResODAttachment,DocFiles:this.RespondedI[index].Attachments,RFxType:this.Rfxheader.RFxType },panelClass:"res-item-dialog"
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(res => {

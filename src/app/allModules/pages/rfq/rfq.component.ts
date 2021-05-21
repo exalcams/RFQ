@@ -818,6 +818,7 @@ export class RfqComponent implements OnInit,OnDestroy {
       this.RFxView.RFxICs = [];
     }
     this.RFxView.RFxPartners = this.PartnerDetails;
+    this.RFxView.Invited=this.Vendors.length.toString();
     this.Vendors.forEach(vendor => {
       if(vendor.PatnerID==''){
         this.Vendors.splice(this.Vendors.indexOf(vendor),1);
@@ -901,7 +902,6 @@ export class RfqComponent implements OnInit,OnDestroy {
     else {
       this.RFxView.Status = "1";
     }
-    this.RFxView.Invited = this.Rfxheader.Invited;
     this.RFxView.Responded = this.Rfxheader.Responded;
     this.RFxView.Evaluated = this.Rfxheader.Evaluated;
     this.RFxView.ReleasedOn = this.Rfxheader.ReleasedOn;
@@ -916,6 +916,7 @@ export class RfqComponent implements OnInit,OnDestroy {
       this.RFxView.RFxICs = [];
     }
     this.RFxView.RFxPartners = this.PartnerDetails;
+    this.RFxView.Invited=this.Vendors.length.toString();
     this.Vendors.forEach(vendor => {
       if(vendor.PatnerID==''){
         this.Vendors.splice(this.Vendors.indexOf(vendor),1);
