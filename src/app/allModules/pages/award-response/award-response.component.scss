@@ -13,6 +13,7 @@
     background-color: #ffffff;
     height: 120px;
     width:100%;
+    border: 1px solid #f6f6f6;
   }
   .title{
     @extend .poppins;
@@ -107,6 +108,8 @@
     background-color: #ffffff;
     height: 100%;
     width: 100%;
+    border: 1px solid #f6f6f6;
+    margin-left: 1em;
   }
   .rfxtitles{
     @extend .poppins;

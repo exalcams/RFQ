@@ -43,9 +43,9 @@ export type ChartOptions = {
   trigger('fadeOut', [
     state('void', style({ background: 'pink', borderBottomColor: 'pink', opacity: 0, transform: 'translateX(-550px)', 'box-shadow': 'none' })),
     transition('void => *', sequence([
-      animate(".2s ease")
+      animate(".1s ease")
     ])),
-    transition('* => void', [animate("2s ease")])
+    transition('* => void', [animate("1s ease")])
   ]),
 
   trigger('rotatedState', [
