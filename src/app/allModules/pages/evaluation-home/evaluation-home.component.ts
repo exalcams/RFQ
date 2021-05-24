@@ -41,9 +41,9 @@ export type ChartOptions = {
   trigger('fadeOut', [
     state('void', style({ background: 'pink', borderBottomColor: 'pink', opacity: 0, transform: 'translateX(-550px)', 'box-shadow': 'none' })),
     transition('void => *', sequence([
-      animate(".5s ease")
+      animate(".1s ease")
     ])),
-    transition('* => void', [animate("5s ease")])
+    transition('* => void', [animate("1s ease")])
   ]),
 
   trigger('rotatedState', [
@@ -103,6 +103,8 @@ export class EvaluationHomeComponent implements OnInit {
     }
     this.GetAllRFxs();
     this.DoughnutChart();
+    console.log(this.SelectedTab);
+    
   }
   Gotoheader(rfqid) {
     this.route.navigate(['pages/evaluationresponse']);
@@ -212,7 +214,7 @@ export class EvaluationHomeComponent implements OnInit {
         if (data) {
           this.AllHeaderDetails =data;
           this.isProgressBarVisibile=false;
-          this.LoadTableSource(this.AllHeaderDetails,"0");
+          this.LoadTableSource(this.AllHeaderDetails,'1');
         }
       }
     );

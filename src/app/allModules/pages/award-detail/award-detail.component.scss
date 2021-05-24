@@ -1,5 +1,6 @@
 @import "src/@fuse/scss/fuse";
 #award-response {
+  background-color: #ffffff;
     .poppins{
         font-family: Poppins;
         font-weight: 600;
@@ -12,11 +13,12 @@
     background-color: #ffffff;
     height: 120px;
     width:100%;
+    border: 1px solid #f6f6f6;
   }
   .title{
     @extend .poppins;
     font-size: 18px;
-    color: #00061c;
+    color: #5f2cff;
   }
   .createbtn{
     border-radius: 4px;
@@ -44,6 +46,7 @@
       font-size: 12px;
       @extend .poppins;
       color:#00061c;
+      margin-right: 1.5rem;
     }
     .white-timeline {
       background-color: white;
@@ -105,6 +108,8 @@
     background-color: #ffffff;
     height: 100%;
     width: 100%;
+    border: 1px solid #f6f6f6;
+    margin-left: 1em;
   }
   .rfxtitles{
     @extend .poppins;
