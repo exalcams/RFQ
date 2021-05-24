@@ -44,7 +44,12 @@ export class EvaItemDialogComponent implements OnInit {
       this.MaterialMaster=master as MMaterial[];
     });
     this.GetResODAttachments(this.ResItem.RESID);
-    this.DialogueFormGroup.disable();
+    if(this.rfxitem.Attachment!=''){
+      var filenames=this.rfxitem.Attachment.split(',');
+      filenames.forEach(name => {
+      this.RFxItemAttachment.push(name);
+      });
+    }
   }
   InitializeDialogueFormGroup(): void {
     this.DialogueFormGroup = this._formBuilder.group({
@@ -78,7 +83,6 @@ export class EvaItemDialogComponent implements OnInit {
     }
     this.DialogueFormGroup.disable();
     this.ResItemFormGroup.disable();
-    this.RFxItemAttachment.push(this.rfxitem.Attachment);
   }
   GetResODAttachments(ResID: string) {
     this._RFxService.GetResponseODAttachmentsByResponseID(ResID).subscribe(data => {

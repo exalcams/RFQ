@@ -162,7 +162,11 @@
                     </mat-form-field>
                 </div>
                 <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem">
-                    <span class="title">Attachement</span>
+                    <div fxLayout="row" style="width: 100%;">
+                        <span class="title">Attachements</span>
+                        <div fxFlex></div>
+                        <mat-icon (click)="drop.showFileSelector()" style="cursor: pointer;">add</mat-icon>
+                      </div>
                     <ngx-dropzone #drop (change)="onSelect($event)" [multiple]="true" [disableClick]="true"
                         class="dropzone">
                         <ngx-dropzone-label><span class="label">Drop here to upload or <a class="fileselect"

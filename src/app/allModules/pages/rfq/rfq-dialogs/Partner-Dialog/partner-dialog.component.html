@@ -21,8 +21,14 @@
 
             <mat-form-field fxFlex=100 style="font-size: 14px;" appearance="outline">
                 <mat-label>User table</mat-label>
-                <mat-select formControlName="User" fxFlex multiple  disableOptionCentering panelClass="myPanelClass cl_mat-select-panel" >
+                <!-- <mat-select formControlName="User" fxFlex multiple  disableOptionCentering panelClass="myPanelClass cl_mat-select-panel" >
                     <mat-option *ngFor="let user of Users" [value]="user"> {{user}} </mat-option>
+                </mat-select> -->
+                <mat-select formControlName="User" [multiple]="true" disableOptionCentering>
+                    <mat-select-search [formControl]="bankMultiFilterCtrl"></mat-select-search>
+                    <mat-option *ngFor="let bank of filteredBanksMulti | async" [value]="bank">
+                      {{bank}}
+                    </mat-option>
                 </mat-select>
                 <mat-error
                 *ngIf="DialogueFormGroup.get('User').touched && DialogueFormGroup.get('User').hasError('required')">
