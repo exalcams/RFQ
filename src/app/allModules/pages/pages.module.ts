@@ -86,6 +86,7 @@ import { PartnerDialogComponent } from './rfq/rfq-dialogs/Partner-Dialog/partner
 import { AddVendorDialogComponent } from './rfq/rfq-dialogs/add-vendor-dialog/add-vendor-dialog.component';
 import { QuestionDialogComponent } from './rfq/rfq-dialogs/Question-Dialog/question-dialog.component';
 import { RFQAttachmentDialogComponent } from './rfq/rfq-dialogs/Attachment-Dialog/rfq-attachment-dialog.component';
+import { MatSelectSearchModule } from '../directives/mat-select-search/mat-select-search.module';
 
 
 const routes = [
@@ -206,7 +207,8 @@ const routes = [
         FormsModule,
         RatingModule,
         NgxMaterialTimepickerModule,
-        NgApexchartsModule
+        NgApexchartsModule,
+        MatSelectSearchModule
     ],
     declarations: [
         DashboardComponent,

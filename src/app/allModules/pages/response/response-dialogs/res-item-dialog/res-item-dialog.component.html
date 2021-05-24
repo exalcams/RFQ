@@ -155,7 +155,7 @@
 
           <div fxLayout="row">
               <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
-                  <p class="attachment">RFx Attachment</p>
+                  <p class="attachment">RFx Attachments</p>
                   <span matBadgeSize="small" matBadgeColor="accent" matBadgeOverlap="false"
                       [matBadge]="SelectedFileName.length">
                           <img (click)="openAttachmentViewDialog(RFxID,SelectedFileName)" style="width: 20px;cursor: pointer;" src="assets/images/rfq/attachment.svg">
@@ -164,7 +164,11 @@
           </div>
 
           <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem">
-              <span class="attachment1">Attachements</span>
+              <div fxLayout="row" style="width: 100%;">
+                <span class="attachment1">Response Attachements</span>
+                <div fxFlex></div>
+                <mat-icon (click)="drop.showFileSelector()" style="cursor: pointer;">add</mat-icon>
+              </div>
               <ngx-dropzone #drop (change)="onSelect($event)" [disableClick]="true" class="dropzone">
                   <ngx-dropzone-label><span class="label">Drop here to upload or <a class="fileselect"
                               (click)="drop.showFileSelector()">choose file</a></span></ngx-dropzone-label>
