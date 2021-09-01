@@ -1,126 +1,146 @@
 <div id="award" fxFlex fusePerfectScrollbar>
-  <div fxLayout="column" class="px-24">
-      <div fxLayout="row" fxLayoutAlign="start center" class="pt-24" fxLayoutGap="1rem">
-          <button mat-icon-button (click)="CancelClicked()">
-              <img src="assets/images/rfq/backbutton.svg" style="width: 24px;">
-          </button>
-          <label class="title">Award for {{Rfxheader.Title}}</label>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="start center" class="py-20">
-          <mat-radio-group aria-label="Select an option" fxLayoutGap="2rem">
-              <mat-radio-button [checked]="true" value="1" (click)="TableVendor()" class="radiotxt">By Vendor</mat-radio-button>
-              <mat-radio-button value="2" (click)="TableMaterial()" class="radiotxt">By Material</mat-radio-button>
-              <mat-radio-button value="3" (click)="TableEvaluation()" class="radiotxt">By Evaluation Parameter</mat-radio-button>
-          </mat-radio-group>
-      </div>
-      <div fxLayout="column" class="container p-16">
-          <div *ngIf="value == 1" fxFlex class="tb-container">
+    <div fxLayout="column" class="px-24">
+        <div fxLayout="row" fxLayoutAlign="start center" class="pt-24" fxLayoutGap="1rem">
+            <button mat-icon-button (click)="CancelClicked()">
+                <img src="assets/images/rfq/backbutton.svg" style="width: 24px;">
+            </button>
+            <label class="title">Award for {{Rfxheader.Title}}</label>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" class="py-20">
+            <mat-radio-group aria-label="Select an option" fxLayoutGap="2rem">
+                <mat-radio-button [checked]="true" value="1" (click)="TableVendor()" class="radiotxt">By Vendor
+                </mat-radio-button>
+                <mat-radio-button value="2" (click)="TableMaterial()" class="radiotxt">By Material</mat-radio-button>
+                <mat-radio-button value="3" (click)="TableEvaluation()" class="radiotxt">By Evaluation Parameter
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div fxLayout="column" class="container p-16">
+            <div *ngIf="value == 1" fxFlex class="tb-container">
 
-              <table mat-table [dataSource]="HeaderDetailsDataSource" matSort class="py-10">
+                <table mat-table [dataSource]="HeaderDetailsDataSource" matSort class="py-10">
 
-                  <ng-container matColumnDef="PartnerID">
-                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Supplier </th>
-                      <td mat-cell *matCellDef="let element"> {{element.PartnerID}}
-                      </td>
-                  </ng-container>
+                    <ng-container matColumnDef="PartnerID">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Supplier </th>
+                        <td mat-cell *matCellDef="let element"> {{element.PartnerID}}
+                        </td>
+                    </ng-container>
 
-                  <ng-container matColumnDef="Rating">
-                      <th mat-header-cell style="text-align: center;" *matHeaderCellDef>Criteria Rating</th>
-                      <td mat-cell class="td-cell" style="text-align: center;" *matCellDef="let element;index as i">
-                          <div style="width:10rem" style="width: 100%;" fxLayoutAlign="center">
-                              <star-rating [value]="AllEvalRatingDetails[i].Rating" checkedcolor="gold"
-                                  uncheckedcolor="#b9bdbb" size="20px" readonly="true"></star-rating>
-                          </div>
-                      </td>
-                  </ng-container>
-
-
-                  <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
-                  <tr mat-row (click)="TableHighlight(row,1)" [class.highlighted]="row.PartnerID==SelectedVendor" style="cursor: pointer;"
-                      *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
-              </table>
-          </div>
-
-          <div *ngIf="value==2" fxFlex>
-
-              <table mat-table [dataSource]="MaterialDetailsDataSource" matSort class="py-10">
-
-                  <ng-container matColumnDef="Material">
-                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Product </th>
-                      <td mat-cell *matCellDef="let element"> {{element.Material}}
-                      </td>
-                  </ng-container>
-
-                  <ng-container matColumnDef="BestSupplier">
-                      <th mat-header-cell style="text-align: center;" *matHeaderCellDef>Best Supplier</th>
-                      <td mat-cell class="td-cell" style="text-align: center;" *matCellDef="let element;index as i">
-                          {{element.BestSupplier}}
-                      </td>
-                  </ng-container>
+                    <ng-container matColumnDef="Rating">
+                        <th mat-header-cell style="text-align: center;" *matHeaderCellDef>Criteria Rating</th>
+                        <td mat-cell class="td-cell" style="text-align: center;" *matCellDef="let element;index as i">
+                            <div style="width:10rem" style="width: 100%;" fxLayoutAlign="center">
+                                <star-rating [value]="AllEvalRatingDetails[i].Rating" checkedcolor="gold"
+                                    uncheckedcolor="#b9bdbb" size="20px" readonly="true"></star-rating>
+                            </div>
+                        </td>
+                    </ng-container>
 
 
-                  <tr mat-header-row *matHeaderRowDef="MaterialDetailsDisplayedColumns"></tr>
-                  <tr mat-row (click)="TableHighlight(row,2)" [class.highlighted]="row.BestSupplier==SelectedVendor" style="cursor: pointer;"
-                      *matRowDef="let row; columns: MaterialDetailsDisplayedColumns;"></tr>
-              </table>
-          </div>
+                    <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
+                    <tr mat-row (click)="TableHighlight(row,1)" [class.highlighted]="row.PartnerID==SelectedVendor"
+                        style="cursor: pointer;" *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
+                </table>
+            </div>
 
-          <div *ngIf="value==3" fxFlex>
-              <table mat-table [dataSource]="CriteriaDetailsDataSource" matSort class="py-10">
+            <div *ngIf="value==2" fxFlex>
 
-                  <ng-container matColumnDef="Criteria">
-                      <th mat-header-cell mat-sort-header *matHeaderCellDef> Criteria </th>
-                      <td mat-cell *matCellDef="let element"> {{element.Criteria}}
-                      </td>
-                  </ng-container>
+                <table mat-table [dataSource]="MaterialDetailsDataSource" matSort class="py-10">
 
-                  <ng-container matColumnDef="BestSupplier">
-                      <th mat-header-cell style="text-align: center;" *matHeaderCellDef>Best Supplier</th>
-                      <td mat-cell class="td-cell" style="text-align: center;" *matCellDef="let element;index as i">
-                          {{element.BestSupplier}}
-                      </td>
-                  </ng-container>
+                    <ng-container matColumnDef="Material">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Product </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Material}}
+                        </td>
+                    </ng-container>
 
-                  <tr mat-header-row *matHeaderRowDef="CriteriaDetailsDisplayedColumns"></tr>
-                  <tr mat-row (click)="TableHighlight(row,2)" [class.highlighted]="row.BestSupplier==SelectedVendor" style="cursor: pointer;"
-                      *matRowDef="let row; columns: CriteriaDetailsDisplayedColumns;"></tr>
-              </table>
-          </div>
-          <form autocomplete="off" [formGroup]="AwardFormGroup" *ngIf="Click">
-              <div fxLayout="column" fxLayoutGap="1rem" class="py-16">
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                      <label class="radiotxt">Reason</label>
-                  </div>
+                    <ng-container matColumnDef="BestSupplier">
+                        <th mat-header-cell style="text-align: center;" *matHeaderCellDef>Best Supplier</th>
+                        <td mat-cell class="td-cell" style="text-align: center;" *matCellDef="let element;index as i">
+                            {{element.BestSupplier}}
+                        </td>
+                    </ng-container>
 
-                  <mat-form-field appearance="outline">
-                      <textarea matInput fxFlex formControlName="Reason" class="reaonremarks"></textarea>
-                      <mat-error
-                          *ngIf="AwardFormGroup.get('Reason').touched && AwardFormGroup.get('Reason').hasError('required')">
-                          Reason is required
-                      </mat-error>
-                  </mat-form-field>
 
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                      <label class="radiotxt">Remarks</label>
-                  </div>
+                    <tr mat-header-row *matHeaderRowDef="MaterialDetailsDisplayedColumns"></tr>
+                    <tr mat-row (click)="TableHighlight(row,2)" [class.highlighted]="row.BestSupplier==SelectedVendor"
+                        style="cursor: pointer;" *matRowDef="let row; columns: MaterialDetailsDisplayedColumns;"></tr>
+                </table>
+            </div>
 
-                  <mat-form-field appearance="outline">
-                      <textarea matInput fxFlex formControlName="Remarks" class="reaonremarks"></textarea>
-                      <mat-error
-                          *ngIf="AwardFormGroup.get('Remarks').touched && AwardFormGroup.get('Remarks').hasError('required')">
-                          Remarks is required
-                      </mat-error>
-                  </mat-form-field>
+            <div *ngIf="value==3" fxFlex>
+                <table mat-table [dataSource]="CriteriaDetailsDataSource" matSort class="py-10">
 
-                  <div fxLayout="row" fxLayoutAlign="center center" fxFlex class="px-8">
-                      <button mat-button class="releasebtn" (click)="AwardClicked()">Award</button>
-                  </div>
-              </div>
-          </form>
-      </div>
+                    <ng-container matColumnDef="Criteria">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Criteria </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Criteria}}
+                        </td>
+                    </ng-container>
 
-  </div>
-  <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
-  </mat-progress-spinner>
-  <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+                    <ng-container matColumnDef="BestSupplier">
+                        <th mat-header-cell style="text-align: center;" *matHeaderCellDef>Best Supplier</th>
+                        <td mat-cell class="td-cell" style="text-align: center;" *matCellDef="let element;index as i">
+                            {{element.BestSupplier}}
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="CriteriaDetailsDisplayedColumns"></tr>
+                    <tr mat-row (click)="TableHighlight(row,2)" [class.highlighted]="row.BestSupplier==SelectedVendor"
+                        style="cursor: pointer;" *matRowDef="let row; columns: CriteriaDetailsDisplayedColumns;"></tr>
+                </table>
+            </div>
+            <form autocomplete="off" [formGroup]="AwardFormGroup" *ngIf="Click">
+                <div fxLayout="column" fxLayoutGap="1rem" class="py-16">
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <label class="radiotxt">Reason</label>
+                    </div>
+
+                    <mat-form-field appearance="outline">
+                        <textarea matInput fxFlex formControlName="Reason" class="reaonremarks"></textarea>
+                        <mat-error
+                            *ngIf="AwardFormGroup.get('Reason').touched && AwardFormGroup.get('Reason').hasError('required')">
+                            Reason is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <label class="radiotxt">Remarks</label>
+                    </div>
+
+                    <mat-form-field appearance="outline">
+                        <textarea matInput fxFlex formControlName="Remarks" class="reaonremarks"></textarea>
+                        <mat-error
+                            *ngIf="AwardFormGroup.get('Remarks').touched && AwardFormGroup.get('Remarks').hasError('required')">
+                            Remarks is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-checkbox #IsBG formControlName="BG">Bank Gurantee</mat-checkbox>
+
+                    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem" *ngIf="IsBG.checked">
+                        <div fxLayout="row" style="width: 100%;">
+                          <span class="attachment1">Attachement</span>
+                          <div fxFlex></div>
+                          <mat-icon (click)="drop.showFileSelector()" style="cursor: pointer;">add</mat-icon>
+                        </div>
+                        <ngx-dropzone #drop (change)="onSelect($event)" [disableClick]="true" class="dropzone">
+                            <ngx-dropzone-label><span class="label">Drop here to upload or <a class="fileselect"
+                                        (click)="drop.showFileSelector()">choose file</a></span></ngx-dropzone-label>
+                            <ngx-dropzone-preview class="preview" *ngFor="let f of Attachemts" [removable]="true"
+                                (removed)="onRemove(f)">
+                                <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+                        </ngx-dropzone>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center center" fxFlex class="px-8">
+                        <button mat-button class="releasebtn" (click)="AwardClicked()">Award</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile"></div>
 </div>

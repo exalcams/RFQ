@@ -545,4 +545,16 @@ export class RFxService {
         return this._httpClient.get<any>(`${this.baseAddress}rfxapi/RFx/GetQuestionTemplates`)
             .pipe(catchError(this.errorHandler));
     }
+    BankGuarantee(Award:RFxAward, selectedFiles: File[]): Observable<any> {
+        const formData: FormData = new FormData();
+        if (selectedFiles && selectedFiles.length) {
+            selectedFiles.forEach(x => {
+                formData.append(x.name, x, x.name);
+            });
+        }
+        formData.append("award",JSON.stringify(Award));
+        return this._httpClient.post<any>(`${this.baseAddress}rfxapi/RFx/BankGuarantee`,
+          formData
+        ).pipe(catchError(this.errorHandler));
+      }
 }
