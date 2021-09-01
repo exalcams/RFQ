@@ -92,7 +92,7 @@ export class RFxHeader extends CommonClass {
     Evaluated: string;
     ReleasedOn: Date | string | null;
     ReleasedBy: string;
-    
+    IsBankGuaranteeRequired:boolean;
 }
 
 export class RFxItem extends CommonClass {
@@ -433,6 +433,7 @@ export class RFxAward extends CommonClass {
     AwardedBy : string;
     Reason : string;
     Remarks : string;
+    IsBankGuaranteeRequired:boolean;
 }
 export class RFxCEPartner extends CommonClass {
     Client : string;

@@ -20,9 +20,9 @@ export class AwardComponent implements OnInit {
   RFxID: string = null;
   EvaluationRating: EvaluationRating[] = [];
   AwardFormGroup: FormGroup;
-  HeaderDetailsDisplayedColumns: string[] = [ 'PartnerID', 'Rating'];
-  MaterialDetailsDisplayedColumns: string[] = [ 'Material', 'BestSupplier'];
-  CriteriaDetailsDisplayedColumns: string[] = [ 'Criteria', 'BestSupplier'];
+  HeaderDetailsDisplayedColumns: string[] = ['PartnerID', 'Rating'];
+  MaterialDetailsDisplayedColumns: string[] = ['Material', 'BestSupplier'];
+  CriteriaDetailsDisplayedColumns: string[] = ['Criteria', 'BestSupplier'];
   authenticationDetails: AuthenticationDetails;
   HeaderDetailsDataSource: MatTableDataSource<EvaluationRating>;
   MaterialDetailsDataSource: MatTableDataSource<ByMaterial>;
@@ -31,8 +31,8 @@ export class AwardComponent implements OnInit {
   AllMaterialDetails: any = [];
   AllCriteriaDetails: any = [];
   isProgressBarVisibile: boolean;
-  SelectedVendor: string ;
-  selectedRESID:string;
+  SelectedVendor: string;
+  selectedRESID: string;
   value: number = 1;
   Rfxheader: RFxHeader = new RFxHeader();
   Responses: ResHeader = new ResHeader();
@@ -51,6 +51,7 @@ export class AwardComponent implements OnInit {
   material: string = "";
   criteria: string = "";
   Click: boolean = false;
+  Attachemts: File[] = [];
 
   constructor(private _RFxService: RFxService, private _route: ActivatedRoute, private _formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
@@ -100,6 +101,7 @@ export class AwardComponent implements OnInit {
     this.AwardFormGroup = this._formBuilder.group({
       Remarks: ['', [Validators.required]],
       Reason: ['', [Validators.required]],
+      BG: [false]
     });
   }
 
@@ -111,7 +113,7 @@ export class AwardComponent implements OnInit {
       this.ShowValidationErrors(this.AwardFormGroup);
     }
   }
-  CancelClicked(){
+  CancelClicked() {
     this._router.navigate(['pages/awardresponse']);
   }
   CreateAward() {
@@ -124,20 +126,29 @@ export class AwardComponent implements OnInit {
     this.RFxAward.RESID = this.selectedRESID;
     this.RFxAward.Reason = this.AwardFormGroup.get('Reason').value;
     this.RFxAward.Remarks = this.AwardFormGroup.get('Remarks').value;
+    this.RFxAward.IsBankGuaranteeRequired = this.AwardFormGroup.get('BG').value;
 
     this._RFxService.CreateAward(this.RFxAward).subscribe(x => {
       this.isProgressBarVisibile = false;
-        this.notificationSnackBarComponent.openSnackBar(' Awarded successfully', SnackBarStatus.success);
-        this._router.navigate(['pages/awardresponse']);
-    },err=>{
-      console.log(err);
-      this.isProgressBarVisibile=false;
-      this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
-    }
+      this.notificationSnackBarComponent.openSnackBar(' Awarded successfully', SnackBarStatus.success);
+      this._router.navigate(['pages/awardresponse']);
+      }, err => {
+        console.log(err);
+        this.isProgressBarVisibile = false;
+        this.notificationSnackBarComponent.openSnackBar('something went wrong', SnackBarStatus.danger);
+      }
     );
-    this.CreateCEPartner();
-    this.CreateCEMatrial();
-    this.CreateCECriteria();
+    this._RFxService.BankGuarantee(this.RFxAward, this.Attachemts).subscribe(res => {
+      console.log("Bank Guarantee success");
+      // this.isProgressBarVisibile = false;
+      },
+      err => {
+        console.log("Bank Guarantee failed", err);
+        // this.isProgressBarVisibile = false;
+      });
+    // this.CreateCEPartner();
+    // this.CreateCEMatrial();
+    // this.CreateCECriteria();
   }
   CreateCEPartner() {
     this.AllEvalRatingDetails.forEach(CEPartner => {
@@ -221,36 +232,36 @@ export class AwardComponent implements OnInit {
       }
     )
   }
-  TableHighlight(row: any,table:number) {
-    if(table==1){
+  TableHighlight(row: any, table: number) {
+    if (table == 1) {
       this.SelectedVendor = row.PartnerID;
     }
-    else{
+    else {
       this.SelectedVendor = row.BestSupplier;
     }
-    this.selectedRESID=row.RESID;
+    this.selectedRESID = row.RESID;
     this.Click = true;
   }
 
   TableVendor(): void {
     this.value = 1;
-    this.Click=false;
-    this.selectedRESID=null;
-    this.SelectedVendor=null;
+    this.Click = false;
+    this.selectedRESID = null;
+    this.SelectedVendor = null;
   }
 
   TableMaterial(): void {
     this.value = 2;
-    this.Click=false;
-    this.selectedRESID=null;
-    this.SelectedVendor=null;
+    this.Click = false;
+    this.selectedRESID = null;
+    this.SelectedVendor = null;
   }
 
   TableEvaluation(): void {
     this.value = 3;
-    this.Click=false;
-    this.selectedRESID=null;
-    this.SelectedVendor=null;
+    this.Click = false;
+    this.selectedRESID = null;
+    this.SelectedVendor = null;
   }
 
   ShowValidationErrors(formGroup: FormGroup): void {
@@ -259,5 +270,14 @@ export class AwardComponent implements OnInit {
       formGroup.get(key).markAsDirty();
     });
 
+  }
+
+  onSelect(event) {
+    event.addedFiles.forEach(file => {
+      this.Attachemts.push(file);
+    });
+  }
+  onRemove(event) {
+    this.Attachemts.splice(this.Attachemts.indexOf(event), 1);
   }
 }
