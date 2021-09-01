@@ -36,7 +36,7 @@
 
 
                   <tr mat-header-row *matHeaderRowDef="HeaderDetailsDisplayedColumns"></tr>
-                  <tr mat-row (click)="TableHighlight(row,1)" [class.highlighted]="row.PartnerID==SelectedVendor"
+                  <tr mat-row (click)="TableHighlight(row,1)" [class.highlighted]="row.PartnerID==SelectedVendor" style="cursor: pointer;"
                       *matRowDef="let row; columns: HeaderDetailsDisplayedColumns;"></tr>
               </table>
           </div>
@@ -60,7 +60,7 @@
 
 
                   <tr mat-header-row *matHeaderRowDef="MaterialDetailsDisplayedColumns"></tr>
-                  <tr mat-row (click)="TableHighlight(row,2)" [class.highlighted]="row.BestSupplier==SelectedVendor"
+                  <tr mat-row (click)="TableHighlight(row,2)" [class.highlighted]="row.BestSupplier==SelectedVendor" style="cursor: pointer;"
                       *matRowDef="let row; columns: MaterialDetailsDisplayedColumns;"></tr>
               </table>
           </div>
@@ -82,7 +82,7 @@
                   </ng-container>
 
                   <tr mat-header-row *matHeaderRowDef="CriteriaDetailsDisplayedColumns"></tr>
-                  <tr mat-row (click)="TableHighlight(row,2)" [class.highlighted]="row.BestSupplier==SelectedVendor"
+                  <tr mat-row (click)="TableHighlight(row,2)" [class.highlighted]="row.BestSupplier==SelectedVendor" style="cursor: pointer;"
                       *matRowDef="let row; columns: CriteriaDetailsDisplayedColumns;"></tr>
               </table>
           </div>

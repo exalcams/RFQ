@@ -24,6 +24,7 @@ export class AwardDetailEvaluationComponent implements OnInit {
   currentUserRole: string;
   partnerID: string;
   menuItems: string[];
+  Plants:string[]=[];
   isProgressBarVisibile: boolean;
 
   EvalView: EvaluationView = new EvaluationView();
@@ -88,6 +89,7 @@ export class AwardDetailEvaluationComponent implements OnInit {
       this.partnerID = this.authenticationDetails.UserName;
       this.currentUserName = this.authenticationDetails.UserName;
       this.currentUserRole = this.authenticationDetails.UserRole;
+      this.Plants=this.authenticationDetails.Plants;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(
         ","
       );

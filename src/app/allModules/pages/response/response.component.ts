@@ -70,6 +70,7 @@ export class ResponseComponent implements OnInit {
   ResItemFiles:File[]=[];
   ODAttachDetails: RFxODAttachment[] = [];
   minDate=new Date();
+  Plants:string[]=[];
 
   constructor(
     public dialog: MatDialog,
@@ -93,6 +94,7 @@ export class ResponseComponent implements OnInit {
       this.partnerID = this.authenticationDetails.UserName;
       this.currentUserName = this.authenticationDetails.UserName;
       this.currentUserRole = this.authenticationDetails.UserRole;
+      this.Plants=this.authenticationDetails.Plants;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(
         ","
       );

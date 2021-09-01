@@ -63,6 +63,7 @@ export class EvaluationComponent implements OnInit {
   minDate = new Date();
   selectedIndex: number = 0;
   EvalRemarks:string="";
+  Plants:string[]=[];
 
   constructor(
     public dialog: MatDialog,
@@ -86,6 +87,7 @@ export class EvaluationComponent implements OnInit {
       this.partnerID = this.authenticationDetails.UserName;
       this.currentUserName = this.authenticationDetails.UserName;
       this.currentUserRole = this.authenticationDetails.UserRole;
+      this.Plants=this.authenticationDetails.Plants;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(
         ","
       );
